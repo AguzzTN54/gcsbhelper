@@ -215,7 +215,7 @@
 			"type": "skill"
 		}
 	],
-	"bonus": [
+	"more": [
 		{
 			"courseID": 657,
 			"courseName": "Share Data Using Google Data Cloud",

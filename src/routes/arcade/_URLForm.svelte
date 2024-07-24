@@ -91,7 +91,10 @@
 	}
 
 	.check {
-		background-color: var(--color-theme-1);
+		/* background-color: var(--color-theme-1); */
+		background-image: var(--color-gradient);
+		background-size: 200%;
+		background-position: 80%;
 		font-size: large;
 		border: 0;
 		outline: 0;
@@ -99,12 +102,14 @@
 		color: #fff;
 		width: 200px;
 		border-radius: 5px;
-		transition: all 0.1s;
 		margin: 1.5rem;
+		transition:
+			transform 0.1s,
+			background 0.3s;
 	}
 
 	.check:hover {
-		background-color: var(--color-theme-1);
+		background-position: 0;
 	}
 	.check:active {
 		transform: scale(0.95);

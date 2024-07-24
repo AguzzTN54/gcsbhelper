@@ -1,8 +1,9 @@
 <script>
 	import { formatTime, arcadeDate, timeZone } from '$lib/helpers/dateTime';
 	import { profile } from '$lib/stores/app-store';
-	import Summary from './_summary.svelte';
+	import Summary from './Summary.svelte';
 	import UrlForm from './_URLForm.svelte';
+	import Details from './Details.svelte';
 
 	$: ({ user, points } = $profile);
 	const { end, start } = arcadeDate;
@@ -24,6 +25,10 @@
 		{/if}
 	</div>
 </section>
+
+{#if user}
+	<Details />
+{/if}
 
 <style>
 	.hero {

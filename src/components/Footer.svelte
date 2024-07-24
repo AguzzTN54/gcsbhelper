@@ -30,13 +30,10 @@
 
 <style>
 	.footnote {
-		position: fixed;
 		width: var(--screen-width);
 		display: flex;
 		overflow: hidden;
 		background-color: #fff;
-		bottom: 0;
-		left: 0;
 		padding: 0.5% 2.5%;
 		font-size: smaller;
 	}

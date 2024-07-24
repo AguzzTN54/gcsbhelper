@@ -90,6 +90,7 @@
 		transition:
 			background 0.5s,
 			transform 0.1s,
+			color 0.5s,
 			border 0.5s;
 	}
 	button.revoke:active {
@@ -108,6 +109,11 @@
 		}
 		h1 span.pts {
 			font-size: calc(0.04 * var(--screen-height));
+		}
+
+		button.revoke {
+			width: calc(0.04 * var(--screen-height));
+			font-size: calc(0.02 * var(--screen-height));
 		}
 	}
 
