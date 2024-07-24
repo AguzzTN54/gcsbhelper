@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { profile } from '$lib/stores/app-store';
 	import { loadProfile } from '$lib/helpers/arcade/profile-parser';
-	import { pointCounter } from '$lib/helpers/arcade/calculator';
+	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
 	import Loading from '$comp/loading.svelte';
 
 	// prettier-ignore
@@ -19,13 +19,14 @@
 			return;
 		}
 
-		const { user, courses: badges } = data;
-		const points = pointCounter(badges);
-		profile.set({ user, points, badges });
+		const { user, courses: userBadges } = data;
+		const detailBadges = detailPoints(userBadges);
+		const points = pointCounter(detailBadges);
+		profile.set({ user, points, badges: detailBadges });
 	};
 </script>
 
-<div class="wrapper" in:fade>
+<div class="wrapper" in:fade={{ delay: 500 }}>
 	{#if loading}
 		<div class="loading" transition:fade>
 			<div class="icon">

@@ -1,26 +1,12 @@
 <script>
-	export let points = {};
+	import { getBonus, getMilestone } from '$lib/helpers/arcade/calculator';
+	import { profile } from '$lib/stores/app-store';
 
+	const { points } = $profile;
 	const { beginner, advanced, intermediate, more, arcade, trivia } = points;
 	const skillbadges = beginner + advanced + intermediate + more;
-
-	const getBonus = () => {
-		if (skillbadges >= 21 && trivia >= 8 && arcade >= 6) return 25;
-		if (skillbadges >= 14 && trivia >= 6 && arcade >= 5) return 15;
-		if (skillbadges >= 9 && trivia >= 4 && arcade >= 3) return 9;
-		if (skillbadges >= 4 && trivia >= 2 && arcade >= 2) return 2;
-		return 0;
-	};
-	const bonus = getBonus();
+	const bonus = getBonus({ arcade, skillbadges, trivia });
 	const total = skillbadges + arcade + trivia + bonus;
-
-	const getMilestone = (bonus) => {
-		if (bonus >= 25) return 'Ultimate Milestone';
-		if (bonus >= 15) return 'Milestone 3';
-		if (bonus >= 9) return 'Milestone 2';
-		if (bonus >= 2) return 'Milestone 1';
-		return '-';
-	};
 </script>
 
 <section>

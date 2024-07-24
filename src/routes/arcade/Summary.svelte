@@ -3,14 +3,18 @@
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
-	export let points = 0;
+	export let points = {};
 	export let user = '';
+
+	const sumPoint = Object.keys(points)
+		.map((key) => points[key])
+		.reduce((pv = 0, cur) => pv + cur);
 
 	let showBtn = false;
 	let pointToShow = 0.0;
 	onMount(() => {
 		const t = setInterval(() => {
-			if (pointToShow < points) return (pointToShow += 0.5);
+			if (pointToShow < sumPoint) return (pointToShow += 0.5);
 			showBtn = true;
 			return clearInterval(t);
 		}, 20);

@@ -22,23 +22,16 @@ const filterByDate = (data = []) => {
 const bonusDateStart = new Date('22 July 2024, GMT+7');
 const bonusDateEnd = new Date('31 July 2024, GMT+7 ');
 
-export const pointCounter = (data = []) => {
-	// const inPeriode = filterByDate(data);
-	const pointList = data.map(({ courseID, date }) => {
-		const db = dbBadges.find(({ courseID: id }) => id === courseID);
-		if (!db) return 0;
-		const earnedDate = new Date(date);
-		const hasBonus = bonusDateStart <= earnedDate && bonusDateEnd >= earnedDate;
-		const { type } = db;
-		if (type === 'skill' && hasBonus) return 1;
-		if (/(game|arcade|trivia)/.test(type)) return 1;
-		return 0.5;
-	});
-	const total = pointList.reduce((pv = 0, cur) => (pv || 0) + cur);
-	return total;
+export const pointCounter = ({ games, skillbadges }) => {
+	const points = {};
+	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
+	Object.keys(games).forEach((key) => (points[key] = getPoint(games[key])));
+	Object.keys(skillbadges).forEach((key) => (points[key] = getPoint(skillbadges[key])));
+	return points;
 };
 
-export const detailPoints = (data = []) => {
+export const detailPoints = (userData = []) => {
+	const data = userData; // filterByDate(userData);
 	const games = {};
 	dbGames.map(({ courseID, courseName, type, token }) => {
 		const arr = games[type] || [];
@@ -71,4 +64,20 @@ const assignInfo = (dt, userData) => {
 	dt.point = hasBonus ? 1 : 0.5;
 	dt.earnDate = date;
 	return dt;
+};
+
+export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {
+	if (skillbadges >= 21 && trivia >= 8 && arcade >= 6) return 25;
+	if (skillbadges >= 14 && trivia >= 6 && arcade >= 5) return 15;
+	if (skillbadges >= 9 && trivia >= 4 && arcade >= 3) return 9;
+	if (skillbadges >= 4 && trivia >= 2 && arcade >= 2) return 2;
+	return 0;
+};
+
+export const getMilestone = (bonus) => {
+	if (bonus >= 25) return 'Ultimate Milestone';
+	if (bonus >= 15) return 'Milestone 3';
+	if (bonus >= 9) return 'Milestone 2';
+	if (bonus >= 2) return 'Milestone 1';
+	return '-';
 };
