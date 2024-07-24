@@ -19,7 +19,7 @@ export const formatTime = (time) => {
 		'June',
 		'July',
 		'August',
-		'Sepetember',
+		'September',
 		'October',
 		'November',
 		'December'

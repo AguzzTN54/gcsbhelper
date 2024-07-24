@@ -1,7 +1,10 @@
 <script>
 	import { formatTime, arcadeDate, timeZone } from '$lib/helpers/dateTime';
+	import { profile } from '$lib/stores/app-store';
+	import Summary from './_summary.svelte';
 	import UrlForm from './_URLForm.svelte';
 
+	$: ({ user, points } = $profile);
 	const { end, start } = arcadeDate;
 	const startDate = formatTime(start);
 	const endDate = formatTime(end);
@@ -13,8 +16,12 @@
 		<span> {startDate} - {endDate} ({timeZone})</span>
 	</div>
 
-	<div class="profile-container">
-		<UrlForm />
+	<div class="info-container">
+		{#if !!user}
+			<Summary {user} {points} />
+		{:else}
+			<UrlForm />
+		{/if}
 	</div>
 </section>
 
@@ -34,12 +41,13 @@
 		text-transform: uppercase;
 		font-size: xx-large;
 	}
+
 	.top {
 		margin-top: 5%;
 		margin-bottom: auto;
 	}
 
-	.profile-container {
+	.info-container {
 		width: 100%;
 		height: calc(0.7 * var(--screen-height));
 		margin-bottom: auto;
