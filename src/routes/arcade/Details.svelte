@@ -183,10 +183,11 @@
 		padding: 0 0.2rem;
 	}
 	button .icon {
+		transform: rotate(-180deg);
 		transition: transform 0.25s;
 	}
 	.open button .icon {
-		transform: rotate(-180deg);
+		transform: rotate(0deg);
 	}
 
 	.list {

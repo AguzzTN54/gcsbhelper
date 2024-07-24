@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import dbSkillbg from '$lib/data/skill-badges.json';
 import dbGames from '$lib/data/games.json';
 import { arcadeDate } from '../dateTime';
@@ -12,15 +13,15 @@ Object.keys(dbSkillbg).forEach((key) => {
 
 const filterByDate = (data = []) => {
 	const filtered = data.filter(({ date }) => {
-		const earnedDate = new Date(date);
-		const badgeValid = arcadeDate.start <= earnedDate && arcadeDate.end >= earnedDate;
+		const earnedDate = dayjs(date);
+		const badgeValid = earnedDate.isAfter(arcadeDate.start) && earnedDate.isBefore(arcadeDate.end);
 		return badgeValid;
 	});
 	return filtered;
 };
 
-const bonusDateStart = new Date('22 July 2024, GMT+7');
-const bonusDateEnd = new Date('31 July 2024, GMT+7 ');
+const bonusDateStart = dayjs('22 July 2024, GMT+7');
+const bonusDateEnd = dayjs('31 July 2024, GMT+7 ');
 
 export const pointCounter = ({ games, skillbadges }) => {
 	const points = {};
@@ -53,8 +54,8 @@ const assignInfo = (dt, userData) => {
 	}
 
 	const { date } = earned;
-	const earnedDate = new Date(date);
-	const hasBonus = bonusDateStart <= earnedDate && bonusDateEnd >= earnedDate;
+	const earnedDate = dayjs(date);
+	const hasBonus = earnedDate.isAfter(bonusDateStart) && earnedDate.isBefore(bonusDateEnd);
 	dt.hasBonus = hasBonus;
 	dt.point = hasBonus ? 1 : 0.5;
 	dt.earnDate = date;

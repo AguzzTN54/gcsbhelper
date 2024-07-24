@@ -30,6 +30,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.2",
+		"dayjs": "^1.11.12",
 		"overlayscrollbars": "^2.9.2",
 		"overlayscrollbars-svelte": "^0.5.4"
 	}

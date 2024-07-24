@@ -1,5 +1,5 @@
 <script>
-	import { formatTime, arcadeDate, timeZone } from '$lib/helpers/dateTime';
+	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
 	import { profile } from '$lib/stores/app-store';
 	import Summary from './Summary.svelte';
 	import UrlForm from './_URLForm.svelte';
@@ -7,8 +7,8 @@
 
 	$: ({ user, points } = $profile);
 	const { end, start } = arcadeDate;
-	const startDate = formatTime(start);
-	const endDate = formatTime(end);
+	const startDate = start.format('DD MMMM YYYY, HH:mm');
+	const endDate = end.format('DD MMMM YYYY, HH:mm');
 </script>
 
 <section class="hero">

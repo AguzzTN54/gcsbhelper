@@ -16,14 +16,14 @@
 <div class="footnote" use:marquee>
 	<div class="disclaimer">
 		<span>
-			This Site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform, This site
-			is made up just to help you calculating your points
+			This site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform. This site
+			is created solely to help you calculate your points.
 		</span>
 	</div>
 
 	<span class="author">
 		Created by <a href="http://github.com/AguzzTN54" target="_blank" rel="noopener noreferrer">
-			AguzzTN54
+			???
 		</a>
 	</span>
 </div>
