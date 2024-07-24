@@ -1,8 +1,7 @@
 <script>
 	import { getBonus, getMilestone } from '$lib/helpers/arcade/calculator';
-	import { profile } from '$lib/stores/app-store';
 
-	const { points } = $profile;
+	export let points = {};
 	const { beginner, advanced, intermediate, more, arcade, trivia } = points;
 	const skillbadges = beginner + advanced + intermediate + more;
 	const bonus = getBonus({ arcade, skillbadges, trivia });
@@ -48,13 +47,13 @@
 	section {
 		margin: 1% 5%;
 		border-top: 1px solid #ccc;
-		padding-bottom: 5%;
+		padding-bottom: calc(0.075 * var(--screen-height));
 	}
 
 	h2 {
 		text-transform: uppercase;
 		font-weight: 800;
-		padding: 2% 0;
+		padding: calc(0.025 * var(--screen-height)) 0;
 	}
 
 	.table {

@@ -31,22 +31,17 @@ export const pointCounter = ({ games, skillbadges }) => {
 };
 
 export const detailPoints = (userData = []) => {
-	const data = userData; // filterByDate(userData);
+	const data = filterByDate(userData);
 	const games = {};
 	dbGames.map(({ courseID, courseName, type, token }) => {
 		const arr = games[type] || [];
 		games[type] = [...arr, { courseID, courseName, token }];
 	});
 
+	const assign = (list) => list.map((dt) => assignInfo(dt, data));
 	const badges = { games: {}, skillbadges: {} };
-	Object.keys(dbSkillbg).forEach((key) => {
-		badges.skillbadges[key] = dbSkillbg[key].map((dt) => assignInfo(dt, data));
-	});
-
-	Object.keys(games).forEach((key) => {
-		badges.games[key] = games[key].map((dt) => assignInfo(dt, data));
-	});
-
+	Object.keys(dbSkillbg).forEach((key) => (badges.skillbadges[key] = assign(dbSkillbg[key])));
+	Object.keys(games).forEach((key) => (badges.games[key] = assign(games[key])));
 	return badges;
 };
 
@@ -75,9 +70,9 @@ export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {
 };
 
 export const getMilestone = (bonus) => {
-	if (bonus >= 25) return 'Ultimate Milestone';
-	if (bonus >= 15) return 'Milestone 3';
-	if (bonus >= 9) return 'Milestone 2';
-	if (bonus >= 2) return 'Milestone 1';
+	if (bonus >= 25) return 'Premium Plus';
+	if (bonus >= 15) return 'Premium';
+	if (bonus >= 9) return 'Advanced';
+	if (bonus >= 2) return 'Standard';
 	return '-';
 };

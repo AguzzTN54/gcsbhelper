@@ -6,20 +6,40 @@
 	import Loading from '$comp/loading.svelte';
 
 	// prettier-ignore
-	let profileURL ='https://www.cloudskillsboost.google/public_profiles/eb24c815-5b47-4afb-ac14-8fc51e876c6a';
+	let profileURL ='';
 	let loading = false;
 	let isError = false;
+	let errorMSG = '';
+
+	const validateURL = (url) => {
+		const pattern = new RegExp(
+			'^([a-zA-Z]+:\\/\\/)?' + // protocol
+				'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+				'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+				'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+				'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+				'(\\#[-a-z\\d_]*)?$', // fragment locator
+			'i'
+		);
+		return pattern.test(url);
+	};
+
+	const throwError = (msg) => {
+		errorMSG = msg;
+		isError = true;
+		loading = false;
+	};
 
 	const checkMyProfile = async () => {
+		if (!validateURL(profileURL)) return throwError('Invalid URL');
+
 		loading = true;
 		const { error, data = {} } = await loadProfile(profileURL);
-		if (error) {
-			isError = error;
-			loading = false;
-			return;
-		}
+		if (error) return throwError();
 
 		const { user, courses: userBadges } = data;
+		if (user === 'Google Cloud Skills Boost') return throwError();
+
 		const detailBadges = detailPoints(userBadges);
 		const points = pointCounter(detailBadges);
 		profile.set({ user, points, badges: detailBadges });
@@ -45,6 +65,9 @@
 					bind:value={profileURL}
 					on:blur={() => (isError = false)}
 				/>
+				{#if isError}
+					<span class="error"> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
+				{/if}
 				<button class="check" type="submit"> Check My Points </button>
 			</div>
 		</form>
@@ -89,6 +112,11 @@
 	}
 	.gcsb-profile.isError:focus {
 		box-shadow: 0 0 1rem rgba(255, 0, 0, 0.25);
+	}
+
+	span.error {
+		display: block;
+		color: red;
 	}
 
 	.check {

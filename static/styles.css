@@ -56,3 +56,9 @@
 .gc-icons8-menu:before {
   content: "\66";
 }
+.gc-check:before {
+  content: "\67";
+}
+.gc-chevron-up:before {
+  content: "\68";
+}
