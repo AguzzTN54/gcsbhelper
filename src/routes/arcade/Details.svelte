@@ -105,7 +105,7 @@
 				</button>
 
 				<div class="list" id={key} style="--height:0px">
-					{#each skillbadges[key] as { courseName, point, courseID, hasBonus, date }}
+					{#each skillbadges[key] as { courseName, point, courseID, hasBonus }}
 						<div class="item">
 							<a href="https://www.cloudskillsboost.google/course_templates/{courseID}">
 								{courseName}
