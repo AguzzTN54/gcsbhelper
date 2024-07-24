@@ -1,0 +1,71 @@
+<script>
+	const marquee = (content) => {
+		const setMarquee = () => {
+			const titleContainer = content.querySelector('.disclaimer');
+			const titleEl = titleContainer.querySelector('span');
+			const containerWidth = titleContainer.offsetWidth;
+			const titleWidth = titleEl.offsetWidth;
+			if (containerWidth > titleWidth) return content.classList.remove('marquee');
+			content.classList.add('marquee');
+			content.style.setProperty('--marquee-width', `${containerWidth}px`);
+		};
+		new ResizeObserver(setMarquee).observe(content);
+	};
+</script>
+
+<div class="footnote" use:marquee>
+	<div class="disclaimer">
+		<span>
+			This Site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform, This site
+			is made up just to help you calculating your points
+		</span>
+	</div>
+
+	<span class="author">
+		Created by <a href="http://github.com/AguzzTN54" target="_blank" rel="noopener noreferrer">
+			AguzzTN54
+		</a>
+	</span>
+</div>
+
+<style>
+	.footnote {
+		position: fixed;
+		width: var(--screen-width);
+		display: flex;
+		overflow: hidden;
+		background-color: #fff;
+		bottom: 0;
+		left: 0;
+		padding: 0.5% 2.5%;
+		font-size: smaller;
+	}
+	.footnote span {
+		display: block;
+		white-space: nowrap;
+		width: fit-content;
+	}
+	.disclaimer {
+		width: 100%;
+		overflow: hidden;
+	}
+	.author {
+		margin-left: auto;
+		width: 100%;
+		padding-left: 2%;
+	}
+	.marquee .disclaimer span {
+		display: block;
+		width: fit-content;
+		animation: marquee 20s linear infinite;
+	}
+
+	@keyframes marquee {
+		from {
+			transform: translateX(var(--marquee-width));
+		}
+		to {
+			transform: translateX(-100%);
+		}
+	}
+</style>

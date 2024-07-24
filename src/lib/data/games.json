@@ -1,0 +1,50 @@
+[
+	{
+		"courseID": null,
+		"courseName": "Trivia: August 2024 - Week 1",
+		"type": "trivia",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Trivia: August 2024 - Week 2",
+		"type": "trivia",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Trivia: August 2024 - Week 3",
+		"type": "trivia",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Trivia: August 2024 - Week 4",
+		"type": "trivia",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Level 1: August 2024",
+		"type": "arcade",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Level 2: August 2024",
+		"type": "arcade",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Level 3: August 2024",
+		"type": "arcade",
+		"token": null
+	},
+	{
+		"courseID": null,
+		"courseName": "Basecamp: August 2024",
+		"type": "arcade",
+		"token": null
+	}
+]
