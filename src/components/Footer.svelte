@@ -17,7 +17,7 @@
 	<div class="disclaimer">
 		<span>
 			This site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform. This site
-			is created solely to help you calculate your points.
+			is created solely to help you track your progress.
 		</span>
 	</div>
 
