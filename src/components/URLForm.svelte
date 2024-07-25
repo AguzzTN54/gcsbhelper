@@ -1,7 +1,8 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { profile } from '$lib/stores/app-store';
+	import { accounts } from '$lib/helpers/localstorage';
 	import { loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
 
@@ -10,6 +11,7 @@
 	let isError = false;
 	let errorMSG = '';
 
+	const modalHandle = getContext('modalHandle');
 	const dispatch = createEventDispatcher();
 
 	const isGCSBUrl = (url) => /cloudskillsboost.google\/public_profiles/.test(url);
@@ -46,8 +48,9 @@
 		dispatch('response', data);
 	};
 
-	const { profileID } = $profile;
-	if (profileID) checkMyProfile('https://www.cloudskillsboost.google/public_profiles/' + profileID);
+	const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
+	$: ({ profileID } = $profile);
+	$: if (profileID) checkMyProfile(gcsb + profileID);
 </script>
 
 <div class="wrapper" in:fade={{ delay: 500 }}>
@@ -75,6 +78,12 @@
 				<button class="check" type="submit"> Check My Profile </button>
 			</div>
 		</form>
+	{/if}
+
+	{#if accounts.getAll().length > 0 && !loading}
+		<button class="accounts" on:click={modalHandle} out:fade>
+			<i class="gc-user"></i>
+		</button>
 	{/if}
 </div>
 
@@ -124,7 +133,6 @@
 	}
 
 	.check {
-		/* background-color: var(--color-theme-1); */
 		background-image: var(--color-gradient);
 		background-size: 200%;
 		background-position: 80%;
@@ -177,5 +185,31 @@
 		100% {
 			content: '...';
 		}
+	}
+
+	button.accounts {
+		position: fixed;
+		right: 5%;
+		bottom: 7.5%;
+		width: calc(0.07 * var(--screen-height));
+		border-radius: 100%;
+		aspect-ratio: 1/1;
+		outline: 0;
+		background-color: transparent;
+		font-size: x-large;
+		border: 1px solid #333;
+		transition:
+			background 0.5s,
+			color 0.5s,
+			border 0.5s,
+			transform 0.1s;
+	}
+	button.accounts:hover {
+		background-color: var(--color-theme-1);
+		color: #fff;
+		border: 0;
+	}
+	button.accounts:active {
+		transform: scale(0.9);
 	}
 </style>

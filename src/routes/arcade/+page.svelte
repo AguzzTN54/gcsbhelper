@@ -1,8 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { pointList, profile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
+	import Modal from '$comp/Modal.svelte';
 	import Summary from './Summary.svelte';
 	import Details from './Details.svelte';
 	import Forms from './Forms.svelte';
@@ -21,11 +22,19 @@
 		const { profileID } = savedAccounts[0];
 		profile.set({ profileID });
 	});
+
+	let showModal = false;
+	const modalHandle = () => (showModal = !showModal);
+	setContext('modalHandle', modalHandle);
 </script>
+
+{#if showModal && isLoaded}
+	<Modal />
+{/if}
 
 <section class="hero">
 	<div class="top">
-		<h1>Arcade Progress Tracker</h1>
+		<h1 class="press">Arcade Progress Tracker</h1>
 		<span> {startDate} - {endDate} ({timeZone})</span>
 	</div>
 
@@ -56,7 +65,7 @@
 
 	h1 {
 		text-transform: uppercase;
-		font-size: xx-large;
+		font-size: large;
 	}
 
 	.top {

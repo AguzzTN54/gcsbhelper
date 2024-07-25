@@ -53,7 +53,7 @@
 .gc-sun-o:before {
   content: "\65";
 }
-.gc-icons8-menu:before {
+.gc-nav:before {
   content: "\66";
 }
 .gc-check:before {
@@ -61,4 +61,22 @@
 }
 .gc-chevron-up:before {
   content: "\68";
+}
+.gc-triangle-down:before {
+  content: "\69";
+}
+.gc-user:before {
+  content: "\6b";
+}
+.gc-trash:before {
+  content: "\6a";
+}
+.gc-double-left:before {
+  content: "\6c";
+}
+.gc-arrow-left:before {
+  content: "\6d";
+}
+.gc-external-link:before {
+  content: "\6e";
 }

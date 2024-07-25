@@ -1,11 +1,12 @@
 <script>
 	import { profile } from '$lib/stores/app-store';
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
 	export let points = {};
 	export let user = '';
 
+	const modalHandle = getContext('modalHandle');
 	const sumPoint = Object.keys(points)
 		.map((key) => points[key])
 		.reduce((pv = 0, cur) => pv + cur);
@@ -37,7 +38,9 @@
 				</button>
 			{/if}
 		</h1>
-		<h2>{user}</h2>
+		<button class="user" on:click={modalHandle}>
+			<h2><i class="gc-triangle-down"></i> {user}</h2>
+		</button>
 	</div>
 
 	{#if showBtn}
@@ -132,6 +135,22 @@
 		bottom: -25%;
 		left: 0;
 		border-bottom: 1px solid #aaa;
+	}
+
+	button.user {
+		background-color: transparent;
+		border: none;
+		font-size: inherit;
+		position: relative;
+	}
+
+	button.user i {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translate(-100%, -50%);
+		font-size: large;
+		line-height: 0;
 	}
 
 	.detail-btn {
