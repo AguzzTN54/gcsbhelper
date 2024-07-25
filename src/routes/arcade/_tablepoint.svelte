@@ -36,7 +36,7 @@
 			<div class="col">
 				<div class="head">Milestone</div>
 				<div class="body milestone">
-					<span> {getMilestone(bonus)} </span>
+					<span> {getMilestone(total)} </span>
 				</div>
 			</div>
 		</div>

@@ -70,10 +70,11 @@ export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {
 	return 0;
 };
 
-export const getMilestone = (bonus) => {
-	if (bonus >= 25) return 'Premium Plus';
-	if (bonus >= 15) return 'Premium';
-	if (bonus >= 9) return 'Advanced';
-	if (bonus >= 2) return 'Standard';
+export const getMilestone = (point) => {
+	if (point >= 70) return 'Champion';
+	if (point >= 60) return 'Premium Plus';
+	if (point >= 40) return 'Premium';
+	if (point >= 25) return 'Advanced';
+	if (point >= 10) return 'Standard';
 	return '-';
 };
