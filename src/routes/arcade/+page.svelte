@@ -65,7 +65,15 @@
 
 	h1 {
 		text-transform: uppercase;
-		font-size: large;
+		font-size: x-large;
+		line-height: 150%;
+		padding-bottom: 0.5rem;
+	}
+
+	@media screen and (max-width: 700px) {
+		h1 {
+			font-size: large;
+		}
 	}
 
 	.top {

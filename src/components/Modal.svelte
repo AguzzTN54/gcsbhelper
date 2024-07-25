@@ -7,9 +7,11 @@
 	const modalHandle = getContext('modalHandle');
 	let myAccounts = accounts.getAll();
 
+	const { profileID: activeProfile } = $profile;
 	const selectAccount = (profileID) => {
-		profile.set({ profileID });
 		modalHandle();
+		if (profileID === activeProfile) return;
+		profile.set({ profileID });
 	};
 
 	const deleteAccount = (profileID) => {
@@ -27,7 +29,7 @@
 			{:else}
 				<div class="list">
 					{#each myAccounts as { name, profileID }}
-						<div class="item">
+						<div class="item" class:active={activeProfile === profileID}>
 							<button class="name" on:click={() => selectAccount(profileID)}>
 								{name}
 							</button>
@@ -81,6 +83,9 @@
 		justify-content: space-between;
 		align-items: center;
 		transition: background 0.25s;
+	}
+	.item.active {
+		background-color: #f6f6f6;
 	}
 
 	.item:hover {

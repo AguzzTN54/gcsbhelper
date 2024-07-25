@@ -45,8 +45,9 @@
 
 	{#if showBtn}
 		<div class="detail-btn" in:fly={{ y: 20 }}>
-			<button class="scroll"></button>
-			<span class="scroll-txt">Details</span>
+			<span>
+				<i class="gc-double-left"></i>
+			</span>
 		</div>
 	{/if}
 </div>
@@ -155,65 +156,36 @@
 
 	.detail-btn {
 		position: absolute;
-		bottom: 5%;
+		bottom: 0;
 		left: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%, 100%);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
 
-	button.scroll {
+	.detail-btn span {
 		display: block;
-		width: 2rem;
-		aspect-ratio: 1/2;
-		border: 1px solid #333;
-		border-radius: 30px;
-		position: relative;
-		background-color: transparent;
-		transition:
-			background 0.5s,
-			border 0.5s,
-			transform 0.1s;
-	}
-	button.scroll::after {
-		content: '';
-		width: 0.08rem;
-		height: 40%;
-		background-color: #333;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		border-radius: 100%;
-		animation: scaleY 2s infinite ease-in-out;
-	}
-	button.scroll:hover {
-		color: #fff;
-		border-color: transparent;
-		background-color: var(--color-theme-1);
-	}
-	button.scroll:active {
-		transform: scale(0.9);
-	}
-	button.scroll:hover::after {
-		background-color: #fff;
+		animation: translateY 1.5s infinite ease-in-out;
 	}
 
-	span.scroll-txt {
-		padding: 10%;
+	.gc-double-left {
+		display: block;
+		transform: rotate(-90deg) scaleY(1.5);
+		font-size: calc(0.04 * var(--screen-height));
+		opacity: 0.6;
 	}
 
-	@keyframes scaleY {
+	@keyframes translateY {
 		0% {
-			transform: translate(-50%, -40%);
+			transform: translateY(-40%);
 		}
 		50% {
-			transform: translate(-50%, -60%);
+			transform: translateY(-60%);
 		}
 		100% {
-			transform: translate(-50%, -40%);
+			transform: translateY(-40%);
 		}
 	}
 </style>

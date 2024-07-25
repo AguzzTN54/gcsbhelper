@@ -107,7 +107,7 @@
 
 				<div class="list" id={key} style="--height:0px">
 					{#each skillbadges[key] as { courseName, point, courseID, hasBonus }}
-						<div class="item">
+						<div class="item" class:finished={point > 0}>
 							<a href="https://www.cloudskillsboost.google/course_templates/{courseID}">
 								{courseName}
 							</a>
@@ -214,5 +214,15 @@
 	.item .point {
 		color: rgb(20, 178, 20);
 		padding: 0 0.5rem;
+	}
+
+	.finished {
+		background-color: #f9f9f9;
+	}
+	.finished a {
+		opacity: 0.5;
+	}
+	.finished:hover a {
+		opacity: 1;
 	}
 </style>
