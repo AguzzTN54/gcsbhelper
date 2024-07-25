@@ -43,13 +43,14 @@
 				<button on:click={() => toggleAccordion(key)}>
 					<h4>{key}</h4>
 
-					{#if iscomplete}
-						<span class="complete">
-							Complete <i class="gc-check"></i>
-						</span>
-					{:else}
+					<div class="pts">
+						{#if iscomplete}
+							<span class="complete">
+								Complete <i class="gc-check"></i>
+							</span>
+						{/if}
 						<span>{progress}</span>
-					{/if}
+					</div>
 
 					<div class="icon">
 						<i class="gc-chevron-up"></i>
@@ -59,7 +60,7 @@
 				<div class="list" id={key} style="--height: 0px;">
 					{#each games[key] as { courseName, point, token, courseID }}
 						<div class="item">
-							<div>
+							<div style="text-align: right;">
 								{#if courseID}
 									<a href="https://www.cloudskillsboost.google/games/{courseID}"> {courseName}</a>
 								{:else}
@@ -90,13 +91,14 @@
 				<button on:click={() => toggleAccordion(key)}>
 					<h4>{skillName[key]}</h4>
 
-					{#if iscomplete}
-						<span class="complete">
-							Complete <i class="gc-check"></i>
-						</span>
-					{:else}
+					<div class="pts">
+						{#if iscomplete}
+							<span class="complete">
+								Complete <i class="gc-check"></i>
+							</span>
+						{/if}
 						<span>{progress}</span>
-					{/if}
+					</div>
 
 					<div class="icon">
 						<i class="gc-chevron-up"></i>
@@ -110,7 +112,7 @@
 								{courseName}
 							</a>
 							{#if point > 0}
-								<div>
+								<div style="text-align: right;">
 									{#if hasBonus}
 										<span> (July Bonus)</span>
 									{/if}
@@ -169,17 +171,19 @@
 	button:focus {
 		outline: 2px solid var(--color-theme-1);
 	}
-	button span {
-		font-size: 1.2rem;
+	button .pts {
+		text-align: right;
+		font-size: 1rem;
 		opacity: 0.7;
 		margin-left: auto;
 		margin-right: 2%;
 	}
 	button span.complete {
-		font-size: 1rem;
+		font-size: 0.9rem;
 		background-color: rgb(217, 255, 217);
 		color: green;
 		padding: 0 0.2rem;
+		white-space: nowrap;
 	}
 	button .icon {
 		transform: rotate(-180deg);
