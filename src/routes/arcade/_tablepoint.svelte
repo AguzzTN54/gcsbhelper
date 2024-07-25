@@ -9,7 +9,7 @@
 </script>
 
 <section>
-	<h2 id="milestone press"># Your Milestone</h2>
+	<h2 id="milestone" class="press"># Your Milestone</h2>
 
 	<div class="table">
 		<div class="row">
@@ -51,9 +51,10 @@
 	}
 
 	h2 {
+		font-size: initial;
 		text-transform: uppercase;
 		font-weight: 800;
-		padding: calc(0.025 * var(--screen-height)) 0;
+		padding: calc(0.05 * var(--screen-height)) 0 calc(0.03 * var(--screen-height));
 	}
 
 	.table {

@@ -33,7 +33,7 @@
 <Tablepoint points={$pointList} />
 
 <section>
-	<h2># Progress Details</h2>
+	<h2 class="press"># Progress Details</h2>
 
 	<h3>Games</h3>
 	<div class="group">
@@ -114,7 +114,7 @@
 							{#if point > 0}
 								<div style="text-align: right;">
 									{#if hasBonus}
-										<span> (July Bonus)</span>
+										<span style="font-size: small;"> (July Bonus)</span>
 									{/if}
 									<span class="point"> +{point}pts</span>
 								</div>
@@ -134,6 +134,7 @@
 	}
 
 	h2 {
+		font-size: initial;
 		text-transform: uppercase;
 		font-weight: 800;
 		padding: 0 0 calc(0.025 * var(--screen-height)) 0;
