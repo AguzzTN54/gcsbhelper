@@ -13,19 +13,21 @@
 	const startDate = start.format('DD MMMM YYYY, HH:mm');
 	const endDate = end.format('DD MMMM YYYY, HH:mm');
 
+	let showModal = false;
+	const modalHandle = () => (showModal = !showModal);
+	setContext('modalHandle', modalHandle);
+
 	let isLoaded = false;
 	onMount(() => {
 		if (isLoaded) return;
 		isLoaded = true;
 		const savedAccounts = accounts.getAll();
-		if (savedAccounts.length < 1) return;
+		const savedLength = savedAccounts.length;
+		if (savedLength < 1) return;
+		if (savedLength > 1) return (showModal = true);
 		const { profileID } = savedAccounts[0];
 		profile.set({ profileID });
 	});
-
-	let showModal = false;
-	const modalHandle = () => (showModal = !showModal);
-	setContext('modalHandle', modalHandle);
 </script>
 
 {#if showModal && isLoaded}

@@ -44,7 +44,7 @@
 	</div>
 
 	{#if showBtn}
-		<div class="detail-btn" in:fly={{ y: 20 }}>
+		<div class="detail-btn" in:fly={{ y: -20 }}>
 			<span>
 				<i class="gc-double-left"></i>
 			</span>
