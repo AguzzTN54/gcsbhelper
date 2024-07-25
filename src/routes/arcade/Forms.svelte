@@ -1,0 +1,17 @@
+<script>
+	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
+	import { badges, pointList, profile } from '$lib/stores/app-store';
+	import UrlForm from '$comp/URLForm.svelte';
+
+	const process = ({ detail }) => {
+		const { user, courses: userBadges, profileID } = detail;
+		const detailBadges = detailPoints(userBadges);
+		const points = pointCounter(detailBadges);
+
+		profile.set({ name: user, profileID, type: 'arcade' });
+		pointList.set(points);
+		badges.set(detailBadges);
+	};
+</script>
+
+<UrlForm on:response={process} />

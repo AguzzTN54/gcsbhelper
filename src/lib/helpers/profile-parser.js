@@ -13,11 +13,13 @@ export const loadProfile = async (profileURL) => {
 		const txt = await profile.text();
 		const [, bd] = txt.split('<body');
 		const [body] = bd.split('</body>');
+
 		const data = parser(body);
-		return { error: false, data };
+		const profileID = getProfileID(profileURL);
+		return { error: false, data: { ...data, profileID } };
 	} catch (e) {
 		console.error(e);
-		return { error: true, data: [] };
+		return { error: true, data: {} };
 	}
 };
 
@@ -50,4 +52,10 @@ const parser = (txtHTML) => {
 	obj.courses = courses;
 	obj.user = tmpEl.querySelector('h1')?.textContent?.trim() || '';
 	return obj;
+};
+
+const getProfileID = (profileURL) => {
+	const url = new URL(profileURL);
+	const [, , profileID] = url.pathname.split('/');
+	return profileID;
 };

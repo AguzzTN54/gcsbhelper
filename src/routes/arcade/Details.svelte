@@ -1,9 +1,8 @@
 <script>
-	import { profile } from '$lib/stores/app-store';
+	import { badges, pointList } from '$lib/stores/app-store';
 	import Tablepoint from './_tablepoint.svelte';
 
-	const { points, badges } = $profile;
-	const { games, skillbadges } = badges;
+	const { games, skillbadges } = $badges;
 	const skillName = {
 		beginner: 'Beginner: Get Started with Google Cloud',
 		intermediate: 'Intermediate: Dive Deeper into Google Cloud',
@@ -31,7 +30,7 @@
 	};
 </script>
 
-<Tablepoint {points} />
+<Tablepoint points={$pointList} />
 
 <section>
 	<h2># Progress Details</h2>

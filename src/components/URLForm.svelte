@@ -1,16 +1,17 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { profile } from '$lib/stores/app-store';
-	import { loadProfile } from '$lib/helpers/arcade/profile-parser';
-	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
-	import Loading from '$comp/loading.svelte';
+	import { loadProfile } from '$lib/helpers/profile-parser';
+	import Loading from '$comp/Loading.svelte';
 
-	// prettier-ignore
-	let profileURL ='';
+	let profileURL = '';
 	let loading = false;
 	let isError = false;
 	let errorMSG = '';
 
+	const dispatch = createEventDispatcher();
+
+	const isGCSBUrl = (url) => /cloudskillsboost.google\/public_profiles/.test(url);
 	const validateURL = (url) => {
 		const pattern = new RegExp(
 			'^([a-zA-Z]+:\\/\\/)?' + // protocol
@@ -32,17 +33,15 @@
 
 	const checkMyProfile = async () => {
 		if (!validateURL(profileURL)) return throwError('Invalid URL');
+		if (!isGCSBUrl(profileURL)) return throwError('Please enter your GCSB Profile URL');
 
 		loading = true;
 		const { error, data = {} } = await loadProfile(profileURL);
 		if (error) return throwError();
 
-		const { user, courses: userBadges } = data;
+		const { user } = data;
 		if (user === 'Google Cloud Skills Boost') return throwError();
-
-		const detailBadges = detailPoints(userBadges);
-		const points = pointCounter(detailBadges);
-		profile.set({ user, points, badges: detailBadges });
+		dispatch('response', data);
 	};
 </script>
 
@@ -68,7 +67,7 @@
 				{#if isError}
 					<span class="error"> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
 				{/if}
-				<button class="check" type="submit"> Check My Points </button>
+				<button class="check" type="submit"> Check My Profile </button>
 			</div>
 		</form>
 	{/if}
