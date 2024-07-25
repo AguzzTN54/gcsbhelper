@@ -62,7 +62,10 @@
 						<div class="item">
 							<div style="text-align: right;">
 								{#if courseID}
-									<a href="https://www.cloudskillsboost.google/games/{courseID}"> {courseName}</a>
+									<a href="https://www.cloudskillsboost.google/games/{courseID}" target="_blank">
+										{courseName}
+										<i class="gc-external-link"></i>
+									</a>
 								{:else}
 									<span>{courseName}</span>
 								{/if}
@@ -108,8 +111,12 @@
 				<div class="list" id={key} style="--height:0px">
 					{#each skillbadges[key] as { courseName, point, courseID, hasBonus }}
 						<div class="item" class:finished={point > 0}>
-							<a href="https://www.cloudskillsboost.google/course_templates/{courseID}">
+							<a
+								href="https://www.cloudskillsboost.google/course_templates/{courseID}"
+								target="_blank"
+							>
 								{courseName}
+								<i class="gc-external-link"></i>
 							</a>
 							{#if point > 0}
 								<div style="text-align: right;">
@@ -214,6 +221,10 @@
 	.item .point {
 		color: rgb(20, 178, 20);
 		padding: 0 0.5rem;
+	}
+
+	.item a i {
+		font-size: small;
 	}
 
 	.finished {
