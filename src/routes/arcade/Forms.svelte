@@ -1,6 +1,7 @@
 <script>
-	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
 	import { badges, pointList, profile } from '$lib/stores/app-store';
+	import { accounts } from '$lib/helpers/localstorage';
+	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
 	import UrlForm from '$comp/URLForm.svelte';
 
 	const process = ({ detail }) => {
@@ -11,6 +12,7 @@
 		profile.set({ name: user, profileID, type: 'arcade' });
 		pointList.set(points);
 		badges.set(detailBadges);
+		accounts.put({ profileID, name: user });
 	};
 </script>
 

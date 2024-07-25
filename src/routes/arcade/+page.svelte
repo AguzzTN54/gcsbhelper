@@ -1,6 +1,8 @@
 <script>
-	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
+	import { onMount } from 'svelte';
 	import { pointList, profile } from '$lib/stores/app-store';
+	import { accounts } from '$lib/helpers/localstorage';
+	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
 	import Summary from './Summary.svelte';
 	import Details from './Details.svelte';
 	import Forms from './Forms.svelte';
@@ -9,6 +11,16 @@
 	const { end, start } = arcadeDate;
 	const startDate = start.format('DD MMMM YYYY, HH:mm');
 	const endDate = end.format('DD MMMM YYYY, HH:mm');
+
+	let isLoaded = false;
+	onMount(() => {
+		if (isLoaded) return;
+		isLoaded = true;
+		const savedAccounts = accounts.getAll();
+		if (savedAccounts.length < 1) return;
+		const { profileID } = savedAccounts[0];
+		profile.set({ profileID });
+	});
 </script>
 
 <section class="hero">
@@ -20,7 +32,7 @@
 	<div class="info-container">
 		{#if !!user}
 			<Summary {user} points={$pointList} />
-		{:else}
+		{:else if isLoaded}
 			<Forms />
 		{/if}
 	</div>

@@ -1,6 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { profile } from '$lib/stores/app-store';
 	import { loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
 
@@ -31,18 +32,22 @@
 		loading = false;
 	};
 
-	const checkMyProfile = async () => {
-		if (!validateURL(profileURL)) return throwError('Invalid URL');
-		if (!isGCSBUrl(profileURL)) return throwError('Please enter your GCSB Profile URL');
+	const checkMyProfile = async (url) => {
+		const userURL = typeof url === 'string' ? url : profileURL;
+		if (!validateURL(userURL)) return throwError('Invalid URL');
+		if (!isGCSBUrl(userURL)) return throwError('Please enter your GCSB Profile URL');
 
 		loading = true;
-		const { error, data = {} } = await loadProfile(profileURL);
+		const { error, data = {} } = await loadProfile(userURL + '?' + Math.random());
 		if (error) return throwError();
 
 		const { user } = data;
 		if (user === 'Google Cloud Skills Boost') return throwError();
 		dispatch('response', data);
 	};
+
+	const { profileID } = $profile;
+	if (profileID) checkMyProfile('https://www.cloudskillsboost.google/public_profiles/' + profileID);
 </script>
 
 <div class="wrapper" in:fade={{ delay: 500 }}>
