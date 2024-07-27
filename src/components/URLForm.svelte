@@ -32,6 +32,7 @@
 		errorMSG = msg;
 		isError = true;
 		loading = false;
+		profile.set({});
 	};
 
 	const checkMyProfile = async (url) => {
@@ -50,7 +51,7 @@
 
 	const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
 	$: ({ profileID } = $profile);
-	$: if (profileID) checkMyProfile(gcsb + profileID);
+	$: !profileID || checkMyProfile(gcsb + profileID);
 </script>
 
 <div class="wrapper" in:fade={{ delay: 500 }}>

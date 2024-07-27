@@ -22,9 +22,8 @@
 	</div>
 
 	<span class="author">
-		Created by <a href="http://github.com/AguzzTN54" target="_blank" rel="noopener noreferrer">
-			???
-		</a>
+		Created by
+		<a href="http://github.com/AguzzTN54" target="_blank" rel="noopener noreferrer"> AguzzTN54 </a>
 	</span>
 </div>
 

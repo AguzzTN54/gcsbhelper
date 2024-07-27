@@ -233,7 +233,7 @@
 	.finished a {
 		opacity: 0.5;
 	}
-	.finished:hover a {
+	.finished a:hover {
 		opacity: 1;
 	}
 </style>
