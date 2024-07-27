@@ -3,433 +3,518 @@
 		{
 			"courseID": 754,
 			"courseName": "The Basics of Google Cloud Compute",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 725,
 			"courseName": "Get Started with Cloud Storage",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 728,
 			"courseName": "Get Started with Pub/Sub",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 662,
 			"courseName": "Get Started with API Gateway",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 647,
 			"courseName": "Get Started with Looker",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 726,
 			"courseName": "Get Started with Dataplex",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 727,
 			"courseName": "Get Started with Eventarc",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 676,
 			"courseName": "Get Started with Google Workspace Tools",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 696,
 			"courseName": "Cloud Functions: 3 Ways",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 671,
 			"courseName": "App Engine: 3 Ways",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 700,
 			"courseName": "Cloud Speech API: 3 Ways",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 747,
 			"courseName": "Monitoring in Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 748,
 			"courseName": "Networking Fundamentals on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 633,
 			"courseName": "Analyze Images with the Cloud Vision API",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 976,
 			"courseName": "Prompt Design in Vertex AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		}
 	],
 	"intermediate": [
 		{
 			"courseID": 625,
 			"courseName": "Develop your Google Cloud Network",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 631,
 			"courseName": "Prepare Data for ML APIs on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 623,
 			"courseName": "Derive Insights from BigQuery Data",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 654,
 			"courseName": "Build a Secure Google Cloud Network",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 648,
 			"courseName": "Implement Load Balancing on Compute Engine",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 637,
 			"courseName": "Set Up an App Dev Environment on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 636,
 			"courseName": "Build Infrastructure with Terraform on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 626,
 			"courseName": "Create ML Models with BigQuery ML",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 651,
 			"courseName": "Manage Data Models in Looker",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 783,
 			"courseName": "Manage Kubernetes in Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 646,
 			"courseName": "Classify Images with TensorFlow on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 634,
 			"courseName": "Analyze Speech and Language with Google APIs",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 630,
 			"courseName": "Use Machine Learning APIs on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 663,
 			"courseName": "Deploy Kubernetes Applications on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 645,
 			"courseName": "Implement Cloud Security Fundamentals on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		}
 	],
 	"advanced": [
 		{
 			"courseID": 640,
 			"courseName": "Cloud Architecture: Design, Implement, and Manage",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 624,
 			"courseName": "Build a Data Warehouse with BigQuery",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 716,
 			"courseName": "Implement DevOps Workflows in Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 741,
 			"courseName": "Develop Serverless Applications on Cloud Run",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 649,
 			"courseName": "Develop Serverless Apps with Firebase",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 655,
 			"courseName": "Optimize Costs for Google Kubernetes Engine",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 656,
 			"courseName": "Perform Predictive Data Analysis in BigQuery",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 627,
 			"courseName": "Engineer Data for Predictive Modeling with BigQuery ML",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 759,
 			"courseName": "Mitigate Threats and Vulnerabilities with Security Command Center",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 978,
 			"courseName": "Develop GenAI Apps with Gemini and Streamlit",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 776,
 			"courseName": "Use Functions, Formulas, and Charts in Google Sheets",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 691,
 			"courseName": "Implement CI/CD Pipelines on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		}
 	],
 	"more": [
 		{
 			"courseID": 657,
 			"courseName": "Share Data Using Google Data Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 629,
 			"courseName": "Migrate MySQL data to Cloud SQL using Database Migration Service",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 761,
 			"courseName": "Monitor Environments with Google Cloud Managed Service for Prometheus",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 641,
 			"courseName": "Set Up a Google Cloud Network",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 638,
 			"courseName": "Build a Website on Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 749,
 			"courseName": "Monitor and Log with Google Cloud Observability",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 628,
 			"courseName": "Prepare Data for Looker Dashboards and Reports",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 661,
 			"courseName": "Deploy and Manage Apigee X",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 684,
 			"courseName": "Build and Deploy Machine Learning Solutions on Vertex AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 652,
 			"courseName": "Create and Manage Cloud SQL for PostgreSQL Instances",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 639,
 			"courseName": "Build LookML Objects in Looker",
-			"type": "skill"
+			"type": "skill",
+			"labs": ["GSP891", "GSP890", "GSP858", "GSP892", "GSP361"]
 		},
 		{
 			"courseID": 714,
 			"courseName": "Develop and Secure APIs with Apigee X",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 644,
 			"courseName": "Detect Manufacturing Defects using Visual Inspection AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 674,
 			"courseName": "Automate Data Capture at Scale with Document AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 784,
 			"courseName": "Protect Cloud Traffic with BeyondCorp Enterprise (BCE) Security",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 643,
 			"courseName": "Create and Manage Cloud Spanner Instances",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 642,
 			"courseName": "Create and Manage AlloyDB Instances",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 650,
 			"courseName": "Create and Manage Bigtable Instances",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 687,
 			"courseName": "Build Google Cloud Infrastructure for AWS Professionals",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 688,
 			"courseName": "Build Google Cloud Infrastructure for Azure Professionals",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 659,
 			"courseName": "Store, Process, and Manage Data on Google Cloud - Command Line",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 653,
 			"courseName": "Monitor and Manage Google Cloud Resources",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 632,
 			"courseName": "Analyze BigQuery Data in Connected Sheets",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 658,
 			"courseName": "Store, Process, and Manage Data on Google Cloud - Console",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 635,
 			"courseName": "App Building with AppSheet",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 752,
 			"courseName": "Streaming Analytics into BigQuery",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 705,
 			"courseName": "Create a Streaming Data Lake on Cloud Storage",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 704,
 			"courseName": "Create a Secure Data Lake on Cloud Storage",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 753,
 			"courseName": "Tag and Discover BigLake Data",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 751,
 			"courseName": "Secure BigLake Data",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 750,
 			"courseName": "Protect Sensitive Data with Data Loss Prevention",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 755,
 			"courseName": "Use APIs to Work with Cloud Storage",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 756,
 			"courseName": "Using the Google Cloud Speech API",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 715,
 			"courseName": "Develop with Apps Script and AppSheet",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 667,
 			"courseName": "Analyze Sentiment with Natural Language API",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 681,
 			"courseName": "Build a Data Mesh with Dataplex",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 737,
 			"courseName": "Integrate BigQuery Data and Google Workspace using Apps Script",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 702,
 			"courseName": "Configure Service Accounts and IAM Roles for Google Cloud",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 686,
 			"courseName": "Build Custom Processors with Document AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 959,
 			"courseName": "Explore Generative AI with the Vertex AI Gemini API",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 984,
 			"courseName": "Build LangChain Applications using Vertex AI",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 981,
 			"courseName": "Inspect Rich Documents with Gemini Multimodality and Multimodal RAG",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		},
 		{
 			"courseID": 1076,
 			"courseName": "Build Real World AI Applications with Gemini and Imagen",
-			"type": "skill"
+			"type": "skill",
+			"labs": []
 		}
 	]
 }

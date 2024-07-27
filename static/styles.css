@@ -80,3 +80,12 @@
 .gc-external-link:before {
   content: "\6e";
 }
+.gc-clone:before {
+  content: "\6f";
+}
+.gc-close:before {
+  content: "\70";
+}
+.gc-book-open:before {
+  content: "\71";
+}

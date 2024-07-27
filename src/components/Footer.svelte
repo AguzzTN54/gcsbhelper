@@ -22,7 +22,7 @@
 	</div>
 
 	<span class="author">
-		Created by
+		Made by
 		<a href="http://github.com/AguzzTN54" target="_blank" rel="noopener noreferrer"> AguzzTN54 </a>
 	</span>
 </div>
@@ -32,7 +32,9 @@
 		width: var(--screen-width);
 		display: flex;
 		overflow: hidden;
-		background-color: #fff;
+		background-image: var(--color-gradient);
+		background-size: 150%;
+		color: #fff;
 		padding: 0.5% 2.5%;
 		font-size: smaller;
 	}
@@ -50,6 +52,17 @@
 		width: 100%;
 		padding-left: 2%;
 	}
+	.author a {
+		color: #fff;
+		text-decoration: underline;
+		transition: all 0.25s;
+		font-weight: bold;
+	}
+	.author a:hover {
+		background-color: #fff;
+		color: var(--color-theme-1);
+	}
+
 	.marquee .disclaimer span {
 		display: block;
 		width: fit-content;

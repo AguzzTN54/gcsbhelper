@@ -1,13 +1,22 @@
 <script>
+	import { setContext } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import '../app.css';
 	import Footer from '$comp/Footer.svelte';
+	import ModalSolution from './_global/ModalSolution.svelte';
 
 	let innerHeight, innerWidth;
 	let footerheight;
 	$: screenH = innerHeight - footerheight;
 	$: screenHeight = screenH ? `${screenH}px` : '100vh';
+
+	let showModalSolution = false;
+	let labs = [];
+	setContext('handleModalSol', (labList = []) => {
+		labs = labList;
+		showModalSolution = !showModalSolution;
+	});
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
@@ -15,6 +24,9 @@
 <main>
 	<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
 		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
+			{#if showModalSolution}
+				<ModalSolution {labs} />
+			{/if}
 			<slot />
 		</div>
 	</OverlayScrollbarsComponent>

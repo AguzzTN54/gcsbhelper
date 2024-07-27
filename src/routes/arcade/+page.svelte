@@ -3,7 +3,7 @@
 	import { pointList, profile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
-	import Modal from '$comp/Modal.svelte';
+	import Modal from '../_global/ModalProfile.svelte';
 	import Summary from './Summary.svelte';
 	import Details from './Details.svelte';
 	import Forms from './Forms.svelte';

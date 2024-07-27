@@ -1,15 +1,8 @@
 import dayjs from 'dayjs';
 import dbSkillbg from '$lib/data/skill-badges.json';
 import dbGames from '$lib/data/games.json';
+import dbSolutions from '$lib/data/solutions.json';
 import { arcadeDate } from '../dateTime';
-
-const dbBadges = [...dbGames];
-Object.keys(dbSkillbg).forEach((key) => {
-	dbSkillbg[key].forEach((data) => {
-		data.group = key;
-		dbBadges.push(data);
-	});
-});
 
 const filterByDate = (data = []) => {
 	const filtered = data.filter(({ date }) => {
@@ -47,6 +40,13 @@ export const detailPoints = (userData = []) => {
 };
 
 const assignInfo = (dt, userData) => {
+	dt.labs = dt.labs?.map((labID) => {
+		const slt = dbSolutions.find(({ labID: id }) => labID.toLowerCase() === id.toLowerCase());
+		const { sources = {} } = slt;
+		const { post, github, youtube } = sources;
+		return { labID, hasSolution: !!(post || github || youtube) };
+	});
+
 	const earned = userData.find(({ courseID }) => dt.courseID === courseID);
 	if (!earned) {
 		dt.point = 0;

@@ -53,3 +53,86 @@ button,
 a {
 	cursor: pointer;
 }
+
+/* Markdown */
+.marked {
+	line-height: 150%;
+}
+
+.marked h1 {
+	font-size: x-large;
+}
+
+.marked h1,
+.marked h2 {
+	padding: 1rem 0;
+}
+
+.marked h2 {
+	font-size: larger;
+}
+
+.marked li {
+	padding: 0.5rem 0;
+}
+.marked li::marker {
+	font-size: x-large;
+	font-weight: 900;
+}
+
+.marked :not(pre) code {
+	background-color: #eee;
+	padding: 0.1rem 0.5rem;
+	border-radius: 0.2rem;
+}
+
+.marked pre {
+	margin: 0.5rem 0 2rem;
+	font-size: 0.9rem;
+	padding: 2%;
+	background-color: #f8f8f8;
+	border-radius: 0.5rem;
+	line-height: 125%;
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+}
+
+.marked pre code {
+	overflow: auto;
+}
+
+.marked .copy {
+	margin-left: 0.5rem;
+}
+.marked .copy button {
+	background-color: #f8f8f8;
+	padding: 0.5rem;
+	margin: -20% 0;
+	line-height: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #aaa;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	transition:
+		color 0.25s,
+		border 0.25s,
+		background 0.25s,
+		transform 0.1s;
+}
+
+.marked .copy button:hover {
+	background-color: var(--color-theme-1);
+	color: #fff;
+	border-color: transparent;
+}
+
+.marked .copy button:active {
+	transform: scale(0.9);
+}
+
+.marked .copy button i {
+	pointer-events: none;
+}
