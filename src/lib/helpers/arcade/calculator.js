@@ -40,18 +40,15 @@ export const detailPoints = (userData = []) => {
 };
 
 const assignInfo = (dt, userData) => {
-	dt.labs = dt.labs?.map((labID) => {
-		const slt = dbSolutions.find(({ labID: id }) => labID.toLowerCase() === id.toLowerCase());
+	const labs = dt.labs?.map((labID) => {
+		const slt = dbSolutions.find(({ labID: id }) => labID?.toLowerCase() === id?.toLowerCase());
 		const { sources = {} } = slt;
 		const { post, github, youtube } = sources;
 		return { labID, hasSolution: !!(post || github || youtube) };
 	});
 
 	const earned = userData.find(({ courseID }) => dt.courseID === courseID);
-	if (!earned) {
-		dt.point = 0;
-		return dt;
-	}
+	if (!earned) return { ...dt, point: 0, labs };
 
 	const { date } = earned;
 	const earnedDate = dayjs(date);
@@ -59,7 +56,8 @@ const assignInfo = (dt, userData) => {
 	dt.hasBonus = hasBonus;
 	dt.point = hasBonus ? 1 : 0.5;
 	dt.earnDate = date;
-	return dt;
+	const result = { ...dt, labs };
+	return result;
 };
 
 export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {
