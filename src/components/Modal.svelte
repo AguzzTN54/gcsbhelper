@@ -38,6 +38,7 @@
 		padding: 1rem;
 		border-radius: 0.5rem;
 		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+		transition: width 0.5s;
 	}
 	.large .container {
 		width: 80%;

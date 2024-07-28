@@ -4,6 +4,7 @@
 	import dbSolutions from '$lib/data/solutions.json';
 	import Modal from '$comp/Modal.svelte';
 	import Article from '../solutions/Article.svelte';
+	import { fade } from 'svelte/transition';
 
 	export let labs = [];
 	let persist = false;
@@ -17,10 +18,10 @@
 		return labList.includes(labID.toLowerCase());
 	});
 
-	const courseMaterial = filtered.map((d) => {
-		const l = labs.find(({ labID }) => labID.toLowerCase() === d.labID.toLowerCase());
-		d.hasSolution = l.hasSolution;
-		return d;
+	const courseMaterial = labs.map(({ hasSolution, labID: id }) => {
+		const l = filtered.find(({ labID }) => labID.toLowerCase() === id.toLowerCase());
+		l.hasSolution = hasSolution;
+		return l;
 	});
 
 	let solutionID = '';
@@ -29,23 +30,32 @@
 		persist = true;
 		large = true;
 	};
+
+	const back = () => {
+		solutionID = '';
+		persist = false;
+		large = false;
+	};
 </script>
 
 <Modal {persist} {large}>
 	<h1 class="header">
-		Quick Solutions
-		<button on:click={modalHandle}><i class="gc-close"></i></button>
+		{#if solutionID}
+			<button class="back" on:click={back}><i class="gc-arrow-left"></i></button>
+		{/if}
+		<span> Quick Solutions </span>
+		<button class="close" on:click={modalHandle}><i class="gc-close"></i></button>
 	</h1>
 	<div class="body">
 		<div class="scroll">
 			<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
 				{#if solutionID}
-					<div class="solution">
+					<div class="solution" in:fade>
 						<Article labID={solutionID} />
 					</div>
 				{:else}
-					<div class="list">
-						{#each [...courseMaterial].reverse() as { title, est, hasSolution, labID }}
+					<div class="list" in:fade>
+						{#each courseMaterial as { title, est, hasSolution, labID }}
 							<div class="item">
 								<span class="name">
 									{title}
@@ -78,8 +88,6 @@
 	}
 	.header button {
 		position: absolute;
-		top: 0;
-		right: 0;
 		background-color: transparent;
 		border: none;
 		font-size: x-large;
@@ -90,6 +98,16 @@
 	}
 	.header button:active {
 		transform: scale(1);
+	}
+
+	.header .close {
+		top: 0;
+		right: 0;
+	}
+
+	.header .back {
+		top: 0;
+		left: 0;
 	}
 
 	.body {

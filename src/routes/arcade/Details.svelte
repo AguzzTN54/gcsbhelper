@@ -66,7 +66,7 @@
 				</button>
 
 				<div class="list" id={key} style="--height: 0px;">
-					{#each games[key] as { courseName, point, token, courseID }}
+					{#each games[key] as { courseName, point, token, courseID, labs }}
 						<div class="item">
 							<div style="text-align: right;">
 								{#if courseID}
@@ -85,9 +85,11 @@
 								{/if}
 							</div>
 
-							<div class="solution">
-								<button>Solution</button>
-							</div>
+							{#if hasTrick(labs)}
+								<div class="solution">
+									<button>Solution</button>
+								</div>
+							{/if}
 
 							<div class="pointCheck">
 								{#if point > 0}
@@ -266,17 +268,15 @@
 		align-items: center;
 	}
 	.solution button {
-		background-color: var(--color-theme-1);
+		/* background-color: var(--color-theme-1); */
+		background-image: var(--color-gradient);
+		background-size: 120%;
 		color: #fff;
 		padding: 0.2rem 0.5rem;
 		border: 0;
 		border-radius: 5rem;
 		font-size: small;
-		display: none;
 		transition: transform 0.1s;
-	}
-	.item:hover .solution button {
-		display: unset;
 	}
 	.solution button:active {
 		transform: scale(0.9);
