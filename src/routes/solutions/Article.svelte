@@ -40,7 +40,8 @@
 			const resource = await fetch(githubURL);
 			const markdown = await resource.text();
 			article.innerHTML = marked.parse(markdown);
-			insertCopyButton(article);
+			lineBlock(article);
+			newTabLink(article);
 		} catch (e) {
 			console.error(e);
 			article.innerHTML = 'Failed to load Resource';
@@ -57,17 +58,40 @@
 		article.innerHTML = `<h1>No Solution found for ${labID}</h1>`;
 	};
 
-	const insertCopyButton = (el) => {
+	const newTabLink = (el) => {
+		const links = el.querySelectorAll('a');
+		links.forEach((l) => l.setAttribute('target', '_blank'));
+	};
+
+	const lineBlock = (el) => {
 		const pre = el.querySelectorAll('pre');
-		pre.forEach((p) => {
-			const copywrapper = document.createElement('div');
-			copywrapper.classList.add('copy');
-			const btn = document.createElement('button');
-			btn.innerHTML = `<i class="gc-clone"></i>`;
-			btn.addEventListener('click', (e) => copy(e, p));
-			copywrapper.append(btn);
-			p.appendChild(copywrapper);
+		pre.forEach((preBlock) => {
+			insertCopyButton(preBlock);
+			insertNumOfLine(preBlock);
 		});
+	};
+
+	const insertCopyButton = (pre) => {
+		const copywrapper = document.createElement('div');
+		copywrapper.classList.add('copy');
+		const btn = document.createElement('button');
+		btn.innerHTML = `<i class="gc-clone"></i>`;
+		btn.addEventListener('click', (e) => copy(e, pre));
+		copywrapper.append(btn);
+		pre.appendChild(copywrapper);
+	};
+
+	const insertNumOfLine = (preBlock) => {
+		const codeBlock = preBlock.querySelector('code');
+		const str = codeBlock.textContent;
+		const lineNumber = str.split(/\n/).length - 1;
+		const numberBlock = document.createElement('div');
+		numberBlock.classList.add('line-block');
+		let lines = '';
+
+		for (let i = 1; i <= lineNumber; i++) lines += `<span>${i}</span>`;
+		numberBlock.innerHTML = lines;
+		preBlock.insertBefore(numberBlock, codeBlock);
 	};
 
 	const copy = (e, target) => {
@@ -101,10 +125,10 @@
 
 <YouTube {videoID} />
 <article class="marked" bind:this={article}>
-	<h1>No Solution found for {labID}</h1>
+	<!-- <h1>No Solution found for {labID}</h1> -->
 </article>
 
-{#if githubSource}
+{#if githubSource && !loading}
 	<div class="source">
 		<a href={githubSource} target="_blank">
 			<span class="sc">Source </span>
