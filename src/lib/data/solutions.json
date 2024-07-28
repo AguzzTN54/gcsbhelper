@@ -1,15 +1,5 @@
 [
 	{
-		"labID": "GSP361",
-		"title": "Build LookML Objects in Looker: Challenge Lab",
-		"est": "10 min",
-		"sources": {
-			"post": false,
-			"youtube": "PgfPZKWATGo",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/Build%20LookML%20Objects%20in%20Looker%20Challenge%20Lab/Build%20LookML%20Objects%20in%20Looker%20Challenge%20Lab.md"
-		}
-	},
-	{
 		"labID": "GSP891",
 		"title": "Looker Developer: Qwik Start"
 	},
@@ -26,42 +16,90 @@
 		"title": "Filtering Explores with LookML"
 	},
 	{
-		"labID": "gsp1089",
-		"title": "Cloud Functions 2nd Gen: Qwik Start",
-		"est": "20 min",
+		"labID": "GSP361",
+		"title": "Build LookML Objects in Looker: Challenge Lab",
+		"est": "10 min",
 		"sources": {
 			"post": false,
-			"youtube": "",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/Cloud%20Functions%202nd%20Gen%20Qwik%20Start/Cloud%20Functions%202nd%20Gen%20Qwik%20Start.md"
+			"youtube": "PgfPZKWATGo",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Build%20LookML%20Objects%20in%20Looker%20Challenge%20Lab/Build%20LookML%20Objects%20in%20Looker%20Challenge%20Lab.md"
 		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP081",
+		"title": "Cloud Functions/blob/main: Qwik Start - Console",
+		"est": "",
+		"sources": {
+			"post": false,
+			"youtube": "-8vxVRA2ruk",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Console/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Console.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP080",
+		"title": "Cloud Functions/blob/main: Qwik Start - Command Line",
+		"est": "",
+		"sources": {
+			"post": false,
+			"youtube": "W1HF0gIovgg",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Command%20Line/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Command%20Line.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "gsp1089",
+		"title": "Cloud Functions/blob/main 2nd Gen: Qwik Start",
+		"est": "20 min",
+		"sources": {
+			"post": false,
+			"youtube": "WWFzCrPHsCk",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%202nd%20Gen%20Qwik%20Start/Cloud%20Functions/blob/main%202nd%20Gen%20Qwik%20Start.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "ARC104",
+		"title": "Cloud Functions/blob/main: 3 Ways: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"post": false,
+			"youtube": "fPVslkWDTGg",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%203%20Ways%20Challenge%20Lab/Cloud%20Functions/blob/main%203%20Ways%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP001",
+		"title": "Creating a Virtual Machine",
+		"est": "5 min",
+		"sources": {
+			"youtube": "",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Creating%20a%20Virtual%20Machine/Creating%20a%20Virtual%20Machine.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP004",
+		"title": "Creating a Persistent Disk",
+		"est": "",
+		"sources": {
+			"youtube": "",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Creating%20a%20Persistent%20Disk/Creating%20a%20Persistent%20Disk.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP662",
+		"title": "Hosting a Web App on Google Cloud Using Compute Engine",
+		"est": "",
+		"sources": {
+			"youtube": "um0RpF0k070",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Hosting%20a%20Web%20App%20on%20Google%20Cloud%20Using%20Compute%20Engine/Hosting%20a%20Web%20App%20on%20Google%20Cloud%20Using%20Compute%20Engine.md"
+		}
+	},
+	{
+		"labID": "ARC120",
+		"title": "The Basics of Google Cloud Compute: Challenge Lab",
+		"est": "",
+		"sources": {
+			"youtube": "",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/The%20Basics%20of%20Google%20Cloud%20Compute%20Challenge%20Lab/The%20Basics%20of%20Google%20Cloud%20Compute%20Challenge%20Lab.md"
+		}
 	},
 	{
 		"labID": "",

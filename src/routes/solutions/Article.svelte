@@ -22,9 +22,10 @@
 
 		pageTitle = title;
 		videoID = youtube;
+		const [user, folder] = github.split('blob/main/');
 		githubSource = 'https://github.com/' + github;
 		if (post) await loadPost(labID);
-		else await loadResources('https://cdn.jsdelivr.net/gh/' + github);
+		else await loadResources('https://cdn.jsdelivr.net/gh/' + user + folder);
 		loading = false;
 	};
 	$: loadSolution(labID);
@@ -131,7 +132,7 @@
 {#if githubSource && !loading}
 	<div class="source">
 		<a href={githubSource} target="_blank">
-			<span class="sc">Source </span>
+			<span class="sc">Source <i class="gc-external-link"></i> </span>
 			<span class="gh">github@{githubSource.split('/')[3]}</span>
 		</a>
 	</div>
@@ -167,6 +168,9 @@
 	a .sc {
 		font-size: larger;
 		font-weight: 700;
+	}
+	a .sc i {
+		font-size: small;
 	}
 	a .gh {
 		color: rgba(0, 0, 0, 0.45);

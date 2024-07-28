@@ -4,7 +4,7 @@
 			"courseID": 754,
 			"courseName": "The Basics of Google Cloud Compute",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP001", "GSP004", "GSP662", "ARC120"]
 		},
 		{
 			"courseID": 725,
@@ -52,7 +52,7 @@
 			"courseID": 696,
 			"courseName": "Cloud Functions: 3 Ways",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP081", "GSP080", "gsp1089", "ARC104"]
 		},
 		{
 			"courseID": 671,
