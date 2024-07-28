@@ -67,7 +67,7 @@
 											<i class="gc-book-open"></i>
 										</button>
 									{:else}
-										<small style="opacity: .5;"> Unknown </small>
+										<span> 🗿 </span>
 									{/if}
 								</div>
 							</div>
@@ -120,7 +120,7 @@
 	}
 
 	.solution {
-		max-height: calc(0.8 * var(--screen-height));
+		height: calc(0.8 * var(--screen-height));
 		padding: 5%;
 	}
 

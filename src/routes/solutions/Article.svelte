@@ -17,22 +17,31 @@
 		loading = true;
 		const solution = dbSolutions.find(({ labID: id }) => id.toLowerCase() === labID.toLowerCase());
 		const { sources, title } = solution || {};
-		const { post, github, youtube } = sources || {};
+		const { post, github = '', youtube } = sources || {};
 		if (!solution || !(post || github || youtube)) return noSolution();
 
 		pageTitle = title;
 		videoID = youtube;
 		const [user, folder] = github.split('blob/main/');
-		githubSource = 'https://github.com/' + github;
+		githubSource = github;
 		if (post) await loadPost(labID);
 		else await loadResources('https://cdn.jsdelivr.net/gh/' + user + folder);
+		lineBlock(article);
+		newTabLink(article);
 		loading = false;
 	};
 	$: loadSolution(labID);
 
-	const loadPost = (labID) => {
+	const loadPost = async (labID) => {
 		if (!labID) return;
-		//
+		try {
+			const id = labID.toLowerCase();
+			const { markdown } = await import('../../post/solutions/' + id + '.md');
+			article.innerHTML = marked.parse(markdown);
+		} catch (e) {
+			article.innerHTML = 'Failed to load Resource';
+			console.error(e);
+		}
 	};
 
 	const loadResources = async (githubURL) => {
@@ -41,8 +50,6 @@
 			const resource = await fetch(githubURL);
 			const markdown = await resource.text();
 			article.innerHTML = marked.parse(markdown);
-			lineBlock(article);
-			newTabLink(article);
 		} catch (e) {
 			console.error(e);
 			article.innerHTML = 'Failed to load Resource';
@@ -131,7 +138,7 @@
 
 {#if githubSource && !loading}
 	<div class="source">
-		<a href={githubSource} target="_blank">
+		<a href="https://github.com/{githubSource}" target="_blank">
 			<span class="sc">Source <i class="gc-external-link"></i> </span>
 			<span class="gh">github@{githubSource.split('/')[3]}</span>
 		</a>

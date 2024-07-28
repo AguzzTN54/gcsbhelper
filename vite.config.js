@@ -1,9 +1,10 @@
 import path from 'path';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { plugin as MdPlugin } from 'vite-plugin-markdown';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), MdPlugin({ mode: 'markdown' })],
 	resolve: {
 		alias: {
 			$comp: path.resolve(__dirname, './src/components'),

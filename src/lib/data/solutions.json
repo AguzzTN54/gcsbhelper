@@ -27,42 +27,42 @@
 	},
 	{
 		"labID": "GSP081",
-		"title": "Cloud Functions/blob/main: Qwik Start - Console",
+		"title": "Cloud Functions: Qwik Start - Console",
 		"est": "",
 		"sources": {
 			"post": false,
 			"youtube": "-8vxVRA2ruk",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Console/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Console.md"
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions%20Qwik%20Start%20-%20Console/Cloud%20Functions%20Qwik%20Start%20-%20Console.md"
 		}
 	},
 	{
 		"labID": "GSP080",
-		"title": "Cloud Functions/blob/main: Qwik Start - Command Line",
+		"title": "Cloud Functions: Qwik Start - Command Line",
 		"est": "",
 		"sources": {
 			"post": false,
 			"youtube": "W1HF0gIovgg",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Command%20Line/Cloud%20Functions/blob/main%20Qwik%20Start%20-%20Command%20Line.md"
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions%20Qwik%20Start%20-%20Command%20Line/Cloud%20Functions%20Qwik%20Start%20-%20Command%20Line.md"
 		}
 	},
 	{
 		"labID": "gsp1089",
-		"title": "Cloud Functions/blob/main 2nd Gen: Qwik Start",
+		"title": "Cloud Functions 2nd Gen: Qwik Start",
 		"est": "20 min",
 		"sources": {
 			"post": false,
 			"youtube": "WWFzCrPHsCk",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%202nd%20Gen%20Qwik%20Start/Cloud%20Functions/blob/main%202nd%20Gen%20Qwik%20Start.md"
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions%202nd%20Gen%20Qwik%20Start/Cloud%20Functions%202nd%20Gen%20Qwik%20Start.md"
 		}
 	},
 	{
 		"labID": "ARC104",
-		"title": "Cloud Functions/blob/main: 3 Ways: Challenge Lab",
+		"title": "Cloud Functions: 3 Ways: Challenge Lab",
 		"est": "20 min",
 		"sources": {
 			"post": false,
 			"youtube": "fPVslkWDTGg",
-			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions/blob/main%203%20Ways%20Challenge%20Lab/Cloud%20Functions/blob/main%203%20Ways%20Challenge%20Lab.md"
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Functions%203%20Ways%20Challenge%20Lab/Cloud%20Functions%203%20Ways%20Challenge%20Lab.md"
 		}
 	},
 	{
@@ -102,128 +102,256 @@
 		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "ARC100",
+		"title": "Store, Process, and Manage Data on Google Cloud: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Store%2C%20Process%2C%20and%20Manage%20Data%20on%20Google%20Cloud%20Challenge%20Lab/Store%2C%20Process%2C%20and%20Manage%20Data%20on%20Google%20Cloud%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP096",
+		"title": "Pub/Sub: Qwik Start - Console",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/PubSub%20Qwik%20Start%20-%20Console/PubSub%20Qwik%20Start%20-%20Console.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP073",
+		"title": "Cloud Storage: Qwik Start - Cloud Console",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Storage%20Qwik%20Start%20-%20Cloud%20Console/Cloud%20Storage%20Qwik%20Start%20-%20Cloud%20Console.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "ARC102",
+		"title": "Store, Process, and Manage Data on Google Cloud - Command Line: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Store%2C%20Process%2C%20and%20Manage%20Data%20on%20Google%20Cloud%20-%20Command%20Line%20Challenge%20Lab/Store%2C%20Process%2C%20and%20Manage%20Data%20on%20Google%20Cloud%20-%20Command%20Line%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP095",
+		"title": "Pub/Sub: Qwik Start - Command Line",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/PubSub%20Qwik%20Start%20-%20Command%20Line/PubSub%20Qwik%20Start%20-%20Command%20Line.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP074",
+		"title": "Cloud Storage: Qwik Start - CLI/SDK",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "arc131",
+		"title": "sing the Google Cloud Speech API: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"post": true,
+			"youtube": "5Wzpy6Y2yPk"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP048",
+		"title": "Speech to Text Transcription with the Cloud Speech API",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Speech%20to%20Text%20Transcription%20with%20the%20Cloud%20Speech%20API/Speech%20to%20Text%20Transcription%20with%20the%20Cloud%20Speech%20API.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "ARC132",
+		"title": "Cloud Speech API 3 Ways: Challenge Lab",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Speech%20API%203%20Ways%20Challenge%20Lab/Cloud%20Speech%20API%203%20Ways%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP119",
+		"title": "Speech-to-Text API: Qwik Start",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Cloud%20Speech-to-Text%20API%20Qwik%20Start/Google%20Cloud%20Speech-to-Text%20API%20Qwik%20Start.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP049",
+		"title": "ranslate Text with the Cloud Translation APITranslate Text with the Cloud Translation API",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Translate%20Text%20with%20the%20Cloud%20Translation%20API/Translate%20Text%20with%20the%20Cloud%20Translation%20API.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP222",
+		"title": "It Speaks! Create Synthetic Speech Using Text-to-Speech",
+		"est": "2 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/It%20Speaks%20Create%20Synthetic%20Speech%20Using%20Text%20to%20Speech/It%20Speaks!%20Create%20Synthetic%20Speech%20Using%20Text-to-Speech.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "gsp125",
+		"title": "Speaking with a Webpage - Streaming Speech Transcripts",
+		"est": "30 min"
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP345",
+		"title": "Build Infrastructure with Terraform on Google Cloud: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"post": true,
+			"youtube": "2c8XHiHO6rs"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP752",
+		"title": "Managing Terraform State",
+		"est": "1 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Managing%20Terraform%20State/Managing%20Terraform%20State.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP751",
+		"title": "Interact with Terraform Modules",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Interact%20with%20Terraform%20Modules/Interact%20with%20Terraform%20Modules.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP750",
+		"title": "Infrastructure as Code with Terraform",
+		"est": "10 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Infrastructure%20as%20Code%20with%20Terraform/Infrastructure%20as%20Code%20with%20Terraform.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP156",
+		"title": "Terraform Fundamentals",
+		"est": "3 min",
+		"sources": {
+			"youtube": "qjpt7hElKjw",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Terraform%20Fundamentals/Terraform%20Fundamentals.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP341",
+		"title": "Create ML Models with BigQuery ML: Challenge Lab",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Create%20ML%20Models%20with%20BigQuery%20ML%20Challenge%20Lab/Create%20ML%20Models%20with%20BigQuery%20ML%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP461",
+		"title": "Bracketology with Google Machine Learning",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Bracketology%20with%20Google%20Machine%20Learning/Bracketology%20with%20Google%20Machine%20Learning.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP246",
+		"title": "Predict Taxi Fare with a BigQuery ML Forecasting Model",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Predict%20Taxi%20Fare%20with%20a%20BigQuery%20ML%20Forecasting%20Model/Predict%20Taxi%20Fare%20with%20a%20BigQuery%20ML%20Forecasting%20Model.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP229",
+		"title": "Predict Visitor Purchases with a Classification Model in BigQuery ML",
+		"est": "15 min",
+		"sources": {
+			"youtube": "Bq-AW9aIFaA",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Predict%20Visitor%20Purchases%20with%20a%20Classification%20Model%20in%20BigQuery%20ML/Predict%20Visitor%20Purchases%20with%20a%20Classification%20Model%20in%20BigQuery%20ML.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP247",
+		"title": "Getting Started with BigQuery ML",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Getting%20Started%20with%20BigQuery%20ML/Getting%20Started%20with%20BigQuery%20ML.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP342",
+		"title": "Implement Cloud Security Fundamentals on Google Cloud: Challenge Lab",
+		"est": "25 min",
+		"sources": {
+			"youtube": "ZCJktu906oM",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Implement%20Cloud%20Security%20Fundamentals%20on%20Google%20Cloud%20Challenge%20Lab/Implement%20Cloud%20Security%20Fundamentals%20on%20Google%20Cloud%20Challenge%20Lab.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP178",
+		"title": "Setting up a Private Kubernetes Cluster",
+		"est": "30 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Setting%20up%20a%20Private%20Kubernetes%20Cluster/Setting%20up%20a%20Private%20Kubernetes%20Cluster.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "gsp079",
+		"title": "Getting Started with Cloud KMS",
+		"est": "2 min",
+		"sources": {
+			"post": true,
+			"youtube": "9fPFYxWMU6U"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP499",
+		"title": "User Authentication: Identity-Aware Proxy",
+		"est": "15 min",
+		"sources": {
+			"post": true
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP193",
+		"title": "VPC Network Peering",
+		"est": "10 min",
+		"sources": {
+			"youtube": "FkOHmlSXZXg",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/VPC%20Network%20Peering/VPC%20Network%20Peering.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP199",
+		"title": "Service Accounts and Roles: Fundamentals",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Service%20Accounts%20and%20Roles%20Fundamentals/Service%20Accounts%20and%20Roles%20Fundamentals.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP190",
+		"title": "IAM Custom Roles",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/IAM%20Custom%20Roles/IAM%20Custom%20Roles.md"
+		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP064",
+		"title": "Cloud IAM: Qwik Start",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20IAM%20Qwik%20Start/Cloud%20IAM%20Qwik%20Start.md"
+		}
 	},
 	{
 		"labID": "",

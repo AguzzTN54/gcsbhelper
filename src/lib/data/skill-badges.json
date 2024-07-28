@@ -64,7 +64,7 @@
 			"courseID": 700,
 			"courseName": "Cloud Speech API: 3 Ways",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP222", "GSP049", "GSP048", "ARC132"]
 		},
 		{
 			"courseID": 747,
@@ -132,13 +132,13 @@
 			"courseID": 636,
 			"courseName": "Build Infrastructure with Terraform on Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP156", "GSP750", "GSP751", "GSP752", "GSP345"]
 		},
 		{
 			"courseID": 626,
 			"courseName": "Create ML Models with BigQuery ML",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP247", "GSP229", "GSP246", "GSP461", "GSP341"]
 		},
 		{
 			"courseID": 651,
@@ -180,7 +180,7 @@
 			"courseID": 645,
 			"courseName": "Implement Cloud Security Fundamentals on Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP064", "GSP190", "GSP199", "GSP193", "GSP499", "gsp079", "GSP178", "GSP342"]
 		}
 	],
 	"advanced": [
@@ -382,7 +382,7 @@
 			"courseID": 659,
 			"courseName": "Store, Process, and Manage Data on Google Cloud - Command Line",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP074", "GSP080", "GSP095", "ARC102"]
 		},
 		{
 			"courseID": 653,
@@ -400,7 +400,7 @@
 			"courseID": 658,
 			"courseName": "Store, Process, and Manage Data on Google Cloud - Console",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP073", "GSP081", "GSP096", "ARC100"]
 		},
 		{
 			"courseID": 635,
@@ -454,7 +454,7 @@
 			"courseID": 756,
 			"courseName": "Using the Google Cloud Speech API",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP119", "gsp125", "GSP048", "arc131"]
 		},
 		{
 			"courseID": 715,

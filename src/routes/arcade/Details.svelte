@@ -256,6 +256,7 @@
 	.finished a,
 	.finished .solution button {
 		opacity: 0.5;
+		transition: opacity 0.25s;
 	}
 	.finished a:hover,
 	.finished .solution button:hover {
@@ -267,8 +268,8 @@
 		display: flex;
 		align-items: center;
 	}
+
 	.solution button {
-		/* background-color: var(--color-theme-1); */
 		background-image: var(--color-gradient);
 		background-size: 120%;
 		color: #fff;
@@ -280,6 +281,13 @@
 	}
 	.solution button:active {
 		transform: scale(0.9);
+	}
+
+	.finished .solution button {
+		display: none;
+	}
+	.finished:hover .solution button {
+		display: unset;
 	}
 
 	.pointCheck {
