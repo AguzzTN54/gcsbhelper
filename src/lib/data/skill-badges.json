@@ -144,19 +144,19 @@
 			"courseID": 651,
 			"courseName": "Manage Data Models in Looker",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP936", "GSP1019", "GSP1020", "GSP893", "GSP985", "GSP365"]
 		},
 		{
 			"courseID": 783,
 			"courseName": "Manage Kubernetes in Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP053", "GSP736", "GSP1026", "GSP510"]
 		},
 		{
 			"courseID": 646,
 			"courseName": "Classify Images with TensorFlow on Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP637", "GSP631", "GSP632", "GSP633", "GSP634", "GSP398"]
 		},
 		{
 			"courseID": 634,
@@ -168,7 +168,7 @@
 			"courseID": 630,
 			"courseName": "Use Machine Learning APIs on Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP294", "GSP075", "GSP063", "GSP037", "GSP038", "GSP066", "GSP329"]
 		},
 		{
 			"courseID": 663,
@@ -188,13 +188,13 @@
 			"courseID": 640,
 			"courseName": "Cloud Architecture: Design, Implement, and Manage",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP301", "GSP303", "GSP305", "GSP304", "GSP306", "GSP101"]
 		},
 		{
 			"courseID": 624,
 			"courseName": "Build a Data Warehouse with BigQuery",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP413", "GSP414", "GSP412", "GSP416", "GSP340"]
 		},
 		{
 			"courseID": 716,
@@ -206,19 +206,19 @@
 			"courseID": 741,
 			"courseName": "Develop Serverless Applications on Cloud Run",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP644", "GSP650", "GSP761", "GSP762", "GSP328"]
 		},
 		{
 			"courseID": 649,
 			"courseName": "Develop Serverless Apps with Firebase",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP642", "GSP643", "GSP747", "GSP344"]
 		},
 		{
 			"courseID": 655,
 			"courseName": "Optimize Costs for Google Kubernetes Engine",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP769", "GSP343"]
 		},
 		{
 			"courseID": 656,

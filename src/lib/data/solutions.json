@@ -151,7 +151,7 @@
 	},
 	{
 		"labID": "arc131",
-		"title": "sing the Google Cloud Speech API: Challenge Lab",
+		"title": "Using the Google Cloud Speech API: Challenge Lab",
 		"est": "5 min",
 		"sources": {
 			"post": true,
@@ -184,7 +184,7 @@
 	},
 	{
 		"labID": "GSP049",
-		"title": "ranslate Text with the Cloud Translation APITranslate Text with the Cloud Translation API",
+		"title": "Translate Text with the Cloud Translation APITranslate Text with the Cloud Translation API",
 		"est": "2 min",
 		"sources": {
 			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Translate%20Text%20with%20the%20Cloud%20Translation%20API/Translate%20Text%20with%20the%20Cloud%20Translation%20API.md"
@@ -354,39 +354,391 @@
 		}
 	},
 	{
-		"labID": "",
-		"title": ""
+		"labID": "GSP329",
+		"title": "Use Machine Learning APIs on Google Cloud: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"youtube": "lusvywJCSVI",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Use%20Machine%20Learning%20APIs%20on%20Google%20Cloud%20Challenge%20Lab/Use%20Machine%20Learning%20APIs%20on%20Google%20Cloud%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP066",
+		"title": "Awwvision: Cloud Vision API from a Kubernetes Cluster",
+		"est": "15 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Awwvision%20Cloud%20Vision%20API%20from%20a%20Kubernetes%20Cluster/Awwvision%20Cloud%20Vision%20API%20from%20a%20Kubernetes%20Cluster.md"
+		}
+	},
+	{
+		"labID": "GSP038",
+		"title": "Entity and Sentiment Analysis with the Natural Language API",
+		"est": "2 min",
+		"sources": {
+			"youtube": "t4zprxScLbE",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Entity%20and%20Sentiment%20Analysis%20with%20the%20Natural%20Language%20API/Entity%20and%20Sentiment%20Analysis%20with%20the%20Natural%20Language%20API.md"
+		}
+	},
+	{
+		"labID": "GSP037",
+		"title": "Detect Labels, Faces, and Landmarks in Images with the Cloud Vision API",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Detect%20Labels%2C%20Faces%2C%20and%20Landmarks%20in%20Images%20with%20the%20Cloud%20Vision%20API/Detect%20Labels%2C%20Faces%2C%20and%20Landmarks%20in%20Images%20with%20the%20Cloud%20Vision%20API.md"
+		}
+	},
+	{
+		"labID": "GSP063",
+		"title": "Classify Text into Categories with the Natural Language API",
+		"est": "2 min",
+		"sources": {
+			"youtube": "u3uNcaXtZ8g",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Classify%20Text%20into%20Categories%20with%20the%20Natural%20Language%20API/Classify%20Text%20into%20Categories%20with%20the%20Natural%20Language%20API.md"
+		}
+	},
+	{
+		"labID": "GSP075",
+		"title": "Extract, Analyze, and Translate Text from Images with the Cloud ML APIs",
+		"est": "1 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Extract%2C%20Analyze%2C%20and%20Translate%20Text%20from%20Images%20with%20the%20Cloud%20ML%20APIs/Extract%2C%20Analyze%2C%20and%20Translate%20Text%20from%20Images%20with%20the%20Cloud%20ML%20APIs.md"
+		}
+	},
+	{
+		"labID": "GSP294",
+		"title": "Introduction to APIs in Google Cloud",
+		"est": "1 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Introduction%20to%20APIs%20in%20Google%20Cloud/Introduction%20to%20APIs%20in%20Google%20Cloud.md"
+		}
+	},
+	{
+		"labID": "GSP510",
+		"title": "Manage Kubernetes in Google Cloud: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"youtube": "vsaqpdaXhfg",
+			"github": "quiccklabs/Labs_solutions/blob/master/NEW%20Manage%20Kubernetes%20in%20Google%20Cloud%20Challenge%20Lab/quicklab.md"
+		}
+	},
+	{
+		"labID": "GSP1026",
+		"title": "Collect Metrics from Exporters using the Managed Service for Prometheus",
+		"est": "10 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Collect%20Metrics%20from%20Exporters%20using%20the%20Managed%20Service%20for%20Prometheus/Collect%20Metrics%20from%20Exporters%20using%20the%20Managed%20Service%20for%20Prometheus.md"
+		}
+	},
+	{
+		"labID": "GSP736",
+		"title": "Debugging Apps on Google Kubernetes Engine",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Debugging%20Apps%20on%20Google%20Kubernetes%20Engine/Debugging%20Apps%20on%20Google%20Kubernetes%20Engine.md"
+		}
+	},
+	{
+		"labID": "GSP053",
+		"title": "Managing Deployments Using Kubernetes Engine",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Managing%20Deployments%20Using%20Kubernetes%20Engine/Managing%20Deployments%20Using%20Kubernetes%20Engine.md"
+		}
+	},
+	{
+		"labID": "GSP344",
+		"title": "Develop Serverless Apps with Firebase: Challenge Lab",
+		"est": "10 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Develop%20Serverless%20Apps%20with%20Firebase%20Challenge%20Lab/Develop%20Serverless%20Apps%20with%20Firebase%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP747",
+		"title": "Deploy a Hugo Website with Cloud Build and Firebase Pipeline",
+		"est": "10 min",
+		"sources": {
+			"github": "quiccklabs/Labs_solutions/blob/master/Deploy%20a%20Hugo%20Website%20with%20Cloud%20Build%20and%20Firebase%20Pipeline/quicklab.md"
+		}
+	},
+	{
+		"labID": "GSP643",
+		"title": "Build a Serverless Web App with Firebase",
+		"est": "10 min"
+	},
+	{
+		"labID": "GSP642",
+		"title": "Importing Data to a Firestore Database",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Importing%20Data%20to%20a%20Firestore%20Database/Importing%20Data%20to%20a%20Firestore%20Database.md"
+		}
+	},
+	{
+		"labID": "GSP398",
+		"title": "Classify Images with TensorFlow on Google Cloud: Challenge Lab",
+		"est": "40 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Classify%20Images%20with%20TensorFlow%20on%20Google%20Cloud%20Challenge%20Lab/Classify%20Images%20with%20TensorFlow%20on%20Google%20Cloud%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP637",
+		"title": "TensorFlow: Qwik Start",
+		"est": "5 min",
+		"sources": {
+			"post": true,
+			"youtube": "Tr6A6Nt2yrg"
+		}
+	},
+	{
+		"labID": "GSP631",
+		"title": "Introduction to Computer Vision with TensorFlow",
+		"est": "10 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "GSP633",
+		"title": "Classify Images with TensorFlow Convolutional Neural Networks",
+		"est": "40 min"
+	},
+	{
+		"labID": "GSP634",
+		"title": "Identify Horses or Humans with TensorFlow and Vertex AI",
+		"est": "40 min"
+	},
+	{
+		"labID": "GSP632",
+		"title": "Introduction to Convolutions with TensorFlow",
+		"est": "40 min"
+	},
+	{
+		"labID": "GSP101",
+		"title": "Deploy and Troubleshoot a Website: Challenge Lab",
+		"est": "5min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Deploy%20and%20Troubleshoot%20a%20Website%20Challenge%20Lab/Deploy%20and%20Troubleshoot%20a%20Website%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP306",
+		"title": "Migrate a MySQL Database to Google Cloud SQL: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Migrate%20a%20MySQL%20Database%20to%20Google%20Cloud%20SQL%20Challenge%20Lab/Migrate%20a%20MySQL%20Database%20to%20Google%20Cloud%20SQL%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP305",
+		"title": "Scale Out and Update a Containerized Application on a Kubernetes Cluster: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Scale%20Out%20and%20Update%20a%20Containerized%20Application%20on%20a%20Kubernetes%20Cluster%20Challenge%20Lab/Scale%20Out%20and%20Update%20a%20Containerized%20Application%20on%20a%20Kubernetes%20Cluster%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP303",
+		"title": "Configure Secure RDP using a Windows Bastion Host: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"youtube": "eUyfJkNPVl8",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Configure%20Secure%20RDP%20using%20a%20Windows%20Bastion%20Host%20Challenge%20Lab/Configure%20Secure%20RDP%20using%20a%20Windows%20Bastion%20Host%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP304",
+		"title": "Build and Deploy a Docker Image to a Kubernetes Cluster: Challenge Lab",
+		"est": "10 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Build%20and%20Deploy%20a%20Docker%20Image%20to%20a%20Kubernetes%20Cluster%20Challenge%20Lab/Build%20and%20Deploy%20a%20Docker%20Image%20to%20a%20Kubernetes%20Cluster%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP301",
+		"title": "Deploy a Compute Instance with a Remote Startup Script: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Deploy%20a%20Compute%20Instance%20with%20a%20Remote%20Startup%20Script%20Challenge%20Lab/Deploy%20a%20Compute%20Instance%20with%20a%20Remote%20Startup%20Script%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP340",
+		"title": "Build a Data Warehouse with BigQuery: Challenge Lab",
+		"est": "5 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "GSP416",
+		"title": "Working with JSON, Arrays, and Structs in BigQuery",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Working%20with%20JSON%2C%20Arrays%2C%20and%20Structs%20in%20BigQuery/Working%20with%20JSON%2C%20Arrays%2C%20and%20Structs%20in%20BigQuery.md"
+		}
+	},
+	{
+		"labID": "GSP412",
+		"title": "Troubleshooting and Solving Data Join Pitfalls",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Troubleshooting%20and%20Solving%20Data%20Join%20Pitfalls/Troubleshooting%20and%20Solving%20Data%20Join%20Pitfalls.md"
+		}
+	},
+	{
+		"labID": "GSP414",
+		"title": "Creating Date-Partitioned Tables in BigQuery",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Creating%20Date-Partitioned%20Tables%20in%20BigQuery/Creating%20Date-Partitioned%20Tables%20in%20BigQuery.md"
+		}
+	},
+	{
+		"labID": "GSP413",
+		"title": "Creating a Data Warehouse Through Joins and Unions",
+		"est": "3 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Creating%20a%20Data%20Warehouse%20Through%20Joins%20and%20Unions/Creating%20a%20Data%20Warehouse%20Through%20Joins%20and%20Unions.md"
+		}
+	},
+	{
+		"labID": "GSP328",
+		"title": "Develop Serverless Applications on Cloud Run: Challenge Lab",
+		"est": "10 min",
+		"sources": {
+			"github": "quiccklabs/Labs_solutions/blob/master/Develop%20Serverless%20Applications%20on%20Cloud%20Run%20Challenge%20Lab/quicklab.md"
+		}
+	},
+	{
+		"labID": "GSP762",
+		"title": "Creating PDFs with Go and Cloud Run",
+		"est": "10 min",
+		"sources": {
+			"post": true,
+			"youtube": "ADeMBRPWcUk"
+		}
+	},
+	{
+		"labID": "GSP761",
+		"title": "Developing a REST API with Go and Cloud Run",
+		"est": "7 min",
+		"sources": {
+			"post": true,
+			"youtube": "_oAgkWCeNrE"
+		}
+	},
+	{
+		"labID": "GSP650",
+		"title": "Build a Resilient, Asynchronous System with Cloud Run and Pub:Sub",
+		"est": "15 min",
+		"sources": {
+			"post": true,
+			"youtube": "WO1Yu-bcxeE"
+		}
+	},
+	{
+		"labID": "GSP644",
+		"title": "Build a Serverless App with Cloud Run that Creates PDF Files ",
+		"est": "15 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20Creates%20PDF%20Files/Build%20a%20Serverless%20App%20with%20Cloud%20Run%20that%20Creates%20PDF%20Files.md"
+		}
+	},
+	{
+		"labID": "GSP365",
+		"title": "Manage Data Models in Looker: Challenge Lab",
+		"est": "7 min",
+		"sources": {
+			"youtube": "fshy-3xtaLs",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Manage%20Data%20Models%20in%20Looker%20Challenge%20Lab/Manage%20Data%20Models%20in%20Looker%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP985",
+		"title": "Optimizing Performance of LookML Queries",
+		"est": "3 min",
+		"sources": {
+			"github": "Techcps/GSP-Short-Trick/blob/main/Optimizing%20Performance%20of%20LookML%20Queries%20GSP985%20README.md"
+		}
+	},
+	{
+		"labID": "GSP893",
+		"title": "Caching and Datagroups with LookML",
+		"est": "3 min",
+		"sources": {
+			"github": "Techcps/GSP-Short-Trick/blob/main/Caching%20and%20Datagroups%20with%20LookML/techcps893.md"
+		}
+	},
+	{
+		"labID": "GSP1020",
+		"title": "Employing Best Practices for Improving the Usability of LookML Projects",
+		"est": "5 min",
+		"sources": {
+			"github": "Techcps/GSP-Short-Trick/blob/main/Employing%20Best%20Practices%20for%20Improving%20the%20Usability%20of%20LookML%20Projects/techcps1020.md"
+		}
+	},
+	{
+		"labID": "GSP1019",
+		"title": "Troubleshooting Data Models in Looker",
+		"est": "7 min",
+		"sources": {
+			"youtube": "Bhttc3GIF3c",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Troubleshooting%20Data%20Models%20in%20Looker/Troubleshooting%20Data%20Models%20in%20Looker.md"
+		}
+	},
+	{
+		"labID": "GSP936",
+		"title": "Modularizing LookML Code with Extends",
+		"est": "5 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "GSP343",
+		"title": "Optimize Costs for Google Kubernetes Engine: Challenge Lab",
+		"est": "15 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "GSP769",
+		"title": "GKE Workload Optimization",
+		"est": "20 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/GKE%20Workload%20Optimization/GKE%20Workload%20Optimization.md"
+		}
 	},
 	{
 		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	},
 	{
 		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	},
 	{
 		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	},
 	{
 		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	},
 	{
 		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	},
 	{
 		"labID": "",
-		"title": ""
-	},
-	{
-		"labID": "",
-		"title": ""
-	},
-	{
-		"labID": "",
-		"title": ""
+		"title": "",
+		"est": ""
 	}
 ]

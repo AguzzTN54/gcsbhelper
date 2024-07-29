@@ -22,7 +22,7 @@
 
 		pageTitle = title;
 		videoID = youtube;
-		const [user, folder] = github.split('blob/main/');
+		const [user, folder] = github.split(/blob\/main\/|blob\/master\//);
 		githubSource = github;
 		if (post) await loadPost(labID);
 		else await loadResources('https://cdn.jsdelivr.net/gh/' + user + folder);
@@ -36,7 +36,7 @@
 		if (!labID) return;
 		try {
 			const id = labID.toLowerCase();
-			const { markdown } = await import('../../post/solutions/' + id + '.md');
+			const { markdown } = await import(/* @vite-ignore */ '../../post/solutions/' + id + '.md');
 			article.innerHTML = marked.parse(markdown);
 		} catch (e) {
 			article.innerHTML = 'Failed to load Resource';
@@ -140,7 +140,7 @@
 	<div class="source">
 		<a href="https://github.com/{githubSource}" target="_blank">
 			<span class="sc">Source <i class="gc-external-link"></i> </span>
-			<span class="gh">github@{githubSource.split('/')[3]}</span>
+			<span class="gh">github@{githubSource.split('/')[0]}</span>
 		</a>
 	</div>
 {/if}

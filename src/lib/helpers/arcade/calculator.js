@@ -42,7 +42,7 @@ export const detailPoints = (userData = []) => {
 const assignInfo = (dt, userData) => {
 	const labs = dt.labs?.map((labID) => {
 		const slt = dbSolutions.find(({ labID: id }) => labID?.toLowerCase() === id?.toLowerCase());
-		const { sources = {} } = slt;
+		const { sources = {} } = slt || {};
 		const { post, github, youtube } = sources;
 		return { labID, hasSolution: !!(post || github || youtube) };
 	});
