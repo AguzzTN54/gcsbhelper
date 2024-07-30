@@ -4,6 +4,7 @@
 	import { profile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
+	import Button from '$comp/Button.svelte';
 
 	const modalHandle = getContext('modalHandle');
 	let myAccounts = accounts.getAll();
@@ -53,7 +54,7 @@
 		{/if}
 	</div>
 	<div class="footer">
-		<button class="more-account" on:click={addNew}> Track Different Account </button>
+		<Button on:click={addNew}>Check Different Account</Button>
 	</div>
 </Modal>
 
@@ -124,28 +125,5 @@
 	.footer {
 		text-align: center;
 		margin-bottom: 0.5rem;
-	}
-
-	.more-account {
-		background-image: var(--color-gradient);
-		background-size: 200%;
-		background-position: 80%;
-		font-size: 1rem;
-		border: 0;
-		outline: 0;
-		padding: 0.5rem;
-		color: #fff;
-		width: 200px;
-		border-radius: 5px;
-		transition:
-			transform 0.1s,
-			background 0.3s;
-	}
-
-	.more-account:hover {
-		background-position: 0;
-	}
-	.more-account:active {
-		transform: scale(0.95);
 	}
 </style>

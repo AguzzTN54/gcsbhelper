@@ -5,6 +5,7 @@
 	import { accounts } from '$lib/helpers/localstorage';
 	import { loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
+	import Button from '$comp/Button.svelte';
 
 	let profileURL = '';
 	let loading = false;
@@ -36,9 +37,10 @@
 	};
 
 	const checkMyProfile = async (url) => {
+		const msg = 'Please enter a valid GCSB Public Profile URL';
 		const userURL = typeof url === 'string' ? url : profileURL;
-		if (!validateURL(userURL)) return throwError('Invalid URL');
-		if (!isGCSBUrl(userURL)) return throwError('Please enter your GCSB Profile URL');
+		if (!validateURL(userURL)) return throwError(msg);
+		if (!isGCSBUrl(userURL)) return throwError(msg);
 
 		loading = true;
 		const { error, data = {} } = await loadProfile(userURL + '?' + Math.random());
@@ -76,7 +78,10 @@
 				{#if isError}
 					<span class="error"> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
 				{/if}
-				<button class="check" type="submit"> Check My Profile </button>
+
+				<div class="check">
+					<Button>Check Profile</Button>
+				</div>
 			</div>
 		</form>
 	{/if}
@@ -134,27 +139,8 @@
 	}
 
 	.check {
-		background-image: var(--color-gradient);
-		background-size: 200%;
-		background-position: 80%;
-		font-size: large;
-		border: 0;
-		outline: 0;
-		padding: 0.5rem 1.5rem;
-		color: #fff;
-		width: 200px;
-		border-radius: 5px;
-		margin: 1.5rem;
-		transition:
-			transform 0.1s,
-			background 0.3s;
-	}
-
-	.check:hover {
-		background-position: 0;
-	}
-	.check:active {
-		transform: scale(0.95);
+		margin-top: 1.5rem;
+		font-size: larger;
 	}
 
 	.loading {
