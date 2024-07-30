@@ -1,1 +1,0 @@
-import{s as n,o as s}from"../chunks/scheduler.QQwvnLt9.js";import{S as e,i as a}from"../chunks/index.DO5zj1hm.js";import{g as r}from"../chunks/entry.D8t0UJGO.js";function i(o){return s(()=>r("/arcade")),[]}class u extends e{constructor(t){super(),a(this,t,i,null,n,{})}}export{u as component};
