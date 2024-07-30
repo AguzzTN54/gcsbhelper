@@ -15,7 +15,8 @@
 
 	const loadSolution = async (labID = '') => {
 		loading = true;
-		const solution = dbSolutions.find(({ labID: id }) => id.toLowerCase() === labID.toLowerCase());
+		const labid = labID.toLowerCase();
+		const solution = dbSolutions.find(({ labID: id }) => id.toLowerCase() === labid);
 		const { sources, title } = solution || {};
 		const { post, github = '', youtube } = sources || {};
 		if (!solution || !(post || github || youtube)) return noSolution();
@@ -24,30 +25,23 @@
 		videoID = youtube;
 		const [user, folder] = github.split(/blob\/main\/|blob\/master\//);
 		githubSource = github;
-		if (post) await loadPost(labID);
-		else await loadResources('https://cdn.jsdelivr.net/gh/' + user + folder);
+
+		const githubResource = 'https://cdn.jsdelivr.net/gh/' + user + folder;
+		const postResource = `/resources/solutions/${labid}.md`;
+		const resourceURL = post ? postResource : githubResource;
+
+		await loadResources(resourceURL);
 		lineBlock(article);
 		newTabLink(article);
 		loading = false;
 	};
 	$: loadSolution(labID);
 
-	const loadPost = async (labID) => {
-		if (!labID) return;
+	const loadResources = async (url) => {
+		console.log(url);
+		if (!url) return;
 		try {
-			const id = labID.toLowerCase();
-			const { markdown } = await import(/* @vite-ignore */ '../../post/solutions/' + id + '.md');
-			article.innerHTML = marked.parse(markdown);
-		} catch (e) {
-			article.innerHTML = 'Failed to load Resource';
-			console.error(e);
-		}
-	};
-
-	const loadResources = async (githubURL) => {
-		if (!githubURL) return;
-		try {
-			const resource = await fetch(githubURL);
+			const resource = await fetch(url);
 			const markdown = await resource.text();
 			article.innerHTML = marked.parse(markdown);
 		} catch (e) {
