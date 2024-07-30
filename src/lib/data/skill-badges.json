@@ -10,7 +10,7 @@
 			"courseID": 725,
 			"courseName": "Get Started with Cloud Storage",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP421", "GSP074", "GSP297", "ARC111"]
 		},
 		{
 			"courseID": 728,
