@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import dbSkillbg from '$lib/data/skill-badges.json';
 import dbGames from '$lib/data/games.json';
 import dbSolutions from '$lib/data/solutions.json';
-import { arcadeDate } from '../dateTime';
+import { arcadeBonus, arcadeDate } from '../dateTime';
 
 const filterByDate = (data = []) => {
 	const filtered = data.filter(({ date }) => {
@@ -13,9 +13,7 @@ const filterByDate = (data = []) => {
 	return filtered;
 };
 
-const bonusDateStart = dayjs('22 July 2024, GMT+7');
-const bonusDateEnd = dayjs('31 July 2024, GMT+7 ');
-
+const { value: bonusVal, bonusDateEnd, bonusDateStart } = arcadeBonus;
 export const pointCounter = ({ games, skillbadges }) => {
 	const points = {};
 	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
@@ -51,10 +49,11 @@ const assignInfo = (dt, userData) => {
 	if (!earned) return { ...dt, point: 0, labs };
 
 	const { date } = earned;
-	const earnedDate = dayjs(date);
-	const hasBonus = earnedDate.isAfter(bonusDateStart) && earnedDate.isBefore(bonusDateEnd);
+	const d = dayjs(date);
+	const end = d.isBefore(bonusDateEnd) || d.isSame(bonusDateEnd, 'date');
+	const hasBonus = d.isAfter(bonusDateStart) && end;
 	dt.hasBonus = hasBonus;
-	dt.point = hasBonus ? 1 : 0.5;
+	dt.point = hasBonus ? bonusVal : 0.5;
 	dt.earnDate = date;
 	const result = { ...dt, labs };
 	return result;
