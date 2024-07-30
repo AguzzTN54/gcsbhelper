@@ -799,9 +799,76 @@
 		"est": ""
 	},
 	{
-		"labID": "",
-		"title": "",
-		"est": ""
+		"labID": "GSP872",
+		"title": "API Gateway: Qwik Start",
+		"est": "25 min",
+		"sources": {
+			"youtube": "5Ae2ftnjJfM",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/API%20Gateway%20Qwik%20Start/API%20Gateway%20Qwik%20Start.md"
+		}
+	},
+	{
+		"labID": "GSP096",
+		"title": "Pub/Sub: Qwik Start - Console",
+		"est": "3 min",
+		"sources": {
+			"youtube": "RnM1xQiVDkA",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Cloud%20PubSub%20Qwik%20Start%20-%20Console/Google%20Cloud%20PubSub%20Qwik%20Start%20-Console.md"
+		}
+	},
+	{
+		"labID": "GSP081",
+		"title": "Cloud Functions: Qwik Start - Console",
+		"est": "6 min",
+		"sources": {
+			"youtube": "79w-L0xb_MI",
+			"github": "Techcps/GSP-Short-Trick/blob/main/Cloud%20Functions%3A%20Qwik%20Start%20-%20Console/techcps.md"
+		}
+	},
+	{
+		"labID": "ARC109",
+		"title": "Getting Started with API Gateway: Challenge Lab",
+		"est": "16 min",
+		"sources": {
+			"youtube": "iWRh0xCKwRQ",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Getting%20Started%20with%20API%20Gateway%20Challenge%20Lab/Getting%20Started%20with%20API%20Gateway%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP421",
+		"title": "APIs Explorer: Cloud Storage",
+		"est": "2 min",
+		"sources": {
+			"youtube": "E2ztBJM9ycY",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/APIs%20Explorer%20Cloud%20Storage/APIs%20Explorer%20Cloud%20Storage.md"
+		}
+	},
+	{
+		"labID": "GSP074",
+		"title": "Cloud Storage: Qwik Start - CLI/SDK",
+		"est": "4 min",
+		"sources": {
+			"youtube": "nnDHTQKhhxY",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK.md"
+		}
+	},
+	{
+		"labID": "GSP297",
+		"title": "Google Cloud Storage - Bucket Lock",
+		"est": "3 min",
+		"sources": {
+			"youtube": "ROLigBsAx3A",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Cloud%20Storage%20-%20Bucket%20Lock/Google%20Cloud%20Storage%20-%20Bucket%20Lock.md"
+		}
+	},
+	{
+		"labID": "ARC111",
+		"title": "Get Started with Cloud Storage: Challenge Lab",
+		"est": "3 min",
+		"sources": {
+			"youtube": "5XhxAXn-qlc",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Get%20Started%20with%20Cloud%20Storage%20Challenge%20Lab/Get%20Started%20with%20Cloud%20Storage%20Challenge%20Lab.md"
+		}
 	},
 	{
 		"labID": "",
@@ -829,9 +896,76 @@
 		"est": ""
 	},
 	{
-		"labID": "",
-		"title": "",
-		"est": ""
+		"labID": "GSP872",
+		"title": "API Gateway: Qwik Start",
+		"est": "25 min",
+		"sources": {
+			"youtube": "5Ae2ftnjJfM",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/API%20Gateway%20Qwik%20Start/API%20Gateway%20Qwik%20Start.md"
+		}
+	},
+	{
+		"labID": "GSP096",
+		"title": "Pub/Sub: Qwik Start - Console",
+		"est": "3 min",
+		"sources": {
+			"youtube": "RnM1xQiVDkA",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Cloud%20PubSub%20Qwik%20Start%20-%20Console/Google%20Cloud%20PubSub%20Qwik%20Start%20-Console.md"
+		}
+	},
+	{
+		"labID": "GSP081",
+		"title": "Cloud Functions: Qwik Start - Console",
+		"est": "6 min",
+		"sources": {
+			"youtube": "79w-L0xb_MI",
+			"github": "Techcps/GSP-Short-Trick/blob/main/Cloud%20Functions%3A%20Qwik%20Start%20-%20Console/techcps.md"
+		}
+	},
+	{
+		"labID": "ARC109",
+		"title": "Getting Started with API Gateway: Challenge Lab",
+		"est": "16 min",
+		"sources": {
+			"youtube": "iWRh0xCKwRQ",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Getting%20Started%20with%20API%20Gateway%20Challenge%20Lab/Getting%20Started%20with%20API%20Gateway%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP421",
+		"title": "APIs Explorer: Cloud Storage",
+		"est": "2 min",
+		"sources": {
+			"youtube": "E2ztBJM9ycY",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/APIs%20Explorer%20Cloud%20Storage/APIs%20Explorer%20Cloud%20Storage.md"
+		}
+	},
+	{
+		"labID": "GSP074",
+		"title": "Cloud Storage: Qwik Start - CLI/SDK",
+		"est": "4 min",
+		"sources": {
+			"youtube": "nnDHTQKhhxY",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK/Cloud%20Storage%20Qwik%20Start%20-%20CLI%20SDK.md"
+		}
+	},
+	{
+		"labID": "GSP297",
+		"title": "Google Cloud Storage - Bucket Lock",
+		"est": "3 min",
+		"sources": {
+			"youtube": "ROLigBsAx3A",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Cloud%20Storage%20-%20Bucket%20Lock/Google%20Cloud%20Storage%20-%20Bucket%20Lock.md"
+		}
+	},
+	{
+		"labID": "ARC111",
+		"title": "Get Started with Cloud Storage: Challenge Lab",
+		"est": "3 min",
+		"sources": {
+			"youtube": "5XhxAXn-qlc",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Get%20Started%20with%20Cloud%20Storage%20Challenge%20Lab/Get%20Started%20with%20Cloud%20Storage%20Challenge%20Lab.md"
+		}
 	},
 	{
 		"labID": "",
@@ -856,6 +990,10 @@
 	{
 		"labID": "",
 		"title": "",
-		"est": ""
+		"est": "0 min",
+		"sources": {
+			"youtube": "",
+			"github": ""
+		}
 	}
 ]
