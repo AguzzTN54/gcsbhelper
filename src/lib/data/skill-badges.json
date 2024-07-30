@@ -22,7 +22,7 @@
 			"courseID": 662,
 			"courseName": "Get Started with API Gateway",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP872", "GSP096", "GSP081", "ARC109"]
 		},
 		{
 			"courseID": 647,
