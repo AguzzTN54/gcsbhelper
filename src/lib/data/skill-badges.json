@@ -218,7 +218,7 @@
 			"courseID": 655,
 			"courseName": "Optimize Costs for Google Kubernetes Engine",
 			"type": "skill",
-			"labs": ["GSP769", "GSP343"]
+			"labs": ["GSP766", "GSP767", "GSP768", "GSP769", "GSP343"]
 		},
 		{
 			"courseID": 656,
@@ -254,7 +254,7 @@
 			"courseID": 691,
 			"courseName": "Implement CI/CD Pipelines on Google Cloud",
 			"type": "skill",
-			"labs": []
+			"labs": ["GSP1076", "GSP1077", "GSP1078", "GSP1079", "GSP393"]
 		}
 	],
 	"more": [

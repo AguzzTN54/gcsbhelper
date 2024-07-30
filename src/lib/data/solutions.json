@@ -712,6 +712,123 @@
 		}
 	},
 	{
+		"labID": "GSP768",
+		"title": "Understanding and Combining GKE Autoscaling Strategies",
+		"est": "25 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "GSP767",
+		"title": "Exploring Cost-optimization for GKE Virtual Machines",
+		"est": "30 min",
+		"sources": {
+			"post": true,
+			"youtube": "PJNR_A3x0OM"
+		}
+	},
+	{
+		"labID": "GSP766",
+		"title": "Managing a GKE Multi-tenant Cluster with Namespaces",
+		"est": "15 min",
+		"sources": {
+			"youtube": "79EZZrdP_I0",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Managing%20a%20GKE%20Multi-tenant%20Cluster%20with%20Namespaces/Managing%20a%20GKE%20Multi-tenant%20Cluster%20with%20Namespaces.md"
+		}
+	},
+	{
+		"labID": "GSP393",
+		"title": "Implement CI/CD Pipelines on Google Cloud: Challenge Lab",
+		"est": "20 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Implement%20CI%20CD%20Pipelines%20on%20Google%20Cloud%20Challenge%20Lab/Implement%20CI%20CD%20Pipelines%20on%20Google%20Cloud%20Challenge%20Lab.md"
+		}
+	},
+	{
+		"labID": "GSP1079",
+		"title": "Continuous Delivery with Google Cloud Deploy",
+		"est": "15 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Continuous%20Delivery%20with%20Google%20Cloud%20Deploy/Continuous%20Delivery%20with%20Google%20Cloud%20Deploy.md"
+		}
+	},
+	{
+		"labID": "GSP1077",
+		"title": "Google Kubernetes Engine Pipeline using Cloud Build",
+		"est": "12 min",
+		"sources": {
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Google%20Kubernetes%20Engine%20Pipeline%20using%20Cloud%20Build/Google%20Kubernetes%20Engine%20Pipeline%20using%20Cloud%20Build.md"
+		}
+	},
+	{
+		"labID": "GSP1076",
+		"title": "Working with Artifact Registry",
+		"est": "30 min",
+		"sources": {
+			"youtube": "HRBOkeXYQWI",
+			"github": "QUICK-GCP-LAB/2-Minutes-Labs-Solutions/blob/main/Working%20with%20Artifact%20Registry/Working%20with%20Artifact%20Registry.md"
+		}
+	},
+	{
+		"labID": "GSP1078",
+		"title": "Cloud Run Canary Deployments",
+		"est": "15 min",
+		"sources": {
+			"post": true
+		}
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
+		"labID": "",
+		"title": "",
+		"est": ""
+	},
+	{
 		"labID": "",
 		"title": "",
 		"est": ""
