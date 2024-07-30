@@ -45,3 +45,16 @@ export const accounts = {
 		storageLocal.set(type, removed);
 	}
 };
+
+export const localConfig = {
+	get(key) {
+		const config = storageLocal.get('config');
+		const isValue = config[key] !== null;
+		return isValue ? config[key] : null;
+	},
+	set(key, value) {
+		const config = storageLocal.get('config');
+		config[key] = value;
+		storageLocal.set('config', config);
+	}
+};

@@ -1,10 +1,13 @@
 <script>
 	import { getContext, setContext } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+	import { localConfig } from '$lib/helpers/localstorage';
 	import dbSolutions from '$lib/data/solutions.json';
 	import Modal from '$comp/Modal.svelte';
 	import Article from '../solutions/Article.svelte';
-	import { fade } from 'svelte/transition';
+	import Button from '$comp/Button.svelte';
+	import CheckBox from '$comp/CheckBox.svelte';
 
 	export let labs = [];
 	let persist = false;
@@ -36,6 +39,11 @@
 		persist = false;
 		large = false;
 	};
+
+	// Accept Consequences
+	let isChecked = localConfig.get('exposeSolution');
+	let exposed = isChecked;
+	$: localConfig.set('exposeSolution', isChecked);
 </script>
 
 <Modal {persist} {large}>
@@ -49,7 +57,27 @@
 	<div class="body">
 		<div class="scroll">
 			<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
-				{#if solutionID}
+				{#if !exposed}
+					<div class="disclaimer">
+						<p>
+							<b>I strongly recommend you to follow the lab instructions</b> and avoid using the following
+							shortcuts tricks!
+						</p>
+						<p>
+							The purpose of this program is to familiarize you with Google Cloud Platform
+							infrastructure, which can be highly beneficial for your career development. You should
+							Take this opportunity to enhance your knowledges & skills
+						</p>
+						<div class="hide">
+							<CheckBox id="hide" on:change={({ detail }) => ({ checked: isChecked } = detail)}>
+								Dont show this message again
+							</CheckBox>
+						</div>
+						<div class="confirm">
+							<Button on:click={() => (exposed = true)}>I don't care, show me the solution!</Button>
+						</div>
+					</div>
+				{:else if solutionID}
 					<div class="solution" in:fade>
 						<Article labID={solutionID} />
 					</div>
@@ -112,6 +140,21 @@
 
 	.body {
 		padding: 0 0 1rem;
+	}
+
+	.disclaimer {
+		max-height: calc(0.4 * var(--screen-height));
+		padding: 1rem 1rem;
+		font-size: 100%;
+	}
+
+	.disclaimer .confirm {
+		margin-top: 1rem;
+		text-align: center;
+		font-size: 0.9rem;
+	}
+	.hide {
+		margin-top: 2rem;
 	}
 
 	.list {

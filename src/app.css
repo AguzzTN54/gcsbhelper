@@ -54,6 +54,10 @@ a {
 	cursor: pointer;
 }
 
+p {
+	padding-top: 0.5rem;
+}
+
 /* Markdown */
 .marked {
 	line-height: 150%;
