@@ -2,18 +2,21 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { profile } from '$lib/stores/app-store';
-	import { accounts } from '$lib/helpers/localstorage';
-	import { loadProfile } from '$lib/helpers/profile-parser';
+	import { accounts, localConfig } from '$lib/helpers/localstorage';
+	import { fetchOfficial, loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
 	import Button from '$comp/Button.svelte';
+	import CheckBox from '$comp/CheckBox.svelte';
 
 	let profileURL = '';
 	let loading = false;
 	let isError = false;
 	let errorMSG = '';
 
-	const modalHandle = getContext('modalHandle');
 	const dispatch = createEventDispatcher();
+	const modalHandle = getContext('modalHandle');
+	let isOfficial = localConfig.get('isOfficial');
+	$: localConfig.set('isOfficial', isOfficial);
 
 	const isGCSBUrl = (url) => /cloudskillsboost.google\/public_profiles/.test(url);
 	const validateURL = (url) => {
@@ -36,13 +39,25 @@
 		profile.set({});
 	};
 
-	const checkMyProfile = async (url) => {
+	const checkOfficial = async (userURL) => {
+		const { error, data = {} } = await fetchOfficial(userURL + '?' + Math.random());
+		if (error) throwError();
+		if (data.status === 'error' && profileURL) return throwError(data.msg);
+		dispatch('response', data);
+		return;
+	};
+
+	const checkMyProfile = async (publicID) => {
+		const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
+		const userURL = typeof publicID === 'string' ? gcsb + publicID : profileURL;
+
 		const msg = 'Please enter a valid GCSB Public Profile URL';
-		const userURL = typeof url === 'string' ? url : profileURL;
 		if (!validateURL(userURL)) return throwError(msg);
 		if (!isGCSBUrl(userURL)) return throwError(msg);
 
 		loading = true;
+		if (isOfficial) return checkOfficial(userURL);
+
 		const { error, data = {} } = await loadProfile(userURL + '?' + Math.random());
 		if (error) return throwError();
 
@@ -51,9 +66,8 @@
 		dispatch('response', data);
 	};
 
-	const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
 	$: ({ profileID } = $profile);
-	$: !profileID || checkMyProfile(gcsb + profileID);
+	$: !profileID || checkMyProfile(profileID);
 </script>
 
 <div class="wrapper" in:fade={{ delay: 500 }}>
@@ -78,6 +92,16 @@
 				{#if isError}
 					<span class="error"> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
 				{/if}
+
+				<div class="checkbox">
+					<CheckBox
+						id="use_official"
+						checked={isOfficial}
+						on:change={({ detail }) => ({ checked: isOfficial } = detail)}
+					>
+						Find me in the official data records
+					</CheckBox>
+				</div>
 
 				<div class="check">
 					<Button>Check Profile</Button>
@@ -138,8 +162,10 @@
 		color: red;
 	}
 
-	.check {
+	.checkbox {
 		margin-top: 1.5rem;
+	}
+	.check {
 		font-size: larger;
 	}
 

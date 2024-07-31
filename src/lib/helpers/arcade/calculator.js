@@ -60,11 +60,19 @@ const assignInfo = (dt, userData) => {
 };
 
 export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {
-	if (skillbadges >= 21 && trivia >= 8 && arcade >= 6) return 25;
-	if (skillbadges >= 14 && trivia >= 6 && arcade >= 5) return 15;
-	if (skillbadges >= 9 && trivia >= 4 && arcade >= 3) return 9;
-	if (skillbadges >= 4 && trivia >= 2 && arcade >= 2) return 2;
+	if (skillbadges >= 42 && trivia >= 8 && arcade >= 6) return 25;
+	if (skillbadges >= 28 && trivia >= 6 && arcade >= 5) return 15;
+	if (skillbadges >= 18 && trivia >= 4 && arcade >= 3) return 9;
+	if (skillbadges >= 8 && trivia >= 2 && arcade >= 2) return 2;
 	return 0;
+};
+
+export const getBonusMilestone = (point) => {
+	if (point >= 25) return 'Ultimate Milestone';
+	if (point >= 15) return 'Milestone #3';
+	if (point >= 9) return 'Milestone #2';
+	if (point >= 8) return 'Milestone #1';
+	return 'No Bonus Milestone';
 };
 
 export const getMilestone = (point) => {

@@ -1,35 +1,27 @@
 <script>
-	import { profile } from '$lib/stores/app-store';
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
+	import { profile } from '$lib/stores/app-store';
+	import Links from './_links.svelte';
+	import Counter from '$comp/Counter.svelte';
 
 	export let points = {};
 	export let user = '';
 
+	let showBtn = false;
+	const revoke = () => profile.set({});
 	const modalHandle = getContext('modalHandle');
 	const sumPoint = Object.keys(points)
 		.map((key) => points[key])
 		.reduce((pv = 0, cur) => pv + cur);
-
-	let showBtn = false;
-	let pointToShow = 0.0;
-	onMount(() => {
-		const t = setInterval(() => {
-			if (pointToShow < sumPoint) return (pointToShow += 0.5);
-			showBtn = true;
-			return clearInterval(t);
-		}, 20);
-	});
-
-	const revoke = () => profile.set({});
 </script>
 
 <div class="wrapper" transition:fade>
 	<div class="info">
 		<h1 class="point">
-			<span class="numeric">
-				{pointToShow.toFixed(1)}
-			</span>
+			<div class="numeric">
+				<Counter max={sumPoint} on:end={() => (showBtn = true)} />
+			</div>
 			<span class="pts">pts</span>
 
 			{#if showBtn}
@@ -43,21 +35,24 @@
 		</button>
 	</div>
 
-	{#if showBtn}
-		<div class="detail-btn" in:fly={{ y: -20 }}>
-			<span>
-				<i class="gc-double-left"></i>
-			</span>
-		</div>
-	{/if}
+	<Links />
 </div>
+
+{#if showBtn}
+	<div class="detail-btn" in:fly={{ y: -20 }}>
+		<span>
+			<i class="gc-double-left"></i>
+		</span>
+	</div>
+{/if}
 
 <style>
 	.wrapper {
 		text-align: center;
 	}
+
 	.info {
-		transform: translateY(-30%);
+		transform: translateY(-25%);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -154,6 +149,7 @@
 		line-height: 0;
 	}
 
+	/*  */
 	.detail-btn {
 		position: absolute;
 		bottom: 0;

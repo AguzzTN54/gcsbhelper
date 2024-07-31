@@ -4,11 +4,12 @@
 	import { accounts } from '$lib/helpers/localstorage';
 	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
 	import Modal from '../_global/ModalProfile.svelte';
+	import SummaryOfficial from './SummaryOfficial.svelte';
 	import Summary from './Summary.svelte';
 	import Details from './Details.svelte';
 	import Forms from './Forms.svelte';
 
-	$: ({ name: user } = $profile);
+	$: ({ name: user, isOfficial } = $profile);
 	const { end, start } = arcadeDate;
 	const startDate = start.format('DD MMMM YYYY, HH:mm');
 	const endDate = end.format('DD MMMM YYYY, HH:mm');
@@ -41,7 +42,9 @@
 	</div>
 
 	<div class="info-container">
-		{#if !!user}
+		{#if isOfficial}
+			<SummaryOfficial />
+		{:else if !!user}
 			<Summary {user} points={$pointList} />
 		{:else if isLoaded}
 			<Forms />
@@ -49,7 +52,7 @@
 	</div>
 </section>
 
-{#if user}
+{#if user && !isOfficial}
 	<Details />
 {/if}
 

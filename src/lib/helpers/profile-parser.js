@@ -2,7 +2,8 @@ const cors_host = [
 	'https://cors.eu.org/',
 	'https://api.allorigins.win/raw?url=',
 	'https://cors-get-proxy.sirjosh.workers.dev/?url=',
-	'https://cors-proxy.fringe.zone/'
+	'https://cors-proxy.fringe.zone/',
+	'https://api.wishsimulator.app/gcsb?u='
 ];
 
 export const loadProfile = async (profileURL) => {
@@ -54,6 +55,21 @@ const parser = (txtHTML) => {
 	obj.courses = courses;
 	obj.user = tmpEl.querySelector('h1')?.textContent?.trim() || '';
 	return obj;
+};
+
+export const fetchOfficial = async (profileURL) => {
+	const profileID = getProfileID(profileURL);
+	if (!profileID) return null;
+
+	try {
+		const dbURL = `https://api.wishsimulator.app/gcsb?profile=${profileID}`;
+		const resource = await fetch(dbURL);
+		const data = await resource.json();
+		return { error: false, data: { ...data, profileID, official: true } };
+	} catch (e) {
+		console.error(e);
+		return { error: true, data: {} };
+	}
 };
 
 const getProfileID = (profileURL) => {
