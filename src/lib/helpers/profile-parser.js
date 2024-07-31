@@ -1,7 +1,8 @@
 const cors_host = [
 	'https://cors.eu.org/',
 	'https://api.allorigins.win/raw?url=',
-	'https://cors-get-proxy.sirjosh.workers.dev/?url='
+	'https://cors-get-proxy.sirjosh.workers.dev/?url=',
+	'https://cors-proxy.fringe.zone/'
 ];
 
 export const loadProfile = async (profileURL) => {
@@ -42,6 +43,7 @@ const parser = (txtHTML) => {
 
 		const qlButton = modalElement.querySelector('ql-button');
 		const href = qlButton.getAttribute('href');
+		if (!href) return;
 		const [, , id] = href.split('/');
 		const courseID = parseInt(id, 10);
 
