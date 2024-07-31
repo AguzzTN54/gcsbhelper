@@ -72,7 +72,7 @@ export const getBonusMilestone = (point) => {
 	if (point >= 15) return 'Milestone #3';
 	if (point >= 9) return 'Milestone #2';
 	if (point >= 8) return 'Milestone #1';
-	return 'No Bonus Milestone';
+	return 'No Milestone Bonus';
 };
 
 export const getMilestone = (point) => {

@@ -1,9 +1,14 @@
 <script>
 	import { getBonus, getMilestone } from '$lib/helpers/arcade/calculator';
+	import { badges, pointList } from '$lib/stores/app-store';
 
-	export let points = {};
-	const { beginner, advanced, intermediate, more, arcade, trivia } = points;
-	const skillbadges = beginner + advanced + intermediate + more;
+	let skillbadges = 0;
+	const { skillbadges: sb } = $badges;
+	Object.keys($badges.skillbadges).forEach((key) => {
+		sb[key].forEach(({ point }) => (point > 0 ? (skillbadges += 1) : ''));
+	});
+
+	const { arcade, trivia } = $pointList || {};
 	const bonus = getBonus({ arcade, skillbadges, trivia });
 	const total = skillbadges + arcade + trivia + bonus;
 </script>

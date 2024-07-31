@@ -20,7 +20,7 @@
 	<div class="info">
 		<h1 class="point">
 			<div class="numeric">
-				<Counter max={sumPoint} on:end={() => (showBtn = true)} />
+				<Counter float max={sumPoint} on:end={() => (showBtn = true)} />
 			</div>
 			<span class="pts">pts</span>
 

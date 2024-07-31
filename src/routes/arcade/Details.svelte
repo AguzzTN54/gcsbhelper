@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte';
-	import { badges, pointList } from '$lib/stores/app-store';
+	import { badges } from '$lib/stores/app-store';
 	import Tablepoint from './_tablepoint.svelte';
 
 	const { games, skillbadges } = $badges;
@@ -38,7 +38,7 @@
 	};
 </script>
 
-<Tablepoint points={$pointList} />
+<Tablepoint />
 
 <section>
 	<h2 class="press"># Progress Details</h2>
