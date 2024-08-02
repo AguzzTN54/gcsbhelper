@@ -1,43 +1,60 @@
 import dayjs from 'dayjs';
+import dbPaths from '$lib/data/learning-path.json';
 import dbSkillbg from '$lib/data/skill-badges.json';
 import dbGames from '$lib/data/games.json';
 import dbSolutions from '$lib/data/solutions.json';
 import { arcadeBonus, arcadeDate } from '../dateTime';
 
 const filterByDate = (data = []) => {
-	const filtered = data.filter(({ date }) => {
+	return data.filter(({ date }) => {
 		const earnedDate = dayjs(date);
-		const badgeValid = earnedDate.isAfter(arcadeDate.start) && earnedDate.isBefore(arcadeDate.end);
+		const { start, end } = arcadeDate;
+		const badgeValid = earnedDate.isAfter(start) && earnedDate.isBefore(end);
 		return badgeValid;
 	});
-	return filtered;
 };
 
 const { value: bonusVal, bonusDateEnd, bonusDateStart } = arcadeBonus;
-export const pointCounter = ({ games, skillbadges }) => {
+export const pointCounter = ({ games, skillbadges, paths }) => {
 	const points = {};
 	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
-	Object.keys(games).forEach((key) => (points[key] = getPoint(games[key])));
-	Object.keys(skillbadges).forEach((key) => (points[key] = getPoint(skillbadges[key])));
+	games.forEach(({ group, courses }) => (points[group] = getPoint(courses)));
+	skillbadges.forEach(({ group, courses }) => (points[group] = getPoint(courses)));
+	paths.forEach(({ point, isComplete }) => (points['additional'] = isComplete ? point : 0));
 	return points;
 };
 
 export const detailPoints = (userData = []) => {
 	const data = filterByDate(userData);
-	const games = {};
-	dbGames.map(({ courseID, courseName, type, token }) => {
-		const arr = games[type] || [];
-		games[type] = [...arr, { courseID, courseName, token }];
-	});
+	const paths = parseData(data, dbPaths, 'paths');
+	const skillbadges = parseData(data, dbSkillbg, 'skillbadges');
+	const games = parseData(data, dbGames, 'games');
 
-	const assign = (list) => list.map((dt) => assignInfo(dt, data));
-	const badges = { games: {}, skillbadges: {} };
-	Object.keys(dbSkillbg).forEach((key) => (badges.skillbadges[key] = assign(dbSkillbg[key])));
-	Object.keys(games).forEach((key) => (badges.games[key] = assign(games[key])));
+	const badges = { games, skillbadges, paths };
+	const assign = (list, point) => list.map((dt) => assignInfo(dt, data, point));
+	skillbadges.forEach(({ courses, point }, i) => (skillbadges[i].courses = assign(courses, point)));
+	games.forEach(({ courses, point }, i) => (games[i].courses = assign(courses, point)));
+	paths.forEach(({ courses, point }, i) => (paths[i].courses = assign(courses, point)));
 	return badges;
 };
 
-const assignInfo = (dt, userData) => {
+const parseData = (userData = [], db, type) => {
+	const info = ({ courseID, courseName, token, labs }) => {
+		const earned = userData.find(({ courseID: id }) => courseID === id);
+		const { date: earnDate = null } = earned || {};
+		return { courseID, courseName, type, earnDate, token, labs };
+	};
+
+	return db.map(({ pathID, title, courses, point, group }) => {
+		const completions = [];
+		const assigned = courses.map(info);
+		assigned.forEach(({ earnDate }) => completions.push(!!earnDate));
+		const isComplete = !completions.includes(false);
+		return { pathID, group, title, isComplete, point, courses: assigned, type };
+	});
+};
+
+const assignInfo = (dt, userData, point = 0) => {
 	const labs = dt.labs?.map((labID) => {
 		const slt = dbSolutions.find(({ labID: id }) => labID?.toLowerCase() === id?.toLowerCase());
 		const { sources = {} } = slt || {};
@@ -48,12 +65,13 @@ const assignInfo = (dt, userData) => {
 	const earned = userData.find(({ courseID }) => dt.courseID === courseID);
 	if (!earned) return { ...dt, point: 0, labs };
 
+	// if badge Earned
 	const { date } = earned;
 	const d = dayjs(date);
 	const end = d.isBefore(bonusDateEnd) || d.isSame(bonusDateEnd, 'date');
 	const hasBonus = d.isAfter(bonusDateStart) && end;
 	dt.hasBonus = hasBonus;
-	dt.point = hasBonus ? bonusVal : 0.5;
+	dt.point = hasBonus ? bonusVal : point;
 	dt.earnDate = date;
 	const result = { ...dt, labs };
 	return result;

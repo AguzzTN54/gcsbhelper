@@ -24,6 +24,7 @@
 		const { user, courses: userBadges, profileID } = detail;
 		const detailBadges = detailPoints(userBadges);
 		const points = pointCounter(detailBadges);
+		console.log(points);
 
 		profile.set({ name: user, profileID, type: 'arcade' });
 		pointList.set(points);

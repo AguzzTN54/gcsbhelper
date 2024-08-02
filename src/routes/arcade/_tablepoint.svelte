@@ -1,16 +1,17 @@
 <script>
-	import { getBonus, getMilestone } from '$lib/helpers/arcade/calculator';
-	import { badges, pointList } from '$lib/stores/app-store';
+	import { getBonus } from '$lib/helpers/arcade/calculator';
+	import { pointList } from '$lib/stores/app-store';
 
 	let skillbadges = 0;
-	const { skillbadges: sb } = $badges;
-	Object.keys($badges.skillbadges).forEach((key) => {
-		sb[key].forEach(({ point }) => (point > 0 ? (skillbadges += 1) : ''));
+	Object.keys($pointList).forEach((key) => {
+		const notSkill = /(trivia|arcade|paths|additional)/.test(key);
+		if (notSkill) return;
+		skillbadges += $pointList[key];
 	});
 
-	const { arcade, trivia } = $pointList || {};
+	const { arcade, trivia, additional } = $pointList || {};
 	const bonus = getBonus({ arcade, skillbadges, trivia });
-	const total = skillbadges + arcade + trivia + bonus;
+	const total = skillbadges + additional + arcade + trivia + bonus;
 </script>
 
 <section>
@@ -31,18 +32,18 @@
 				<div class="body">+{arcade}</div>
 			</div>
 			<div class="col">
-				<div class="head">Bonus Point</div>
+				<div class="head">Milestone Bonus</div>
 				<div class="body">+{bonus}</div>
+			</div>
+			<div class="col">
+				<div class="head">Additional</div>
+				<div class="body">
+					<span> +{additional} </span>
+				</div>
 			</div>
 			<div class="col">
 				<div class="head">Total</div>
 				<div class="body">{total}</div>
-			</div>
-			<div class="col">
-				<div class="head">Milestone</div>
-				<div class="body milestone">
-					<span> {getMilestone(total)} </span>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -102,9 +103,9 @@
 		font-size: x-large;
 	}
 
-	.milestone {
+	/* .milestone {
 		font-size: larger;
-	}
+	} */
 
 	@media screen and (max-width: 800px) {
 		h2 {

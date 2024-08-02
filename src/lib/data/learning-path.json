@@ -1,0 +1,40 @@
+[
+	{
+		"title": "Cloud Digital Leader Learning Path",
+		"group": "cloud-digital-leader",
+		"pathID": 9,
+		"point": 5,
+		"courses": [
+			{
+				"courseID": 266,
+				"courseName": "Digital Transformation with Google Cloud",
+				"type": "completion"
+			},
+			{
+				"courseID": 267,
+				"courseName": "Exploring Data Transformation with Google Cloud",
+				"type": "completion"
+			},
+			{
+				"courseID": 946,
+				"courseName": "Innovating with Google Cloud Artificial Intelligence",
+				"type": "completion"
+			},
+			{
+				"courseID": 265,
+				"courseName": "Modernize Infrastructure and Applications with Google Cloud",
+				"type": "completion"
+			},
+			{
+				"courseID": 945,
+				"courseName": "Trust and Security with Google Cloud",
+				"type": "completion"
+			},
+			{
+				"courseID": 271,
+				"courseName": "Scaling with Google Cloud Operations",
+				"type": "completion"
+			}
+		]
+	}
+]
