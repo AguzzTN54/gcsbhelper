@@ -1,4 +1,5 @@
 <script>
+	import dayjs from 'dayjs';
 	import { getContext } from 'svelte';
 
 	export let badgeType = 'games';
@@ -36,9 +37,9 @@
 </script>
 
 <div class="group">
-	{#each data as { courses, group, title, pathID, point: parentPoint }, i}
+	{#each data as { courses, title, pathID, point: parentPoint }, i}
 		{@const { progress, iscomplete } = completionProgress(courses)}
-		<div class="accordion" class:open={opened.includes(group)}>
+		<div class="accordion" class:open={opened.includes(badgeType + i)}>
 			<button class="handler" on:click={() => toggleAccordion(badgeType + i)}>
 				{#if isPath}
 					<h4>
@@ -70,34 +71,43 @@
 			</button>
 
 			<div class="list" id={badgeType + i} style="--height: 0px;">
-				{#each courses as { courseName, point, token, courseID, labs, hasBonus }}
+				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate }}
 					<div class="item" class:finished={point > 0}>
-						<div style="text-align: right;">
-							{#if courseID}
-								{@const endpoint = isGame ? 'games' : `paths/${pathID}/course_templates`}
-								{@const path = isSkill ? 'course_templates' : endpoint}
-								<a href="https://www.cloudskillsboost.google/{path}/{courseID}" target="_blank">
-									{courseName}
-									<i class="gc-external-link"></i>
-								</a>
-							{:else}
-								<span>{courseName}</span>
-							{/if}
+						<div class="left">
+							<div class="left-top">
+								<div class="div">
+									{#if courseID}
+										{@const endpoint = isGame ? 'games' : `paths/${pathID}/course_templates`}
+										{@const path = isSkill ? 'course_templates' : endpoint}
+										<a href="https://www.cloudskillsboost.google/{path}/{courseID}" target="_blank">
+											{courseName}
+											<i class="gc-external-link"></i>
+										</a>
+									{:else}
+										<span>{courseName}</span>
+									{/if}
 
-							{#if isGame}
-								{#if token}
-									<span> Access Token: {token}</span>
-								{:else}
-									<span> (Coming Soon) </span>
+									{#if isGame}
+										{#if token}
+											<span> Access Token: {token}</span>
+										{:else}
+											<span> (Coming Soon) </span>
+										{/if}
+									{/if}
+								</div>
+
+								{#if hasTrick(labs)}
+									<div class="solution">
+										<button on:click={() => handleModalSol(labs)}>Solution</button>
+									</div>
 								{/if}
-							{/if}
-						</div>
-
-						{#if hasTrick(labs)}
-							<div class="solution">
-								<button on:click={() => handleModalSol(labs)}>Solution</button>
 							</div>
-						{/if}
+							<div class="date">
+								{#if earnDate}
+									<span>Earned: {dayjs(earnDate).format('DD MMMM YYYY')}</span>
+								{/if}
+							</div>
+						</div>
 
 						{#if point > 0}
 							<div class="pointCheck">
@@ -160,6 +170,7 @@
 		padding: 0 0.2rem;
 		white-space: nowrap;
 	}
+
 	button.handler .icon {
 		transform: rotate(-180deg);
 		transition: transform 0.25s;
@@ -185,9 +196,22 @@
 	.item:hover {
 		background-color: #efefef;
 	}
+
+	.item .left,
+	.left-top {
+		display: flex;
+	}
+	.item .left {
+		flex-direction: column;
+	}
+	.date {
+		font-style: italic;
+		font-size: small;
+		opacity: 0.75;
+	}
+
 	.item .point {
 		color: rgb(20, 178, 20);
-		padding: 0 0.5rem;
 	}
 
 	.item a i {
