@@ -7,8 +7,9 @@ export const arcadeDate = {
 
 export const arcadeBonus = {
 	value: 1,
-	bonusDateStart: dayjs('22 July 2024, GMT+7'),
-	bonusDateEnd: dayjs('31 July 2024, GMT+7')
+	bonusDateStart: dayjs('22 July 2024, EDT'),
+	bonusDateEnd: dayjs('31 July 2024, EDT'),
+	cdlEnd: dayjs('5 August 2024, EDT')
 };
 
 const timeOffset = new Date().getTimezoneOffset() / -60;

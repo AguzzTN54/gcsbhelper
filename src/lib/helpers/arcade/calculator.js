@@ -5,16 +5,7 @@ import dbGames from '$lib/data/games.json';
 import dbSolutions from '$lib/data/solutions.json';
 import { arcadeBonus, arcadeDate } from '../dateTime';
 
-const filterByDate = (data = []) => {
-	return data.filter(({ date }) => {
-		const earnedDate = dayjs(date);
-		const { start, end } = arcadeDate;
-		const badgeValid = earnedDate.isAfter(start) && earnedDate.isBefore(end);
-		return badgeValid;
-	});
-};
-
-const { value: bonusVal, bonusDateEnd, bonusDateStart } = arcadeBonus;
+const { value: bonusVal, bonusDateEnd, bonusDateStart, cdlEnd } = arcadeBonus;
 export const pointCounter = ({ games, skillbadges, paths }) => {
 	const points = {};
 	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
@@ -24,21 +15,15 @@ export const pointCounter = ({ games, skillbadges, paths }) => {
 	return points;
 };
 
-export const detailPoints = (userData = []) => {
-	const data = filterByDate(userData);
+export const detailPoints = (data = []) => {
 	const paths = parseData(data, dbPaths, 'paths');
 	const skillbadges = parseData(data, dbSkillbg, 'skillbadges');
 	const games = parseData(data, dbGames, 'games');
-
-	const badges = { games, skillbadges, paths };
-	const assign = (list, point) => list.map((dt) => assignInfo(dt, data, point));
-	skillbadges.forEach(({ courses, point }, i) => (skillbadges[i].courses = assign(courses, point)));
-	games.forEach(({ courses, point }, i) => (games[i].courses = assign(courses, point)));
-	paths.forEach(({ courses, point }, i) => (paths[i].courses = assign(courses, point)));
-	return badges;
+	return { games, skillbadges, paths };
 };
 
 const parseData = (userData = [], db, type) => {
+	const assign = (list, point) => list.map((dt) => assignInfo(dt, userData, point));
 	const info = ({ courseID, courseName, token, labs }) => {
 		const earned = userData.find(({ courseID: id }) => courseID === id);
 		const { date: earnDate = null } = earned || {};
@@ -48,9 +33,10 @@ const parseData = (userData = [], db, type) => {
 	return db.map(({ pathID, title, courses, point, group }) => {
 		const completions = [];
 		const assigned = courses.map(info);
-		assigned.forEach(({ earnDate }) => completions.push(!!earnDate));
+		const newCourses = assign(assigned, point);
+		newCourses.forEach(({ validity, earnDate }) => completions.push(!!(validity && earnDate)));
 		const isComplete = !completions.includes(false);
-		return { pathID, group, title, isComplete, point, courses: assigned, type };
+		return { pathID, group, title, isComplete, point, type, courses: newCourses };
 	});
 };
 
@@ -63,18 +49,26 @@ const assignInfo = (dt, userData, point = 0) => {
 	});
 
 	const earned = userData.find(({ courseID }) => dt.courseID === courseID);
-	if (!earned) return { ...dt, point: 0, labs };
+	if (!earned) return { ...dt, labs, point: 0 };
 
 	// if badge Earned
 	const { date } = earned;
 	const d = dayjs(date);
-	const end = d.isBefore(bonusDateEnd) || d.isSame(bonusDateEnd, 'date');
-	const hasBonus = d.isAfter(bonusDateStart) && end;
-	dt.hasBonus = hasBonus;
-	dt.point = hasBonus ? bonusVal : point;
 	dt.earnDate = date;
-	const result = { ...dt, labs };
-	return result;
+
+	if (dt.type === 'paths') {
+		const validity = d.isBefore(cdlEnd) || d.isSame(cdlEnd, 'date');
+		return { ...dt, labs, validity };
+	}
+
+	const { end, start } = arcadeDate;
+	const endDate = d.isBefore(end) || d.isSame(end, 'date');
+	const validity = d.isAfter(start) && endDate;
+	const bonusEnd = d.isBefore(bonusDateEnd) || d.isSame(bonusDateEnd, 'date');
+	const hasBonus = d.isAfter(bonusDateStart) && bonusEnd;
+	dt.hasBonus = hasBonus;
+	dt.point = !validity ? 0 : hasBonus ? bonusVal : point;
+	return { ...dt, labs, validity };
 };
 
 export const getBonus = ({ skillbadges = 0, trivia = 0, arcade = 0 }) => {

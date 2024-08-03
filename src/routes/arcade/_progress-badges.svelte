@@ -25,9 +25,9 @@
 	};
 
 	const completionProgress = (arr = []) => {
-		const complete = arr.filter(({ point }) => point > 0).length;
+		const complete = arr.filter(({ validity }) => validity).length;
 		const all = arr.length;
-		return { progress: `${complete}/${all}`, iscomplete: complete >= all };
+		return `${complete}/${all}`;
 	};
 
 	const hasTrick = (labs = []) => {
@@ -37,8 +37,8 @@
 </script>
 
 <div class="group">
-	{#each data as { courses, title, pathID, point: parentPoint }, i}
-		{@const { progress, iscomplete } = completionProgress(courses)}
+	{#each data as { courses, title, pathID, point: parentPoint, isComplete }, i}
+		{@const progress = completionProgress(courses)}
 		<div class="accordion" class:open={opened.includes(badgeType + i)}>
 			<button class="handler" on:click={() => toggleAccordion(badgeType + i)}>
 				{#if isPath}
@@ -53,11 +53,11 @@
 				{/if}
 
 				<div class="pts">
-					{#if isPath && iscomplete}
+					{#if isPath && isComplete}
 						<span class="point" style="color: green;"> (+{parentPoint}pts)</span>
 					{/if}
 
-					{#if iscomplete}
+					{#if isComplete}
 						<span class="complete">
 							Complete <i class="gc-check"></i>
 						</span>
@@ -71,8 +71,8 @@
 			</button>
 
 			<div class="list" id={badgeType + i} style="--height: 0px;">
-				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate }}
-					<div class="item" class:finished={point > 0}>
+				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate, validity }}
+					<div class="item" class:finished={!!earnDate}>
 						<div class="left">
 							<div class="left-top">
 								<div class="div">
@@ -109,16 +109,22 @@
 							</div>
 						</div>
 
-						{#if point > 0}
+						{#if earnDate}
 							<div class="pointCheck">
-								{#if hasBonus}
-									<span style="font-size: small;"> (July Bonus)</span>
-								{/if}
+								{#if validity}
+									{#if hasBonus}
+										<span style="font-size: small;"> (Monsoon Bonus)</span>
+									{/if}
 
-								{#if isPath}
-									<small class="point"> Complete </small>
+									{#if isPath}
+										<small class="point"> Complete </small>
+									{:else}
+										<span class="point"> +{point}pts</span>
+									{/if}
+
+									<!-- Outside the program -->
 								{:else}
-									<span class="point"> +{point}pts</span>
+									<small class="invalid"> Finished outside the program </small>
 								{/if}
 							</div>
 						{/if}
@@ -212,6 +218,13 @@
 
 	.item .point {
 		color: rgb(20, 178, 20);
+	}
+
+	.item .invalid {
+		display: block;
+		color: rgb(241, 80, 80);
+		max-width: 125px;
+		line-height: 90%;
 	}
 
 	.item a i {
