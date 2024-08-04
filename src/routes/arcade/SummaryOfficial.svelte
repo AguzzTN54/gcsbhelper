@@ -13,7 +13,7 @@
 </script>
 
 <div class="wrapper" class:empty={!email && !user} transition:fade>
-	<button class="user" on:click={modalHandle}>
+	<button class="user" on:click={modalHandle} title="Switch Account">
 		<h2>
 			<i class="gc-triangle-down"></i>
 			{user || 'Not Found!'}

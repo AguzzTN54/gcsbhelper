@@ -16,8 +16,11 @@
 <div class="footnote" use:marquee>
 	<div class="disclaimer">
 		<span>
-			This site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform. This site
-			is created solely to help you track your progress.
+			This site is not affiliated with Google Cloud Skill Boost or Google Cloud Platform. <b
+				>We do not store your data on our server</b
+			>. Your Public Profile will be processed directly on your device, and the official records are
+			retrieved directly from the spreadsheet sources provided by the facilitators who have shared
+			them with us.
 		</span>
 	</div>
 
@@ -66,7 +69,7 @@
 	.marquee .disclaimer span {
 		display: block;
 		width: fit-content;
-		animation: marquee 20s linear infinite;
+		animation: marquee 60s linear infinite;
 	}
 
 	@keyframes marquee {

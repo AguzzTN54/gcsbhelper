@@ -17,6 +17,10 @@
 	const modalHandle = getContext('modalHandle');
 	let isOfficial = localConfig.get('isOfficial');
 	$: localConfig.set('isOfficial', isOfficial);
+	const showModalNotice = () => {
+		const msg = `<p>This result is compiled from the spreadsheet reports published by the Arcade Team.</p> <p>If your information is not displayed here, it may be because this site does not have the data from your facilitator. Please contact your facilitator to ensure they have your data!<p>`;
+		modalHandle('notice', { msg, title: 'Information' });
+	};
 
 	const isGCSBUrl = (url) => /cloudskillsboost.google\/public_profiles/.test(url);
 	const validateURL = (url) => {
@@ -51,7 +55,7 @@
 		const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
 		const userURL = typeof publicID === 'string' ? gcsb + publicID : profileURL;
 
-		const msg = 'Please enter a valid GCSB Public Profile URL';
+		const msg = 'Please enter a valid GCSB Public Profile URL!';
 		if (!validateURL(userURL)) return throwError(msg);
 		if (!isGCSBUrl(userURL)) return throwError(msg);
 
@@ -90,7 +94,12 @@
 					on:blur={() => (isError = false)}
 				/>
 				{#if isError}
-					<span class="error"> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
+					<div class="error">
+						<span> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
+						{#if /(recorded)/.test(errorMSG.toLowerCase())}
+							<button class="info" on:click|preventDefault={showModalNotice}> info? </button>
+						{/if}
+					</div>
 				{/if}
 
 				<div class="checkbox">
@@ -157,9 +166,31 @@
 		box-shadow: 0 0 1rem rgba(255, 0, 0, 0.25);
 	}
 
-	span.error {
-		display: block;
+	.error {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-top: 0.25rem;
+	}
+	.error span {
+		display: inline-block;
 		color: red;
+	}
+
+	.info {
+		margin-left: 0.5rem;
+		display: inline-block;
+		padding: 0.1rem 0.5rem;
+		background-color: transparent;
+		border: 1px solid red;
+		color: red;
+		border-radius: 1rem;
+		transition: all 0.5s;
+	}
+
+	.info:hover {
+		background-color: red;
+		color: #fff;
 	}
 
 	.checkbox {

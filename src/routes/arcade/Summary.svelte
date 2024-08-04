@@ -1,7 +1,6 @@
 <script>
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { profile } from '$lib/stores/app-store';
 	import Links from './_links.svelte';
 	import Counter from '$comp/Counter.svelte';
 
@@ -9,11 +8,16 @@
 	export let user = '';
 
 	let showBtn = false;
-	const revoke = () => profile.set({});
 	const modalHandle = getContext('modalHandle');
 	const sumPoint = Object.keys(points)
 		.map((key) => points[key])
 		.reduce((pv = 0, cur) => pv + cur);
+
+	const showNotes = () => {
+		modalHandle('notice', {
+			msg: `<p>This calculation is based on the badges earned on your profile and certain rules published by the Arcade Team.</p> <p>We do not guarantee that this is the final score you will receive. Therefore, we recommend that you carefully review the content you have completed to ensure accuracy.</p>`
+		});
+	};
 </script>
 
 <div class="wrapper" transition:fade>
@@ -25,8 +29,8 @@
 			<span class="pts">pts</span>
 
 			{#if showBtn}
-				<button class="revoke" title="Revoke" on:click={revoke} in:fade>
-					<i class="gc-cw"></i>
+				<button class="revoke" title="Notes, Read This!" on:click={showNotes} in:fade>
+					<b>i</b>
 				</button>
 			{/if}
 		</h1>
@@ -76,7 +80,7 @@
 	}
 
 	button.revoke {
-		width: calc(0.06 * var(--screen-height));
+		width: calc(0.05 * var(--screen-height));
 		background-color: transparent;
 		border-radius: 100%;
 		aspect-ratio: 1/1;

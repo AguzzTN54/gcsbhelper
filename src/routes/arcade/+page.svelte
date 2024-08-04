@@ -3,7 +3,9 @@
 	import { pointList, profile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
-	import Modal from '../_global/ModalProfile.svelte';
+
+	import Modal from '$comp/Modal.svelte';
+	import ModalProfile from '../_global/ModalProfile.svelte';
 	import SummaryOfficial from './SummaryOfficial.svelte';
 	import Summary from './Summary.svelte';
 	import Details from './Details.svelte';
@@ -15,8 +17,14 @@
 	const endDate = end.format('DD MMMM YYYY, HH:mm');
 
 	let showModal = false;
-	const modalHandle = () => (showModal = !showModal);
-	setContext('modalHandle', modalHandle);
+	let modalType = 'profile';
+	let noticeData = { title: '', msg: '' };
+	setContext('modalHandle', (type = null, data = {}) => {
+		showModal = !showModal;
+		modalType = typeof type === 'string' ? type : 'profile';
+		if (type === 'notice' && showModal) return (noticeData = data);
+		noticeData = {};
+	});
 
 	let isLoaded = false;
 	onMount(() => {
@@ -31,8 +39,14 @@
 	});
 </script>
 
-{#if showModal && isLoaded}
-	<Modal />
+{#if showModal && isLoaded && modalType === 'profile'}
+	<ModalProfile />
+{/if}
+{#if showModal && isLoaded && modalType === 'notice'}
+	<Modal>
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<p>{@html noticeData.msg}</p>
+	</Modal>
 {/if}
 
 <section class="hero">
