@@ -16,13 +16,20 @@
 	<button class="user" on:click={modalHandle}>
 		<h2>
 			<i class="gc-triangle-down"></i>
-			{user || 'Your Accounts'}
+			{user || 'Not Found!'}
 		</h2>
 		<span> {email || ''}</span>
 	</button>
 
 	{#if !email && !user}
-		<div class="nodata">No Data Recorded for Your Account, please contact your facilitator!</div>
+		<div class="nodata">
+			<b>No Data Recorded for Your Account!</b>
+			<p>
+				This result is compiled from the spreadsheet reports published by the Arcade Team. If your
+				information is not displayed here, it may be because this site does not have the data from
+				your facilitator. Please contact your facilitator to ensure they have your data!
+			</p>
+		</div>
 	{:else}
 		<div class="table">
 			<div class="row">
@@ -48,9 +55,8 @@
 			<h1>{getBonusMilestone(bonus)}</h1>
 			<div class="bonus">+<Counter max={bonus} /> <span>bonus point</span></div>
 		</div>
-
-		<Links />
 	{/if}
+	<Links />
 </div>
 
 <style>
