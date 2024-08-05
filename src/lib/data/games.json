@@ -5,26 +5,26 @@
 		"point": 1,
 		"courses": [
 			{
+				"courseID": 5384,
+				"courseName": "The Arcade Trivia August 2024 Week 1",
+				"token": "1q-trivia-08017",
+				"labs": []
+			},
+			{
 				"courseID": null,
-				"courseName": "Trivia: August 2024 - Week 1",
+				"courseName": "The Arcade Trivia August 2024 Week 2",
 				"token": null,
 				"labs": []
 			},
 			{
 				"courseID": null,
-				"courseName": "Trivia: August 2024 - Week 2",
+				"courseName": "The Arcade Trivia August 2024 Week 3",
 				"token": null,
 				"labs": []
 			},
 			{
 				"courseID": null,
-				"courseName": "Trivia: August 2024 - Week 3",
-				"token": null,
-				"labs": []
-			},
-			{
-				"courseID": null,
-				"courseName": "Trivia: August 2024 - Week 4",
+				"courseName": "The Arcade Trivia August 2024 Week 4",
 				"token": null,
 				"labs": []
 			}
@@ -36,27 +36,27 @@
 		"point": 1,
 		"courses": [
 			{
-				"courseID": null,
-				"courseName": "Level 1: August 2024",
-				"token": null,
+				"courseID": 5379,
+				"courseName": "Level 1: Application Development and Deployment",
+				"token": "1q-appdev-0868",
 				"labs": []
 			},
 			{
-				"courseID": null,
-				"courseName": "Level 2: August 2024",
-				"token": null,
+				"courseID": 5381,
+				"courseName": "Level 2: Machine Learning and AI Skills",
+				"token": "1q-mlskills-0869",
 				"labs": []
 			},
 			{
-				"courseID": null,
-				"courseName": "Level 3: August 2024",
-				"token": null,
+				"courseID": 5382,
+				"courseName": "Level 3: Google Cloud Functions",
+				"token": "1q-functions-0870",
 				"labs": []
 			},
 			{
-				"courseID": null,
+				"courseID": 5383,
 				"courseName": "Basecamp: August 2024",
-				"token": null,
+				"token": "1q-basecamp-0871",
 				"labs": []
 			}
 		]

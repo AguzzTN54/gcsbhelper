@@ -89,7 +89,9 @@
 
 									{#if isGame}
 										{#if token}
-											<span> Access Token: {token}</span>
+											<span style="display: inline-block; margin-left: 1rem">
+												Access Code: <b>{token}</b>
+											</span>
 										{:else}
 											<span> (Coming Soon) </span>
 										{/if}
