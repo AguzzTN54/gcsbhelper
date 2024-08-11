@@ -48,7 +48,9 @@ const assignInfo = (dt, userData, point = 0) => {
 		return { labID, hasSolution: !!(post || github || youtube) };
 	});
 
-	const earned = userData.find(({ courseID }) => dt.courseID === courseID);
+	const { courseID, courseName } = dt;
+	const checkEarned = ({ courseID: id, courseName: n }) => courseID === id || courseName === n;
+	const earned = userData.find(checkEarned);
 	if (!earned) return { ...dt, labs, point: 0 };
 
 	// if badge Earned
