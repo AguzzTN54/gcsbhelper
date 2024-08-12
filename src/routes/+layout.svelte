@@ -3,7 +3,8 @@
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import '../app.css';
-	import Footer from '$comp/Footer.svelte';
+	import Footer from './_global/Footer.svelte';
+	import Header from './_global/Header.svelte';
 	import ModalSolution from './_global/ModalSolution.svelte';
 
 	let innerHeight, innerWidth;
@@ -17,16 +18,28 @@
 		labs = labList;
 		showModalSolution = !showModalSolution;
 	});
+
+	let isTop = true;
+	const scrolled = ({ detail }) => {
+		const { viewport } = detail[0].elements();
+		const { scrollTop } = viewport;
+		isTop = scrollTop <= 0;
+	};
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <main>
-	<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
+	<OverlayScrollbarsComponent
+		options={{ scrollbars: { theme: 'os-theme-dark' } }}
+		on:osScroll={scrolled}
+		defer
+	>
 		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
 			{#if showModalSolution}
 				<ModalSolution {labs} />
 			{/if}
+			<Header {isTop} />
 			<slot />
 		</div>
 	</OverlayScrollbarsComponent>
