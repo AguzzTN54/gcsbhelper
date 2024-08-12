@@ -1,6 +1,6 @@
 <script>
 	import { localConfig } from '$lib/helpers/localstorage';
-	import { profile } from '$lib/stores/app-store';
+	import { arcadeProfile as profile } from '$lib/stores/app-store';
 
 	const { isOfficial, profileID } = $profile;
 	const loadOfficial = () => {

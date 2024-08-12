@@ -1,6 +1,6 @@
 <script>
 	import { onMount, setContext } from 'svelte';
-	import { pointList, profile } from '$lib/stores/app-store';
+	import { pointList, arcadeProfile as profile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { arcadeDate, timeZone } from '$lib/helpers/dateTime';
 
@@ -30,6 +30,7 @@
 	onMount(() => {
 		if (isLoaded) return;
 		isLoaded = true;
+		if ($profile.profileID) return;
 		const savedAccounts = accounts.getAll();
 		const savedLength = savedAccounts.length;
 		if (savedLength < 1) return;

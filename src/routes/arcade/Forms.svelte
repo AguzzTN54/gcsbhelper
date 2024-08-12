@@ -1,5 +1,5 @@
 <script>
-	import { badges, pointList, profile } from '$lib/stores/app-store';
+	import { arcadeBadges, pointList, arcadeProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
 	import UrlForm from '../_global/URLForm.svelte';
@@ -9,9 +9,9 @@
 		const { trivia, skillbadge, arcade } = data;
 		const dt = { type: 'arcade', isOfficial: true };
 
-		const { name: currentName, profileID: currentID } = $profile;
+		const { name: currentName, profileID: currentID } = $arcadeProfile;
 		const name = currentID === profileID && currentName ? currentName : full_name;
-		profile.set({ name, profileID, email, last_update, ref_code, ...dt });
+		arcadeProfile.set({ name, profileID, email, last_update, ref_code, ...dt });
 
 		if (!(name && profileID)) return;
 		pointList.set({ trivia, skillbadge, arcade });
@@ -26,9 +26,9 @@
 		const points = pointCounter(detailBadges);
 		console.log(points);
 
-		profile.set({ name: user, profileID, type: 'arcade' });
+		arcadeProfile.set({ name: user, profileID });
 		pointList.set(points);
-		badges.set(detailBadges);
+		arcadeBadges.set(detailBadges);
 		accounts.put({ profileID, name: user });
 	};
 </script>

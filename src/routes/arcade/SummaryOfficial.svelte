@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { pointList, profile } from '$lib/stores/app-store';
+	import { pointList, arcadeProfile as profile } from '$lib/stores/app-store';
 	import { getBonus, getBonusMilestone } from '$lib/helpers/arcade/calculator';
 	import Counter from '$comp/Counter.svelte';
 	import Links from './_links.svelte';

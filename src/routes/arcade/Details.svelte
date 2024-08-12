@@ -1,5 +1,5 @@
 <script>
-	import { badges } from '$lib/stores/app-store';
+	import { arcadeBadges as badges } from '$lib/stores/app-store';
 	import Tablepoint from './_tablepoint.svelte';
 	import ProgressBadges from './_progress-badges.svelte';
 	const { games, skillbadges, paths } = $badges;

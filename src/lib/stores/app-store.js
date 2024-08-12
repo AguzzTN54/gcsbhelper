@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const profile = writable({ profileID: null, name: null, type: 'arcade' });
-export const badges = writable({});
+export const arcadeProfile = writable({ profileID: null, name: null });
+export const arcadeBadges = writable({});
 export const pointList = writable({});
