@@ -51,7 +51,7 @@
 
 <style>
 	section {
-		margin: 1% 5%;
+		margin: 0 5% 1%;
 		border-top: 1px solid #ccc;
 		padding-bottom: calc(0.075 * var(--screen-height));
 	}

@@ -39,6 +39,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Arcade Progress Tracker</title>
+</svelte:head>
+
 {#if showModal && isLoaded && modalType === 'profile'}
 	<ModalProfile />
 {/if}
@@ -96,7 +100,7 @@
 	}
 
 	.top {
-		margin-top: 5%;
+		margin-top: calc(0.085 * var(--screen-height));
 		margin-bottom: auto;
 	}
 

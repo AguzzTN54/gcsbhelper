@@ -113,11 +113,11 @@
 	};
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	{#if pageTitle}
 		<title>{pageTitle}</title>
 	{/if}
-</svelte:head>
+</svelte:head> -->
 
 {#if loading}
 	<div class="loading-wrapper" transition:fade={{ duration: 500 }}>
