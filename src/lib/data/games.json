@@ -1,7 +1,7 @@
 [
 	{
-		"title": "Trivia",
-		"group": "trivia",
+		"title": "Trivia - August",
+		"group": "trivia_aug",
 		"point": 1,
 		"courses": [
 			{
@@ -31,8 +31,8 @@
 		]
 	},
 	{
-		"title": "Arcade",
-		"group": "arcade",
+		"title": "Arcade - August",
+		"group": "arcade_aug",
 		"point": 1,
 		"courses": [
 			{

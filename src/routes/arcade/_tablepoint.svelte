@@ -9,7 +9,14 @@
 		skillbadges += $pointList[key];
 	});
 
-	const { arcade, trivia, additional } = $pointList || {};
+	let trivia = 0;
+	let arcade = 0;
+	const { additional } = $pointList || {};
+	Object.keys($pointList).forEach((key) => {
+		if (/(trivia)/.test(key)) trivia += $pointList[key];
+		if (/(arcade)/.test(key)) arcade += $pointList[key];
+	});
+
 	const bonus = getBonus({ arcade, skillbadges, trivia });
 	const total = skillbadges + additional + arcade + trivia + bonus;
 </script>
