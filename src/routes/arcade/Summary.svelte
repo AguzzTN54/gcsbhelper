@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import Links from './_links.svelte';
+	// import Links from './_links.svelte';
 	import Counter from '$comp/Counter.svelte';
 
 	export let points = {};
@@ -39,7 +39,7 @@
 		</button>
 	</div>
 
-	<Links />
+	<!-- <Links /> -->
 </div>
 
 {#if showBtn}

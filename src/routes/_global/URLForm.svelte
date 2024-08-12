@@ -6,7 +6,7 @@
 	import { fetchOfficial, loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
 	import Button from '$comp/Button.svelte';
-	import CheckBox from '$comp/CheckBox.svelte';
+	// import CheckBox from '$comp/CheckBox.svelte';
 
 	let profileURL = '';
 	let loading = false;
@@ -43,13 +43,13 @@
 		profile.set({});
 	};
 
-	const checkOfficial = async (userURL) => {
-		const { error, data = {} } = await fetchOfficial(userURL + '?' + Math.random());
-		if (error) throwError();
-		if (data.status === 'error' && profileURL) return throwError(data.msg);
-		dispatch('response', data);
-		return;
-	};
+	// const checkOfficial = async (userURL) => {
+	// 	const { error, data = {} } = await fetchOfficial(userURL + '?' + Math.random());
+	// 	if (error) throwError();
+	// 	if (data.status === 'error' && profileURL) return throwError(data.msg);
+	// 	dispatch('response', data);
+	// 	return;
+	// };
 
 	const checkMyProfile = async (publicID) => {
 		const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
@@ -60,7 +60,7 @@
 		if (!isGCSBUrl(userURL)) return throwError(msg);
 
 		loading = true;
-		if (isOfficial) return checkOfficial(userURL);
+		// if (isOfficial && target === 'arcade') return checkOfficial(userURL);
 
 		const { error, data = {} } = await loadProfile(userURL + '?' + Math.random());
 		if (error) return throwError();
@@ -103,13 +103,15 @@
 				{/if}
 
 				<div class="checkbox">
-					<CheckBox
-						id="use_official"
-						checked={isOfficial}
-						on:change={({ detail }) => ({ checked: isOfficial } = detail)}
-					>
-						Find me in the official data records
-					</CheckBox>
+					<!-- {#if target === 'arcade'}
+						<CheckBox
+							id="use_official"
+							checked={isOfficial}
+							on:change={({ detail }) => ({ checked: isOfficial } = detail)}
+						>
+							Find me in the official data records
+						</CheckBox>
+					{/if} -->
 				</div>
 
 				<div class="check">
