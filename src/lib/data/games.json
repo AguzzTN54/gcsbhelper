@@ -59,21 +59,21 @@
 				"token": "1q-functions-0870",
 				"type": "games",
 				"labs": []
-			}
-		]
-	},
-	{
-		"title": "More Games in August",
-		"group": "more_aug",
-		"point": 1,
-		"courses": [
+			},
 			{
 				"courseID": 5383,
 				"courseName": "The Arcade Base Camp August 2024",
 				"token": "1q-basecamp-0871",
 				"type": "games",
 				"labs": []
-			},
+			}
+		]
+	},
+	{
+		"title": "More Games",
+		"group": "more_arc",
+		"point": 1,
+		"courses": [
 			{
 				"courseID": 5395,
 				"courseName": "The Arcade Certification Zone August 2024",

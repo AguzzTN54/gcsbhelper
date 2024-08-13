@@ -5,7 +5,6 @@
 	export let badgeType = 'games';
 	export let data = [];
 
-	const isGame = badgeType === 'games';
 	const isSkill = badgeType === 'skillbadges';
 	const isBonus = badgeType === 'bonus';
 
@@ -77,7 +76,7 @@
 							<div class="left-top">
 								<div class="div">
 									{#if courseID}
-										{@const endpoint = isGame ? 'games' : `paths/${pathID}/course_templates`}
+										{@const endpoint = token ? 'games' : `paths/${pathID}/course_templates`}
 										{@const path = isSkill ? 'course_templates' : endpoint}
 										<a href="https://www.cloudskillsboost.google/{path}/{courseID}" target="_blank">
 											{courseName}
@@ -87,7 +86,7 @@
 										<span>{courseName}</span>
 									{/if}
 
-									{#if isGame}
+									{#if token}
 										{#if token}
 											<span style="display: inline-block; margin-left: 1rem">
 												Access Code: <b>{token}</b>
