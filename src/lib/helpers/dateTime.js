@@ -1,4 +1,9 @@
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+
+export default dayjs;
 
 export const arcadeDate = {
 	start: dayjs('15 July 2024, 18:30 GMT+7'),

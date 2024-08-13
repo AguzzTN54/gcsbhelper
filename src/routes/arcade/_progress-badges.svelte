@@ -1,6 +1,6 @@
 <script>
-	import dayjs from 'dayjs';
 	import { getContext } from 'svelte';
+	import dayjs from '$lib/helpers/dateTime';
 
 	export let badgeType = 'games';
 	export let data = [];
