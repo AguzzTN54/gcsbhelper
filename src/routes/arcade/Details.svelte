@@ -2,7 +2,7 @@
 	import { arcadeBadges as badges } from '$lib/stores/app-store';
 	import Tablepoint from './_tablepoint.svelte';
 	import ProgressBadges from './_progress-badges.svelte';
-	const { games, skillbadges, paths } = $badges;
+	const { games, skillbadges, bonus } = $badges;
 </script>
 
 <Tablepoint />
@@ -17,7 +17,7 @@
 	<ProgressBadges badgeType="skillbadges" data={skillbadges} />
 
 	<h3 style="margin-top: 2rem">Additional Bonus</h3>
-	<ProgressBadges badgeType="paths" data={paths} />
+	<ProgressBadges badgeType="bonus" data={bonus} />
 </section>
 
 <style>

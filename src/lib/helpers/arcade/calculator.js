@@ -6,20 +6,27 @@ import dbSolutions from '$lib/data/solutions.json';
 import { arcadeBonus, arcadeDate } from '../dateTime';
 
 const { value: bonusVal, bonusDateEnd, bonusDateStart, cdlEnd } = arcadeBonus;
-export const pointCounter = ({ games, skillbadges, paths }) => {
-	const points = {};
+export const pointCounter = ({ games, skillbadges, bonus }) => {
+	const points = { additional: 0, arcade: 0, trivia: 0, skillbadges: 0 };
 	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
-	games.forEach(({ group, courses }) => (points[group] = getPoint(courses)));
-	skillbadges.forEach(({ group, courses }) => (points[group] = getPoint(courses)));
-	paths.forEach(({ point, isComplete }) => (points['additional'] = isComplete ? point : 0));
+	skillbadges.forEach(({ courses }) => (points['skillbadges'] += getPoint(courses)));
+	games.forEach(({ group, courses }) => {
+		if (/(trivia)/.test(group)) return (points['trivia'] += getPoint(courses));
+		if (/(arcade)/.test(group)) return (points['arcade'] += getPoint(courses));
+	});
+	bonus.forEach(({ point, isComplete, pathID, courses }) => {
+		if (!pathID) return (points['additional'] += getPoint(courses));
+		points['additional'] += isComplete ? point : 0;
+	});
+	points['bonus'] = getBonus(points);
 	return points;
 };
 
 export const detailPoints = (data = []) => {
-	const paths = parseData(data, dbPaths, 'paths');
+	const bonus = [...parseData(data, dbPaths, 'paths'), ...parseData(data, dbGames, 'bonusGame')];
 	const skillbadges = parseData(data, dbSkillbg, 'skillbadges');
 	const games = parseData(data, dbGames, 'games');
-	return { games, skillbadges, paths };
+	return { games, skillbadges, bonus };
 };
 
 const parseData = (userData = [], db, type) => {
@@ -30,7 +37,13 @@ const parseData = (userData = [], db, type) => {
 		return { courseID, courseName, type, earnDate, token, labs };
 	};
 
-	return db.map(({ pathID, title, courses, point, group }) => {
+	const filtered = db.filter(({ group }) => {
+		if (type === 'bonusGame') return /more/.test(group);
+		if (type === 'games') return !/more/.test(group);
+		return true;
+	});
+
+	return filtered.map(({ pathID, title, courses, point, group, type }) => {
 		const completions = [];
 		const assigned = courses.map(info);
 		const newCourses = assign(assigned, point);

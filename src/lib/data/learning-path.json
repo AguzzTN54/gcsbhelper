@@ -4,6 +4,7 @@
 		"group": "cloud-digital-leader",
 		"pathID": 9,
 		"point": 5,
+		"type": "paths",
 		"courses": [
 			{
 				"courseID": 266,

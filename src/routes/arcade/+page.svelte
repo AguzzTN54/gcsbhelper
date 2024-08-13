@@ -54,26 +54,28 @@
 	</Modal>
 {/if}
 
-<section class="hero">
-	<div class="top">
-		<h1 class="press">Arcade Progress Tracker</h1>
-		<span> {startDate} - {endDate} ({timeZone})</span>
+<section>
+	<div class="hero">
+		<div class="top">
+			<h1 class="press">Arcade Progress Tracker</h1>
+			<span> {startDate} - {endDate} ({timeZone})</span>
+		</div>
+
+		<div class="info-container">
+			{#if isOfficial}
+				<SummaryOfficial />
+			{:else if !!user}
+				<Summary {user} points={$pointList} />
+			{:else if isLoaded}
+				<Forms />
+			{/if}
+		</div>
 	</div>
 
-	<div class="info-container">
-		{#if isOfficial}
-			<SummaryOfficial />
-		{:else if !!user}
-			<Summary {user} points={$pointList} />
-		{:else if isLoaded}
-			<Forms />
-		{/if}
-	</div>
+	{#if user && !isOfficial}
+		<Details />
+	{/if}
 </section>
-
-{#if user && !isOfficial}
-	<Details />
-{/if}
 
 <style>
 	.hero {

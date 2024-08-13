@@ -153,7 +153,6 @@
 		line-height: 0;
 	}
 
-	/*  */
 	.detail-btn {
 		position: absolute;
 		bottom: 0;

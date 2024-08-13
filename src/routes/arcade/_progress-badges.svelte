@@ -7,7 +7,7 @@
 
 	const isGame = badgeType === 'games';
 	const isSkill = badgeType === 'skillbadges';
-	const isPath = badgeType === 'paths';
+	const isBonus = badgeType === 'bonus';
 
 	let opened = [];
 	const handleModalSol = getContext('handleModalSol');
@@ -41,7 +41,7 @@
 		{@const progress = completionProgress(courses)}
 		<div class="accordion" class:open={opened.includes(badgeType + i)}>
 			<button class="handler" on:click={() => toggleAccordion(badgeType + i)}>
-				{#if isPath}
+				{#if isBonus && pathID}
 					<h4>
 						<a href="https://www.cloudskillsboost.google/paths/{pathID}" target="_blank">
 							{title}
@@ -53,7 +53,7 @@
 				{/if}
 
 				<div class="pts">
-					{#if isPath && isComplete}
+					{#if isBonus && isComplete && pathID}
 						<span class="point" style="color: green;"> (+{parentPoint}pts)</span>
 					{/if}
 
@@ -118,7 +118,7 @@
 										<span style="font-size: small;"> (Monsoon Bonus)</span>
 									{/if}
 
-									{#if isPath}
+									{#if isBonus && pathID}
 										<small class="point"> Complete </small>
 									{:else}
 										<span class="point"> +{point}pts</span>
