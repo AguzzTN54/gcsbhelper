@@ -3,7 +3,7 @@ import dbPaths from '$lib/data/learning-path.json';
 import dbSkillbg from '$lib/data/skill-badges.json';
 import dbGames from '$lib/data/games.json';
 import dbSolutions from '$lib/data/solutions.json';
-import { arcadeBonus, arcadeDate } from '../dateTime';
+import { arcadeBonus, arcadeDate } from './dateTime';
 
 const { value: bonusVal, bonusDateEnd, bonusDateStart, cdlEnd } = arcadeBonus;
 export const pointCounter = ({ games, skillbadges, bonus }) => {

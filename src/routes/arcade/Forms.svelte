@@ -1,7 +1,7 @@
 <script>
 	import { arcadeBadges, pointList, arcadeProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
-	import { detailPoints, pointCounter } from '$lib/helpers/arcade/calculator';
+	import { detailPoints, pointCounter } from '$lib/helpers/calculator-arcade';
 	import UrlForm from '../_global/URLForm.svelte';
 
 	// const proccessOfficial = (data) => {
