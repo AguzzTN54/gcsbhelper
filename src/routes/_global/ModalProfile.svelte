@@ -1,13 +1,16 @@
 <script>
 	import { getContext } from 'svelte';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
-	import { arcadeProfile as profile } from '$lib/stores/app-store';
+	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
 	import Button from '$comp/Button.svelte';
 
+	export let target = 'arcade';
+	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
+
 	const modalHandle = getContext('modalHandle');
-	let myAccounts = accounts.getAll();
+	let myAccounts = accounts.getAll(target).filter(({ profileID }) => !!profileID);
 
 	const { profileID: activeProfile } = $profile;
 	const selectAccount = (profileID) => {
@@ -18,7 +21,7 @@
 
 	const deleteAccount = (profileID) => {
 		myAccounts = myAccounts.filter(({ profileID: id }) => profileID !== id);
-		accounts.delete(profileID);
+		accounts.delete(profileID, target);
 	};
 
 	const addNew = () => {
@@ -28,7 +31,7 @@
 </script>
 
 <Modal>
-	<h1 class="header">Your Arcade Accounts</h1>
+	<h1 class="header">Your {target === 'arcade' ? 'Arcade' : 'JuaraGCP'} Accounts</h1>
 	<div class="body">
 		{#if myAccounts.length < 1}
 			<div class="iete" style="text-align: center;">No Data</div>

@@ -17,5 +17,10 @@ export const arcadeBonus = {
 	cdlEnd: dayjs('5 August 2024, EDT')
 };
 
+export const juaraDate = {
+	start: dayjs('20 August 2024, 12:00 GMT+7'),
+	end: dayjs('15 September 2024, 23:59 GMT+7')
+};
+
 const timeOffset = new Date().getTimezoneOffset() / -60;
 export const timeZone = `GMT${timeOffset > 0 ? '+' : ''}${timeOffset}`;

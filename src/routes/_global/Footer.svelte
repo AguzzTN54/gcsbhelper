@@ -17,7 +17,7 @@
 	<div class="disclaimer">
 		<span>
 			This site is not affiliated with
-			<a href="cloudskillsboost.google"> Google Cloud Skill Boost </a>
+			<a href="https://cloudskillsboost.google"> Google Cloud Skill Boost </a>
 			or <a href="https://cloud.google.com/"> Google Cloud Platform </a>.
 			<b> We do not store or even proccess your data on our server! </b>
 		</span>
@@ -46,7 +46,9 @@
 		color: #fff;
 		padding: 0.5% 2.5%;
 		font-size: smaller;
+		view-transition-name: footer;
 	}
+
 	.footnote span {
 		display: block;
 		white-space: nowrap;

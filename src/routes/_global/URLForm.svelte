@@ -1,13 +1,15 @@
 <script>
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { arcadeProfile as profile } from '$lib/stores/app-store';
+	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
 	import { accounts, localConfig } from '$lib/helpers/localstorage';
 	import { fetchOfficial, loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/Loading.svelte';
 	import Button from '$comp/Button.svelte';
 	// import CheckBox from '$comp/CheckBox.svelte';
 
+	export let target = 'arcade';
+	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
 	let profileURL = '';
 	let loading = false;
 	let isError = false;
@@ -83,7 +85,7 @@
 			<span class="loading-text">Waiting for Profile</span>
 		</div>
 	{:else}
-		<form class="field" on:submit={checkMyProfile} transition:fade>
+		<form class="field" on:submit|preventDefault={checkMyProfile} transition:fade>
 			<div class="group">
 				<input
 					type="text"
@@ -121,7 +123,7 @@
 		</form>
 	{/if}
 
-	{#if accounts.getAll().length > 0 && !loading}
+	{#if accounts.getAll(target).length > 0 && !loading}
 		<button class="accounts" on:click={modalHandle} out:fade>
 			<i class="gc-user"></i>
 		</button>

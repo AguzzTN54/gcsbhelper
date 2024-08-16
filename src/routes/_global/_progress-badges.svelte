@@ -36,10 +36,10 @@
 </script>
 
 <div class="group">
-	{#each data as { courses, title, pathID, point: parentPoint, isComplete }, i}
+	{#each data as { courses, title, pathID, point: parentPoint, isComplete, group }, i}
 		{@const progress = completionProgress(courses)}
-		<div class="accordion" class:open={opened.includes(badgeType + i)}>
-			<button class="handler" on:click={() => toggleAccordion(badgeType + i)}>
+		<div class="accordion" class:open={opened.includes(group + i)}>
+			<button class="handler" on:click={() => toggleAccordion(group + i)}>
 				{#if isBonus && pathID}
 					<h4>
 						<a href="https://www.cloudskillsboost.google/paths/{pathID}" target="_blank">
@@ -69,7 +69,7 @@
 				</div>
 			</button>
 
-			<div class="list" id={badgeType + i} style="--height: 0px;">
+			<div class="list" id={group + i} style="--height: 0px;">
 				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate, validity }}
 					<div class="item" class:finished={!!earnDate}>
 						<div class="left">

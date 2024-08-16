@@ -1,0 +1,188 @@
+[
+	{
+		"title": "AI/ML",
+		"group": "aiml",
+		"list": [
+			{
+				"title": "Skill Badges",
+				"group": "ai-sb",
+				"courses": [
+					{
+						"courseID": 646,
+						"courseName": "Classify Images with TensorFlow on Google Cloud",
+						"type": "skill"
+					},
+					{
+						"courseID": 639,
+						"courseName": "Build LookML Objects in Looker",
+						"type": "skill"
+					},
+					{
+						"courseID": 644,
+						"courseName": "Detect Manufacturing Defects using Visual Inspection AI",
+						"type": "skill"
+					},
+					{
+						"courseID": 634,
+						"courseName": "Analyze Speech and Language with Google APIs",
+						"type": "skill"
+					},
+					{
+						"courseID": 633,
+						"courseName": "Analyze Images with the Cloud Vision API",
+						"type": "skill"
+					},
+					{
+						"courseID": 667,
+						"courseName": "Analyze Sentiment with Natural Language API",
+						"type": "skill"
+					},
+					{
+						"courseID": 656,
+						"courseName": "Perform Predictive Data Analysis in BigQuery",
+						"type": "skill"
+					},
+					{
+						"courseID": 626,
+						"courseName": "Create ML Models with BigQuery ML",
+						"type": "skill"
+					}
+				]
+			},
+			{
+				"title": "Regular Badges",
+				"group": "ai-rb",
+				"courses": [
+					{
+						"courseID": 619,
+						"courseName": "Baseline: Data, ML, AI",
+						"type": "completion"
+					},
+					{
+						"courseID": 740,
+						"courseName": "Intro to ML: Language Processing",
+						"type": "completion"
+					},
+					{
+						"courseID": 739,
+						"courseName": "Intro to ML: Image Processing",
+						"type": "completion"
+					},
+					{
+						"courseID": 723,
+						"courseName": "Generative AI Explorer - Vertex AI",
+						"type": "completion"
+					},
+					{
+						"courseID": 156,
+						"courseName": "Google Cloud Computing Foundations: Data, ML, and AI in Google",
+						"type": "completion"
+					},
+					{
+						"courseID": 157,
+						"courseName": "Managing Machine Learning Projects with Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 593,
+						"courseName": "Introduction to AI and Machine Learning on Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 3,
+						"courseName": "Google Cloud Big Data and Machine Learning Fundamentals",
+						"type": "completion"
+					},
+					{
+						"courseID": 23,
+						"courseName": "Applying Machine Learning to your Data with Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 17,
+						"courseName": "Production Machine Learning Systems",
+						"type": "completion"
+					},
+					{
+						"courseID": 55,
+						"courseName": "Smart Analytics, Machine Learning, and AI on Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 191,
+						"courseName": "ML Pipelines on Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 980,
+						"courseName": "Integrating Applications with Gemini 1.0 Pro on Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 879,
+						"courseName": "Gemini for Data Scientists and Analysts",
+						"type": "completion"
+					},
+					{
+						"courseID": 881,
+						"courseName": "Gemini for Application Developers",
+						"type": "completion"
+					}
+				]
+			}
+		]
+	},
+	{
+		"title": "Infrastructure & Security",
+		"group": "infrastructure-security",
+		"list": [
+			{
+				"title": "Skill Badges",
+				"group": "is-sb",
+				"courses": [
+					{
+						"courseID": 642,
+						"courseName": "Create and Manage AlloyDB Databases",
+						"type": "skill"
+					},
+					{
+						"courseID": 652,
+						"courseName": "Create and Manage Cloud SQL for PostgreSQL Instances",
+						"type": "skill"
+					},
+					{
+						"courseID": 653,
+						"courseName": "Monitor and Manage Google Cloud Resources",
+						"type": "skill"
+					},
+					{
+						"courseID": 783,
+						"courseName": "Manage Kubernetes in Google Cloud",
+						"type": "skill"
+					},
+					{
+						"courseID": 636,
+						"courseName": "Build Infrastructure with Terraform on Google Cloud",
+						"type": "skill"
+					}
+				]
+			},
+			{
+				"title": "Regular Badges",
+				"group": "is-rb",
+				"courses": [
+					{
+						"courseID": 87,
+						"courseName": "Security Best Practices in Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 88,
+						"courseName": "Mitigating Security Vulnerabilities on Google Cloud",
+						"type": "completion"
+					}
+				]
+			}
+		]
+	}
+]

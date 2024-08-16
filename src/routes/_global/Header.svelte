@@ -21,11 +21,12 @@
 		display: block;
 		width: 100%;
 		z-index: 1;
-		background-color: #fff;
 		transition: all 0.5s;
 		padding: 0 5%;
+		view-transition-name: header;
 	}
 	header.scrolled {
+		background-color: #fff;
 		box-shadow: 0 0 0.5rem #ccc;
 	}
 
@@ -40,7 +41,6 @@
 		color: #555;
 		font-weight: bolder;
 		position: relative;
-		font-size: 0.9rem;
 	}
 
 	a::after {
