@@ -3,10 +3,11 @@
 	import { juaraProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { juaraDate, timeZone } from '$lib/helpers/dateTime';
-	import Forms from './Forms.svelte';
-	import Summary from './Summary.svelte';
 	import ModalProfile from '../_global/ModalProfile.svelte';
+	import Ornament from './_ornament.svelte';
+	import Forms from './Forms.svelte';
 	import Details from './Details.svelte';
+	import Summary from './Summary.svelte';
 
 	const { end, start } = juaraDate;
 	const startDate = start.format('DD MMMM YYYY, HH:mm');
@@ -39,6 +40,7 @@
 {/if}
 
 <section>
+	<Ornament />
 	<div class="hero">
 		<div class="top">
 			<h1>JuaraGCP Progress Tracker</h1>
@@ -60,6 +62,12 @@
 {/if}
 
 <style>
+	section {
+		overflow: hidden;
+		width: var(--screen-width);
+		position: relative;
+	}
+
 	.hero {
 		padding: 2% 5%;
 		width: var(--screen-width);
