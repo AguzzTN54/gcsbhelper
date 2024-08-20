@@ -4,6 +4,7 @@
 
 	export let badgeType = 'games';
 	export let data = [];
+	export let page = 'arcade';
 
 	const isSkill = badgeType === 'skillbadges';
 	const isBonus = badgeType === 'bonus';
@@ -117,8 +118,8 @@
 										<span style="font-size: small;"> (Monsoon Bonus)</span>
 									{/if}
 
-									{#if isBonus && pathID}
-										<small class="point"> Complete </small>
+									{#if (isBonus && pathID) || page === 'juaragcp'}
+										<small class="point"> Complete <i class="gc-check"></i> </small>
 									{:else}
 										<span class="point"> +{point}pts</span>
 									{/if}

@@ -8,7 +8,7 @@
 
 	{#each $juaraBadges as { title, list, group }}
 		<h3 class={group}>{title}</h3>
-		<ProgressBadges badgeType="skillbadges" data={list} />
+		<ProgressBadges badgeType="skillbadges" data={list} page="juaragcp" />
 	{/each}
 </section>
 

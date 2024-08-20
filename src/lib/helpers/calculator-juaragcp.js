@@ -24,8 +24,9 @@ const checkItem = (dt, userData) => {
 	dt.earnDate = date;
 
 	const { end, start } = juaraDate;
+	const startDate = d.isSame(start, 'date') || d.isAfter(start);
 	const endDate = d.isBefore(end) || d.isSame(end, 'date');
-	const validity = d.isAfter(start) && endDate;
+	const validity = startDate && endDate;
 	return { ...dt, validity };
 };
 
