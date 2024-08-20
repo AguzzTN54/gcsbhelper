@@ -57,7 +57,7 @@
 		{/if}
 	</div>
 	<div class="footer">
-		<Button on:click={addNew}>Check Different Account</Button>
+		<Button on:click={addNew}>Check More Account(s)</Button>
 	</div>
 </Modal>
 

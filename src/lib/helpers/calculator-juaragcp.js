@@ -35,13 +35,14 @@ const badgeCounter = (badges) => {
 	const counter = ({ group, courses }) => {
 		courses.forEach(({ validity }) => {
 			if (!validity) return;
-			if (/-sb/.test(group)) badgeCount['skill'] += 1;
+			if (/-sb/.test(group)) return (badgeCount['skill'] += 1);
 			badgeCount['completion'] += 1;
 		});
 	};
 	badges.forEach(({ list }) => list.forEach(counter));
 	return badgeCount;
 };
+
 export const checkTier = (badges) => {
 	const { completion, skill } = badgeCounter(badges);
 	const total = completion + skill;
