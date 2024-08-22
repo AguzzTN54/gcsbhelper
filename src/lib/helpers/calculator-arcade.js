@@ -30,10 +30,10 @@ export const detailPoints = (data = []) => {
 
 const parseData = (userData = [], db, type) => {
 	const assign = (list, point) => list.map((dt) => assignInfo(dt, userData, point));
-	const info = ({ courseID, courseName, token, labs }) => {
+	const info = ({ courseID, courseName, token, labs, point: base_point }) => {
 		const earned = userData.find(({ courseID: id }) => courseID === id);
 		const { date: earnDate = null } = earned || {};
-		return { courseID, courseName, type, earnDate, token, labs };
+		return { courseID, courseName, type, earnDate, token, labs, base_point };
 	};
 
 	const filtered = db.filter(({ group }) => {
@@ -81,7 +81,7 @@ const assignInfo = (dt, userData, point = 0) => {
 	const bonusEnd = d.isBefore(bonusDateEnd) || d.isSame(bonusDateEnd, 'date');
 	const hasBonus = d.isAfter(bonusDateStart) && bonusEnd;
 	dt.hasBonus = hasBonus;
-	dt.point = !validity ? 0 : hasBonus ? bonusVal : point;
+	dt.point = !validity ? 0 : hasBonus ? bonusVal : dt.base_point || point;
 	return { ...dt, labs, validity };
 };
 

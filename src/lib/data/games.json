@@ -72,19 +72,20 @@
 	{
 		"title": "More Games",
 		"group": "more_arc",
-		"point": 1,
 		"courses": [
 			{
 				"courseID": 5395,
 				"courseName": "The Arcade Certification Zone August 2024",
 				"token": "1q-cert-0877",
-				"type": "games"
+				"type": "games",
+				"point": 1
 			},
 			{
 				"courseID": 5414,
-				"courseName": "The Arcade Special Edition",
+				"courseName": "The Arcade-athon",
 				"token": "1q-arcdthon-0875",
-				"type": "games"
+				"type": "games",
+				"point": 2
 			}
 		]
 	}
