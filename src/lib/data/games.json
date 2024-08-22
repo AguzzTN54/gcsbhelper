@@ -79,6 +79,12 @@
 				"courseName": "The Arcade Certification Zone August 2024",
 				"token": "1q-cert-0877",
 				"type": "games"
+			},
+			{
+				"courseID": 5414,
+				"courseName": "The Arcade Special Edition",
+				"token": "1q-arcdthon-0875",
+				"type": "games"
 			}
 		]
 	}
