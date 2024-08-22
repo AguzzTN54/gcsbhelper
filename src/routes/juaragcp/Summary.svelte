@@ -4,6 +4,7 @@
 	import { juaraBadges, juaraProfile } from '$lib/stores/app-store';
 	import { checkTier } from '$lib/helpers/calculator-juaragcp';
 	import Tier from './Tier.svelte';
+	import Tablepoint from './_tablepoint.svelte';
 
 	const modalHandle = getContext('modalHandle');
 	const tier = checkTier($juaraBadges);
@@ -16,6 +17,7 @@
 
 	<Tier {tier} />
 
+	<Tablepoint />
 	<div class="detail-btn" in:fly={{ y: -20, delay: 500 }}>
 		<span>
 			<i class="gc-double-left"></i>

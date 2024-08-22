@@ -30,7 +30,7 @@ const checkItem = (dt, userData) => {
 	return { ...dt, validity };
 };
 
-const badgeCounter = (badges) => {
+export const badgeCounter = (badges) => {
 	const badgeCount = { skill: 0, completion: 0 };
 	const counter = ({ group, courses }) => {
 		courses.forEach(({ validity }) => {

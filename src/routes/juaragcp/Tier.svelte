@@ -13,10 +13,13 @@
 {#if tier > 0}
 	<div class="notes">
 		<p>
-			Selamat, kamu telah menyelesaikan salah satu syarat untuk mendapatkan reward Tier {tier}!!
+			Selamat! sekarang kamu bisa cek lagi Email Welcome dari #JuaraGCP untuk mengisi <b
+				>Completion Form</b
+			>
+			dan Nantikan info selanjutnya dari <b>#JuaraGCP</b>!
 			<br />
-			Eits... jangan stop di sini, masih ada 1 step lagi agar kamu sepenuhnya layak mendapatkan Hadiah.
-			Nantikan Info selanjutnya dari <b>#JuaraGCP</b>!
+			Eits... tapi jangan stop di sini!! masih banyak materi GCP yang bisa kamu pelajari di
+			<a href="https://www.cloudskillsboost.google/catalog" target="_blank">Cloud Skill Boost</a>!!
 		</p>
 	</div>
 {/if}
@@ -36,8 +39,12 @@
 		}
 	}
 
+	a {
+		text-decoration: underline;
+	}
+
 	.notes {
-		width: 600px;
+		width: 650px;
 		max-width: 100%;
 		padding: 0.5rem 1rem 1rem;
 		border: 2px dashed var(--color-theme-1);
