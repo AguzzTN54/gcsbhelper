@@ -26,9 +26,9 @@
 				"labs": []
 			},
 			{
-				"courseID": null,
+				"courseID": 5416,
 				"courseName": "The Arcade Trivia August 2024 Week 4",
-				"token": null,
+				"token": "1q-trivia-08020",
 				"type": "games",
 				"labs": []
 			}
