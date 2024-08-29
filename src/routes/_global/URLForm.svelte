@@ -4,7 +4,7 @@
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
 	import { accounts, localConfig } from '$lib/helpers/localstorage';
 	import { fetchOfficial, loadProfile } from '$lib/helpers/profile-parser';
-	import Loading from '$comp/Loading.svelte';
+	import Loading from '$comp/LoaderAnimation.svelte';
 	import Button from '$comp/Button.svelte';
 	// import CheckBox from '$comp/CheckBox.svelte';
 

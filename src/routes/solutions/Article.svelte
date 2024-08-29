@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { marked } from 'marked';
 	import dbSolutions from '$lib/data/solutions.json';
-	import Loading from '$comp/Loading.svelte';
+	import Loading from '$comp/LoaderAnimation.svelte';
 	import YouTube from './YouTube.svelte';
 
 	export let labID = '';
