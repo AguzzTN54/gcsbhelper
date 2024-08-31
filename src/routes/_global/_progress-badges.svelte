@@ -1,6 +1,5 @@
 <script>
 	import { getContext } from 'svelte';
-	import dayjs from '$lib/helpers/dateTime';
 
 	export let badgeType = 'games';
 	export let data = [];
@@ -106,7 +105,7 @@
 							</div>
 							<div class="date">
 								{#if earnDate}
-									<span>Earned: {dayjs(earnDate).format('DD MMMM YYYY')}</span>
+									<span>Earned: {earnDate.format('DD MMMM YYYY')}</span>
 								{/if}
 							</div>
 						</div>

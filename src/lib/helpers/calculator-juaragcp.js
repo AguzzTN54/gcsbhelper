@@ -19,9 +19,8 @@ const checkItem = (dt, userData) => {
 	if (!earned) return { courseID, courseName, earnDate };
 
 	// if badge Earned
-	const { date } = earned;
-	const d = dayjs(date);
-	dt.earnDate = date;
+	const d = dayjs(earnDate);
+	dt.earnDate = d;
 
 	const { end, start } = juaraDate;
 	const startDate = d.isSame(start, 'date') || d.isAfter(start);

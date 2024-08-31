@@ -1,8 +1,8 @@
 const cors_host = [
-	'https://cors.eu.org/',
-	// 'https://api.allorigins.win/raw?url=',
+	// 'https://cors.eu.org/',
+	'https://api.allorigins.win/raw?url=',
 	'https://cors-get-proxy.sirjosh.workers.dev/?url=',
-	'https://cors-proxy.fringe.zone/',
+	// 'https://cors-proxy.fringe.zone/',
 	'https://api.wishsimulator.app/gcsb?u='
 ];
 
