@@ -68,7 +68,7 @@ const assignInfo = (dt, userData, point = 0) => {
 	// if badge Earned
 	const { date } = earned;
 	const d = dayjs(date);
-	dt.earnDate = date;
+	dt.earnDate = d;
 
 	if (dt.type === 'paths') {
 		const validity = d.isBefore(cdlEnd) || d.isSame(cdlEnd, 'date');
