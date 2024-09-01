@@ -70,6 +70,76 @@
 		]
 	},
 	{
+		"title": "Trivia - September",
+		"group": "trivia_sep",
+		"point": 1,
+		"courses": [
+			{
+				"courseID": 5429,
+				"courseName": "The Arcade Trivia September 2024 Week 1",
+				"token": "1q-trivia-25109",
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": null,
+				"courseName": "The Arcade Trivia September 2024 Week 2",
+				"token": null,
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": null,
+				"courseName": "The Arcade Trivia September 2024 Week 3",
+				"token": null,
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": null,
+				"courseName": "The Arcade Trivia September 2024 Week 4",
+				"token": null,
+				"type": "games",
+				"labs": []
+			}
+		]
+	},
+	{
+		"title": "Arcade - September",
+		"group": "arcade_sep",
+		"point": 1,
+		"courses": [
+			{
+				"courseID": 5426,
+				"courseName": "Level 1: Security and Identity",
+				"token": "1q-security-9043",
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": 5427,
+				"courseName": "Level 2: Databases",
+				"token": "1q-database-3718",
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": 5428,
+				"courseName": "Level 3: GenAIus Chats",
+				"token": "1q-genaius-0999",
+				"type": "games",
+				"labs": []
+			},
+			{
+				"courseID": 5425,
+				"courseName": "The Arcade Base Camp September 2024",
+				"token": "1q-basecamp-3941",
+				"type": "games",
+				"labs": []
+			}
+		]
+	},
+	{
 		"title": "More Games",
 		"group": "more_arc",
 		"courses": [
