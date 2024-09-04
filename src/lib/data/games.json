@@ -82,23 +82,23 @@
 				"labs": []
 			},
 			{
-				"courseID": null,
+				"courseID": 5439,
 				"courseName": "The Arcade Trivia September 2024 Week 2",
-				"token": null,
+				"token": "1q-trivia-29221",
 				"type": "games",
 				"labs": []
 			},
 			{
-				"courseID": null,
+				"courseID": 5440,
 				"courseName": "The Arcade Trivia September 2024 Week 3",
-				"token": null,
+				"token": "1q-trivia-41330",
 				"type": "games",
 				"labs": []
 			},
 			{
-				"courseID": null,
+				"courseID": 5441,
 				"courseName": "The Arcade Trivia September 2024 Week 4",
-				"token": null,
+				"token": "1q-trivia-63551",
 				"type": "games",
 				"labs": []
 			}
