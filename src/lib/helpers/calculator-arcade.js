@@ -6,9 +6,13 @@ import dayjs, { arcadeBonus, arcadeDate } from './dateTime';
 
 const { value: bonusVal, bonusDateEnd, bonusDateStart, cdlEnd } = arcadeBonus;
 export const pointCounter = ({ games, skillbadges, bonus }) => {
+	let skillbadgesCount = 0;
 	const points = { additional: 0, arcade: 0, trivia: 0, skillbadges: 0 };
 	const getPoint = (arr) => arr.map(({ point }) => point).reduce((pv = 0, cur) => pv + cur);
-	skillbadges.forEach(({ courses }) => (points['skillbadges'] += getPoint(courses)));
+	skillbadges.forEach(({ courses }) => {
+		skillbadgesCount += courses.filter(({ point }) => point).length;
+		points['skillbadges'] += getPoint(courses);
+	});
 	games.forEach(({ group, courses }) => {
 		if (/(trivia)/.test(group)) return (points['trivia'] += getPoint(courses));
 		if (/(arcade)/.test(group)) return (points['arcade'] += getPoint(courses));
@@ -17,7 +21,7 @@ export const pointCounter = ({ games, skillbadges, bonus }) => {
 		if (!pathID) return (points['additional'] += getPoint(courses));
 		points['additional'] += isComplete ? point : 0;
 	});
-	points['bonus'] = getBonus(points);
+	points['bonus'] = getBonus({ ...points, skillbadges: skillbadgesCount });
 	return points;
 };
 
