@@ -156,6 +156,13 @@
 				"token": "1q-arcdthon-0875",
 				"type": "games",
 				"point": 2
+			},
+			{
+				"courseID": 5463,
+				"courseName": "The Arcade Certification Zone September 2024",
+				"token": "1q-cert-10919",
+				"type": "games",
+				"point": 1
 			}
 		]
 	}
