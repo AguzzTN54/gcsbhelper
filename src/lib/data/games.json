@@ -163,6 +163,13 @@
 				"token": "1q-cert-10919",
 				"type": "games",
 				"point": 1
+			},
+			{
+				"courseID": 5496,
+				"courseName": "The Arcade Explorers",
+				"token": "1q-explorers-00700",
+				"type": "games",
+				"point": 2
 			}
 		]
 	}
