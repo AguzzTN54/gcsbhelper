@@ -1,80 +1,113 @@
-<!doctype>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>UNMAINTAINED</title>
+<script>
+	import { onNavigate } from '$app/navigation';
+	import { setContext } from 'svelte';
+	import 'overlayscrollbars/overlayscrollbars.css';
+	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+	import '../app.css';
+	import Footer from './_global/Footer.svelte';
+	import Header from './_global/Header.svelte';
+	import ModalSolution from './_global/ModalSolution.svelte';
 
-		<style>
-			body {
-				--bg: white;
-				--fg: #222;
-				--divider: #ccc;
-				background: var(--bg);
-				color: var(--fg);
-				font-family:
-					system-ui,
-					-apple-system,
-					BlinkMacSystemFont,
-					'Segoe UI',
-					Roboto,
-					Oxygen,
-					Ubuntu,
-					Cantarell,
-					'Open Sans',
-					'Helvetica Neue',
-					sans-serif;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				height: 100vh;
-				margin: 0;
-			}
+	let innerHeight, innerWidth;
+	let footerheight;
+	$: screenH = innerHeight - footerheight;
+	$: screenHeight = screenH ? `${screenH}px` : '100vh';
 
-			.error {
-				display: flex;
-				align-items: center;
-				max-width: 32rem;
-				margin: 0 1rem;
-			}
+	let showModalSolution = false;
+	let labs = [];
+	setContext('handleModalSol', (labList = []) => {
+		labs = labList;
+		showModalSolution = !showModalSolution;
+	});
 
-			.status {
-				font-weight: 200;
-				font-size: 3rem;
-				line-height: 1;
-				position: relative;
-				top: -0.05rem;
-			}
+	let isTop = true;
+	const scrolled = ({ detail }) => {
+		const { viewport } = detail[0].elements();
+		const { scrollTop } = viewport;
+		isTop = scrollTop <= 0;
+	};
 
-			.message {
-				border-left: 1px solid var(--divider);
-				padding: 0 0 0 1rem;
-				margin: 0 0 0 1rem;
-				min-height: 2.5rem;
-				display: flex;
-				align-items: center;
-			}
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
 
-			.message h1 {
-				font-weight: 400;
-				font-size: 1em;
-				margin: 0;
-			}
+		// Navigation Started
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+				// Navigation Complete
+			});
+		});
+	});
+</script>
 
-			@media (prefers-color-scheme: dark) {
-				body {
-					--bg: #222;
-					--fg: #ddd;
-					--divider: #666;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<div class="error">
-			<span class="status">412</span>
-			<div class="message">
-				<h1>UNMAINTAINED!</h1>
-			</div>
+<svelte:window bind:innerHeight bind:innerWidth />
+
+<main>
+	<OverlayScrollbarsComponent
+		options={{ scrollbars: { theme: 'os-theme-dark' } }}
+		on:osScroll={scrolled}
+		defer
+	>
+		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
+			{#if showModalSolution}
+				<ModalSolution {labs} />
+			{/if}
+			<Header {isTop} />
+			<slot />
 		</div>
-	</body>
-</html>
+	</OverlayScrollbarsComponent>
+
+	<footer bind:clientHeight={footerheight}>
+		<Footer />
+	</footer>
+</main>
+
+<style>
+	main,
+	div {
+		width: var(--screen-width);
+		height: calc(var(--screen-height));
+	}
+
+	main {
+		display: flex;
+		flex-direction: column;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-out {
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-from-right {
+		from {
+			transform: translateY(-30px);
+		}
+	}
+
+	@keyframes slide-to-left {
+		to {
+			transform: translateY(30px);
+		}
+	}
+
+	:root::view-transition-old(root) {
+		animation:
+			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+	}
+
+	:root::view-transition-new(root) {
+		animation:
+			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+	}
+</style>
