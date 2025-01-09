@@ -1,16 +1,23 @@
 <script>
-	export let tier = 0;
+	export let tierData;
+	const { tier, status } = tierData || {};
 </script>
 
 <div class="tier">
-	{#if tier === 0}
+	{#if tier === 0 || status === 'incomplete'}
 		<h3>NO TIER</h3>
 	{:else}
 		<h3>TIER {tier}</h3>
 	{/if}
 </div>
 
-{#if tier > 0}
+{#if status === 'incomplete' && tier > 0}
+	<div class="notes">
+		<p>
+			Badge(s) dengan label "<b>Mandatory</b>" wajib diselesaikan!
+		</p>
+	</div>
+{:else if tier > 0}
 	<div class="notes">
 		<p>
 			Selamat! Kini kamu bisa <b>Cek Kembali Email Welcome</b> dari #JuaraGCP untuk mengisi

@@ -1,15 +1,17 @@
 <script>
-	import { page } from '$app/stores';
+	// import { page } from '$app/stores';
 
 	export let isTop = true;
-	$: ({ url } = $page);
-	$: ({ pathname } = url);
+	// $: ({ url } = $page);
+	// $: ({ pathname } = url);
 </script>
 
 <header class:scrolled={!isTop}>
 	<nav>
-		<a href="/arcade" class:active={/arcade/.test(pathname)}> Arcade </a>
-		<a href="/juaragcp" class:active={/juaragcp/.test(pathname)}> JuaraGCP </a>
+		<!-- <a href="/arcade" class:active={/arcade/.test(pathname)}> Arcade </a> -->
+		<a href="https://rsvp.withgoogle.com/events/juaragcp-s11/home" target="_blank">
+			<span>Join JuaraGCP S11 </span> <i class="gc-external-link"></i>
+		</a>
 	</nav>
 </header>
 
@@ -37,7 +39,7 @@
 	a {
 		padding: 1rem;
 		text-decoration: none;
-		text-transform: uppercase;
+		/* text-transform: uppercase; */
 		color: #555;
 		font-weight: bolder;
 		position: relative;
@@ -54,7 +56,7 @@
 		transition: all 0.25s;
 	}
 
-	a.active::after,
+	/* a.active::after, */
 	a:hover::after {
 		transform: translateX(-50%) scaleX(1);
 	}

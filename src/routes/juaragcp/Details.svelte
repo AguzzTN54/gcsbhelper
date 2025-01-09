@@ -6,8 +6,10 @@
 <section>
 	<h2># Progress Details</h2>
 
-	{#each $juaraBadges as { title, list, group }}
-		<h3 class={group}>{title}</h3>
+	{#each $juaraBadges as { list, group }}
+		<h3 class={group}>
+			<!-- {title} -->
+		</h3>
 		<ProgressBadges badgeType="skillbadges" data={list} page="juaragcp" />
 	{/each}
 </section>

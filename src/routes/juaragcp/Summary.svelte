@@ -7,7 +7,7 @@
 	import Tablepoint from './_tablepoint.svelte';
 
 	const modalHandle = getContext('modalHandle');
-	const tier = checkTier($juaraBadges);
+	const tierData = checkTier($juaraBadges);
 </script>
 
 <div class="summary" in:fade>
@@ -15,7 +15,7 @@
 		<h2><i class="gc-triangle-down"></i> {$juaraProfile.name}</h2>
 	</button>
 
-	<Tier {tier} />
+	<Tier {tierData} />
 
 	<Tablepoint />
 	<div class="detail-btn" in:fly={{ y: -20, delay: 500 }}>

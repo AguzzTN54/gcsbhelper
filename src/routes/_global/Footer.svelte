@@ -16,10 +16,10 @@
 <div class="footnote" use:marquee>
 	<div class="disclaimer">
 		<span>
-			This site is not affiliated with
+			This site is not officialy affiliated with
 			<a href="https://cloudskillsboost.google"> Google Cloud Skill Boost </a>
-			or <a href="https://cloud.google.com/"> Google Cloud Platform </a>.
-			<b> We do not store or even proccess your data on our server! </b>
+			or <a href="https://cloud.google.com/"> JuaraGCP </a>!
+			<!-- <b> We do not store or even proccess your data on our server! </b> -->
 		</span>
 	</div>
 

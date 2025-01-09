@@ -8,43 +8,79 @@
 				"group": "ai-sb",
 				"courses": [
 					{
-						"courseID": 646,
-						"courseName": "Classify Images with TensorFlow on Google Cloud",
+						"courseID": 976,
+						"courseName": "Prompt Design in Vertex AI",
+						"type": "skill",
+						"required": true
+					},
+					{
+						"courseID": 1076,
+						"courseName": "Build Real World AI Applications with Gemini and Imagen",
 						"type": "skill"
 					},
 					{
-						"courseID": 639,
-						"courseName": "Build LookML Objects in Looker",
+						"courseID": 700,
+						"courseName": "Cloud Speech API: 3 Ways",
 						"type": "skill"
 					},
 					{
-						"courseID": 644,
-						"courseName": "Detect Manufacturing Defects using Visual Inspection AI",
+						"courseID": 631,
+						"courseName": "Prepare Data for ML APIs on Google Cloud",
 						"type": "skill"
 					},
 					{
-						"courseID": 634,
-						"courseName": "Analyze Speech and Language with Google APIs",
+						"courseID": 674,
+						"courseName": "Automate Data Capture at Scale with Document AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 633,
-						"courseName": "Analyze Images with the Cloud Vision API",
+						"courseID": 630,
+						"courseName": "Use Machine Learning APIs on Google Cloud",
 						"type": "skill"
 					},
 					{
-						"courseID": 667,
-						"courseName": "Analyze Sentiment with Natural Language API",
+						"courseID": 684,
+						"courseName": "Build and Deploy Machine Learning Solutions on Vertex AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 656,
-						"courseName": "Perform Predictive Data Analysis in BigQuery",
+						"courseID": 686,
+						"courseName": "Build Custom Processors with Document AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 626,
-						"courseName": "Create ML Models with BigQuery ML",
+						"courseID": 978,
+						"courseName": "Develop GenAI Apps with Gemini and Streamlit",
+						"type": "skill"
+					},
+					{
+						"courseID": 959,
+						"courseName": "Explore Generative AI with the Vertex AI Gemini API",
+						"type": "skill"
+					},
+					{
+						"courseID": 981,
+						"courseName": "Inspect Rich Documents with Gemini Multimodality and Multimodal RAG",
+						"type": "skill"
+					},
+					{
+						"courseID": 754,
+						"courseName": "The Basics of Google Cloud Compute",
+						"type": "skill"
+					},
+					{
+						"courseID": 751,
+						"courseName": "Secure BigLake Data",
+						"type": "skill"
+					},
+					{
+						"courseID": 1164,
+						"courseName": "Secure Software Delivery",
+						"type": "skill"
+					},
+					{
+						"courseID": 750,
+						"courseName": "Get Started with Sensitive Data Protection",
 						"type": "skill"
 					}
 				]
@@ -54,68 +90,18 @@
 				"group": "ai-rb",
 				"courses": [
 					{
-						"courseID": 619,
-						"courseName": "Baseline: Data, ML, AI",
+						"courseID": 25,
+						"courseName": "Achieving Advanced Insights with BigQuery",
 						"type": "completion"
 					},
 					{
-						"courseID": 740,
-						"courseName": "Intro to ML: Language Processing",
+						"courseID": 678,
+						"courseName": "BigQuery for Marketing Analysts",
 						"type": "completion"
 					},
 					{
-						"courseID": 739,
-						"courseName": "Intro to ML: Image Processing",
-						"type": "completion"
-					},
-					{
-						"courseID": 723,
-						"courseName": "Generative AI Explorer - Vertex AI",
-						"type": "completion"
-					},
-					{
-						"courseID": 156,
-						"courseName": "Google Cloud Computing Foundations: Data, ML, and AI in Google",
-						"type": "completion"
-					},
-					{
-						"courseID": 157,
-						"courseName": "Managing Machine Learning Projects with Google Cloud",
-						"type": "completion"
-					},
-					{
-						"courseID": 593,
-						"courseName": "Introduction to AI and Machine Learning on Google Cloud",
-						"type": "completion"
-					},
-					{
-						"courseID": 3,
-						"courseName": "Google Cloud Big Data and Machine Learning Fundamentals",
-						"type": "completion"
-					},
-					{
-						"courseID": 23,
-						"courseName": "Applying Machine Learning to your Data with Google Cloud",
-						"type": "completion"
-					},
-					{
-						"courseID": 17,
-						"courseName": "Production Machine Learning Systems",
-						"type": "completion"
-					},
-					{
-						"courseID": 55,
-						"courseName": "Smart Analytics, Machine Learning, and AI on Google Cloud",
-						"type": "completion"
-					},
-					{
-						"courseID": 191,
-						"courseName": "ML Pipelines on Google Cloud",
-						"type": "completion"
-					},
-					{
-						"courseID": 980,
-						"courseName": "Integrating Applications with Gemini 1.0 Pro on Google Cloud",
+						"courseID": 1169,
+						"courseName": "Boost Productivity with Gemini in BigQuery",
 						"type": "completion"
 					},
 					{
@@ -124,61 +110,63 @@
 						"type": "completion"
 					},
 					{
-						"courseID": 881,
-						"courseName": "Gemini for Application Developers",
-						"type": "completion"
-					}
-				]
-			}
-		]
-	},
-	{
-		"title": "Infrastructure & Security",
-		"group": "infrastructure-security",
-		"list": [
-			{
-				"title": "Skill Badges",
-				"group": "is-sb",
-				"courses": [
-					{
-						"courseID": 642,
-						"courseName": "Create and Manage AlloyDB Databases",
-						"type": "skill"
-					},
-					{
-						"courseID": 652,
-						"courseName": "Create and Manage Cloud SQL for PostgreSQL Instances",
-						"type": "skill"
-					},
-					{
-						"courseID": 653,
-						"courseName": "Monitor and Manage Google Cloud Resources",
-						"type": "skill"
-					},
-					{
-						"courseID": 783,
-						"courseName": "Manage Kubernetes in Google Cloud",
-						"type": "skill"
-					},
-					{
-						"courseID": 636,
-						"courseName": "Build Infrastructure with Terraform on Google Cloud",
-						"type": "skill"
-					}
-				]
-			},
-			{
-				"title": "Regular Badges",
-				"group": "is-rb",
-				"courses": [
-					{
-						"courseID": 87,
-						"courseName": "Security Best Practices in Google Cloud",
+						"courseID": 156,
+						"courseName": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud",
 						"type": "completion"
 					},
 					{
-						"courseID": 88,
-						"courseName": "Mitigating Security Vulnerabilities on Google Cloud",
+						"courseID": 735,
+						"courseName": "Google Developer Essentials",
+						"type": "completion"
+					},
+					{
+						"courseID": 9,
+						"courseName": "Machine Learning in the Enterprise",
+						"type": "completion"
+					},
+					{
+						"courseID": 506,
+						"courseName": "Modernizing Retail and Ecommerce Solutions with Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 42,
+						"courseName": "Securing and Integrating Components of your Application",
+						"type": "completion"
+					},
+					{
+						"courseID": 781,
+						"courseName": "Workspace: Add-ons",
+						"type": "completion"
+					},
+					{
+						"courseID": 738,
+						"courseName": "Intermediate ML: TensorFlow on Google Cloud",
+						"type": "completion"
+					},
+					{
+						"courseID": 666,
+						"courseName": "Advanced ML: ML Infrastructure",
+						"type": "completion"
+					},
+					{
+						"courseID": 718,
+						"courseName": "Exploring APIs",
+						"type": "completion"
+					},
+					{
+						"courseID": 1036,
+						"courseName": "Responsible AI for Developers: Privacy & Safety",
+						"type": "completion"
+					},
+					{
+						"courseID": 1133,
+						"courseName": "Work with Gemini Models in BigQuery",
+						"type": "completion"
+					},
+					{
+						"courseID": 733,
+						"courseName": "Google Cloud Solutions II: Data and Machine Learning",
 						"type": "completion"
 					}
 				]

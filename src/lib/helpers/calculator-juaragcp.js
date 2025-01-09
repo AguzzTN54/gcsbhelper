@@ -13,10 +13,10 @@ export const lookupBadges = (data = []) => {
 };
 
 const checkItem = (dt, userData) => {
-	const { courseID, courseName } = dt;
+	const { courseID, courseName, required } = dt;
 	const earned = userData.find(({ courseID: id }) => courseID === id);
 	const { date: earnDate } = earned || {};
-	if (!earned) return { courseID, courseName, earnDate };
+	if (!earned) return { courseID, courseName, earnDate, required };
 
 	// if badge Earned
 	const d = dayjs(earnDate);
@@ -30,10 +30,15 @@ const checkItem = (dt, userData) => {
 };
 
 export const badgeCounter = (badges) => {
-	const badgeCount = { skill: 0, completion: 0 };
+	const badgeCount = { skill: 0, completion: 0, incomplete: 0 };
 	const counter = ({ group, courses }) => {
-		courses.forEach(({ validity }) => {
-			if (!validity) return;
+		courses.forEach(({ validity, required }) => {
+			if (!validity) {
+				if (!required) return;
+				return (badgeCount['incomplete'] += 1);
+			}
+
+			// Valid Badges
 			if (/-sb/.test(group)) return (badgeCount['skill'] += 1);
 			badgeCount['completion'] += 1;
 		});
@@ -43,9 +48,11 @@ export const badgeCounter = (badges) => {
 };
 
 export const checkTier = (badges) => {
-	const { completion, skill } = badgeCounter(badges);
+	const { completion, skill, incomplete } = badgeCounter(badges);
+	const status = incomplete ? 'incomplete' : 'complete';
+
 	const total = completion + skill;
-	if (skill >= 7 && total >= 16) return 2;
-	if (skill >= 4 && total >= 10) return 1;
-	return 0;
+	if (skill >= 7 && total >= 16) return { status, tier: 2 };
+	if (skill >= 5 && total >= 10) return { status, tier: 1 };
+	return { status, tier: 0 };
 };

@@ -70,7 +70,7 @@
 			</button>
 
 			<div class="list" id={group + i} style="--height: 0px;">
-				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate, validity }}
+				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate, validity, required }}
 					<div class="item" class:finished={!!earnDate}>
 						<div class="left">
 							<div class="left-top">
@@ -84,6 +84,12 @@
 										</a>
 									{:else}
 										<span>{courseName}</span>
+									{/if}
+
+									{#if required}
+										<span style="display: inline-block; margin-left: 1rem">
+											<b>(Mandatory)</b>
+										</span>
 									{/if}
 
 									{#if token}
