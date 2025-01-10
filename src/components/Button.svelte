@@ -1,14 +1,9 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-	const click = () => {
-		dispatch('click');
-	};
+	const { children, onclick = () => null } = $props();
 </script>
 
-<button class="check" type="submit" on:click={click}>
-	<slot />
+<button class="check" type="submit" {onclick}>
+	{@render children()}
 </button>
 
 <style>

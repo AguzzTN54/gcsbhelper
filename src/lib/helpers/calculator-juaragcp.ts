@@ -1,10 +1,11 @@
 import db from '$lib/data/juaragcp.json';
 import dayjs, { juaraDate } from './dateTime';
 
-export const lookupBadges = (data = []) => {
-	return db.map(({ list, group, title }) => {
-		const checkCourses = ({ courses, group, title }) => {
-			const updatedCourses = courses.map((d) => checkItem(d, data));
+export const lookupBadges = (userData: App.UserCourses[]) => {
+	const sourcedata = db as App.DataScheme[];
+	return sourcedata.map(({ list, group, title }) => {
+		const checkCourses = ({ courses, group, title }: App.CourseList) => {
+			const updatedCourses = courses.map((d) => checkItem(d, userData));
 			return { courses: updatedCourses, group, title };
 		};
 		const result = { list: list.map(checkCourses), group, title };
@@ -12,15 +13,15 @@ export const lookupBadges = (data = []) => {
 	});
 };
 
-const checkItem = (dt, userData) => {
+const checkItem = (dt: App.SourceCourses, userData: App.UserCourses[]) => {
 	const { courseID, courseName, required } = dt;
 	const earned = userData.find(({ courseID: id }) => courseID === id);
-	const { date: earnDate } = earned || {};
-	if (!earned) return { courseID, courseName, earnDate, required };
+	const { date } = earned || {};
+	if (!earned) return { courseID, courseName, date, required };
 
 	// if badge Earned
-	const d = dayjs(earnDate);
-	dt.earnDate = d;
+	const d = dayjs(date);
+	dt.date = d;
 
 	const { end, start } = juaraDate;
 	const startDate = d.isSame(start, 'date') || d.isAfter(start);
@@ -29,9 +30,9 @@ const checkItem = (dt, userData) => {
 	return { ...dt, validity };
 };
 
-export const badgeCounter = (badges) => {
+export const badgeCounter = (badges: App.DataScheme[]) => {
 	const badgeCount = { skill: 0, completion: 0, incomplete: 0 };
-	const counter = ({ group, courses }) => {
+	const counter = ({ group, courses }: App.CourseList) => {
 		courses.forEach(({ validity, required }) => {
 			if (!validity) {
 				if (!required) return;
@@ -47,7 +48,9 @@ export const badgeCounter = (badges) => {
 	return badgeCount;
 };
 
-export const checkTier = (badges) => {
+export const checkTier = (badges: App.DataScheme[]) => {
+	if (badges.length < 1) return { status: '', tier: 0 };
+
 	const { completion, skill, incomplete } = badgeCounter(badges);
 	const status = incomplete ? 'incomplete' : 'complete';
 

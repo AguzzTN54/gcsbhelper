@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
@@ -6,26 +6,26 @@
 	import Modal from '$comp/Modal.svelte';
 	import Button from '$comp/Button.svelte';
 
-	export let target = 'arcade';
+	const { target = 'arcade' } = $props();
 	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
 
-	const modalHandle = getContext('modalHandle');
-	let myAccounts = accounts.getAll(target).filter(({ profileID }) => !!profileID);
+	const modalHandle = getContext('modalHandle') as () => void;
+	let myAccounts = $state(accounts.getAll(target).filter(({ profileID }) => !!profileID));
 
 	const { profileID: activeProfile } = $profile;
-	const selectAccount = (profileID) => {
+	const selectAccount = (profileID: string) => {
 		modalHandle();
 		if (profileID === activeProfile) return;
-		profile.set({ profileID });
+		profile.set({ profileID, name: '' });
 	};
 
-	const deleteAccount = (profileID) => {
+	const deleteAccount = (profileID: string) => {
 		myAccounts = myAccounts.filter(({ profileID: id }) => profileID !== id);
 		accounts.delete(profileID, target);
 	};
 
 	const addNew = () => {
-		profile.set({});
+		profile.set({ name: '', profileID: '' });
 		modalHandle();
 	};
 </script>
@@ -41,11 +41,15 @@
 					<div class="list">
 						{#each myAccounts as { name, profileID }}
 							<div class="item" class:active={activeProfile === profileID}>
-								<button class="name" on:click={() => selectAccount(profileID)}>
+								<button class="name" onclick={() => selectAccount(profileID)}>
 									{name}
 								</button>
 								<div class="delete">
-									<button class="delete" on:click={() => deleteAccount(profileID)}>
+									<button
+										class="delete"
+										aria-label="Delete"
+										onclick={() => deleteAccount(profileID)}
+									>
 										<i class="gc-trash"></i>
 									</button>
 								</div>
@@ -57,7 +61,7 @@
 		{/if}
 	</div>
 	<div class="footer">
-		<Button on:click={addNew}>Check Another Account</Button>
+		<Button onclick={addNew}>Check Another Account</Button>
 	</div>
 </Modal>
 

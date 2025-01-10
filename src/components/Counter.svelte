@@ -1,20 +1,24 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let max = 0;
-	export let float = false;
-	export let interval = 20;
+	interface Props {
+		max?: number;
+		interval?: number;
+		float?: boolean;
+		onEnd?: () => void;
+	}
 
-	const maxNum = float ? parseFloat(max) : parseInt(max);
+	const { max = 0, float = false, interval = 20, onEnd = () => null }: Props = $props();
+
+	const maxNum = float ? max.toFixed(1) : max.toFixed(0);
 	const step = float ? 0.5 : 1;
 
-	let pointToShow = 0.0;
-	const dispatch = createEventDispatcher();
+	let pointToShow = $state(0.0);
 
 	onMount(() => {
 		const t = setInterval(() => {
-			if (pointToShow < maxNum) return (pointToShow += step);
-			dispatch('end');
+			if (pointToShow < parseFloat(maxNum)) return (pointToShow += step);
+			if (typeof onEnd === 'function') onEnd();
 			return clearInterval(t);
 		}, interval);
 	});

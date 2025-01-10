@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte';
+	import { self } from 'svelte/legacy';
 	import { fade, fly } from 'svelte/transition';
 
-	export let persist = false;
-	export let large = false;
-	const modalHandle = getContext('modalHandle');
+	const { persist = false, large = false, children } = $props();
+	const modalHandle = getContext('modalHandle') as () => void;
 
 	const dismiss = () => {
 		if (persist) return;
@@ -12,9 +12,9 @@
 	};
 </script>
 
-<section class:large on:mousedown|self={dismiss} role="button" tabindex="0" transition:fade>
+<section class:large onmousedown={self(dismiss)} role="button" tabindex="0" transition:fade>
 	<div class="container" transition:fly={{ y: 20 }}>
-		<slot />
+		{@render children()}
 	</div>
 </section>
 

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { juaraBadges } from '$lib/stores/app-store';
 	import ProgressBadges from '../_global/_progress-badges.svelte';
 </script>

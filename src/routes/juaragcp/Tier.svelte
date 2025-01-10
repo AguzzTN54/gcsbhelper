@@ -1,5 +1,9 @@
-<script>
-	export let tierData;
+<script lang="ts">
+	interface Tier {
+		tier: number;
+		status: string;
+	}
+	const { tierData }: { tierData: Tier } = $props();
 	const { tier, status } = tierData || {};
 </script>
 

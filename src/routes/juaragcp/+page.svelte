@@ -4,7 +4,7 @@
 	import { accounts } from '$lib/helpers/localstorage';
 	import { juaraDate, timeZone } from '$lib/helpers/dateTime';
 	import ModalProfile from '../_global/ModalProfile.svelte';
-	import Ornament from './_ornament.svelte';
+	// import Ornament from './_ornament.svelte';
 	import Forms from './Forms.svelte';
 	import Details from './Details.svelte';
 	import Summary from './Summary.svelte';
@@ -13,9 +13,9 @@
 	const startDate = start.format('DD MMMM YYYY, HH:mm');
 	const endDate = end.format('DD MMMM YYYY, HH:mm');
 
-	$: ({ name: user } = $juaraProfile);
-	let showModal = false;
-	let isLoaded = false;
+	const { name: user } = $derived($juaraProfile);
+	let showModal = $state(false);
+	let isLoaded = $state(false);
 	setContext('modalHandle', () => (showModal = !showModal));
 
 	onMount(() => {
@@ -40,7 +40,7 @@
 {/if}
 
 <section>
-	<Ornament />
+	<!-- <Ornament /> -->
 	<div class="hero">
 		<div class="top">
 			<h1>JuaraGCP Progress Tracker</h1>

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { juaraBadges, juaraProfile } from '$lib/stores/app-store';
@@ -6,12 +6,12 @@
 	import Tier from './Tier.svelte';
 	import Tablepoint from './_tablepoint.svelte';
 
-	const modalHandle = getContext('modalHandle');
+	const modalHandle = getContext('modalHandle') as () => void;
 	const tierData = checkTier($juaraBadges);
 </script>
 
 <div class="summary" in:fade>
-	<button class="user" on:click={modalHandle}>
+	<button class="user" onclick={modalHandle}>
 		<h2><i class="gc-triangle-down"></i> {$juaraProfile.name}</h2>
 	</button>
 

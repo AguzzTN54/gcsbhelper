@@ -10,5 +10,9 @@ export default defineConfig({
 			$comp: path.resolve(__dirname, './src/components'),
 			$post: path.resolve(__dirname, './src/post')
 		}
+	},
+	build: {
+		chunkSizeWarningLimit: 350,
+		target: ['es2020']
 	}
 });

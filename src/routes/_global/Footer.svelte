@@ -1,10 +1,10 @@
-<script>
-	const marquee = (content) => {
+<script lang="ts">
+	const marquee = (content: HTMLElement) => {
 		const setMarquee = () => {
-			const titleContainer = content.querySelector('.disclaimer');
-			const titleEl = titleContainer.querySelector('span');
-			const containerWidth = titleContainer.offsetWidth;
-			const titleWidth = titleEl.offsetWidth;
+			const titleContainer = content.querySelector('.disclaimer') as HTMLElement;
+			const titleEl = titleContainer?.querySelector('span');
+			const containerWidth = titleContainer?.offsetWidth || 0;
+			const titleWidth = titleEl?.offsetWidth || 0;
 			if (containerWidth > titleWidth) return content.classList.remove('marquee');
 			content.classList.add('marquee');
 			content.style.setProperty('--marquee-width', `${containerWidth}px`);
@@ -78,7 +78,7 @@
 		color: var(--color-theme-1);
 	}
 
-	.marquee .disclaimer span {
+	:global(.marquee .disclaimer span) {
 		display: block;
 		width: fit-content;
 		animation: marquee 25s linear infinite;

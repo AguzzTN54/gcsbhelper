@@ -1,14 +1,9 @@
 <script>
-	// import { page } from '$app/stores';
-
-	export let isTop = true;
-	// $: ({ url } = $page);
-	// $: ({ pathname } = url);
+	const { isTop = true } = $props();
 </script>
 
 <header class:scrolled={!isTop}>
 	<nav>
-		<!-- <a href="/arcade" class:active={/arcade/.test(pathname)}> Arcade </a> -->
 		<a href="https://rsvp.withgoogle.com/events/juaragcp-s11/home" target="_blank">
 			<span>Join JuaraGCP S11 </span> <i class="gc-external-link"></i>
 		</a>

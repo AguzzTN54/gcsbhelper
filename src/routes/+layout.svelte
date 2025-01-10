@@ -1,28 +1,31 @@
-<script>
+<script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import { setContext } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+
 	import '../app.css';
 	import Footer from './_global/Footer.svelte';
 	import Header from './_global/Header.svelte';
-	import ModalSolution from './_global/ModalSolution.svelte';
+	// import ModalSolution from './_global/ModalSolution.svelte';
 
-	let innerHeight, innerWidth;
-	let footerheight;
-	$: screenH = innerHeight - footerheight;
-	$: screenHeight = screenH ? `${screenH}px` : '100vh';
+	const { children } = $props();
+	let innerHeight = $state(0);
+	let innerWidth = $state(0);
+	let footerheight = $state(0);
+	const screenH = $derived(innerHeight - footerheight);
+	const screenHeight = $derived(screenH ? `${screenH}px` : '100vh');
 
-	let showModalSolution = false;
-	let labs = [];
+	let showModalSolution = $state(false);
+	let labs = $state([]);
 	setContext('handleModalSol', (labList = []) => {
 		labs = labList;
 		showModalSolution = !showModalSolution;
 	});
 
-	let isTop = true;
-	const scrolled = ({ detail }) => {
-		const { viewport } = detail[0].elements();
+	let isTop = $state(true);
+	const scrolled = (event: OverlayScrollbarsComponent) => {
+		const { viewport } = event[0].elements();
 		const { scrollTop } = viewport;
 		isTop = scrollTop <= 0;
 	};
@@ -46,15 +49,15 @@
 <main>
 	<OverlayScrollbarsComponent
 		options={{ scrollbars: { theme: 'os-theme-dark' } }}
-		on:osScroll={scrolled}
+		onscroll={scrolled}
 		defer
 	>
 		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
 			{#if showModalSolution}
-				<ModalSolution {labs} />
+				<!-- <ModalSolution {labs} /> -->
 			{/if}
 			<Header {isTop} />
-			<slot />
+			{@render children()}
 		</div>
 	</OverlayScrollbarsComponent>
 

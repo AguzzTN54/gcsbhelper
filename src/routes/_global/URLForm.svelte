@@ -1,31 +1,31 @@
-<script>
-	import { createEventDispatcher, getContext } from 'svelte';
+<script lang="ts">
+	import { getContext } from 'svelte';
+	import { preventDefault } from 'svelte/legacy';
+	import type { EventHandler } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
+
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
-	import { accounts, localConfig } from '$lib/helpers/localstorage';
-	import { fetchOfficial, loadProfile } from '$lib/helpers/profile-parser';
+	import { accounts } from '$lib/helpers/localstorage';
+	import { loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/LoaderAnimation.svelte';
 	import Button from '$comp/Button.svelte';
-	// import CheckBox from '$comp/CheckBox.svelte';
 
-	export let target = 'arcade';
+	interface Props {
+		target: string;
+		onResponse: (data: App.ProfileData) => void;
+	}
+	const { target, onResponse }: Props = $props();
+
 	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
-	let profileURL = '';
-	let loading = false;
-	let isError = false;
-	let errorMSG = '';
+	let profileURL = $state('');
+	let loading = $state(false);
+	let isError = $state(false);
+	let errorMSG = $state('');
 
-	const dispatch = createEventDispatcher();
-	const modalHandle = getContext('modalHandle');
-	let isOfficial = localConfig.get('isOfficial');
-	$: localConfig.set('isOfficial', isOfficial);
-	const showModalNotice = () => {
-		const msg = `<p>This result is compiled from the spreadsheet reports published by the Arcade Team.</p> <p>If your information is not displayed here, it may be because this site does not have the data from your facilitator. Please contact your facilitator to ensure they have your data!<p>`;
-		modalHandle('notice', { msg, title: 'Information' });
-	};
+	const modalHandle = getContext('modalHandle') as EventHandler;
 
-	const isGCSBUrl = (url) => /cloudskillsboost.google\/public_profiles/.test(url);
-	const validateURL = (url) => {
+	const isGCSBUrl = (url: string) => /cloudskillsboost.google\/public_profiles/.test(url);
+	const validateURL = (url: string) => {
 		const pattern = new RegExp(
 			'^([a-zA-Z]+:\\/\\/)?' + // protocol
 				'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -38,22 +38,14 @@
 		return pattern.test(url);
 	};
 
-	const throwError = (msg) => {
-		errorMSG = msg;
+	const throwError = (msg?: string) => {
+		errorMSG = msg || '';
 		isError = true;
 		loading = false;
-		profile.set({});
+		profile.set({ profileID: '', name: '' });
 	};
 
-	// const checkOfficial = async (userURL) => {
-	// 	const { error, data = {} } = await fetchOfficial(userURL + '?' + Math.random());
-	// 	if (error) throwError();
-	// 	if (data.status === 'error' && profileURL) return throwError(data.msg);
-	// 	dispatch('response', data);
-	// 	return;
-	// };
-
-	const checkMyProfile = async (publicID) => {
+	const checkMyProfile = async (publicID: string | Event) => {
 		const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
 		const userURL = typeof publicID === 'string' ? gcsb + publicID : profileURL;
 
@@ -62,18 +54,20 @@
 		if (!isGCSBUrl(userURL)) return throwError(msg);
 
 		loading = true;
-		// if (isOfficial && target === 'arcade') return checkOfficial(userURL);
 
-		const { error, data = {} } = await loadProfile(userURL + '?' + Math.random());
-		if (error) return throwError();
+		const { error, data } = await loadProfile(userURL + '?' + Math.random());
+		if (error || !data) return throwError();
 
 		const { user } = data;
 		if (user === 'Google Cloud Skills Boost') return throwError();
-		dispatch('response', data);
+		onResponse(data);
 	};
 
-	$: ({ profileID } = $profile);
-	$: !profileID || checkMyProfile(profileID);
+	const { profileID } = $derived($profile);
+	$effect(() => {
+		if (!profileID) return;
+		checkMyProfile(profileID);
+	});
 </script>
 
 <div class="wrapper" in:fade={{ delay: 500 }}>
@@ -85,7 +79,7 @@
 			<span class="loading-text">Waiting for Profile</span>
 		</div>
 	{:else}
-		<form class="field" on:submit|preventDefault={checkMyProfile} transition:fade>
+		<form class="field" onsubmit={preventDefault(checkMyProfile)} transition:fade>
 			<div class="group">
 				<input
 					type="text"
@@ -93,14 +87,11 @@
 					class="gcsb-profile"
 					placeholder="Your GCSB Profile URL"
 					bind:value={profileURL}
-					on:blur={() => (isError = false)}
+					onblur={() => (isError = false)}
 				/>
 				{#if isError}
 					<div class="error">
 						<span> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
-						{#if /(recorded)/.test(errorMSG.toLowerCase())}
-							<button class="info" on:click|preventDefault={showModalNotice}> info? </button>
-						{/if}
 					</div>
 				{/if}
 
@@ -124,7 +115,7 @@
 	{/if}
 
 	{#if accounts.getAll(target).length > 0 && !loading}
-		<button class="accounts" on:click={modalHandle} out:fade>
+		<button class="accounts" aria-label="Accounts" onclick={modalHandle} out:fade>
 			<i class="gc-user"></i>
 		</button>
 	{/if}
@@ -179,22 +170,6 @@
 	.error span {
 		display: inline-block;
 		color: red;
-	}
-
-	.info {
-		margin-left: 0.5rem;
-		display: inline-block;
-		padding: 0.1rem 0.5rem;
-		background-color: transparent;
-		border: 1px solid red;
-		color: red;
-		border-radius: 1rem;
-		transition: all 0.5s;
-	}
-
-	.info:hover {
-		background-color: red;
-		color: #fff;
 	}
 
 	.checkbox {

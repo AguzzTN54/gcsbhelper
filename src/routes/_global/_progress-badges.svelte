@@ -1,17 +1,36 @@
-<script>
+<script lang="ts">
+	import { Dayjs } from 'dayjs';
 	import { getContext } from 'svelte';
 
-	export let badgeType = 'games';
-	export let data = [];
-	export let page = 'arcade';
+	interface CourseInfo {
+		pathID?: number;
+		point?: number;
+		isComplete?: boolean;
+	}
+
+	interface CoursesDetail extends App.UserCourses, App.SourceCourses {
+		point: number;
+		isComplete?: boolean;
+		token?: string;
+		labs?: { hasSolution: boolean }[];
+		hasBonus?: boolean;
+		validity?: boolean;
+	}
+
+	interface Props {
+		badgeType?: 'games' | 'skillbadges' | 'bonus';
+		data?: (App.CourseList & CourseInfo)[];
+		page?: string;
+	}
+	const { badgeType = 'games', data = [], page = 'arcade' }: Props = $props();
 
 	const isSkill = badgeType === 'skillbadges';
 	const isBonus = badgeType === 'bonus';
 
-	let opened = [];
-	const handleModalSol = getContext('handleModalSol');
+	let opened = $state([] as string[]);
+	const handleModalSol = getContext('handleModalSol') as (x: unknown[]) => void;
 
-	const toggleAccordion = (key) => {
+	const toggleAccordion = (key: string) => {
 		const content = document.querySelector('#' + key);
 		if (!opened.includes(key)) {
 			opened = [...opened, key];
@@ -23,23 +42,25 @@
 		return;
 	};
 
-	const completionProgress = (arr = []) => {
+	type ProggressProps = App.UserCourses & App.SourceCourses & { validity: boolean };
+	const completionProgress = (arr: ProggressProps[]) => {
 		const complete = arr.filter(({ validity }) => validity).length;
 		const all = arr.length;
 		return `${complete}/${all}`;
 	};
 
-	const hasTrick = (labs = []) => {
-		const has = labs.map(({ hasSolution }) => hasSolution);
+	const hasTrick = (labs: { hasSolution: boolean }[] = []) => {
+		const has = labs.map(({ hasSolution }) => hasSolution) as boolean[];
 		return has.includes(true);
 	};
 </script>
 
 <div class="group">
 	{#each data as { courses, title, pathID, point: parentPoint, isComplete, group }, i}
+		{@const courseList = courses as CoursesDetail[]}
 		{@const progress = completionProgress(courses)}
 		<div class="accordion" class:open={opened.includes(group + i)}>
-			<button class="handler" on:click={() => toggleAccordion(group + i)}>
+			<button class="handler" onclick={() => toggleAccordion(group + i)}>
 				{#if isBonus && pathID}
 					<h4>
 						<a href="https://www.cloudskillsboost.google/paths/{pathID}" target="_blank">
@@ -70,8 +91,8 @@
 			</button>
 
 			<div class="list" id={group + i} style="--height: 0px;">
-				{#each courses as { courseName, point, token, courseID, labs, hasBonus, earnDate, validity, required }}
-					<div class="item" class:finished={!!earnDate}>
+				{#each courseList as { courseName, courseID, date, validity, required, point, token, labs, hasBonus }}
+					<div class="item" class:finished={!!date}>
 						<div class="left">
 							<div class="left-top">
 								<div class="div">
@@ -103,20 +124,22 @@
 									{/if}
 								</div>
 
-								{#if hasTrick(labs)}
+								{#if labs && hasTrick(labs)}
 									<div class="solution">
-										<button on:click={() => handleModalSol(labs)}>Solution</button>
+										<button onclick={() => handleModalSol(labs)}>Solution</button>
 									</div>
 								{/if}
 							</div>
 							<div class="date">
-								{#if earnDate}
-									<span>Earned: {earnDate.format('DD MMMM YYYY')}</span>
+								{#if date && typeof date !== 'string' && !(date instanceof Date)}
+									<span>Earned: {date.format('DD MMMM YYYY')}</span>
+								{:else if date}
+									<span>Earned: {date}</span>
 								{/if}
 							</div>
 						</div>
 
-						{#if earnDate}
+						{#if date}
 							<div class="pointCheck">
 								{#if validity}
 									{#if hasBonus}

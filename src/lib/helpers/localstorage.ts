@@ -6,12 +6,12 @@ export const storageLocal = {
 		return parsed;
 	},
 
-	get(key) {
+	get(key: string) {
 		const { data } = this.getData();
 		return data[key] || {};
 	},
 
-	set(key, value) {
+	set(key: string, value: unknown) {
 		const { data } = this.getData();
 		data[key] = value;
 		localStorage.setItem('GCSB_Helper', JSON.stringify({ data }));
@@ -24,13 +24,13 @@ export const accounts = {
 		return Array.isArray(items) ? items : [];
 	},
 
-	getByID(profileID, type = 'arcade') {
+	getByID(profileID: string, type = 'arcade') {
 		const accounts = this.getAll(type);
 		const selected = accounts.find(({ profileID: id }) => profileID === id);
 		return selected;
 	},
 
-	put({ profileID, name }, type = 'arcade') {
+	put({ profileID, name }: { profileID: string; name: string }, type: string = 'arcade') {
 		const accounts = this.getAll(type);
 		const isIndexed = accounts.findIndex(({ profileID: id }) => profileID === id);
 
@@ -39,7 +39,7 @@ export const accounts = {
 		storageLocal.set(type, accounts);
 	},
 
-	delete(profileID, type = 'arcade') {
+	delete(profileID: string, type = 'arcade') {
 		const accounts = this.getAll(type);
 		const removed = accounts.filter(({ profileID: id }) => profileID !== id);
 		storageLocal.set(type, removed);
@@ -47,12 +47,12 @@ export const accounts = {
 };
 
 export const localConfig = {
-	get(key) {
+	get(key: string) {
 		const config = storageLocal.get('config');
 		const isValue = config[key] !== null;
 		return isValue ? config[key] : null;
 	},
-	set(key, value) {
+	set(key: string, value: unknown) {
 		const config = storageLocal.get('config');
 		config[key] = value;
 		storageLocal.set('config', config);

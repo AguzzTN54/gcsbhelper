@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { badgeCounter } from '$lib/helpers/calculator-juaragcp';
 	import { juaraBadges } from '$lib/stores/app-store';
 	import Counter from '$comp/Counter.svelte';
