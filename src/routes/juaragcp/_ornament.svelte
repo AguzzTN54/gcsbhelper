@@ -1,5 +1,5 @@
-<script>
-	let clientWidth;
+<script lang="ts">
+	let clientWidth = $state(0);
 </script>
 
 <div class="container">
@@ -14,7 +14,7 @@
 			<div class="circle red"></div>
 			<div class="long red"></div>
 		</div>
-		<div class="row right" style="--duration: 15s">
+		<div class="row right" style="--duration: 12s">
 			<div class="long blue"></div>
 			<div class="circle blue"></div>
 			<div class="circle orange"></div>
@@ -25,7 +25,7 @@
 			<div class="long orange"></div>
 		</div>
 
-		<div class="row left" style="--duration: 15s">
+		<div class="row left" style="--duration: 21s">
 			<div class="long green"></div>
 			<div class="circle green"></div>
 			<div class="circle red"></div>
@@ -35,7 +35,7 @@
 			<div class="circle red"></div>
 			<div class="long red"></div>
 		</div>
-		<div class="row right" style="--duration: 8s">
+		<div class="row right" style="--duration: 15s">
 			<div class="long blue"></div>
 			<div class="circle blue"></div>
 			<div class="circle orange"></div>

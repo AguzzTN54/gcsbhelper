@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Dayjs } from 'dayjs';
 	import { getContext } from 'svelte';
 
 	interface CourseInfo {
@@ -22,8 +21,8 @@
 		data?: (App.CourseList & CourseInfo)[];
 		page?: string;
 	}
-	const { badgeType = 'games', data = [], page = 'arcade' }: Props = $props();
 
+	const { badgeType = 'games', data = [], page = 'arcade' }: Props = $props();
 	const isSkill = badgeType === 'skillbadges';
 	const isBonus = badgeType === 'bonus';
 
@@ -167,8 +166,9 @@
 
 <style>
 	.group {
-		border: 2px solid #ddd;
+		/* border: 2px solid #ddd; */
 		border-radius: 0.5rem;
+		box-shadow: var(--outer-shadow);
 	}
 
 	h4 {
@@ -226,10 +226,12 @@
 		padding: calc(0.025 * var(--screen-height));
 		border-top: 1px solid #ccc;
 		display: flex;
+		align-items: center;
+		background-color: #fff;
 		transition: background 0.25s;
 	}
 
-	.item:hover {
+	.item:not(.finished):hover {
 		background-color: #efefef;
 	}
 

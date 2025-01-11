@@ -23,7 +23,7 @@
 		view-transition-name: header;
 	}
 	header.scrolled {
-		background-color: #fff;
+		background-color: var(--color-bg);
 		box-shadow: 0 0 0.5rem #ccc;
 	}
 
@@ -32,27 +32,18 @@
 	}
 
 	a {
-		padding: 1rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+		padding: 0.75rem 2rem;
 		text-decoration: none;
-		/* text-transform: uppercase; */
 		color: #555;
-		font-weight: bolder;
+		font-weight: 600;
 		position: relative;
-	}
+		transition: box-shadow 0.15s;
+		border-radius: 99rem;
 
-	a::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		width: 90%;
-		transform: translateX(-50%) scaleX(0);
-		border-bottom: 0.1rem solid var(--color-theme-1);
-		transition: all 0.25s;
-	}
-
-	/* a.active::after, */
-	a:hover::after {
-		transform: translateX(-50%) scaleX(1);
+		&:hover {
+			box-shadow: var(--outer-shadow);
+		}
 	}
 </style>

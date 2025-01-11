@@ -81,14 +81,17 @@
 	{:else}
 		<form class="field" onsubmit={preventDefault(checkMyProfile)} transition:fade>
 			<div class="group">
-				<input
-					type="text"
-					class:isError
-					class="gcsb-profile"
-					placeholder="Your GCSB Profile URL"
-					bind:value={profileURL}
-					onblur={() => (isError = false)}
-				/>
+				<div class="input">
+					<input
+						type="text"
+						class:isError
+						class="gcsb-profile"
+						placeholder="Your GCSB Profile URL"
+						bind:value={profileURL}
+						onblur={() => (isError = false)}
+					/>
+					<div class="shdow"></div>
+				</div>
 				{#if isError}
 					<div class="error">
 						<span> {errorMSG || 'Failed to Load Profile, Please Try Again!'} </span>
@@ -115,7 +118,12 @@
 	{/if}
 
 	{#if accounts.getAll(target).length > 0 && !loading}
-		<button class="accounts" aria-label="Accounts" onclick={modalHandle} out:fade>
+		<button
+			class="accounts primary_hover_after"
+			aria-label="Accounts"
+			onclick={modalHandle}
+			out:fade
+		>
 			<i class="gc-user"></i>
 		</button>
 	{/if}
@@ -133,30 +141,61 @@
 
 	.field {
 		position: absolute;
+		transform: translateY(-10%);
 	}
 
-	.gcsb-profile {
-		border: 1px solid #ccc;
-		outline: 0;
+	.input {
 		width: 700px;
 		max-width: calc(0.85 * var(--screen-width));
-		display: block;
 		height: calc(0.085 * var(--screen-height));
-		padding: 2% 5%;
-		font-size: large;
-		border-radius: 100px;
-		background-color: #f9f9f9;
-		transition: box-shadow 0.25s;
+		position: relative;
+
+		& .gcsb-profile {
+			width: 100%;
+			height: 100%;
+			display: block;
+			padding: 2% 5%;
+			outline: 0;
+			font-size: large;
+			border: none;
+			border-radius: 99rem;
+			background: none;
+			color: var(--greyDark);
+			transition: box-shadow 0.25s;
+			box-shadow: var(--inner-shadow);
+
+			&::placeholder {
+				color: var(--greyLight-3);
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: unset;
+			}
+
+			& ~ .shdow {
+				content: '';
+				transition: box-shadow 0.25s;
+				width: 100%;
+				height: 100%;
+				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				pointer-events: none;
+				border-radius: 99rem;
+				z-index: +2;
+			}
+
+			&:focus ~ .shdow {
+				box-shadow: var(--outer-shadow);
+			}
+			&.isError {
+				box-shadow: var(--inner-error);
+			}
+		}
 	}
-	.gcsb-profile:focus {
-		box-shadow: 0 0 1rem #ddd;
-	}
-	.gcsb-profile::placeholder {
-		color: #999;
-	}
-	.gcsb-profile.isError {
-		border-color: red;
-	}
+
 	.gcsb-profile.isError:focus {
 		box-shadow: 0 0 1rem rgba(255, 0, 0, 0.25);
 	}
@@ -176,7 +215,8 @@
 		margin-top: 1.5rem;
 	}
 	.check {
-		font-size: larger;
+		font-size: large;
+		margin-top: 2rem;
 	}
 
 	.loading {
@@ -210,29 +250,29 @@
 		}
 	}
 
-	button.accounts {
-		position: fixed;
-		right: 5%;
-		bottom: 7.5%;
-		width: calc(0.07 * var(--screen-height));
-		border-radius: 100%;
-		aspect-ratio: 1/1;
-		outline: 0;
-		background-color: transparent;
-		font-size: x-large;
-		border: 1px solid #333;
-		transition:
-			background 0.5s,
-			color 0.5s,
-			border 0.5s,
-			transform 0.1s;
-	}
-	button.accounts:hover {
-		background-color: var(--color-theme-1);
-		color: #fff;
-		border: 0;
-	}
-	button.accounts:active {
-		transform: scale(0.9);
+	button {
+		&.accounts {
+			position: fixed;
+			right: 5%;
+			bottom: 7.5%;
+			width: calc(0.07 * var(--screen-height));
+			border-radius: 100%;
+			aspect-ratio: 1/1;
+			outline: 0;
+			background-color: transparent;
+			font-size: x-large;
+			border: 0;
+			box-shadow: var(--outer-shadow);
+			transition:
+				background 0.25s,
+				color 0.25s,
+				border 0.25s,
+				transform 0.1s;
+
+			&:hover {
+				background-color: var(--color-theme-1);
+				color: #fff;
+			}
+		}
 	}
 </style>

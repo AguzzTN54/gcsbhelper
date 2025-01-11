@@ -11,7 +11,7 @@
 </script>
 
 <div class="summary" in:fade>
-	<button class="user" onclick={modalHandle}>
+	<button class="user primary_hover_after" onclick={modalHandle}>
 		<h2><i class="gc-triangle-down"></i> {$juaraProfile.name}</h2>
 	</button>
 
@@ -28,7 +28,7 @@
 <style>
 	.summary {
 		width: 100%;
-		margin-top: -2rem;
+		/* margin-top: -2rem; */
 	}
 	h2 {
 		position: relative;
@@ -41,13 +41,17 @@
 		width: 100%;
 		bottom: -25%;
 		left: 0;
-		border-bottom: 1px solid #aaa;
+		/* border-bottom: 1px solid #aaa; */
 	}
 	button.user {
 		background-color: transparent;
 		border: none;
 		font-size: inherit;
 		position: relative;
+		box-shadow: var(--outer-shadow);
+		padding: 0.75rem 3rem;
+		border-radius: 99rem;
+		transition: all 0.25s;
 	}
 
 	button.user i {
@@ -58,11 +62,15 @@
 		font-size: medium;
 		line-height: 0;
 	}
+	button.user:hover {
+		background-color: var(--color-theme-1);
+		color: #fff;
+	}
 
 	/*  */
 	.detail-btn {
 		position: absolute;
-		bottom: 0.5rem;
+		bottom: -0.25rem;
 		left: 50%;
 		transform: translate(-50%, 100%);
 		display: flex;

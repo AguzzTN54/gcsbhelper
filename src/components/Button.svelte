@@ -2,7 +2,7 @@
 	const { children, onclick = () => null } = $props();
 </script>
 
-<button class="check" type="submit" {onclick}>
+<button class="check primary_hover_after" type="submit" {onclick}>
 	{@render children()}
 </button>
 
@@ -10,22 +10,22 @@
 	.check {
 		background-image: var(--color-gradient);
 		background-size: 200%;
-		background-position: 80%;
+		background-position: 100%;
 		font-size: inherit;
 		border: 0;
 		outline: 0;
-		padding: 0.5rem 1.5rem;
+		padding: 0.75rem 2rem;
 		color: #fff;
-		border-radius: 5px;
+		border-radius: 99rem;
 		transition:
 			transform 0.1s,
-			background 0.3s;
-	}
+			background 0.3s,
+			box-shadow 0.25s;
+		position: relative;
 
-	.check:hover {
-		background-position: 0;
-	}
-	.check:active {
-		transform: scale(0.95);
+		&:hover {
+			background-position: 0;
+			box-shadow: var(--outer-shadow);
+		}
 	}
 </style>

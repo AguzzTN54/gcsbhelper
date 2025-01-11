@@ -70,6 +70,7 @@
 		font-size: 1.2rem;
 		text-align: center;
 		margin-bottom: 1rem;
+		font-weight: 600;
 	}
 	.body {
 		padding: 0 0 1rem;
@@ -86,18 +87,23 @@
 		justify-content: space-between;
 		align-items: center;
 		transition: background 0.25s;
-	}
-	.item.active {
-		background-color: #f6f6f6;
+		position: relative;
+
+		&.active {
+			background-color: #f8fbff;
+		}
+
+		&:hover {
+			box-shadow: var(--outer-shadow);
+			background-color: #fff;
+			z-index: +2;
+		}
+
+		&:first-child {
+			border-top: unset;
+		}
 	}
 
-	.item:hover {
-		background-color: #f0f0f0;
-	}
-
-	.item:first-child {
-		border-top: unset;
-	}
 	.scroll {
 		border-bottom: 1px solid #ccc;
 		border-top: 1px solid #ccc;
@@ -123,6 +129,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		box-shadow: var(--outer-shadow);
 	}
 	button.delete:hover {
 		background-color: rgb(243, 59, 59);

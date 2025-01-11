@@ -4,7 +4,7 @@
 	import { accounts } from '$lib/helpers/localstorage';
 	import { juaraDate, timeZone } from '$lib/helpers/dateTime';
 	import ModalProfile from '../_global/ModalProfile.svelte';
-	// import Ornament from './_ornament.svelte';
+	import Ornament from './_ornament.svelte';
 	import Forms from './Forms.svelte';
 	import Details from './Details.svelte';
 	import Summary from './Summary.svelte';
@@ -40,7 +40,7 @@
 {/if}
 
 <section>
-	<!-- <Ornament /> -->
+	<Ornament />
 	<div class="hero">
 		<div class="top">
 			<h1>JuaraGCP Progress Tracker</h1>
@@ -87,6 +87,10 @@
 		text-align: center;
 	}
 
+	span {
+		color: #0095df;
+	}
+
 	@media screen and (max-width: 700px) {
 		h1 {
 			font-size: large;
@@ -94,7 +98,7 @@
 	}
 
 	.top {
-		margin-top: calc(0.085 * var(--screen-height));
+		margin-top: calc(0.075 * var(--screen-height));
 		margin-bottom: auto;
 	}
 

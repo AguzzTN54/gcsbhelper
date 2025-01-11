@@ -27,7 +27,7 @@
 			Selamat! Kini kamu bisa <b>Cek Kembali Email Welcome</b> dari #JuaraGCP untuk mengisi
 			<b> Completion Form </b> dan nantikan info berikutnya dari #JuaraGCP!
 			<br />
-			Eits... tapi jangan stop di sini!! masih banyak materi GCP yang bisa kamu pelajari di
+			Tapi Eits... jangan stop di sini!! masih banyak materi GCP yang bisa kamu pelajari di
 			<a href="https://www.cloudskillsboost.google/catalog" target="_blank">Cloud Skill Boost</a>!!
 		</p>
 	</div>
@@ -53,7 +53,7 @@
 	}
 
 	.notes {
-		width: 650px;
+		width: 750px;
 		max-width: 100%;
 		padding: 0.5rem 1rem 1rem;
 		border: 2px dashed var(--color-theme-1);

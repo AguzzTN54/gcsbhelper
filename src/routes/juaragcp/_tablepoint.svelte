@@ -14,10 +14,12 @@
 				<div class="head">Skill Badges</div>
 				<div class="body"><Counter max={skill} interval={50} /></div>
 			</div>
+
 			<div class="col">
 				<div class="head">Regular Badges</div>
 				<div class="body"><Counter max={completion} interval={50} /></div>
 			</div>
+
 			<div class="col total">
 				<div class="head">Total</div>
 				<div class="body"><Counter max={total} interval={50} /></div>
@@ -29,49 +31,56 @@
 <style>
 	section {
 		margin: 1rem auto 1%;
-		border-top: 1px solid #ccc;
 		width: 700px;
 		max-width: 100%;
 	}
 
 	.table {
-		border-radius: 0.5rem;
-		overflow: hidden;
-		border: 1px solid #999;
+		border-radius: 0.75rem;
+		box-shadow: var(--outer-shadow);
 	}
 	.table,
 	.row {
 		width: 100%;
 	}
 	.row {
+		border-radius: inherit;
+		overflow: hidden;
 		display: flex;
 		flex-wrap: wrap;
-	}
-
-	.head {
-		border-bottom: 1px solid #999;
-		font-weight: 700;
-		padding: 0.75rem 0.3rem;
 	}
 
 	.col {
 		flex: 1;
 		flex-basis: calc(100% / 3);
-		border: 1px solid #999;
 		text-align: center;
 		transition: background 0.5s;
+		box-shadow: var(--inner-shadow);
 	}
-	.col:hover {
-		background-color: #f2f2f2;
+
+	.head {
+		font-weight: 500;
+		padding: 0.75rem 0.3rem;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 75%;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 0;
+			border-bottom: 1px solid #000;
+		}
 	}
 
 	.body {
 		padding: 1rem 0.3rem;
-	}
 
-	.body:not(.milestone) {
-		font-weight: 800;
-		font-size: x-large;
+		&:not(.milestone) {
+			font-weight: 800;
+			font-size: x-large;
+		}
 	}
 
 	@media screen and (max-width: 450px) {
