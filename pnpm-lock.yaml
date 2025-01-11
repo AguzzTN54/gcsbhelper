@@ -31,13 +31,13 @@ importers:
     devDependencies:
       '@sveltejs/adapter-static':
         specifier: ^3.0.8
-        version: 3.0.8(@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))
+        version: 3.0.8(@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))
       '@sveltejs/kit':
         specifier: ^2.7.3
-        version: 2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+        version: 2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.0
-        version: 4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+        version: 4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
       '@types/eslint':
         specifier: ^9.6.0
         version: 9.6.1
@@ -72,11 +72,11 @@ importers:
         specifier: ^8.16.0
         version: 8.19.1(eslint@9.17.0)(typescript@5.7.3)
       vite:
-        specifier: 5.0.3
-        version: 5.0.3(@types/node@22.10.5)
+        specifier: 5.1.8
+        version: 5.1.8(@types/node@22.10.5)
       vite-plugin-markdown:
         specifier: ^2.2.0
-        version: 2.2.0(vite@5.0.3(@types/node@22.10.5))
+        version: 2.2.0(vite@5.1.8(@types/node@22.10.5))
 
 packages:
 
@@ -1156,8 +1156,8 @@ packages:
     peerDependencies:
       vite: '>= 2.0.0'
 
-  vite@5.0.3:
-    resolution: {integrity: sha512-WgEq8WEKpZ8c0DL4M1+E+kBZEJyjBmGVrul6z8Ljfhv+PPbNF4aGq014DwNYxGz2FGq6NKL0N8usdiESWd2l2w==}
+  vite@5.1.8:
+    resolution: {integrity: sha512-mB8ToUuSmzODSpENgvpFk2fTiU/YQ1tmcVJJ4WZbq4fPdGJkFNVcmVL5k7iDug6xzWjjuGDKAuSievIsD6H7Xw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -1430,13 +1430,13 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.30.1':
     optional: true
 
-  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))':
+  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))':
     dependencies:
-      '@sveltejs/kit': 2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+      '@sveltejs/kit': 2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
 
-  '@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))':
+  '@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+      '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
       '@types/cookie': 0.6.0
       cookie: 0.6.0
       devalue: 5.1.1
@@ -1450,27 +1450,27 @@ snapshots:
       sirv: 3.0.0
       svelte: 5.17.3
       tiny-glob: 0.2.9
-      vite: 5.0.3(@types/node@22.10.5)
+      vite: 5.1.8(@types/node@22.10.5)
 
-  '@sveltejs/vite-plugin-svelte-inspector@3.0.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))':
+  '@sveltejs/vite-plugin-svelte-inspector@3.0.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+      '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
       debug: 4.4.0
       svelte: 5.17.3
-      vite: 5.0.3(@types/node@22.10.5)
+      vite: 5.1.8(@types/node@22.10.5)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))':
+  '@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 3.0.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.0.3(@types/node@22.10.5))
+      '@sveltejs/vite-plugin-svelte-inspector': 3.0.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5)))(svelte@5.17.3)(vite@5.1.8(@types/node@22.10.5))
       debug: 4.4.0
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.17
       svelte: 5.17.3
-      vite: 5.0.3(@types/node@22.10.5)
-      vitefu: 1.0.5(vite@5.0.3(@types/node@22.10.5))
+      vite: 5.1.8(@types/node@22.10.5)
+      vitefu: 1.0.5(vite@5.1.8(@types/node@22.10.5))
     transitivePeerDependencies:
       - supports-color
 
@@ -2224,15 +2224,15 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite-plugin-markdown@2.2.0(vite@5.0.3(@types/node@22.10.5)):
+  vite-plugin-markdown@2.2.0(vite@5.1.8(@types/node@22.10.5)):
     dependencies:
       domhandler: 4.3.1
       front-matter: 4.0.2
       htmlparser2: 6.1.0
       markdown-it: 12.3.2
-      vite: 5.0.3(@types/node@22.10.5)
+      vite: 5.1.8(@types/node@22.10.5)
 
-  vite@5.0.3(@types/node@22.10.5):
+  vite@5.1.8(@types/node@22.10.5):
     dependencies:
       esbuild: 0.19.12
       postcss: 8.4.49
@@ -2241,9 +2241,9 @@ snapshots:
       '@types/node': 22.10.5
       fsevents: 2.3.3
 
-  vitefu@1.0.5(vite@5.0.3(@types/node@22.10.5)):
+  vitefu@1.0.5(vite@5.1.8(@types/node@22.10.5)):
     optionalDependencies:
-      vite: 5.0.3(@types/node@22.10.5)
+      vite: 5.1.8(@types/node@22.10.5)
 
   which@2.0.2:
     dependencies:
