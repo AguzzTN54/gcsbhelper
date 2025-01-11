@@ -1,10 +1,51 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import confetti from 'canvas-confetti';
+
 	interface Tier {
 		tier: number;
 		status: string;
 	}
 	const { tierData }: { tierData: Tier } = $props();
 	const { tier, status } = tierData || {};
+
+	const runConfetti = () => {
+		const duration = 2.5 * 1000;
+		const animationEnd = Date.now() + duration;
+		const defaults = {
+			startVelocity: 25,
+			spread: 360,
+			ticks: 500,
+			zIndex: 0,
+			colors: ['fbbc04', 'f89701', '4285f4', '2367d8', 'ff6c4b', 'd22b1d', '178935', '34a853']
+		};
+
+		function randomInRange(min: number, max: number) {
+			return Math.random() * (max - min) + min;
+		}
+
+		const interval = setInterval(() => {
+			const timeLeft = animationEnd - Date.now();
+
+			if (timeLeft <= 0) return clearInterval(interval);
+
+			const particleCount = 50 * (timeLeft / duration);
+			confetti({
+				...defaults,
+				particleCount,
+				origin: { x: randomInRange(0.1, 0.5), y: Math.random() - 0.2 }
+			});
+			confetti({
+				...defaults,
+				particleCount,
+				origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 }
+			});
+		}, 200);
+	};
+	onMount(() => {
+		if (tier < 1 || status === 'incomplete') return;
+		runConfetti();
+	});
 </script>
 
 <div class="tier">
@@ -16,7 +57,7 @@
 </div>
 
 {#if status === 'incomplete' && tier > 0}
-	<div class="notes">
+	<div class="notes warn">
 		<p>
 			Badge(s) dengan label "<b>Mandatory</b>" wajib diselesaikan!
 		</p>
@@ -60,5 +101,10 @@
 		color: var(--color-theme-1);
 		border-radius: 1rem;
 		margin: auto;
+	}
+
+	.notes.warn {
+		border-color: #f89701;
+		color: #f89701;
 	}
 </style>

@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"canvas-confetti": "^1.9.3",
 		"dayjs": "^1.11.12",
 		"marked": "^13.0.2",
 		"overlayscrollbars": "^2.9.2",
