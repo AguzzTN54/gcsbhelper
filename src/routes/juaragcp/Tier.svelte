@@ -5,7 +5,7 @@
 	interface Tier {
 		tier: number;
 		status: string;
-		badgeCount: number;
+		badgeCount?: number;
 	}
 	const { tierData }: { tierData: Tier } = $props();
 	const { tier, status, badgeCount } = tierData || {};
@@ -75,6 +75,14 @@
 		<h3>NO TIER</h3>
 	{:else}
 		<h3>TIER {tier}</h3>
+
+		<div class="info">
+			<button class="primary_hover_after"> ? </button>
+			<div class="tooltip">
+				Badge baru yang diperoleh setelah mengisi submission tidak akan digunakan dalam perhitungan
+				point!
+			</div>
+		</div>
 	{/if}
 </div>
 
@@ -98,11 +106,16 @@
 
 <style>
 	.tier {
+		position: relative;
 		padding: calc(0.01 * var(--screen-height));
+		width: fit-content;
+		margin: auto;
 	}
 	.tier h3 {
 		font-size: calc(0.1 * var(--screen-height));
 		font-weight: 800;
+		width: fit-content;
+		display: inline-block;
 	}
 
 	@media screen and (max-width: 540px) {
@@ -128,5 +141,53 @@
 	.notes.warn {
 		border-color: #f89701;
 		color: #f89701;
+	}
+
+	.info {
+		position: relative;
+		right: 0;
+		bottom: 0;
+		display: inline flex;
+
+		button {
+			box-shadow: var(--outer-shadow);
+			background-color: var(--color-bg);
+			outline: 0;
+			border: 0;
+			width: 35px;
+			aspect-ratio: 1/1;
+			border-radius: 100%;
+			justify-content: center;
+			align-items: center;
+			font-size: larger;
+			transition: all 0.2s;
+
+			&:hover {
+				background-color: var(--color-theme-1);
+				color: white;
+			}
+			&:hover ~ .tooltip {
+				opacity: 1;
+			}
+		}
+
+		.tooltip {
+			opacity: 0;
+			transition: all 0.5s;
+			position: absolute;
+			left: 50%;
+			bottom: 110%;
+			transform: translateX(-50%);
+			display: block;
+			width: 400px;
+			max-width: 50vw;
+			background-color: var(--color-bg);
+			box-shadow: var(--outer-shadow);
+			font-size: small;
+			line-height: 1.3;
+			padding: 0.5rem 1rem;
+			text-align: left;
+			color: var(--color-theme-1);
+		}
 	}
 </style>
