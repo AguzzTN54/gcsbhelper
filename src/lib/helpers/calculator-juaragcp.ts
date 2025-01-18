@@ -49,13 +49,14 @@ export const badgeCounter = (badges: App.DataScheme[]) => {
 };
 
 export const checkTier = (badges: App.DataScheme[]) => {
-	if (badges.length < 1) return { status: '', tier: 0 };
+	if (badges.length < 1) return { status: 'incomplete', tier: 0 };
 
 	const { completion, skill, incomplete } = badgeCounter(badges);
-	const status = incomplete ? 'incomplete' : 'complete';
-
+	const status = incomplete > 0 ? 'incomplete' : 'complete'; // is Required Lab completed?
 	const total = completion + skill;
-	if (skill >= 7 && total >= 16) return { status, tier: 2 };
-	if (skill >= 5 && total >= 10) return { status, tier: 1 };
-	return { status, tier: 0 };
+	const result = { status, badgeCount: total };
+
+	if (skill >= 8 && total >= 16) return { tier: 2, ...result };
+	if (skill >= 5 && total >= 10) return { tier: 1, ...result };
+	return { status: 'incomplete', tier: 0, badgeCount: 0 };
 };

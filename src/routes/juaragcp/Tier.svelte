@@ -5,45 +5,67 @@
 	interface Tier {
 		tier: number;
 		status: string;
+		badgeCount: number;
 	}
 	const { tierData }: { tierData: Tier } = $props();
-	const { tier, status } = tierData || {};
+	const { tier, status, badgeCount } = tierData || {};
 
-	const runConfetti = () => {
-		const duration = 2.5 * 1000;
-		const animationEnd = Date.now() + duration;
+	const randomInRange = (min: number, max: number) => {
+		return Math.random() * (max - min) + min;
+	};
+
+	const colors = ['fbbc04', 'f89701', '4285f4', '2367d8', 'ff6c4b', 'd22b1d', '178935', '34a853'];
+
+	const tier1Confetti = () => {
+		confetti({
+			particleCount: 120,
+			spread: 100,
+			origin: { y: 1 },
+			colors
+		});
+	};
+
+	const tier2Confetti = () => {
+		const tier2Config = { particleCount: 20, spread: 55, colors: colors };
+		confetti({ ...tier2Config, angle: 60, origin: { x: 0, y: 1 } });
+		confetti({ ...tier2Config, angle: 120, origin: { x: 1, y: 1 } });
+	};
+
+	const specialConfetti = (duration: number, timeLeft: number) => {
 		const defaults = {
 			startVelocity: 25,
 			spread: 360,
 			ticks: 500,
 			zIndex: 0,
-			colors: ['fbbc04', 'f89701', '4285f4', '2367d8', 'ff6c4b', 'd22b1d', '178935', '34a853']
+			particleCount: 50 * (timeLeft / duration),
+			colors
 		};
 
-		function randomInRange(min: number, max: number) {
-			return Math.random() * (max - min) + min;
-		}
+		confetti({
+			...defaults,
+			origin: { x: randomInRange(0.1, 0.5), y: Math.random() - 0.2 }
+		});
+		confetti({
+			...defaults,
+			origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 }
+		});
+	};
 
+	const runConfetti = () => {
+		if (tier < 2) return tier1Confetti();
+
+		const duration = 2 * 1000;
+		const animationEnd = Date.now() + duration;
 		const interval = setInterval(() => {
 			const timeLeft = animationEnd - Date.now();
-
 			if (timeLeft <= 0) return clearInterval(interval);
-
-			const particleCount = 50 * (timeLeft / duration);
-			confetti({
-				...defaults,
-				particleCount,
-				origin: { x: randomInRange(0.1, 0.5), y: Math.random() - 0.2 }
-			});
-			confetti({
-				...defaults,
-				particleCount,
-				origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 }
-			});
+			if (tier === 2 && (!badgeCount || badgeCount <= 16)) return tier2Confetti();
+			specialConfetti(duration, timeLeft);
 		}, 200);
 	};
+
 	onMount(() => {
-		if (tier < 1 || status === 'incomplete') return;
+		if (!tier || status === 'incomplete') return;
 		runConfetti();
 	});
 </script>
