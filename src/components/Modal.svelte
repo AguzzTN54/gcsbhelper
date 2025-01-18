@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { self } from 'svelte/legacy';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	const { persist = false, large = false, children } = $props();
 	const modalHandle = getContext('modalHandle') as () => void;
@@ -13,7 +13,7 @@
 </script>
 
 <section class:large onmousedown={self(dismiss)} role="button" tabindex="0" transition:fade>
-	<div class="container" transition:fly={{ y: 20 }}>
+	<div class="container" transition:fade>
 		{@render children()}
 	</div>
 </section>

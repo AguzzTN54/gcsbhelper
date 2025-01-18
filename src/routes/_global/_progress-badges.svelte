@@ -91,7 +91,11 @@
 
 			<div class="list" id={group + i} style="--height: 0px;">
 				{#each courseList as { courseName, courseID, date, validity, required, point, token, labs, hasBonus }}
-					<div class="item" class:finished={!!date}>
+					<div
+						class="item"
+						class:attention={required && !validity && !!date}
+						class:finished={!!date}
+					>
 						<div class="left">
 							<div class="left-top">
 								<div class="div">
@@ -126,6 +130,16 @@
 								{#if labs && hasTrick(labs)}
 									<div class="solution">
 										<button onclick={() => handleModalSol(labs)}>Solution</button>
+									</div>
+								{/if}
+
+								{#if required}
+									<div class="info">
+										<button>?</button>
+
+										<div class="tooltip">
+											You will not receive any tier if you don't complete this lab!
+										</div>
 									</div>
 								{/if}
 							</div>
@@ -266,6 +280,11 @@
 	.finished {
 		background-color: #f9f9f9;
 	}
+
+	.attention {
+		background-color: rgb(255, 228, 228);
+	}
+
 	.finished a,
 	.finished .solution button {
 		opacity: 0.5;
@@ -282,7 +301,8 @@
 		align-items: center;
 	}
 
-	.solution button {
+	.solution button,
+	.info button {
 		background-image: var(--color-gradient);
 		background-size: 120%;
 		color: #fff;
@@ -306,5 +326,41 @@
 	.pointCheck {
 		text-align: right;
 		margin-left: auto;
+	}
+
+	.info {
+		position: relative;
+		padding-left: 0.5rem;
+	}
+
+	.tooltip {
+		opacity: 0;
+		position: absolute;
+		left: 150%;
+		top: 0;
+		background-color: #fff;
+		padding: 0.5rem 1rem;
+		font-size: small;
+		line-height: 1.2;
+		z-index: +1;
+		width: 300px;
+		max-width: 75vw;
+		box-shadow: var(--outer-shadow);
+		border-radius: 0.3rem;
+		transition: opacity 0.25s;
+		pointer-events: none;
+	}
+
+	.info:hover > .tooltip {
+		opacity: 1;
+	}
+
+	@media screen and (max-width: 780px) {
+		.tooltip {
+			left: unset;
+			right: 0;
+			top: 100%;
+			bottom: unset;
+		}
 	}
 </style>
