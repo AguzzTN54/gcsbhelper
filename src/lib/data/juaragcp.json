@@ -95,11 +95,6 @@
 						"type": "completion"
 					},
 					{
-						"courseID": 678,
-						"courseName": "BigQuery for Marketing Analysts",
-						"type": "completion"
-					},
-					{
 						"courseID": 1169,
 						"courseName": "Boost Productivity with Gemini in BigQuery",
 						"type": "completion"
@@ -130,11 +125,6 @@
 						"type": "completion"
 					},
 					{
-						"courseID": 42,
-						"courseName": "Securing and Integrating Components of your Application",
-						"type": "completion"
-					},
-					{
 						"courseID": 781,
 						"courseName": "Workspace: Add-ons",
 						"type": "completion"
@@ -150,11 +140,6 @@
 						"type": "completion"
 					},
 					{
-						"courseID": 718,
-						"courseName": "Exploring APIs",
-						"type": "completion"
-					},
-					{
 						"courseID": 1036,
 						"courseName": "Responsible AI for Developers: Privacy & Safety",
 						"type": "completion"
@@ -162,11 +147,6 @@
 					{
 						"courseID": 1133,
 						"courseName": "Work with Gemini Models in BigQuery",
-						"type": "completion"
-					},
-					{
-						"courseID": 733,
-						"courseName": "Google Cloud Solutions II: Data and Machine Learning",
 						"type": "completion"
 					}
 				]
