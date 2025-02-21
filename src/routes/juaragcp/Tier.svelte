@@ -89,7 +89,7 @@
 {#if status === 'incomplete' && tier > 0}
 	<div class="notes warn">
 		<p>
-			Badge(s) dengan label "<b>Mandatory</b>" wajib diselesaikan!
+			Badge(s) dengan label "<b>Mandatory</b>" wajib diselesaikan dalam periode event!
 		</p>
 	</div>
 {:else if tier > 0}

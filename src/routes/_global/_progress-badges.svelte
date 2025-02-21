@@ -133,12 +133,12 @@
 									</div>
 								{/if}
 
-								{#if required}
+								{#if required && (!validity || !date)}
 									<div class="info">
 										<button>?</button>
 
 										<div class="tooltip">
-											You will not receive any tier if you don't complete this lab!
+											Tidak akan memperoleh tier jika lab ini tidak selesai atau tidak valid!
 										</div>
 									</div>
 								{/if}
