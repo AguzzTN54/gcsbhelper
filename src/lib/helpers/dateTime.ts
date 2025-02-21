@@ -19,7 +19,7 @@ export const arcadeBonus = {
 
 export const juaraDate = {
 	start: dayjs('31 January 2025, 12:00 GMT+7'),
-	end: dayjs('23 February 2025, 23:59 GMT+7')
+	end: dayjs('2 March 2025, 23:59 GMT+7')
 };
 
 const timeOffset = new Date().getTimezoneOffset() / -60;
