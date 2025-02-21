@@ -90,11 +90,6 @@
 				"group": "ai-rb",
 				"courses": [
 					{
-						"courseID": 25,
-						"courseName": "Achieving Advanced Insights with BigQuery",
-						"type": "completion"
-					},
-					{
 						"courseID": 1169,
 						"courseName": "Boost Productivity with Gemini in BigQuery",
 						"type": "completion"
@@ -147,6 +142,11 @@
 					{
 						"courseID": 1133,
 						"courseName": "Work with Gemini Models in BigQuery",
+						"type": "completion"
+					},
+					{
+						"courseID": 25,
+						"courseName": "Achieving Advanced Insights with BigQuery",
 						"type": "completion"
 					}
 				]
