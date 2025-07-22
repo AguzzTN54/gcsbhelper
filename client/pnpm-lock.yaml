@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   overlayscrollbars-svelte:
-    hash: ppf7u6mkbtnaz2f2kq3zbk7kty
+    hash: 91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677
     path: patches/overlayscrollbars-svelte.patch
 
 importers:
@@ -27,7 +27,7 @@ importers:
         version: 2.10.1
       overlayscrollbars-svelte:
         specifier: ^0.5.4
-        version: 0.5.4(patch_hash=ppf7u6mkbtnaz2f2kq3zbk7kty)(overlayscrollbars@2.10.1)(svelte@5.17.3)
+        version: 0.5.4(patch_hash=91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677)(overlayscrollbars@2.10.1)(svelte@5.17.3)
     devDependencies:
       '@sveltejs/adapter-static':
         specifier: ^3.0.8
@@ -2008,7 +2008,7 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  overlayscrollbars-svelte@0.5.4(patch_hash=ppf7u6mkbtnaz2f2kq3zbk7kty)(overlayscrollbars@2.10.1)(svelte@5.17.3):
+  overlayscrollbars-svelte@0.5.4(patch_hash=91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677)(overlayscrollbars@2.10.1)(svelte@5.17.3):
     dependencies:
       overlayscrollbars: 2.10.1
       svelte: 5.17.3

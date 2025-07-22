@@ -39,6 +39,11 @@
 	"pnpm": {
 		"patchedDependencies": {
 			"overlayscrollbars-svelte": "patches/overlayscrollbars-svelte.patch"
-		}
+		},
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"sharp",
+			"workerd"
+		]
 	}
 }
