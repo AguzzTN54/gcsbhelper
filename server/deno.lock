@@ -1,0 +1,333 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:@types/jsdom@*": "21.1.7",
+    "npm:@types/node@*": "22.15.11",
+    "npm:jsdom@*": "26.1.0"
+  },
+  "npm": {
+    "@asamuzakjp/css-color@3.2.0_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
+      "integrity": "sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==",
+      "dependencies": [
+        "@csstools/css-calc",
+        "@csstools/css-color-parser",
+        "@csstools/css-parser-algorithms",
+        "@csstools/css-tokenizer",
+        "lru-cache"
+      ]
+    },
+    "@csstools/color-helpers@5.0.2": {
+      "integrity": "sha512-JqWH1vsgdGcw2RR6VliXXdA0/59LttzlU8UlRT/iUUsEeWfYq8I+K0yhihEUTTHLRm1EXvpsCx3083EU15ecsA=="
+    },
+    "@csstools/css-calc@2.1.4_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
+      "integrity": "sha512-3N8oaj+0juUw/1H3YwmDDJXCgTB1gKU6Hc/bB502u9zR0q2vd786XJH9QfrKIEgFlZmhZiq6epXl4rHqhzsIgQ==",
+      "dependencies": [
+        "@csstools/css-parser-algorithms",
+        "@csstools/css-tokenizer"
+      ]
+    },
+    "@csstools/css-color-parser@3.0.10_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
+      "integrity": "sha512-TiJ5Ajr6WRd1r8HSiwJvZBiJOqtH86aHpUjq5aEKWHiII2Qfjqd/HCWKPOW8EP4vcspXbHnXrwIDlu5savQipg==",
+      "dependencies": [
+        "@csstools/color-helpers",
+        "@csstools/css-calc",
+        "@csstools/css-parser-algorithms",
+        "@csstools/css-tokenizer"
+      ]
+    },
+    "@csstools/css-parser-algorithms@3.0.5_@csstools+css-tokenizer@3.0.4": {
+      "integrity": "sha512-DaDeUkXZKjdGhgYaHNJTV9pV7Y9B3b644jCLs9Upc3VeNGg6LWARAT6O+Q+/COo+2gg/bM5rhpMAtf70WqfBdQ==",
+      "dependencies": [
+        "@csstools/css-tokenizer"
+      ]
+    },
+    "@csstools/css-tokenizer@3.0.4": {
+      "integrity": "sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw=="
+    },
+    "@types/jsdom@21.1.7": {
+      "integrity": "sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==",
+      "dependencies": [
+        "@types/node",
+        "@types/tough-cookie",
+        "parse5"
+      ]
+    },
+    "@types/node@22.15.11": {
+      "integrity": "sha512-rlyK0vuU7VLEYQfXuC7QTFxDvkb6tKhDI7wR4r6ZzM0k8BJd44W0jxo6xmUjqSs4AlYmiYfLJU2f0pAG/FtCRw==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
+    "@types/tough-cookie@4.0.5": {
+      "integrity": "sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA=="
+    },
+    "agent-base@7.1.4": {
+      "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ=="
+    },
+    "cssstyle@4.6.0": {
+      "integrity": "sha512-2z+rWdzbbSZv6/rhtvzvqeZQHrBaqgogqt85sqFNbabZOuFbCVFb8kPeEtZjiKkbrm395irpNKiYeFeLiQnFPg==",
+      "dependencies": [
+        "@asamuzakjp/css-color",
+        "rrweb-cssom"
+      ]
+    },
+    "data-urls@5.0.0": {
+      "integrity": "sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==",
+      "dependencies": [
+        "whatwg-mimetype",
+        "whatwg-url"
+      ]
+    },
+    "debug@4.4.0": {
+      "integrity": "sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==",
+      "dependencies": [
+        "ms"
+      ]
+    },
+    "decimal.js@10.6.0": {
+      "integrity": "sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg=="
+    },
+    "entities@6.0.1": {
+      "integrity": "sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g=="
+    },
+    "html-encoding-sniffer@4.0.0": {
+      "integrity": "sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==",
+      "dependencies": [
+        "whatwg-encoding"
+      ]
+    },
+    "http-proxy-agent@7.0.2": {
+      "integrity": "sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==",
+      "dependencies": [
+        "agent-base",
+        "debug"
+      ]
+    },
+    "https-proxy-agent@7.0.6": {
+      "integrity": "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==",
+      "dependencies": [
+        "agent-base",
+        "debug"
+      ]
+    },
+    "iconv-lite@0.6.3": {
+      "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
+      "dependencies": [
+        "safer-buffer"
+      ]
+    },
+    "is-potential-custom-element-name@1.0.1": {
+      "integrity": "sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ=="
+    },
+    "jsdom@26.1.0": {
+      "integrity": "sha512-Cvc9WUhxSMEo4McES3P7oK3QaXldCfNWp7pl2NNeiIFlCoLr3kfq9kb1fxftiwk1FLV7CvpvDfonxtzUDeSOPg==",
+      "dependencies": [
+        "cssstyle",
+        "data-urls",
+        "decimal.js",
+        "html-encoding-sniffer",
+        "http-proxy-agent",
+        "https-proxy-agent",
+        "is-potential-custom-element-name",
+        "nwsapi",
+        "parse5",
+        "rrweb-cssom",
+        "saxes",
+        "symbol-tree",
+        "tough-cookie",
+        "w3c-xmlserializer",
+        "webidl-conversions",
+        "whatwg-encoding",
+        "whatwg-mimetype",
+        "whatwg-url",
+        "ws",
+        "xml-name-validator"
+      ]
+    },
+    "lru-cache@10.4.3": {
+      "integrity": "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="
+    },
+    "ms@2.1.3": {
+      "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
+    },
+    "nwsapi@2.2.20": {
+      "integrity": "sha512-/ieB+mDe4MrrKMT8z+mQL8klXydZWGR5Dowt4RAGKbJ3kIGEx3X4ljUo+6V73IXtUPWgfOlU5B9MlGxFO5T+cA=="
+    },
+    "parse5@7.3.0": {
+      "integrity": "sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==",
+      "dependencies": [
+        "entities"
+      ]
+    },
+    "punycode@2.3.1": {
+      "integrity": "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="
+    },
+    "rrweb-cssom@0.8.0": {
+      "integrity": "sha512-guoltQEx+9aMf2gDZ0s62EcV8lsXR+0w8915TC3ITdn2YueuNjdAYh/levpU9nFaoChh9RUS5ZdQMrKfVEN9tw=="
+    },
+    "safer-buffer@2.1.2": {
+      "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
+    },
+    "saxes@6.0.0": {
+      "integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+      "dependencies": [
+        "xmlchars"
+      ]
+    },
+    "symbol-tree@3.2.4": {
+      "integrity": "sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw=="
+    },
+    "tldts-core@6.1.86": {
+      "integrity": "sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA=="
+    },
+    "tldts@6.1.86": {
+      "integrity": "sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==",
+      "dependencies": [
+        "tldts-core"
+      ],
+      "bin": true
+    },
+    "tough-cookie@5.1.2": {
+      "integrity": "sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==",
+      "dependencies": [
+        "tldts"
+      ]
+    },
+    "tr46@5.1.1": {
+      "integrity": "sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==",
+      "dependencies": [
+        "punycode"
+      ]
+    },
+    "undici-types@6.21.0": {
+      "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
+    },
+    "w3c-xmlserializer@5.0.0": {
+      "integrity": "sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==",
+      "dependencies": [
+        "xml-name-validator"
+      ]
+    },
+    "webidl-conversions@7.0.0": {
+      "integrity": "sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g=="
+    },
+    "whatwg-encoding@3.1.1": {
+      "integrity": "sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==",
+      "dependencies": [
+        "iconv-lite"
+      ]
+    },
+    "whatwg-mimetype@4.0.0": {
+      "integrity": "sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg=="
+    },
+    "whatwg-url@14.2.0": {
+      "integrity": "sha512-De72GdQZzNTUBBChsXueQUnPKDkg/5A5zp7pFDuQAj5UFoENpiACU0wlCvzpAGnTkj++ihpKwKyYewn/XNUbKw==",
+      "dependencies": [
+        "tr46",
+        "webidl-conversions"
+      ]
+    },
+    "ws@8.18.2": {
+      "integrity": "sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ=="
+    },
+    "xml-name-validator@5.0.0": {
+      "integrity": "sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg=="
+    },
+    "xmlchars@2.2.0": {
+      "integrity": "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw=="
+    }
+  },
+  "redirects": {
+    "https://esm.sh/@octokit/app@^16.0.1?target=denonext": "https://esm.sh/@octokit/app@16.0.1?target=denonext",
+    "https://esm.sh/@octokit/auth-app@^8.0.1?target=denonext": "https://esm.sh/@octokit/auth-app@8.0.2?target=denonext",
+    "https://esm.sh/@octokit/auth-oauth-app@^9.0.1?target=denonext": "https://esm.sh/@octokit/auth-oauth-app@9.0.1?target=denonext",
+    "https://esm.sh/@octokit/auth-oauth-device@^8.0.1?target=denonext": "https://esm.sh/@octokit/auth-oauth-device@8.0.1?target=denonext",
+    "https://esm.sh/@octokit/auth-oauth-user@^6.0.0?target=denonext": "https://esm.sh/@octokit/auth-oauth-user@6.0.0?target=denonext",
+    "https://esm.sh/@octokit/auth-token@^6.0.0?target=denonext": "https://esm.sh/@octokit/auth-token@6.0.0?target=denonext",
+    "https://esm.sh/@octokit/auth-unauthenticated@^7.0.1?target=denonext": "https://esm.sh/@octokit/auth-unauthenticated@7.0.1?target=denonext",
+    "https://esm.sh/@octokit/core@^7.0.2?target=denonext": "https://esm.sh/@octokit/core@7.0.3?target=denonext",
+    "https://esm.sh/@octokit/endpoint@^11.0.0?target=denonext": "https://esm.sh/@octokit/endpoint@11.0.0?target=denonext",
+    "https://esm.sh/@octokit/graphql@^9.0.1?target=denonext": "https://esm.sh/@octokit/graphql@9.0.1?target=denonext",
+    "https://esm.sh/@octokit/oauth-app@^8.0.1?target=denonext": "https://esm.sh/@octokit/oauth-app@8.0.1?target=denonext",
+    "https://esm.sh/@octokit/oauth-authorization-url@^8.0.0?target=denonext": "https://esm.sh/@octokit/oauth-authorization-url@8.0.0?target=denonext",
+    "https://esm.sh/@octokit/oauth-methods@^6.0.0?target=denonext": "https://esm.sh/@octokit/oauth-methods@6.0.0?target=denonext",
+    "https://esm.sh/@octokit/plugin-paginate-graphql@^6.0.0?target=denonext": "https://esm.sh/@octokit/plugin-paginate-graphql@6.0.0?target=denonext",
+    "https://esm.sh/@octokit/plugin-paginate-rest@^13.0.0?target=denonext": "https://esm.sh/@octokit/plugin-paginate-rest@13.1.1?target=denonext",
+    "https://esm.sh/@octokit/plugin-rest-endpoint-methods@^16.0.0?target=denonext": "https://esm.sh/@octokit/plugin-rest-endpoint-methods@16.0.0?target=denonext",
+    "https://esm.sh/@octokit/plugin-retry@^8.0.1?target=denonext": "https://esm.sh/@octokit/plugin-retry@8.0.1?target=denonext",
+    "https://esm.sh/@octokit/plugin-throttling@^11.0.1?target=denonext": "https://esm.sh/@octokit/plugin-throttling@11.0.1?target=denonext",
+    "https://esm.sh/@octokit/request-error@^7.0.0?target=denonext": "https://esm.sh/@octokit/request-error@7.0.0?target=denonext",
+    "https://esm.sh/@octokit/request@^10.0.2?target=denonext": "https://esm.sh/@octokit/request@10.0.3?target=denonext",
+    "https://esm.sh/@octokit/webhooks-methods@^6.0.0?target=denonext": "https://esm.sh/@octokit/webhooks-methods@6.0.0?target=denonext",
+    "https://esm.sh/@octokit/webhooks@^14.0.0?target=denonext": "https://esm.sh/@octokit/webhooks@14.1.1?target=denonext",
+    "https://esm.sh/before-after-hook@^4.0.0?target=denonext": "https://esm.sh/before-after-hook@4.0.0?target=denonext",
+    "https://esm.sh/bottleneck@^2.15.3/light?target=denonext": "https://esm.sh/bottleneck@2.19.5/light?target=denonext",
+    "https://esm.sh/fast-content-type-parse@^3.0.0?target=denonext": "https://esm.sh/fast-content-type-parse@3.0.0?target=denonext",
+    "https://esm.sh/octokit?dts": "https://esm.sh/octokit@5.0.3?dts",
+    "https://esm.sh/toad-cache@^3.7.0?target=denonext": "https://esm.sh/toad-cache@3.7.0?target=denonext",
+    "https://esm.sh/universal-github-app-jwt@^2.2.0?target=denonext": "https://esm.sh/universal-github-app-jwt@2.2.2?target=denonext",
+    "https://esm.sh/universal-user-agent@^7.0.0?target=denonext": "https://esm.sh/universal-user-agent@7.0.3?target=denonext",
+    "https://esm.sh/universal-user-agent@^7.0.2?target=denonext": "https://esm.sh/universal-user-agent@7.0.3?target=denonext"
+  },
+  "remote": {
+    "https://esm.sh/": "a467aff52eab120b03a3732e528166cafcf1837c69b7d8914bcb1ae39ef3bd51",
+    "https://esm.sh/@octokit/app@16.0.1/denonext/app.mjs": "a8c53cec4afbcaaacc8670cb21e6bca3bc234a93fbbcadf73e1fd48b980be25a",
+    "https://esm.sh/@octokit/app@16.0.1?target=denonext": "65708710e1540fcc618fa5e7dd5c62665fc23682e8a68d76e312a932f2809394",
+    "https://esm.sh/@octokit/auth-app@8.0.2/denonext/auth-app.mjs": "c5c29b3fcb40dafaefc38e15fa0b799b1a8b914a9644a2aa48d7ec648ce8f8a6",
+    "https://esm.sh/@octokit/auth-app@8.0.2?target=denonext": "a3a49bff130a4bb5959838bfa60676e1d04aa0eb6e8a2872e4dab4a38294c1d3",
+    "https://esm.sh/@octokit/auth-oauth-app@9.0.1/denonext/auth-oauth-app.mjs": "2dcd7d5516c4fb5882af8c0320794b44297b0b68a00cc46230c4c39e16591126",
+    "https://esm.sh/@octokit/auth-oauth-app@9.0.1?target=denonext": "d55cc3de1c5408e6dd38ff4882f35a49bd26633885d66fbff11926c63889edd6",
+    "https://esm.sh/@octokit/auth-oauth-device@8.0.1/denonext/auth-oauth-device.mjs": "6d37ca3a28ae01a3044392ed4d826f194eb85535c5126e4604ad6f672d713c35",
+    "https://esm.sh/@octokit/auth-oauth-device@8.0.1?target=denonext": "97bbad01675b7ad904777188a06addc4af10c4615836d71628e91ef09dcab30c",
+    "https://esm.sh/@octokit/auth-oauth-user@6.0.0/denonext/auth-oauth-user.mjs": "895fe8fbc9376874f4dd07feb1a4802d719a1d862ddd4a9a126bfffc7e57d44a",
+    "https://esm.sh/@octokit/auth-oauth-user@6.0.0?target=denonext": "06e4c11babbe8a85be0f066fd05b9dab8e681b7df038913b1a41ed702886f38e",
+    "https://esm.sh/@octokit/auth-token@6.0.0/denonext/auth-token.mjs": "ef9f8c59ca2597cc1f2b04f5640f55fcb5fa48de98e0d0250411d00858abdd2d",
+    "https://esm.sh/@octokit/auth-token@6.0.0?target=denonext": "edfa317d09714ee0db614953d74ccf8a0ba5764e13b3df64c93057f427c0824a",
+    "https://esm.sh/@octokit/auth-unauthenticated@7.0.1/denonext/auth-unauthenticated.mjs": "e828158f653ad6d3e8b22b04a6c4b1f9d1f8201ad5abf53de44ec5e4fe4ecb3c",
+    "https://esm.sh/@octokit/auth-unauthenticated@7.0.1?target=denonext": "b0e454973d763c4bdf36b791094f401b729e961c0f38e41d0c19e436f367493a",
+    "https://esm.sh/@octokit/core@7.0.3/denonext/core.mjs": "56a6e347539c0a7ceed4b9bed5200dc1bd6842565a7a62a644eaaf03c3edfbc6",
+    "https://esm.sh/@octokit/core@7.0.3?target=denonext": "c200b3594f7a35fb3072897f7f2baa4f6fc57f53eccb28893f4b2b2e6479feb7",
+    "https://esm.sh/@octokit/endpoint@11.0.0/denonext/endpoint.mjs": "674f532ca2746ac3bb89f6b0d9f957b0bd0e34360f60ad8591e339ba2d03155f",
+    "https://esm.sh/@octokit/endpoint@11.0.0?target=denonext": "4fb5b0b5bc94246246b9de2a1b1735542e24950c86474d9f0dbd94ad3b467e40",
+    "https://esm.sh/@octokit/graphql@9.0.1/denonext/graphql.mjs": "0f4092b6469b8bf281a8819ec770f5a6e57d6252d7993922c30e3b45a40ad52d",
+    "https://esm.sh/@octokit/graphql@9.0.1?target=denonext": "56959da590a4bfbf4e0635ae987905b2f0d1bff327b9775af22063702b985fcc",
+    "https://esm.sh/@octokit/oauth-app@8.0.1/denonext/oauth-app.mjs": "aadafd410517a69c77ecb5c2e416c16b9d3ee13a3d627d75f5ad7bd26215f1e0",
+    "https://esm.sh/@octokit/oauth-app@8.0.1?target=denonext": "5ea3c6758256d0a73d25f709e5ab5076b06ab1cc1ea6e740d51367c517345da5",
+    "https://esm.sh/@octokit/oauth-authorization-url@8.0.0/denonext/oauth-authorization-url.mjs": "5fb31dffe819f3cf2b56330775e8080d044ea8f0ab410ba713cda2d3456c495e",
+    "https://esm.sh/@octokit/oauth-authorization-url@8.0.0?target=denonext": "776b9aec0c52fce04fb478f7f1ea22c8b4db81d05e8dbdc741edfa22952d257a",
+    "https://esm.sh/@octokit/oauth-methods@6.0.0/denonext/oauth-methods.mjs": "67667529e68471213fe750d9ab261bdb325c0fedf83900d59d219421247053ae",
+    "https://esm.sh/@octokit/oauth-methods@6.0.0?target=denonext": "cf73c24a9e321cd24ff5121be121fd2b08619e660f2331bdf03c2fa461de092f",
+    "https://esm.sh/@octokit/plugin-paginate-graphql@6.0.0/denonext/plugin-paginate-graphql.mjs": "d940e5fc46be315436b20fb04d9ac6ce6f25aad2ae4390bcc7616b1b9653b83f",
+    "https://esm.sh/@octokit/plugin-paginate-graphql@6.0.0?target=denonext": "a6526533afe0707275b993dab782d4064f081804b389bdbab4d286149de46b5e",
+    "https://esm.sh/@octokit/plugin-paginate-rest@13.1.1/denonext/plugin-paginate-rest.mjs": "038de39ddf76ba4a1ee7e0713048c6e365804a6fd392053ead6f76c024b9284f",
+    "https://esm.sh/@octokit/plugin-paginate-rest@13.1.1?target=denonext": "ab0e47f73d2cb431926e39e9792442c54e21d983414aaeae7fe65b6579b38027",
+    "https://esm.sh/@octokit/plugin-rest-endpoint-methods@16.0.0/denonext/plugin-rest-endpoint-methods.mjs": "719951d4c97dd8e6ac2a17e23e6a15d72808d4210a92aa792e11c6537583bc71",
+    "https://esm.sh/@octokit/plugin-rest-endpoint-methods@16.0.0?target=denonext": "c19486547c2dc96133662db973692ae28ad1149c9cf47629d1bf9d1629b55094",
+    "https://esm.sh/@octokit/plugin-retry@8.0.1/denonext/plugin-retry.mjs": "f8c18d1927cb8eba9e0731f27c1a393aa911ad7b7bf7eca59b69734a13488d3d",
+    "https://esm.sh/@octokit/plugin-retry@8.0.1?target=denonext": "7a6a27ecdf8f7279bcc19671d0d4c310b70b2999c16029b79a461ce626826e45",
+    "https://esm.sh/@octokit/plugin-throttling@11.0.1/denonext/plugin-throttling.mjs": "b5fa628fd7bf70db5d09a62bd242f60204eccf9e336b08738cb908bacdffc0c7",
+    "https://esm.sh/@octokit/plugin-throttling@11.0.1?target=denonext": "898078719a2fe38843bef23e61556039e25a37ecf33b4b45cd5481dbd4d77626",
+    "https://esm.sh/@octokit/request-error@7.0.0/denonext/request-error.mjs": "0268a63037bf2fca8adc84fb604e9506d54484212353fb6743f10b7c8ed42444",
+    "https://esm.sh/@octokit/request-error@7.0.0?target=denonext": "48b9bf574d9f647205b1d6c2df58c5f9356fe818c8da470c84edea3fd89f1ef7",
+    "https://esm.sh/@octokit/request@10.0.3/denonext/request.mjs": "d885bea5bbe2f0e521c31bfac964ed86f90c03c177163f37d915663b9008c500",
+    "https://esm.sh/@octokit/request@10.0.3?target=denonext": "8335c85bb040bb22f01f89529eb1e8067fb6e7b4fdc84d572309255f660a69be",
+    "https://esm.sh/@octokit/webhooks-methods@6.0.0/denonext/webhooks-methods.mjs": "d16f5ed27faa651d4f688c7cf869ce4ae4b390e9634223f259465652f2ba9dcb",
+    "https://esm.sh/@octokit/webhooks-methods@6.0.0?target=denonext": "4cabdc31b52d5428a370f7adcef99395391cc1dc7938cbc6002e0297c1997809",
+    "https://esm.sh/@octokit/webhooks@14.1.1/denonext/webhooks.mjs": "1e63abb757baf0b08bdb0f53db28738caa20585c1ab7ba0830bdee7f801d037a",
+    "https://esm.sh/@octokit/webhooks@14.1.1?target=denonext": "4d8bcb8cafe8b12dbf96e8a6f52c0981a70cae335bc2d0ac569999d914e0d46d",
+    "https://esm.sh/before-after-hook@4.0.0/denonext/before-after-hook.mjs": "0b717c21a1377a7424a19d238df2c7c1f3c3756ca192861a084ac8cb6710eada",
+    "https://esm.sh/before-after-hook@4.0.0?target=denonext": "a736542fbca8aa4f8eaa30249a6f579758fbda59aef2fbed9f10ac7974982421",
+    "https://esm.sh/bottleneck@2.19.5/denonext/light.mjs": "943b72d08b33e678a4f64bf2ce9a0468f9356ee65092af9c893fa25d3be6518b",
+    "https://esm.sh/bottleneck@2.19.5/light?target=denonext": "c53ee9007926e5a49e291e0a0f2e1113735d65271a33eb609ac9ad309def4878",
+    "https://esm.sh/fast-content-type-parse@3.0.0/denonext/fast-content-type-parse.mjs": "e2988912b33fdaacf282c193bfb39ff0739cdaa3e9dbcf15e9fda4d5221033d0",
+    "https://esm.sh/fast-content-type-parse@3.0.0?target=denonext": "d3c0ad21dadee727b7226fbac0685c3b9373705b8f8ac05d1d0f13e07506c8a8",
+    "https://esm.sh/octokit@5.0.3/denonext/octokit.mjs": "63199864d589974e4ec9cc941d39c861ffccbac9028671d4545849faf3ca4656",
+    "https://esm.sh/octokit@5.0.3?dts": "8352b77e941bdaf34114e0bccc98e00d885380db95647c0329b10bea4ab9bb3f",
+    "https://esm.sh/toad-cache@3.7.0/denonext/toad-cache.mjs": "63b78525dcc99d8f736de244e46b306b2b5f6c72db75bf1d230230d46a06ab37",
+    "https://esm.sh/toad-cache@3.7.0?target=denonext": "e17c2f2729b3268a6ecb412b975002ebaa66894c2e5e0a657a38d1176a1f02d4",
+    "https://esm.sh/universal-github-app-jwt@2.2.2/denonext/universal-github-app-jwt.mjs": "0dc5ffa5cc5ade7551ba091da562b72840d624a78a28af985088f5e994b3c53a",
+    "https://esm.sh/universal-github-app-jwt@2.2.2?target=denonext": "30b600b05e1b5a3b5c282d285461807b79950da3812dfe040b46a46ecdd3219b",
+    "https://esm.sh/universal-user-agent@7.0.3/denonext/universal-user-agent.mjs": "021090b5f3bb060b1b0364cb79daa2cc3760db58a023cd8892a098e6256a84c4",
+    "https://esm.sh/universal-user-agent@7.0.3?target=denonext": "78cc32318bbfe205823697bc1fcec2e9a15a435cca022aaeb93024a61e106224"
+  }
+}
