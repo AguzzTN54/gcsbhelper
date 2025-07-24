@@ -1,116 +1,43 @@
-<script lang="ts">
-	import { onNavigate } from '$app/navigation';
-	import { setContext } from 'svelte';
-	import 'overlayscrollbars/overlayscrollbars.css';
-	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+<svelte:head>
+	<meta charset="utf-8" />
+	<title>UNMAINTAINED</title>
+</svelte:head>
 
-	import '../app.css';
-	import Footer from './_global/Footer.svelte';
-	import Header from './_global/Header.svelte';
-	// import ModalSolution from './_global/ModalSolution.svelte';
-
-	const { children } = $props();
-	let innerHeight = $state(0);
-	let innerWidth = $state(0);
-	let footerheight = $state(0);
-	const screenH = $derived(innerHeight - footerheight);
-	const screenHeight = $derived(screenH ? `${screenH}px` : '100vh');
-
-	let showModalSolution = $state(false);
-	let labs = $state([]);
-	setContext('handleModalSol', (labList = []) => {
-		labs = labList;
-		showModalSolution = !showModalSolution;
-	});
-
-	let isTop = $state(true);
-	const scrolled = (event: OverlayScrollbarsComponent) => {
-		const { viewport } = event[0].elements();
-		const { scrollTop } = viewport;
-		isTop = scrollTop <= 0;
-	};
-
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) return;
-
-		// Navigation Started
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-				// Navigation Complete
-			});
-		});
-	});
-</script>
-
-<svelte:window bind:innerHeight bind:innerWidth />
-
-<main>
-	<OverlayScrollbarsComponent
-		options={{ scrollbars: { theme: 'os-theme-dark' } }}
-		onscroll={scrolled}
-		defer
-	>
-		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
-			{#if showModalSolution}
-				<!-- <ModalSolution {labs} /> -->
-			{/if}
-			<Header {isTop} />
-			{@render children()}
-		</div>
-	</OverlayScrollbarsComponent>
-
-	<footer bind:clientHeight={footerheight}>
-		<Footer />
-	</footer>
-</main>
+<div class="error">
+	<span class="status">412</span>
+	<div class="message">
+		<h1>UNMAINTAINED!</h1> 
+	</div>
+</div>  
 
 <style>
-	main,
-	div {
-		width: var(--screen-width);
-		height: calc(var(--screen-height));
-	}
-
-	main {
+	.error {
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		max-width: 32rem;
+		margin: 0 1rem;
 	}
 
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-		}
+	.status {
+		font-weight: 200;
+		font-size: 3rem;
+		line-height: 1;
+		position: relative;
+		top: -0.05rem;
 	}
 
-	@keyframes fade-out {
-		to {
-			opacity: 0;
-		}
+	.message {
+		border-left: 1px solid var(--divider);
+		padding: 0 0 0 1rem;
+		margin: 0 0 0 1rem;
+		min-height: 2.5rem;
+		display: flex;
+		align-items: center;
 	}
 
-	@keyframes slide-from-right {
-		from {
-			transform: translateY(-30px);
-		}
-	}
-
-	@keyframes slide-to-left {
-		to {
-			transform: translateY(30px);
-		}
-	}
-
-	:root::view-transition-old(root) {
-		animation:
-			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
-	}
-
-	:root::view-transition-new(root) {
-		animation:
-			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+	.message h1 {
+		font-weight: 400;
+		font-size: 1em;
+		margin: 0;
 	}
 </style>
