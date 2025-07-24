@@ -3,9 +3,14 @@ name: 'Build and Publish to Cloudflare Pages'
 on:
   push:
     branches: ['master']
+    paths: 'client'
 
 jobs:
   publish:
+    defaults:
+      run:
+        working-directory: ./client
+
     name: Publish to Cloudflare Pages
     runs-on: ubuntu-latest
     permissions:
@@ -20,7 +25,6 @@ jobs:
 
       # Print Directory Tree
       - name: Open Directory Tree
-        working-directory: ./
         run: tree
 
       # Install PNPM
@@ -55,3 +59,4 @@ jobs:
           directory: build
           branch: master
           wranglerVersion: '3'
+
