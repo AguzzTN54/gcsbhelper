@@ -12,16 +12,23 @@ export const compare = async (
   return { sameAsBefore, newHash };
 };
 
+const getImgUrl = (ibb: string) => {
+  if (!ibb) return '';
+  const [, id, slug] = ibb.replace('//', '').split('/');
+  const url = `https://imagecdn.wishsimulator.app/cb/${id}/${slug}&w=250`;
+  return url;
+};
+
 export const parseDiff = (node: NodeListOf<Element> | HTMLElement[], prevContent?: ArcadeContent[]) => {
   const newContent: ArcadeContent[] = [];
   node.forEach((e) => {
     try {
-      const image = e.querySelector('img')?.src;
-      const title = e.querySelector('.card-title')?.textContent;
+      const image = getImgUrl(e.querySelector('img')?.src || '');
+      const title = e.querySelector('.card-title')?.textContent?.trim();
       const link = e.querySelector('a')?.href;
       const [, gameId] = link?.match(/\/games\/(\d+)/) || [];
       const id = parseInt(gameId, 10);
-      const text = e.textContent || '';
+      const text = e.textContent?.trim() || '';
       const [, token, p] = text.match(/Access code:\s*([^\s]+)[\s\S]*?Arcade points:\s*(\d+)/) || [];
       const point = parseInt(p, 10);
       if (!(id && title && image && token && point)) return;
