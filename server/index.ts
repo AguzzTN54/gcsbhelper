@@ -1,6 +1,9 @@
+import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/index.js';
 import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
+import { db } from './lib/denoKv.ts';
 import { createToken, verifyToken } from './lib/hash.ts';
+import { scrapAndNotify } from './lib/scrapper.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -37,11 +40,15 @@ app.post('/api/subscribe', async (c) => {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  const data = await c.req.json();
-  console.log('✅ Subscription saved:', data);
+  const data: PushSubscription = await c.req.json();
+  await db.addSubscription(data);
   return c.json({ success: true });
 });
 
-// Start the server
+// Run every 5 minutes, run every Monday, tuesday and wednesday (Day expected of arcade release)
+Deno.cron('Scrap and Notify', '*/5 * * * 2-4', async () => {
+  await scrapAndNotify();
+});
+
 Deno.serve(app.fetch);
 

@@ -13,8 +13,9 @@ const loadArcadePage = async (): Promise<string> => {
   return content || '';
 };
 
-export const runChecking = async (): Promise<void> => {
+export const scrapAndNotify = async (): Promise<void> => {
   try {
+    console.log(' ');
     console.log('🗃️  Checking stored data..');
     const data = await db.getAll();
 
@@ -60,12 +61,10 @@ export const runChecking = async (): Promise<void> => {
 
     console.log('🔔 Sending Notification..');
     await sendNotification(diff);
-    console.log('✔️  Task Finished: Notification Sent');
+    console.log('✔️  Task Finished');
     return;
   } catch (e) {
     console.error('❌ Operation Canceled:', { cause: e });
   }
 };
-
-await runChecking();
 
