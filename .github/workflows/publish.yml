@@ -3,7 +3,8 @@ name: 'Build and Publish to Cloudflare Pages'
 on:
   push:
     branches: ['master']
-    paths: ['./client']
+    paths:
+      - client/**
 
 jobs:
   publish:
