@@ -18,7 +18,7 @@
 		<span>
 			This site is not officially affiliated with
 			<a href="https://cloudskillsboost.google"> Google Cloud Skill Boost </a>
-			or <a href="https://cloud.google.com/"> JuaraGCP </a>!
+			<!-- or <a href="https://cloud.google.com/"> JuaraGCP </a>! -->
 			<!-- <b> We do not store or even proccess your data on our server! </b> -->
 		</span>
 	</div>

@@ -3,6 +3,7 @@ name: 'Build and Publish to Cloudflare Pages'
 on:
   push:
     branches: ['master']
+    paths: ['./client']
 
 jobs:
   publish:
@@ -48,6 +49,10 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Building the App
         run: pnpm build
+        env:
+          PUBLIC_VAPID_KEY: ${{ secrets.PUBLIC_VAPID_KEY }}
+          PRIVATE_VAPID_KEY: ${{ secrets.PRIVATE_VAPID_KEY }}
+          PUBLIC_API_SERVER: ${{ secrets.PUBLIC_API_SERVER }}
 
       # Cloudflare Step
       - name: Publish to Cloudflare Pages
@@ -57,7 +62,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: gcsbhelper
-          directory: ./client/build
+          directory: ./client/.svelte-kit/cloudflare
           branch: master
           wranglerVersion: '3'
 

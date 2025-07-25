@@ -1,8 +1,8 @@
 <script>
-	const { children, onclick = () => null } = $props();
+	const { children, cancel=false, disabled=false, onclick = () => null } = $props();
 </script>
 
-<button class="check primary_hover_after" type="submit" {onclick}>
+<button class="check" class:primary_hover_after={!disabled} class:cancel {disabled} type="submit" {onclick}>
 	{@render children()}
 </button>
 
@@ -26,6 +26,17 @@
 		&:hover {
 			background-position: 0;
 			box-shadow: var(--outer-shadow);
+		}
+
+		&:disabled{
+			background-color: #ccc;
+			color: #000;
+			background-image: none;
+			cursor: not-allowed;
+		}
+
+		&.cancel {
+			background-image: linear-gradient(70deg, #e30606 45%, #ae0606);
 		}
 	}
 </style>
