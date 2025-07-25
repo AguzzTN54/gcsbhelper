@@ -1,4 +1,4 @@
-import { type ArcadeContent } from './github.ts';
+import { type ArcadeContent } from './denoKv.ts';
 import { sha256 } from './hash.ts';
 
 export const compare = async (
@@ -12,18 +12,17 @@ export const compare = async (
   return { sameAsBefore, newHash };
 };
 
-const getImgUrl = (ibb: string) => {
+const parseImg = (ibb: string) => {
   if (!ibb) return '';
   const [, id, slug] = ibb.replace('//', '').split('/');
-  const url = `https://imagecdn.wishsimulator.app/cb/${id}/${slug}&w=250`;
-  return url;
+  return { id, slug };
 };
 
 export const parseDiff = (node: NodeListOf<Element> | HTMLElement[], prevContent?: ArcadeContent[]) => {
   const newContent: ArcadeContent[] = [];
   node.forEach((e) => {
     try {
-      const image = getImgUrl(e.querySelector('img')?.src || '');
+      const image = parseImg(e.querySelector('img')?.src || '');
       const title = e.querySelector('.card-title')?.textContent?.trim();
       const link = e.querySelector('a')?.href;
       const [, gameId] = link?.match(/\/games\/(\d+)/) || [];
