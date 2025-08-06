@@ -1,17 +1,25 @@
 import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/index.js';
-import { sha256 } from './hash.ts';
+import { sha256 } from '../hash.ts';
 
-export interface ImageThumb {
-  id: string;
-  slug: string;
-}
+export type ImageThumb =
+  | {
+      href: string;
+      id?: string;
+      slug?: string;
+    }
+  | {
+      href?: null | '';
+      id: string;
+      slug: string;
+    };
+
 export interface ArcadeContent {
   id: number;
-  title: string;
-  point: number;
+  title?: string;
+  point?: number;
   token: string;
   image: ImageThumb;
-  addedAt: Date | string;
+  addedAt?: Date | string;
 }
 interface DBData {
   periode: number;

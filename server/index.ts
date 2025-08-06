@@ -1,9 +1,9 @@
 import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/index.js';
 import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
-import { db } from './lib/denoKv.ts';
+import { db } from './lib/db/denoKv.ts';
 import { createToken, verifyToken } from './lib/hash.ts';
-import { scrapAndNotify } from './lib/scrapper.ts';
+import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();

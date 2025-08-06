@@ -1,5 +1,5 @@
 import webPush from 'https://esm.sh/web-push';
-import { db, type ArcadeContent } from './denoKv.ts';
+import { db, type ArcadeContent } from './db/denoKv.ts';
 
 const PUBLIC_VAPID_KEY = Deno.env.get('PUBLIC_VAPID_KEY') || '';
 const PRIVATE_VAPID_KEY = Deno.env.get('PRIVATE_VAPID_KEY') || '';
@@ -31,15 +31,20 @@ const sendToAllClient = async (payload: string) => {
   console.log(`✔️  Sent to ${sent} clients. 🧹 Removed ${removed} invalid subscriptions.`);
 };
 
+const arcadeURL = `https://go.cloudskillsboost.google/arcade`;
+const RSVPURL = 'https://rsvp.withgoogle.com/events/arcade-facilitator/syllabus';
+
 export const sendNotification = async (content: ArcadeContent[]) => {
-  if (content.length < 1) return;
+  if (Array.isArray(content) && content.length < 1) return;
+  const { image, title, point } = content[0] || {};
+  const url = title && image?.id ? arcadeURL : RSVPURL;
+
   if (content.length === 1) {
-    const { image, title, point } = content[0];
     const payload = JSON.stringify({
       title: `New Game Just Dropped! 🎮`,
-      body: `Complete the "${title}" and get ${point} more point`,
+      body: `Complete the "${title}" and get ${point || ''} more point`,
       icon: image,
-      url: `https://go.cloudskillsboost.google/arcade`,
+      url,
     });
     return await sendToAllClient(payload);
   }
@@ -47,8 +52,8 @@ export const sendNotification = async (content: ArcadeContent[]) => {
   const payload = JSON.stringify({
     title: `New Games Just Dropped! 🎮`,
     body: `${content.length} New Games have just launched. Dive in now!`,
-    icon: content[0].image,
-    url: `https://go.cloudskillsboost.google/arcade`,
+    icon: image,
+    url,
   });
 
   return await sendToAllClient(payload);
