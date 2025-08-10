@@ -4,6 +4,7 @@ import { cors } from 'npm:hono/cors';
 import { db } from './lib/db/denoKv.ts';
 import { createToken, verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
+import { profileScrapper } from './lib/scrapper/profileParser.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -31,6 +32,16 @@ app.use(
 app.get('/api/getToken', async (c) => {
   const token = await createToken();
   return c.json({ token });
+});
+
+app.get('/api/profile/:id', async (c) => {
+  const token = c.req.header('x-subscribe-token');
+  if (!token || !(await verifyToken(token))) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+  const id = c.req.param('id');
+  const data = await profileScrapper(id);
+  return c.json(data);
 });
 
 // Endpoint to receive subscription
