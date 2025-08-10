@@ -1,7 +1,7 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
 import type { RSVPResponse } from './rsvp.d.ts';
-import type { ImageThumb, ArcadeContent } from '../db/denoKv.ts';
+import type { ImageThumb, ArcadeContent } from '../../db/denoKv.ts';
 
 const parseKeyTokenFrom = async (url: string): Promise<string | null> => {
   if (!url) return null;

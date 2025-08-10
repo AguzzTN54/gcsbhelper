@@ -1,8 +1,8 @@
 import { db, type ArcadeContent } from './db/denoKv.ts';
 import { findDiff } from './utils/comparison.ts';
 import { sendNotification } from './utils/notification.ts';
-import { parseRSVPPage } from './scrapper/rsvp.ts';
-import { parseArcadePage } from './scrapper/arcade.ts';
+import { parseRSVPPage } from './scrapper/games/rsvp.ts';
+import { parseArcadePage } from './scrapper/games/arcade.ts';
 import { sha256 } from './utils/hash.ts';
 
 const crawlRSVP = true;

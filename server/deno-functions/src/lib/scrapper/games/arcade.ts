@@ -1,6 +1,6 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
-import type { ArcadeContent } from '../db/denoKv.ts';
+import type { ArcadeContent } from '../../db/denoKv.ts';
 
 const parseImg = (ibb: string) => {
   if (!ibb) return '';
@@ -48,3 +48,4 @@ export const parseArcadePage = async (): Promise<ArcadeContent[] | null> => {
     return null;
   }
 };
+
