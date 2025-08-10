@@ -3,8 +3,8 @@
   "deno.lint": true,
   "deno.unstable": true,
   "tasks": {
-    "start": "deno run --unstable-kv --allow-env --env-file --allow-net --unstable-cron index.ts",
-    "build": "deno run -A https://deno.land/x/esbuild@v0.19.11/mod.js index.ts --bundle --outfile=deploy.js --format=esm --platform=neutral --external:npm:hono --external:npm:jsdom"
+    "start": "deno run --unstable-kv --allow-env --env-file --allow-net --unstable-cron src/index.ts",
+    "build": "deno run -A https://deno.land/x/esbuild@v0.19.11/mod.js src/index.ts --bundle --minify --outfile=dist/deploy.js --format=esm --platform=neutral --external:npm:hono --external:npm:jsdom"
   },
   "deno.suggest.imports.hosts": {
     "https://deno.land": true,

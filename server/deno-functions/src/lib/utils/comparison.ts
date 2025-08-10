@@ -1,4 +1,4 @@
-import { type ArcadeContent } from './db/denoKv.ts';
+import { type ArcadeContent } from '../db/denoKv.ts';
 
 const assignNewProps = (arcade: ArcadeContent[], index: number, newProps: ArcadeContent): void => {
   const { image, title, point } = newProps || {};

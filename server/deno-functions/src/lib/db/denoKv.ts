@@ -1,5 +1,5 @@
 import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/index.js';
-import { sha256 } from '../hash.ts';
+import { sha256 } from '../utils/hash.ts';
 
 export type ImageThumb =
   | {

@@ -1,5 +1,5 @@
 import webPush from 'https://esm.sh/web-push';
-import { db, type ArcadeContent } from './db/denoKv.ts';
+import { db, type ArcadeContent } from '../db/denoKv.ts';
 
 const PUBLIC_VAPID_KEY = Deno.env.get('PUBLIC_VAPID_KEY') || '';
 const PRIVATE_VAPID_KEY = Deno.env.get('PRIVATE_VAPID_KEY') || '';
