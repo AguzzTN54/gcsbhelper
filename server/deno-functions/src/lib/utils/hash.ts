@@ -47,3 +47,9 @@ export const sha256 = async (content: string): Promise<string> => {
     .join('');
 };
 
+export const shortShaId = async (content: string): Promise<string> => {
+  const fullHash = await sha256(content);
+  const bigintVal = BigInt('0x' + fullHash);
+  const base36 = bigintVal.toString(36);
+  return base36.slice(0, 15).padEnd(15, '0');
+};
