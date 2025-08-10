@@ -6,6 +6,7 @@ node_modules
 .svelte-kit
 */build
 */dist
+/server/pocketbase/data/*
 .wrangler
 deploy.js
 

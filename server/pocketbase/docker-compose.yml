@@ -1,0 +1,21 @@
+services:
+  pocketbase:
+    container_name: pocketbase
+    image: ghcr.io/muchobien/pocketbase:0.29.2
+    restart: unless-stopped
+    ports:
+      - '8090:8090'
+    volumes:
+      - ./data:/pb_data
+      - ./migrations:/pb_migrations
+      - ./hooks:/pb_hooks
+      - ./public:/pb_public
+    environment:
+      - POCKETBASE_ORIGINS=http://localhost:5173,https://gcsbhelper.pages.dev
+    healthcheck:
+      test: wget -q --spider http://localhost:8090/api/health || exit 1
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
