@@ -3,7 +3,7 @@ export const load = async ({ fetch }) => {
 	try {
 		const res = await fetch(PUBLIC_API_SERVER + '/api/getToken', {
 			headers: {
-				'User-Agent': 'AgusIkiBos',
+				'User-Agent': 'Hublaaaaaaa',
 				origin: 'https://gcsbhelper.pages.dev'
 			}
 		});

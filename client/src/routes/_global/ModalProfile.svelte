@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+	// import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
@@ -37,7 +37,7 @@
 			<div class="iete" style="text-align: center;">No Data</div>
 		{:else}
 			<div class="scroll">
-				<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
+				<!-- <OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
 					<div class="list">
 						{#each myAccounts as { name, profileID }}
 							<div class="item" class:active={activeProfile === profileID}>
@@ -56,7 +56,7 @@
 							</div>
 						{/each}
 					</div>
-				</OverlayScrollbarsComponent>
+				</OverlayScrollbarsComponent> -->
 			</div>
 		{/if}
 	</div>
