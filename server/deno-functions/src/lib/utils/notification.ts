@@ -42,7 +42,7 @@ export const sendNotification = async (content: ArcadeContent[]) => {
   if (content.length === 1) {
     const payload = JSON.stringify({
       title: `New Game Just Dropped! 🎮`,
-      body: `Complete the "${title}" and get ${point || ''} more point`,
+      body: `Complete the ${title} badge and get ${point || ''} more point`,
       icon: image,
       url,
     });
