@@ -23,7 +23,7 @@
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <main
-	class="h-screen h-max-[var(--screen-height)] w-screen flex flex-col relative"
+	class="h-[var(--screen-height)] w-screen flex flex-col relative"
 	style="--screen-height:{screenHeight};--screen-width:{innerWidth}px;"
 >
 	<img
