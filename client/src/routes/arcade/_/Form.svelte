@@ -1,8 +1,12 @@
+<script>
+	import Button from '../../_global/reusable/Button.svelte';
+</script>
+
 <div class="flex w-full py-5 flex-col h-full items-center justify-center">
 	<div class="input relative rounded-full w-10/12 sm:w-[60%]">
 		<input
 			type="text"
-			class="brutal-border bg-gray-100 rounded-full h-16 px-5 placeholder:font-medium w-full outline-0"
+			class="brutal-border !border-[4px] bg-gray-100 rounded-full h-16 px-5 placeholder:font-medium w-full outline-0"
 			placeholder="Input Public Profile URL"
 		/>
 		<span
@@ -12,11 +16,9 @@
 		</span>
 	</div>
 
-	<button
-		class="bg-amber-300 hover:bg-amber-400/80 px-10 py-2 text-lg mt-5 brutal-shadow-soft brutal-border !border-[3px] active:shadow-none rounded-xl"
-	>
+	<Button>
 		Calculate Points <i class="fasdl fa-stars text-rose-300"></i>
-	</button>
+	</Button>
 </div>
 
 <style lang="postcss">
