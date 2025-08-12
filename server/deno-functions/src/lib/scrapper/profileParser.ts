@@ -1,5 +1,6 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
+import { hexToUuid } from '../utils/uuid.ts';
 
 interface UserCourses {
   courseid: number;
@@ -8,6 +9,7 @@ interface UserCourses {
 }
 
 interface ParsedDOM {
+  code: number;
   user: { name: string; profileid: string };
   courses: UserCourses[];
 }
@@ -39,7 +41,7 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
 
   const userName = window.document.querySelector('h1')?.textContent?.trim() || '';
   const user = { name: userName, profileid };
-  const result = { user, courses };
+  const result = { user, courses, code: 200 };
   return result;
 };
 
@@ -51,17 +53,19 @@ const getProfileID = (profileURL: string) => {
 
 export const profileScrapper = async (id: string) => {
   const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
-  const url = gcsb + id;
   try {
+    const uuid = hexToUuid(id);
+    const url = gcsb + uuid;
     const profile = await fetch(url);
     const txt = await profile.text();
     const [, bd] = txt.split('<body');
-    const [body] = bd.split('</body>');
+    const [body] = bd?.split('</body>') || [''];
+    if (!body) throw new Error();
     const parsed = parserFromDom(`<body>${body}</body>`, url);
     return parsed;
   } catch (e) {
-    console.log(e);
-    return { message: 'Invalid id', code: 500 };
+    console.log('Invalid ID', { cause: e });
+    return { message: 'Invalid ID', code: 500 };
   }
 };
 

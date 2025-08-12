@@ -1,6 +1,7 @@
 import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/index.js';
 import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
+import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 import { db } from './lib/db/denoKv.ts';
 import { createToken, verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
@@ -34,13 +35,16 @@ app.get('/api/getToken', async (c) => {
   return c.json({ token });
 });
 
-app.get('/api/profile/:id', async (c) => {
+app.get('/api/identity/:id', async (c) => {
   const token = c.req.header('x-subscribe-token');
   if (!token || !(await verifyToken(token))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
   const id = c.req.param('id');
   const data = await profileScrapper(id);
+  if (data.code !== 200) {
+    return c.json(data, data.code as ContentfulStatusCode);
+  }
   return c.json(data);
 });
 
