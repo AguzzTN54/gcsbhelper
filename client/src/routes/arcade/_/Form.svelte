@@ -1,5 +1,8 @@
-<script>
+<script lang="ts">
 	import Button from '../../_global/reusable/Button.svelte';
+	import Checkbox from '../../_global/reusable/Checkbox.svelte';
+
+	let submitGlobal = $state(true);
 </script>
 
 <div class="flex w-full py-5 flex-col h-full items-center justify-center">
@@ -15,6 +18,13 @@
 			<i class="fasdl fa-sparkles text-indigo-400"></i>
 		</span>
 	</div>
+
+	<Checkbox
+		checked={submitGlobal}
+		onchange={(e) => (submitGlobal = (e.target as HTMLInputElement).checked)}
+	>
+		Submit to global analytics
+	</Checkbox>
 
 	<Button>
 		Calculate Points <i class="fasdl fa-stars text-rose-300"></i>
