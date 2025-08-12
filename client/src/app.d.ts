@@ -1,7 +1,10 @@
 import type { Dayjs } from 'dayjs';
+import { FacilitatorRegions } from '$lib/config';
 
 declare global {
 	namespace App {
+		export type FacilitatorRegion = (typeof FacilitatorRegions)[number];
+
 		export interface UserCourses {
 			courseID: number;
 			courseName: string;

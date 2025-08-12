@@ -58,3 +58,35 @@ export const localConfig = {
 		storageLocal.set('config', config);
 	}
 };
+
+import { browser } from '$app/environment';
+
+interface LStorageData {
+	facilitator?: App.FacilitatorRegion;
+}
+
+const getData = (): LStorageData => {
+	try {
+		const data = localStorage.getItem('gcsbTracker');
+		if (!data) return {};
+		return JSON.parse(data);
+	} catch {
+		return {};
+	}
+};
+
+const lstorage = {
+	get<K extends keyof LStorageData>(key: K): LStorageData[K] {
+		const data = getData();
+		return data[key];
+	},
+
+	set<K extends keyof LStorageData>(key: K, value: LStorageData[K]): void {
+		if (!browser) return;
+		const data = getData();
+		data[key] = value;
+		localStorage.setItem('gcsbTracker', JSON.stringify(data));
+	}
+};
+
+export default lstorage;

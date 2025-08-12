@@ -22,6 +22,9 @@
 	}
 
 	.brutal-border {
+		@apply border-[4px] border-[color:var(--stroke)];
+	}
+	.brutal-border-lg {
 		@apply border-[6px] border-[color:var(--stroke)];
 	}
 
