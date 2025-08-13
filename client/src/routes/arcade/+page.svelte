@@ -3,7 +3,6 @@
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import Form from './_/Form.svelte';
 	import ModalSelectRegion from './_/ModalSelectRegion.svelte';
-	import Portal from '../_global/reusable/Portal/Portal.svelte';
 
 	const regions: Record<string, string> = {
 		indonesia: 'Indonesia',
@@ -22,9 +21,7 @@
 	<title>CloudSkillBoost Arcade Progress Tracker</title>
 </svelte:head>
 
-<Portal target="#main">
-	<ModalSelectRegion {showModal} />
-</Portal>
+<ModalSelectRegion {showModal} />
 
 <section class="font-extrabold p-2 flex flex-col h-full">
 	<h1 class="text-2xl sm:text-3xl md:text-4xl text-center p-3 mt-5 sm:mt-10 sm:p-5">
