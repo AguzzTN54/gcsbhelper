@@ -31,7 +31,7 @@
 		alt="splash"
 		class="size-full object-cover absolute left-0 top-0 pointer-events-none"
 	/>
-	<ScrollArea>
+	<ScrollArea id="main">
 		{@render children()}
 	</ScrollArea>
 	<Footer />

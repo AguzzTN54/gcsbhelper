@@ -1,20 +1,13 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import bg from '$img/paper.webp';
 	import Countdown from '../_global/reusable/Countdown.svelte';
 	import ScrollArea from '../_global/reusable/ScrollArea.svelte';
 	import NavMenu from './_/NavMenu.svelte';
-	import ModalSelectRegion from './_/ModalSelectRegion.svelte';
 
 	const { children } = $props();
-	let showModal = $state(false);
-	setContext('handleFacilitatorSelector', (val: boolean) => {
-		showModal = typeof val === 'boolean' ? val : !showModal;
-	});
 </script>
 
-<ModalSelectRegion {showModal} />
 <div class="flex items-end justify-center size-full">
 	<div
 		class="w-[95%] md:w-9/12 bg-gray-100 h-[calc(90%-2rem)] sm:h-[90%] relative rounded-t-3xl rounded-tr-none !border-b-0 brutal-border-lg brutal-shadow"

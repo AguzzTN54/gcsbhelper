@@ -8,7 +8,13 @@
 	import { onMount } from 'svelte';
 	import { OverlayScrollbars, type PartialOptions } from 'overlayscrollbars';
 
-	const { children, onScroll = () => {}, shadowOnScroll = false, class: className = '' } = $props();
+	const {
+		children,
+		onScroll = () => {},
+		shadowOnScroll = false,
+		class: className = '',
+		id = ''
+	} = $props();
 
 	let element = $state() as HTMLElement;
 	let scrolled = $state(false);
@@ -36,7 +42,7 @@
 	});
 </script>
 
-<div class="size-full {className}" bind:this={element}>
+<div class="size-full {className}" {id} bind:this={element}>
 	{#if shadowOnScroll}
 		<div
 			class:opacity-0={!scrolled}

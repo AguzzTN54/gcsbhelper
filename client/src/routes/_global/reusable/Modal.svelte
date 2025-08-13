@@ -3,7 +3,7 @@
 	import { self } from 'svelte/legacy';
 	import { fade, fly } from 'svelte/transition';
 
-	const { persist = false, large = false, children } = $props();
+	const { persist = false, children } = $props();
 	const modalHandle = getContext('modalHandle') as () => void;
 
 	const dismiss = () => {
@@ -13,7 +13,7 @@
 </script>
 
 <section
-	class="fixed size-full z-10 flex items-center justify-center bg-amber-50/80 backdrop-blur-xs"
+	class="fixed size-full z-99999 top-0 left-0 flex items-center justify-center bg-amber-50/80 backdrop-blur-xs"
 	onmousedown={self(dismiss)}
 	role="button"
 	tabindex="0"
