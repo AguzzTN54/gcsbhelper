@@ -32,8 +32,12 @@
 		box-shadow: 10px 10px 0 0 var(--stroke);
 	}
 
+	.brutal-drop {
+		filter: drop-shadow(5px 5px 0 var(--stroke));
+	}
+
 	.brutal-shadow-soft {
-		box-shadow: 3px 3px 0 0 rgba(31, 41, 55, 0.9);
+		box-shadow: 5px 5px 0 0 var(--stroke);
 	}
 
 	.brutal-text {

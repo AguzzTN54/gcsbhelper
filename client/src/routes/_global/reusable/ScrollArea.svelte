@@ -26,19 +26,12 @@
 		return null;
 	};
 
-	let loaded = $state(false);
 	onMount(() => {
 		osInstance = OverlayScrollbars(
 			element,
-			{ scrollbars: { theme: 'os-theme-dark', autoHide: 'scroll' } },
+			{ scrollbars: { theme: 'os-theme-dark' } },
 			{ scroll: onscroll }
 		);
-		loaded = true;
-	});
-
-	$effect(() => {
-		if (!loaded) return;
-		setOptions({ scrollbars: { autoHide: 'scroll' } });
 	});
 </script>
 
@@ -52,3 +45,22 @@
 
 	{@render children()}
 </div>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme' theme(reference);
+
+	:global {
+		.os-scrollbar-track {
+			@apply relative;
+			&::after {
+				content: '';
+				@apply bg-amber-900 rounded-none top-0 left-1/2 -translate-x-1/2 h-full w-[2px] absolute -z-1;
+			}
+		}
+
+		.os-scrollbar-handle {
+			--os-handle-max-size: 4rem;
+			@apply rounded-none bg-amber-900;
+		}
+	}
+</style>
