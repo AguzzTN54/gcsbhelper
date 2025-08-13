@@ -17,7 +17,12 @@
 			<div
 				class="absolute top-0 left-0 z-1 -translate-y-[calc(100%+2.5rem)] sm:-translate-y-full flex justify-center sm:justify-start w-full sm:w-fit"
 			>
-				<Countdown />
+				<div class="flex flex-col items-center sm:items-start mb-2">
+					<span class="brutal-text after:!bg-amber-600 text-white text-xs mb-0.5">
+						Time Remaining
+					</span>
+					<Countdown />
+				</div>
 			</div>
 		{/if}
 

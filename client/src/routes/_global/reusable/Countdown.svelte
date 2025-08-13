@@ -44,15 +44,12 @@
 	onDestroy(() => clearInterval(timer));
 </script>
 
-<div class="flex flex-col items-center sm:items-start">
-	<span class="brutal-text after:!bg-amber-600 text-white text-xs mb-0.5">Time Remaining</span>
-	<div class="flex gap-1 text-lg font-mono mb-2">
-		{#each countdown as { text, time }}
-			<div
-				class="bg-gray-100 brutal-border !border-[4px] px-1 py-0.5 sm:p-1 rounded-xl min-w-10 sm:min-w-12 text-center text-sm sm:text-base"
-			>
-				<span class="text-base sm:text-xl font-bold">{time}</span>{text}
-			</div>
-		{/each}
-	</div>
+<div class="flex gap-1 text-lg font-mono">
+	{#each countdown as { text, time }}
+		<div
+			class="bg-gray-100 brutal-border !border-[4px] px-1 py-0.5 sm:p-1 rounded-xl min-w-10 sm:min-w-12 text-center text-sm sm:text-base"
+		>
+			<span class="text-base sm:text-xl font-bold">{time}</span>{text}
+		</div>
+	{/each}
 </div>
