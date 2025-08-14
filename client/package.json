@@ -1,6 +1,6 @@
 {
 	"name": "gcsb-counter",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -37,7 +37,8 @@
 		"canvas-confetti": "^1.9.3",
 		"dayjs": "^1.11.12",
 		"marked": "^13.0.2",
-		"overlayscrollbars": "^2.11.5"
+		"overlayscrollbars": "^2.11.5",
+		"swiper": "^11.2.10"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
+	import 'swiper/css';
 	import '../app.css';
 	import splash from '$img/splash5.webp';
 	import Footer from './_global/Footer.svelte';
@@ -29,7 +30,7 @@
 	<img
 		src={splash}
 		alt="splash"
-		class="size-full object-cover absolute left-0 top-0 pointer-events-none"
+		class="size-full object-cover absolute left-0 -z-1 top-0 pointer-events-none"
 	/>
 	<ScrollArea id="main">
 		{@render children()}
