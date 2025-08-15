@@ -32,7 +32,7 @@
 					class:active={i === initIndex}
 				>
 					<div class="flex flex-col items-center pb-0">
-						<div class="flex h-2 items-center relative justify-center mt-9 w-full">
+						<div class="flex h-2 items-center relative justify-center mt-10 w-full">
 							{#if i < rewards.length - 1}
 								<div
 									class:bg-indigo-700={i < initIndex}
@@ -43,19 +43,22 @@
 								class="rounded-full size-4 relative dot bg-gray-400 hover:bg-gray-900 cursor-pointer"
 								class:bg-indigo-700={i < initIndex}
 							>
-								{#if i === initIndex}
-									<h4
-										class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[calc(100%+.25rem)] w-fit whitespace-nowrap text-sm cursor-grab"
-									>
-										{#if i > 0}
-											<span class="brutal-text after:!bg-sky-200"> Your Reward </span>
-										{:else}
-											<span class=""> Start Here </span>
-										{/if}
-									</h4>
-									{#if i > 0}
-										<i class="fasds fa-check text-white"></i>
+								<h4
+									class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[calc(100%+.25rem)] w-fit whitespace-nowrap text-sm cursor-grab"
+								>
+									{#if i === initIndex}
+										<span class="brutal-text text-base after:!bg-sky-200">
+											Your Reward <i class="fasdl fa-gift text-rose-200 text-xl"></i>
+										</span>
+									{:else if initIndex === 0}
+										<span class=""> Start Here </span>
+									{:else if i > initIndex}
+										<span class="bg-gray-300 text-gray-800 p-1"> 80 </span>
 									{/if}
+								</h4>
+
+								{#if i === initIndex}
+									<i class="fasds fa-check text-white"></i>
 								{/if}
 							</div>
 						</div>

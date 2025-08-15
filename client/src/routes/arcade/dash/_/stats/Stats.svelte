@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Activities from './Activities.svelte';
+	import Milestone from './Milestone.svelte';
 </script>
 
 {#snippet heading(text: string)}
@@ -8,25 +10,31 @@
 	</div>
 {/snippet}
 
-<div class="flex flex-col lg:flex-row gap-5 lg:gap-10 pb-5">
+<div class="flex flex-col lg:flex-row lg:gap-10 pb-5">
 	<div class="w-full lg:w-1/3">
 		{@render heading('Milestone Chart')}
 		<div class="flex justify-center">
-			<div class="size-50 aspect-square bg-amber-200"></div>
+			<div class="size-50 aspect-square flex items-center justify-center">
+				<div class="scale-110">
+					<Milestone />
+				</div>
+			</div>
 			<!--  -->
 		</div>
 	</div>
 	<div class="w-full lg:w-2/3">
 		{@render heading('Activity Chart')}
 		<div class="flex justify-center">
-			<div class="w-full h-50 bg-amber-200"></div>
+			<div class="w-full h-50">
+				<Activities />
+			</div>
 			<!--  -->
 		</div>
 	</div>
 </div>
 
 <div
-	class="flex flex-col lg:flex-row p-2 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl -skew-y-1"
+	class="flex flex-col lg:flex-row p-2 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl -skew-y-1 lg:scale-85"
 >
 	<div class="w-full lg:w-25 text-center lg:text-left">
 		<h2 class="font-bold text-xl pb-2 leading-[100%] mt-2">POINT DETAILS</h2>
@@ -35,7 +43,7 @@
 		{#snippet column({ text, point }: { text: string; point: number })}
 			<div class="text-center py-1 hover:bg-orange-200">
 				<h3 class="brutal-text after:!bg-purple-200">{text}</h3>
-				<span class="font-black text-2xl block">+{point}</span>
+				<span class="font-black text-2xl block">{text === 'Total' ? '' : '+'}{point}</span>
 			</div>
 		{/snippet}
 
