@@ -6,9 +6,10 @@
 	import PointCard from './_/PointCard.svelte';
 	import Stats from './_/stats/Stats.svelte';
 	import Reward from './_/reward/Reward.svelte';
+	import Badges from './_/badges/Badges.svelte';
 </script>
 
-<div class="size-full flex flex-col sm:flex-row pr-4 sm:pr-0">
+<div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
 	<!-- left -->
 	<div
 		class="lg:w-120 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-2 relative"
@@ -54,6 +55,7 @@
 		<ScrollArea class="sm:py-2 sm:px-10 px-2">
 			<Stats />
 			<Reward />
+			<Badges />
 		</ScrollArea>
 	</div>
 </div>
