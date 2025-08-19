@@ -63,9 +63,11 @@
 	<!-- Right -->
 
 	<div class="w-full sm:w-1/2 lg:w-full">
-		<ScrollArea class="sm:py-2 sm:px-10 px-2">
+		<ScrollArea id="rightpane" class="sm:py-2 sm:px-10 px-2">
+			<div id="content-stats"></div>
 			<Stats />
 			<Reward />
+			<div id="content-badges"></div>
 			<Badges />
 		</ScrollArea>
 	</div>

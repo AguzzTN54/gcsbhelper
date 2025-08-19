@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { getElement, getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
+
 	const { action = false } = $props();
 
-	const active = 'stats';
+	let active = $state('stats');
 
 	const links = [
 		{ slug: 'stats', icon: 'chart-line', text: 'Statistics' },
@@ -12,15 +15,53 @@
 	const actions = [
 		{ slug: 'profile', icon: 'arrow-up-right-from-square', text: 'Open Cloudskillboost Profile' },
 		{ slug: 'refresh', icon: 'rotate-right', text: 'Reload Calculation' },
-		// { slug: 'accounts', icon: 'users', text: 'Accounts' },
 		{ slug: 'notify', icon: 'bell', text: 'Push Notification' },
-		{ slug: 'logout', icon: 'right-from-bracket', text: 'Log Out' }
+		{ slug: 'accounts', icon: 'users', text: 'Accounts' }
 	];
+
+	const buttonClick = (slug: string) => {
+		if (action) return;
+
+		// ToC panel
+		const targetPosition = getTargetPosition('rightpane', '#content-' + slug);
+		smoothScroll({ id: 'rightpane', targetPosition });
+	};
+
+	const updateActive = () => {
+		let current: string | null = null;
+		let minDist = Infinity;
+
+		links.forEach((h) => {
+			const el = document.getElementById('content-' + h.slug);
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const dist = Math.abs(rect.top);
+				if (rect.top <= 100 && dist < minDist) {
+					minDist = dist;
+					current = h.slug;
+				}
+			}
+		});
+
+		active = current || 'stats';
+	};
+
+	onMount(async () => {
+		if (action) return;
+		await tick();
+		updateActive();
+		getElement('rightpane').addEventListener('scroll', updateActive);
+	});
+	onDestroy(() => {
+		if (action) return;
+		getElement('rightpane')?.removeEventListener('scroll', updateActive);
+	});
 </script>
 
 <div class="flex gap-3" class:!gap-2={action} class:flex-col={!action}>
 	{#each action ? actions : links as { icon, slug, text }}
 		<button
+			onclick={() => buttonClick(slug)}
 			class:active={active === slug}
 			aria-label={text}
 			title={text}
