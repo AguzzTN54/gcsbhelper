@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '$reusable/Countdown.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
@@ -8,6 +9,26 @@
 	import Reward from './_/reward/Reward.svelte';
 	import Badges from './_/badges/Badges.svelte';
 	import Timeline from './_/Timeline.svelte';
+
+	const scrolled = getContext('scrolled') as (val: boolean) => void;
+
+	let firstRender = true;
+	const observeOutOfView = (node: HTMLElement) => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (firstRender) {
+					firstRender = false;
+					return;
+				}
+				const entry = entries[0];
+				scrolled(entry.intersectionRatio === 0);
+			},
+			{ threshold: [0, 1] }
+		);
+
+		observer.observe(node);
+		return { destroy: () => observer.disconnect() };
+	};
 </script>
 
 <div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
@@ -16,8 +37,12 @@
 		class="lg:w-140 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-6 sm:pl-2 relative"
 	>
 		<div class="sm:px-5 px-2">
-			<div class="flex sm:pt-2 pb-5 sm:pl-2 text-center sm:text-left">
-				<div class="w-20 brutal-drop scale-90 sm:block hidden">
+			<div
+				class="flex sm:pt-2 pb-5 sm:pl-2 text-center sm:text-left"
+				id="profile-id"
+				use:observeOutOfView
+			>
+				<div class="w-20 scale-105 sm:block hidden">
 					<ProfilePic />
 				</div>
 				<div class="ml-auto w-full pl-5 flex flex-col justify-center items-center sm:items-start">
