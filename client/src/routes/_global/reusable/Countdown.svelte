@@ -4,7 +4,7 @@
 	import duration from 'dayjs/plugin/duration';
 	dayjs.extend(duration);
 
-	const eventDate = dayjs('2025-08-17T00:00:00+07:00');
+	const eventDate = dayjs('2025-08-21');
 
 	let days = $state(0);
 	let hours = $state(0);

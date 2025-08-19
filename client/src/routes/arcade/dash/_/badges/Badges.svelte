@@ -1,5 +1,5 @@
 <script>
-	import Checkbox from '../../../../_global/reusable/Checkbox.svelte';
+	import Checkbox from '$reusable/Checkbox.svelte';
 	import BadgeItem from './BadgeItem.svelte';
 </script>
 
@@ -45,9 +45,7 @@
 </div>
 
 <div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2">
-	<div
-		class="w-full grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-8 md:gap-10 xl:gap-12 pb-10"
-	>
+	<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-10">
 		{#each Array(12) as _, i}
 			<BadgeItem />
 		{/each}

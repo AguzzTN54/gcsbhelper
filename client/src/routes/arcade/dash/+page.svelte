@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ScrollArea from '../../_global/reusable/ScrollArea.svelte';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import Countdown from '$reusable/Countdown.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
-	import Countdown from '../../_global/reusable/Countdown.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 	import PointCard from './_/PointCard.svelte';
 	import Stats from './_/stats/Stats.svelte';

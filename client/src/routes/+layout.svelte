@@ -4,8 +4,8 @@
 	import 'swiper/css';
 	import '../app.css';
 	import splash from '$img/splash5.webp';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Footer from './_global/Footer.svelte';
-	import ScrollArea from './_global/reusable/ScrollArea.svelte';
 
 	const { children } = $props();
 	let innerHeight = $state(0);

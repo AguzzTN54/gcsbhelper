@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Donut from '../../../../_global/reusable/Donut.svelte';
-	const { complete = true, rated = true } = $props();
+	import Donut from '$reusable/Donut.svelte';
+	const { complete = false, rated = false } = $props();
 
 	const skewDeg = () => {
 		const degX = Math.random() * 4 - 2;
@@ -70,16 +70,18 @@
 			{/if}
 		</div>
 		<div class="p-2">
-			<div class="block text-xs pt-1 pb-2">
-				<div class="inline-block">
+			<div class="block pt-1 pb-2">
+				<div class="inline-block text-xs">
 					<i class="fasdl fa-flask text-indigo-400"></i>
 					<span class="text-gray-600">6</span>
-
 					<i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
 					<span class="text-gray-600">1209</span>
 				</div>
-				<span class="brutal-text after:!bg-amber-200 text-amber-800"> Skill Badge </span>
-				<span class="brutal-text after:!bg-sky-200 text-sky-800">
+
+				<span class="brutal-text after:!bg-amber-200 text-amber-800 !mx-1 text-[10px]">
+					Skill Badge
+				</span>
+				<span class="brutal-text after:!bg-sky-200 text-sky-800 !mx-1 text-[10px]">
 					<i class="fasdl fa-bolt"></i> Fast Track
 				</span>
 			</div>

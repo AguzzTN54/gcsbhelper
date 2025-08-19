@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
-	import Modal from '../../_global/reusable/Modal.svelte';
-	import lstorage from '$lib/helpers/localstorage';
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import { FacilitatorRegions } from '$lib/config';
+	import lstorage from '$lib/helpers/localstorage';
+	import Modal from '$reusable/Modal.svelte';
 
 	const { showModal } = $props();
 

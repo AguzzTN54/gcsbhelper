@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '../../_global/reusable/Button.svelte';
-	import Checkbox from '../../_global/reusable/Checkbox.svelte';
+	import Button from '$reusable/Button.svelte';
+	import Checkbox from '$reusable/Checkbox.svelte';
 
 	let submitGlobal = $state(true);
 </script>

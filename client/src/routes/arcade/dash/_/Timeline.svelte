@@ -1,11 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Dayjs } from 'dayjs';
 	import dayjs from '$lib/helpers/dateTime';
-	import ScrollArea, {
-		getTargetPosition,
-		smoothScroll
-	} from '../../../_global/reusable/ScrollArea.svelte';
-	import { onMount } from 'svelte';
+	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
 
 	let timelineW = $state(0);
 	let timelineH = $state(0);

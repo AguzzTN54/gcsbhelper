@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import bg from '$img/paper.webp';
-	import Countdown from '../_global/reusable/Countdown.svelte';
-	import ScrollArea from '../_global/reusable/ScrollArea.svelte';
+	import Countdown from '$reusable/Countdown.svelte';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
 	const { children } = $props();

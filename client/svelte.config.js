@@ -12,6 +12,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$comp: path.resolve('./src/components'),
+			$reusable: path.resolve('./src/routes/_global/reusable'),
 			$img: path.resolve('./src/images')
 		}
 	}
