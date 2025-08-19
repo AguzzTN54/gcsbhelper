@@ -7,12 +7,13 @@
 	import Stats from './_/stats/Stats.svelte';
 	import Reward from './_/reward/Reward.svelte';
 	import Badges from './_/badges/Badges.svelte';
+	import Timeline from './_/Timeline.svelte';
 </script>
 
 <div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
 	<!-- left -->
 	<div
-		class="lg:w-120 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-2 relative"
+		class="lg:w-140 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-6 sm:pl-2 relative"
 	>
 		<div class="sm:px-5 px-2">
 			<div class="flex sm:pt-2 pb-5 sm:pl-2 text-center sm:text-left">
@@ -28,6 +29,16 @@
 			</div>
 
 			<PointCard />
+		</div>
+
+		<div class="px-2 pt-5 py-10 sm:px-5 h-full">
+			<div class="flex items-center">
+				<span class="inline-block"> Don’t miss out on the games! </span>
+				<button aria-label="Turn On Notification" title="Turn On Notification" class="ml-2">
+					<i class="fasdl fa-bell text-amber-200"></i>
+				</button>
+			</div>
+			<Timeline />
 		</div>
 
 		<div class="mt-auto sm:px-5 px-2 pt-5">
