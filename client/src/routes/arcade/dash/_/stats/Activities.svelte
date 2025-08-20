@@ -73,6 +73,11 @@
 							: 0;
 					}
 				},
+				interaction: {
+					mode: 'nearest',
+					axis: 'xy',
+					intersect: false
+				},
 				plugins: {
 					legend: {
 						display: false

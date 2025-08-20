@@ -11,18 +11,18 @@
 {/snippet}
 
 <div class="flex flex-col lg:flex-row lg:gap-10 pb-5">
-	<div class="w-full lg:w-1/3">
+	<div class="w-full lg:w-1/3 md:pt-0 pt-5">
 		{@render heading('Milestone Chart')}
 		<div class="flex justify-center">
-			<div class="size-50 aspect-square flex items-center justify-center">
-				<div class="scale-110">
+			<div class="size-40 xl:size-50 aspect-square flex items-center justify-center">
+				<div class="scale-120 xl:scale-110">
 					<Milestone />
 				</div>
 			</div>
 			<!--  -->
 		</div>
 	</div>
-	<div class="w-full lg:w-2/3">
+	<div class="w-full lg:w-2/3 md:pt-0 pt-15">
 		{@render heading('Activity Chart')}
 		<div class="flex justify-center">
 			<div class="w-full h-50">
@@ -34,7 +34,7 @@
 </div>
 
 <div
-	class="flex flex-col lg:flex-row p-2 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl -skew-y-1 lg:scale-85"
+	class="flex flex-col lg:flex-row p-2 my-5 md:my-0 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl -skew-y-1 lg:scale-85"
 >
 	<div class="w-full lg:w-25 text-center lg:text-left">
 		<h2 class="font-bold text-xl pb-2 leading-[100%] mt-2 lg:pl-2">POINT DETAILS</h2>
