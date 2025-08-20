@@ -23,8 +23,8 @@
 		if (action) return;
 
 		// ToC panel
-		const targetPosition = getTargetPosition('rightpane', '#content-' + slug);
-		smoothScroll({ id: 'rightpane', targetPosition });
+		const { x, y } = getTargetPosition('rightpane', '#content-' + slug);
+		smoothScroll({ id: 'rightpane', targetPosition: { x, y: y + 40 } });
 	};
 
 	const updateActive = () => {

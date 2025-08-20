@@ -56,12 +56,18 @@
 			<PointCard />
 		</div>
 
-		<div class="px-2 pt-5 py-10 sm:px-5 h-full">
-			<div class="flex items-center">
-				<span class="inline-block"> Don’t miss out on the games! </span>
-				<button aria-label="Turn On Notification" title="Turn On Notification" class="ml-2">
-					<i class="fasdl fa-bell text-amber-200"></i>
-				</button>
+		<div class="px-2 pt-8 pb-12 md:pt-5 md:pb-10 sm:px-5 h-full">
+			<div class="text-center sm:text-left">
+				<span class="inline-block">
+					Don’t miss out on the games!
+					<button
+						aria-label="Turn On Notification"
+						title="Turn On Notification"
+						class="ml-2 inline"
+					>
+						<i class="fasdl fa-bell text-amber-200"></i>
+					</button>
+				</span>
 			</div>
 			<Timeline />
 		</div>

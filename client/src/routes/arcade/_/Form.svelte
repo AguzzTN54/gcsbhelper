@@ -1,13 +1,30 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { PUBLIC_API_SERVER } from '$env/static/public';
+	import { createToken } from '$lib/helpers/crypto';
+	import { uuidToHex } from '$lib/helpers/uuid';
 	import Button from '$reusable/Button.svelte';
 	import Checkbox from '$reusable/Checkbox.svelte';
 
+	let value = $state('');
 	let submitGlobal = $state(true);
+
+	const fetchProfile = async () => {
+		// const token = await createToken();
+		// const profileid = uuidToHex('eb24c815-5b47-4afb-ac14-8fc51e876c6a');
+		// const res = await fetch(PUBLIC_API_SERVER + '/api/identity/' + profileid, {
+		// 	headers: { 'x-subscribe-token': token }
+		// });
+		// const data = await res.json();
+		// console.log(data);
+		goto('/arcade/dash');
+	};
 </script>
 
 <div class="flex w-full py-5 flex-col h-full items-center justify-center">
 	<div class="input relative rounded-full w-10/12 sm:w-[60%]">
 		<input
+			bind:value
 			type="text"
 			class="brutal-border !border-[4px] bg-gray-100 rounded-full h-16 px-5 placeholder:font-medium w-full outline-0"
 			placeholder="Input Public Profile URL"
@@ -26,7 +43,7 @@
 		Submit to global analytics
 	</Checkbox>
 
-	<Button>
+	<Button onclick={fetchProfile}>
 		Calculate Points <i class="fasdl fa-stars text-rose-300"></i>
 	</Button>
 </div>

@@ -31,7 +31,7 @@
 		id,
 		targetPosition,
 		startPosition,
-		duration = 300
+		duration = 500
 	}: SmoothScrollParams) => {
 		const scrollArea = getElement(id);
 		const start = startPosition || { x: scrollArea.scrollLeft, y: scrollArea.scrollTop };

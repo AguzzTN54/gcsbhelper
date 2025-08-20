@@ -2,7 +2,6 @@
 	import { Swiper } from 'swiper';
 	let swiperEl = $state<HTMLElement>();
 	let swiper = $state<Swiper>();
-	// let index = $state(0);
 	let initIndex = 2;
 	const rewards = Array(6);
 
@@ -17,7 +16,6 @@
 			spaceBetween: 25,
 			slidesPerView: 'auto',
 			touchStartForcePreventDefault: true
-			// on: { activeIndexChange: (s) => (index = s.activeIndex) }
 		});
 		return () => swiper?.destroy();
 	});
@@ -73,7 +71,7 @@
 									<i class="fasdl fa-caret-up text-xl"></i>
 								</div>
 								<h4 class="text-center p-1">
-									<span class="brutal-text after:!bg-amber-100 text-sm"> Arcade Ranger</span>
+									<span class="text-sm"> Arcade Ranger</span>
 								</h4>
 								<div
 									class="overflow-hidden -skew-2 bg-amber-300 border-2 translate-y-1 border-indigo-700 rounded-tl-3xl rounded-br-3xl relative z-1"

@@ -31,7 +31,6 @@
 
 		const isValid = FacilitatorRegions.includes(facilitator);
 		modalHandle(!isValid);
-		console.log(isValid);
 		persist = !isValid;
 		if (!isValid) return;
 		arcadeRegion.set(facilitator);
