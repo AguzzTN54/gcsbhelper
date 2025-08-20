@@ -1,5 +1,5 @@
 import { db, type ArcadeContent } from './db/denoKv.ts';
-import { findDiff } from './utils/comparison.ts';
+import { combine, findDiff } from './utils/comparison.ts';
 import { sendNotification } from './utils/notification.ts';
 import { parseRSVPPage } from './scrapper/games/rsvp.ts';
 import { parseArcadePage } from './scrapper/games/arcade.ts';
@@ -58,10 +58,11 @@ export const scrapAndNotify = async (): Promise<void> => {
 };
 
 const notifyAndUpdate = async (diff: ArcadeContent[], prev: ArcadeContent[] = [], hash: string) => {
-  const newHash = await sha256(JSON.stringify([...diff, ...prev]));
+  const combined = combine(diff, prev);
+  const newHash = await sha256(JSON.stringify(combined));
   if (newHash !== hash) {
     console.log('🗄️  Updating database..');
-    await db.update({ arcade: [...diff, ...prev], hash: newHash });
+    await db.update({ arcade: combined, hash: newHash });
   }
 
   if (diff.length < 1) {

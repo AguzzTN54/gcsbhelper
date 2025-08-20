@@ -18,25 +18,35 @@ export const findDiff = (
   const newContent: ArcadeContent[] = current
     .map((item) => {
       const stored = prev?.findIndex(({ id: sid }) => sid === item.id);
-      const inDiff = diff?.find(({ id: sid }) => sid === item.id);
-
       // Modify only stored kv
       if (stored > -1) {
         assignNewProps(prev, stored, item);
-        return inDiff;
-      }
-
-      // Modify data to push to the notification
-      if (inDiff) {
-        const newDiff: ArcadeContent[] = [{ ...inDiff }];
-        assignNewProps(newDiff, 0, item);
-        return newDiff[0];
+        return false;
       }
 
       const addedAt = new Date();
       return { addedAt, ...item };
     })
     .filter((v) => !!v);
+
+  if (Array.isArray(diff) && diff.length > 0) {
+    diff.forEach((item) => {
+      if (newContent.find(({ id }) => id === item.id)) return;
+      const addedAt = new Date();
+      const diffContent = { addedAt, ...item };
+      newContent.push(diffContent);
+    });
+  }
+
   return newContent;
+};
+
+export const combine = (arr1: ArcadeContent[], arr2: ArcadeContent[]) => {
+  const map = new Map<number, ArcadeContent>();
+  [...arr1, ...arr2].forEach((item) => {
+    map.set(item.id, item); // overwrite if duplicate id
+  });
+
+  return Array.from(map.values());
 };
 
