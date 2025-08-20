@@ -2,6 +2,7 @@
 	import { setContext } from 'svelte';
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import ModalSelectRegion from '../../_/ModalSelectRegion.svelte';
+	import Portal from '$reusable/Portal/Portal.svelte';
 
 	const regions: Record<string, string> = {
 		indonesia: 'Facilitator Indonesia',
@@ -16,7 +17,9 @@
 	setContext('handleFacilitatorSelector', handleFacilitatorSelector);
 </script>
 
-<ModalSelectRegion {showModal} />
+<Portal target="#main">
+	<ModalSelectRegion {showModal} />
+</Portal>
 
 <div class="brutal-border rounded-br-3xl rounded-tl-3xl bg-amber-100">
 	<div
