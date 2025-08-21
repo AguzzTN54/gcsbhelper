@@ -19,6 +19,21 @@
 						"type": "skill"
 					},
 					{
+						"courseID": 1241,
+						"courseName": "Enhance Gemini Model Capabilities",
+						"type": "skill"
+					},
+					{
+						"courseID": 1240,
+						"courseName": "Analyze and Reason on Multimodal Data with Gemini",
+						"type": "skill"
+					},
+					{
+						"courseID": 1232,
+						"courseName": "Implement Multimodal Vector Search with BigQuery",
+						"type": "skill"
+					},
+					{
 						"courseID": 700,
 						"courseName": "Cloud Speech API: 3 Ways",
 						"type": "skill"
@@ -142,6 +157,11 @@
 					{
 						"courseID": 1133,
 						"courseName": "Work with Gemini Models in BigQuery",
+						"type": "completion"
+					},
+					{
+						"courseID": 391,
+						"courseName": "Vertex AI Search for Commerce",
 						"type": "completion"
 					},
 					{

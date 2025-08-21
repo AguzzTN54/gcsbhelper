@@ -2,7 +2,7 @@
 	import { onMount, setContext } from 'svelte';
 	import { juaraProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
-	import { juaraDate, timeZone } from '$lib/helpers/dateTime';
+	import { juaraDate } from '$lib/helpers/dateTime';
 	import ModalProfile from '../_global/ModalProfile.svelte';
 	import Ornament from './_ornament.svelte';
 	import Forms from './Forms.svelte';
@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>JuaraGCP Progress Tracker</title>
+	<title>GCPBoleh Progress Tracker</title>
 </svelte:head>
 
 {#if showModal && isLoaded}
@@ -43,8 +43,8 @@
 	<Ornament />
 	<div class="hero">
 		<div class="top">
-			<h1>JuaraGCP Progress Tracker</h1>
-			<span> {startDate} - {endDate} ({timeZone})</span>
+			<h1>GCPBoleh Progress Tracker</h1>
+			<span> {startDate} - {endDate} (GMT+8)</span>
 		</div>
 
 		<div class="info-container">

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
 	import { accounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
 	import Button from '$comp/Button.svelte';
+	import ScrollArea from './ScrollArea.svelte';
 
 	const { target = 'arcade' } = $props();
 	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
@@ -31,13 +31,13 @@
 </script>
 
 <Modal>
-	<h1 class="header">Your {target === 'arcade' ? 'Arcade' : 'JuaraGCP'} Accounts</h1>
+	<h1 class="header">Your {target === 'arcade' ? 'Arcade' : 'GCPBoleh'} Accounts</h1>
 	<div class="body">
 		{#if myAccounts.length < 1}
 			<div class="iete" style="text-align: center;">No Data</div>
 		{:else}
 			<div class="scroll">
-				<OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
+				<ScrollArea>
 					<div class="list">
 						{#each myAccounts as { name, profileID }}
 							<div class="item" class:active={activeProfile === profileID}>
@@ -56,7 +56,7 @@
 							</div>
 						{/each}
 					</div>
-				</OverlayScrollbarsComponent>
+				</ScrollArea>
 			</div>
 		{/if}
 	</div>

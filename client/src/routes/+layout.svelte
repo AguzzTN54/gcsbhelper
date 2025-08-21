@@ -2,10 +2,10 @@
 	import { onNavigate } from '$app/navigation';
 	import { onMount, setContext } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
-	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	import '../app.css';
 	import Footer from './_global/Footer.svelte';
+	import ScrollArea from './_global/ScrollArea.svelte';
 	// import Header from './_global/Header.svelte';
 	// import ModalSolution from './_global/ModalSolution.svelte';
 
@@ -24,9 +24,8 @@
 	});
 
 	let isTop = $state(true);
-	const scrolled = (event: OverlayScrollbarsComponent) => {
-		const { viewport } = event[0].elements();
-		const { scrollTop } = viewport;
+	const scrolled = (e: Event) => {
+		const { scrollTop } = e.target as HTMLElement;
 		isTop = scrollTop <= 0;
 	};
 
@@ -55,11 +54,7 @@
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <main>
-	<OverlayScrollbarsComponent
-		options={{ scrollbars: { theme: 'os-theme-dark' } }}
-		onscroll={scrolled}
-		defer
-	>
+	<ScrollArea onScroll={scrolled}>
 		<div style="--screen-height: {screenHeight};--screen-width: {innerWidth}px;">
 			{#if showModalSolution}
 				<!-- <ModalSolution {labs} /> -->
@@ -67,7 +62,7 @@
 			<!-- <Header {isTop} /> -->
 			{@render children()}
 		</div>
-	</OverlayScrollbarsComponent>
+	</ScrollArea>
 
 	<footer bind:clientHeight={footerheight}>
 		<Footer />

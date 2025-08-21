@@ -8,7 +8,7 @@
 				</a>
 			</div>
 			<div class="item">
-				<a href="/juaragcp" class="juaragcp"> <span> #JuaraGCP </span> </a>
+				<a href="/gcpboleh" class="juaragcp"> <span> #gcpboleh </span> </a>
 			</div>
 		</div>
 	</div>

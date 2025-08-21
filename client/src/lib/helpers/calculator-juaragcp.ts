@@ -56,7 +56,7 @@ export const checkTier = (badges: App.DataScheme[]) => {
 	const total = completion + skill;
 	const result = { status, badgeCount: total };
 
-	if (skill >= 8 && total >= 16) return { tier: 2, ...result };
-	if (skill >= 5 && total >= 10) return { tier: 1, ...result };
+	if (skill >= 8 && total >= 15) return { tier: 2, ...result };
+	if (skill >= 5 && total >= 8) return { tier: 1, ...result };
 	return { status: 'incomplete', tier: 0, badgeCount: 0 };
 };

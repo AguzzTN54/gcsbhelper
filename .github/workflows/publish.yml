@@ -2,7 +2,7 @@ name: 'Build and Publish to Cloudflare Pages'
 
 on:
   push:
-    branches: ['master']
+    branches: ['old']
     paths:
       - client/**
 

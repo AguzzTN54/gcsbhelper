@@ -95,8 +95,8 @@
 {:else if tier > 0}
 	<div class="notes">
 		<p>
-			Selamat! Kini kamu bisa <b>Cek Kembali Email Welcome</b> dari #JuaraGCP untuk mengisi
-			<b> Completion Form </b> dan nantikan info berikutnya dari #JuaraGCP!
+			Selamat! Kini kamu bisa <b>Cek Kembali Email Welcome</b> dari #GCPBoleh untuk mengisi
+			<b> Completion Form </b> dan nantikan info berikutnya dari #GCPBoleh!
 			<br />
 			Tapi Eits... jangan stop di sini!! masih banyak materi GCP yang bisa kamu pelajari di
 			<a href="https://www.cloudskillsboost.google/catalog" target="_blank">Cloud Skill Boost</a>!!

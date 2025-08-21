@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  overlayscrollbars-svelte:
-    hash: 91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677
-    path: patches/overlayscrollbars-svelte.patch
-
 importers:
 
   .:
@@ -23,11 +18,8 @@ importers:
         specifier: ^13.0.2
         version: 13.0.3
       overlayscrollbars:
-        specifier: ^2.9.2
-        version: 2.10.1
-      overlayscrollbars-svelte:
-        specifier: ^0.5.4
-        version: 0.5.4(patch_hash=91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677)(overlayscrollbars@2.10.1)(svelte@5.17.3)
+        specifier: ^2.11.5
+        version: 2.11.5
     devDependencies:
       '@sveltejs/adapter-cloudflare':
         specifier: ^7.1.1
@@ -1323,14 +1315,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  overlayscrollbars-svelte@0.5.4:
-    resolution: {integrity: sha512-QvcC9jdP5kweoKyi+40/+5ynBxY0RwdGlpNX0P1OpK1sGQWlCBUO33VHVDMrRPc1Ki7Q0ZtGbkOZt/pkFXHCWg==}
-    peerDependencies:
-      overlayscrollbars: ^2.0.0
-      svelte: '>=3.54.0'
-
-  overlayscrollbars@2.10.1:
-    resolution: {integrity: sha512-BQoUAaw533ZbqBIE8LzKtsIiOKzB3pkhA6oS2ol+8THB5b2VO91myEXPlKrQqXQRYHG53f/169fFBNrGZ9tzag==}
+  overlayscrollbars@2.11.5:
+    resolution: {integrity: sha512-vTUfCtjJbTjiarrxl9qdK04ZxlQdB4ugXfiqctVZytYDXH259OM4whROMGDE6T8uCYmSYPqiOFIKZ1erVkJnFg==}
 
   p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
@@ -2766,12 +2752,7 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  overlayscrollbars-svelte@0.5.4(patch_hash=91d9b3bf9e8700ec5382ea153bc3a881a07e3576e01c36b0123e22af21203677)(overlayscrollbars@2.10.1)(svelte@5.17.3):
-    dependencies:
-      overlayscrollbars: 2.10.1
-      svelte: 5.17.3
-
-  overlayscrollbars@2.10.1: {}
+  overlayscrollbars@2.11.5: {}
 
   p-limit@3.1.0:
     dependencies:

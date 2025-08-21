@@ -34,13 +34,9 @@
 		"canvas-confetti": "^1.9.3",
 		"dayjs": "^1.11.12",
 		"marked": "^13.0.2",
-		"overlayscrollbars": "^2.9.2",
-		"overlayscrollbars-svelte": "^0.5.4"
+		"overlayscrollbars": "^2.11.5"
 	},
 	"pnpm": {
-		"patchedDependencies": {
-			"overlayscrollbars-svelte": "patches/overlayscrollbars-svelte.patch"
-		},
 		"onlyBuiltDependencies": [
 			"esbuild",
 			"sharp",

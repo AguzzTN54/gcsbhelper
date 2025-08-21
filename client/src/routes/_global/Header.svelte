@@ -4,8 +4,8 @@
 
 <header class:scrolled={!isTop}>
 	<nav>
-		<a href="https://rsvp.withgoogle.com/events/juaragcp-s11/home" target="_blank">
-			<span>Join JuaraGCP S11 </span> <i class="gc-external-link"></i>
+		<a href="https://rsvp.withgoogle.com/events/gcpboleh-s7/home" target="_blank">
+			<span>Join GCPBoleh S7 </span> <i class="gc-external-link"></i>
 		</a>
 	</nav>
 </header>
