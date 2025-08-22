@@ -5,7 +5,7 @@ import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 import { db } from './lib/db/denoKv.ts';
 import { createToken, verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
-import { profileScrapper } from './lib/scrapper/profileParser.ts';
+import { profileScrapper } from './lib/scrapper/proifle/profileParser.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -66,4 +66,3 @@ Deno.cron('Scrap and Notify', '*/5 * * * 2-4', async () => {
 });
 
 Deno.serve(app.fetch);
-

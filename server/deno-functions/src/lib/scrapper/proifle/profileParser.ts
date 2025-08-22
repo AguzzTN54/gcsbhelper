@@ -1,18 +1,20 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
-import { hexToUuid } from '../utils/uuid.ts';
+import { hexToUuid } from '../../utils/uuid.ts';
+import { updateProfilePB } from './_pbUpdater.ts';
 
-interface UserCourses {
-  courseid: number;
-  title: string;
-  date: Date | string;
-}
-
-interface ParsedDOM {
-  code: number;
-  user: { name: string; profileid: string };
-  courses: UserCourses[];
-}
+const toUTC = (dateStr: string): string => {
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date string: ' + dateStr);
+    }
+    return date.toISOString();
+  } catch (e) {
+    console.error(e);
+    return '';
+  }
+};
 
 const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
   const profileid = getProfileID(url);
@@ -22,7 +24,7 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
   badges.forEach((badgeEl) => {
     const dateEl = badgeEl.querySelector('.ql-body-medium.l-mbs');
     const [, dateTxt] = dateEl?.textContent?.split('Earned') || [];
-    const date = dateTxt.trim();
+    const date = toUTC(dateTxt.trim());
 
     const learnBTN = badgeEl.querySelector('ql-button');
     const modalID = learnBTN?.getAttribute('modal') || '';
@@ -32,16 +34,19 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
     const qlButton = modalElement?.querySelector('ql-button');
     const href = qlButton?.getAttribute('href');
     if (!href) return null;
-    const [, , id] = href.split('/');
+    const [, tipe, id] = href.split('/');
     const courseid = parseInt(id, 10);
+    const type = tipe === 'games' ? 'game' : 'skill';
+    const badgeurl = badgeEl.querySelector('img')?.src || '';
 
-    const itemData = { title, courseid, date };
+    const itemData: UserCourses = { title, courseid, date, type, badgeurl };
     courses.push(itemData);
   });
 
   const userName = window.document.querySelector('h1')?.textContent?.trim() || '';
   const user = { name: userName, profileid };
   const result = { user, courses, code: 200 };
+  updateProfilePB(result);
   return result;
 };
 
@@ -54,6 +59,7 @@ const getProfileID = (profileURL: string) => {
 export const profileScrapper = async (id: string) => {
   const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
   try {
+    if (!id) throw new Error('No ID Attached');
     const uuid = hexToUuid(id);
     const url = gcsb + uuid;
     const profile = await fetch(url);
@@ -68,4 +74,3 @@ export const profileScrapper = async (id: string) => {
     return { message: 'Invalid ID', code: 500 };
   }
 };
-
