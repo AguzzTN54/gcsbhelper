@@ -24,24 +24,24 @@ export const accounts = {
 		return Array.isArray(items) ? items : [];
 	},
 
-	getByID(profileID: string, type = 'arcade') {
+	getByID(profileid: string, type = 'arcade') {
 		const accounts = this.getAll(type);
-		const selected = accounts.find(({ profileID: id }) => profileID === id);
+		const selected = accounts.find(({ profileid: id }) => profileid === id);
 		return selected;
 	},
 
-	put({ profileID, name }: { profileID: string; name: string }, type: string = 'arcade') {
+	put({ profileid, name }: { profileid: string; name: string }, type: string = 'arcade') {
 		const accounts = this.getAll(type);
-		const isIndexed = accounts.findIndex(({ profileID: id }) => profileID === id);
+		const isIndexed = accounts.findIndex(({ profileid: id }) => profileid === id);
 
 		if (isIndexed > -1) accounts[isIndexed].name = name;
-		else accounts.push({ profileID, name });
+		else accounts.push({ profileid, name });
 		storageLocal.set(type, accounts);
 	},
 
-	delete(profileID: string, type = 'arcade') {
+	delete(profileid: string, type = 'arcade') {
 		const accounts = this.getAll(type);
-		const removed = accounts.filter(({ profileID: id }) => profileID !== id);
+		const removed = accounts.filter(({ profileid: id }) => profileid !== id);
 		storageLocal.set(type, removed);
 	}
 };

@@ -90,7 +90,7 @@
 			</button>
 
 			<div class="list" id={group + i} style="--height: 0px;">
-				{#each courseList as { courseName, courseID, date, validity, required, point, token, labs, hasBonus }}
+				{#each courseList as { title, courseid, date, validity, required, point, token, labs, hasBonus }}
 					<div
 						class="item"
 						class:attention={required && !validity && !!date}
@@ -99,15 +99,15 @@
 						<div class="left">
 							<div class="left-top">
 								<div class="div">
-									{#if courseID}
+									{#if courseid}
 										{@const endpoint = token ? 'games' : `paths/${pathID}/course_templates`}
 										{@const path = isSkill ? 'course_templates' : endpoint}
-										<a href="https://www.cloudskillsboost.google/{path}/{courseID}" target="_blank">
-											{courseName}
+										<a href="https://www.cloudskillsboost.google/{path}/{courseid}" target="_blank">
+											{title}
 											<i class="gc-external-link"></i>
 										</a>
 									{:else}
-										<span>{courseName}</span>
+										<span>{title}</span>
 									{/if}
 
 									{#if required}

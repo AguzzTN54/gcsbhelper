@@ -3,8 +3,8 @@ import type { Dayjs } from 'dayjs';
 declare global {
 	namespace App {
 		export interface UserCourses {
-			courseID: number;
-			courseName: string;
+			courseid: number;
+			title: string;
 			date?: Dayjs | Date | string;
 		}
 
@@ -26,8 +26,10 @@ declare global {
 		}
 
 		export interface ProfileData {
-			profileID: string;
-			user: string;
+			user: {
+				name: string
+				profileid: string;
+			};
 			courses: UserCourses[];
 		}
 	}

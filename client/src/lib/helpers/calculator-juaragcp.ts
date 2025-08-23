@@ -14,10 +14,10 @@ export const lookupBadges = (userData: App.UserCourses[]) => {
 };
 
 const checkItem = (dt: App.SourceCourses, userData: App.UserCourses[]) => {
-	const { courseID, courseName, required } = dt;
-	const earned = userData.find(({ courseID: id }) => courseID === id);
+	const { courseid, title, required } = dt;
+	const earned = userData.find(({ courseid: id }) => courseid === id);
 	const { date } = earned || {};
-	if (!earned) return { courseID, courseName, date, required };
+	if (!earned) return { courseid, title, date, required };
 
 	// if badge Earned
 	const d = dayjs(date);

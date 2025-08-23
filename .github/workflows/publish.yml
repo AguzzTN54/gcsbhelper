@@ -54,6 +54,7 @@ jobs:
           PUBLIC_VAPID_KEY: ${{ secrets.PUBLIC_VAPID_KEY }}
           PRIVATE_VAPID_KEY: ${{ secrets.PRIVATE_VAPID_KEY }}
           PUBLIC_API_SERVER: ${{ secrets.PUBLIC_API_SERVER }}
+          PUBLIC_SUPER_SECRET: ${{ secrets.PUBLIC_SUPER_SECRET }}
 
       # Cloudflare Step
       - name: Publish to Cloudflare Pages
@@ -66,4 +67,3 @@ jobs:
           directory: ./client/.svelte-kit/cloudflare
           branch: master
           wranglerVersion: '3'
-

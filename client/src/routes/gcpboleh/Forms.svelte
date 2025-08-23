@@ -5,12 +5,12 @@
 	import UrlForm from '../_global/URLForm.svelte';
 
 	const onResponse = (data: App.ProfileData) => {
-		const { user, courses: userBadges, profileID } = data;
+		const { user, courses: userBadges } = data;
 		const detailBadges = lookupBadges(userBadges);
 
-		juaraProfile.set({ name: user, profileID });
+		juaraProfile.set(user);
 		juaraBadges.set(detailBadges as unknown as App.DataScheme[]);
-		accounts.put({ profileID, name: user }, 'juaragcp');
+		accounts.put(user, 'juaragcp');
 	};
 </script>
 

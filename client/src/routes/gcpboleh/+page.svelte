@@ -21,13 +21,13 @@
 	onMount(() => {
 		if (isLoaded) return;
 		isLoaded = true;
-		if ($juaraProfile.profileID) return;
+		if ($juaraProfile.profileid) return;
 		const savedAccounts = accounts.getAll('juaragcp');
 		const savedLength = savedAccounts.length;
 		if (savedLength < 1) return;
 		if (savedLength > 1) return (showModal = true);
-		const { profileID } = savedAccounts[0];
-		juaraProfile.set({ profileID });
+		const { profileid } = savedAccounts[0];
+		juaraProfile.set({ profileid });
 	});
 </script>
 

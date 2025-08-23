@@ -8,94 +8,94 @@
 				"group": "ai-sb",
 				"courses": [
 					{
-						"courseID": 976,
-						"courseName": "Prompt Design in Vertex AI",
+						"courseid": 976,
+						"title": "Prompt Design in Vertex AI",
 						"type": "skill",
 						"required": true
 					},
 					{
-						"courseID": 1076,
-						"courseName": "Build Real World AI Applications with Gemini and Imagen",
+						"courseid": 1076,
+						"title": "Build Real World AI Applications with Gemini and Imagen",
 						"type": "skill"
 					},
 					{
-						"courseID": 1241,
-						"courseName": "Enhance Gemini Model Capabilities",
+						"courseid": 1241,
+						"title": "Enhance Gemini Model Capabilities",
 						"type": "skill"
 					},
 					{
-						"courseID": 1240,
-						"courseName": "Analyze and Reason on Multimodal Data with Gemini",
+						"courseid": 1240,
+						"title": "Analyze and Reason on Multimodal Data with Gemini",
 						"type": "skill"
 					},
 					{
-						"courseID": 1232,
-						"courseName": "Implement Multimodal Vector Search with BigQuery",
+						"courseid": 1232,
+						"title": "Implement Multimodal Vector Search with BigQuery",
 						"type": "skill"
 					},
 					{
-						"courseID": 700,
-						"courseName": "Cloud Speech API: 3 Ways",
+						"courseid": 700,
+						"title": "Cloud Speech API: 3 Ways",
 						"type": "skill"
 					},
 					{
-						"courseID": 631,
-						"courseName": "Prepare Data for ML APIs on Google Cloud",
+						"courseid": 631,
+						"title": "Prepare Data for ML APIs on Google Cloud",
 						"type": "skill"
 					},
 					{
-						"courseID": 674,
-						"courseName": "Automate Data Capture at Scale with Document AI",
+						"courseid": 674,
+						"title": "Automate Data Capture at Scale with Document AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 630,
-						"courseName": "Use Machine Learning APIs on Google Cloud",
+						"courseid": 630,
+						"title": "Use Machine Learning APIs on Google Cloud",
 						"type": "skill"
 					},
 					{
-						"courseID": 684,
-						"courseName": "Build and Deploy Machine Learning Solutions on Vertex AI",
+						"courseid": 684,
+						"title": "Build and Deploy Machine Learning Solutions on Vertex AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 686,
-						"courseName": "Build Custom Processors with Document AI",
+						"courseid": 686,
+						"title": "Build Custom Processors with Document AI",
 						"type": "skill"
 					},
 					{
-						"courseID": 978,
-						"courseName": "Develop GenAI Apps with Gemini and Streamlit",
+						"courseid": 978,
+						"title": "Develop GenAI Apps with Gemini and Streamlit",
 						"type": "skill"
 					},
 					{
-						"courseID": 959,
-						"courseName": "Explore Generative AI with the Vertex AI Gemini API",
+						"courseid": 959,
+						"title": "Explore Generative AI with the Vertex AI Gemini API",
 						"type": "skill"
 					},
 					{
-						"courseID": 981,
-						"courseName": "Inspect Rich Documents with Gemini Multimodality and Multimodal RAG",
+						"courseid": 981,
+						"title": "Inspect Rich Documents with Gemini Multimodality and Multimodal RAG",
 						"type": "skill"
 					},
 					{
-						"courseID": 754,
-						"courseName": "The Basics of Google Cloud Compute",
+						"courseid": 754,
+						"title": "The Basics of Google Cloud Compute",
 						"type": "skill"
 					},
 					{
-						"courseID": 751,
-						"courseName": "Secure BigLake Data",
+						"courseid": 751,
+						"title": "Secure BigLake Data",
 						"type": "skill"
 					},
 					{
-						"courseID": 1164,
-						"courseName": "Secure Software Delivery",
+						"courseid": 1164,
+						"title": "Secure Software Delivery",
 						"type": "skill"
 					},
 					{
-						"courseID": 750,
-						"courseName": "Get Started with Sensitive Data Protection",
+						"courseid": 750,
+						"title": "Get Started with Sensitive Data Protection",
 						"type": "skill"
 					}
 				]
@@ -105,68 +105,68 @@
 				"group": "ai-rb",
 				"courses": [
 					{
-						"courseID": 1169,
-						"courseName": "Boost Productivity with Gemini in BigQuery",
+						"courseid": 1169,
+						"title": "Boost Productivity with Gemini in BigQuery",
 						"type": "completion"
 					},
 					{
-						"courseID": 879,
-						"courseName": "Gemini for Data Scientists and Analysts",
+						"courseid": 879,
+						"title": "Gemini for Data Scientists and Analysts",
 						"type": "completion"
 					},
 					{
-						"courseID": 156,
-						"courseName": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud",
+						"courseid": 156,
+						"title": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud",
 						"type": "completion"
 					},
 					{
-						"courseID": 735,
-						"courseName": "Google Developer Essentials",
+						"courseid": 735,
+						"title": "Google Developer Essentials",
 						"type": "completion"
 					},
 					{
-						"courseID": 9,
-						"courseName": "Machine Learning in the Enterprise",
+						"courseid": 9,
+						"title": "Machine Learning in the Enterprise",
 						"type": "completion"
 					},
 					{
-						"courseID": 506,
-						"courseName": "Modernizing Retail and Ecommerce Solutions with Google Cloud",
+						"courseid": 506,
+						"title": "Modernizing Retail and Ecommerce Solutions with Google Cloud",
 						"type": "completion"
 					},
 					{
-						"courseID": 781,
-						"courseName": "Workspace: Add-ons",
+						"courseid": 781,
+						"title": "Workspace: Add-ons",
 						"type": "completion"
 					},
 					{
-						"courseID": 738,
-						"courseName": "Intermediate ML: TensorFlow on Google Cloud",
+						"courseid": 738,
+						"title": "Intermediate ML: TensorFlow on Google Cloud",
 						"type": "completion"
 					},
 					{
-						"courseID": 666,
-						"courseName": "Advanced ML: ML Infrastructure",
+						"courseid": 666,
+						"title": "Advanced ML: ML Infrastructure",
 						"type": "completion"
 					},
 					{
-						"courseID": 1036,
-						"courseName": "Responsible AI for Developers: Privacy & Safety",
+						"courseid": 1036,
+						"title": "Responsible AI for Developers: Privacy & Safety",
 						"type": "completion"
 					},
 					{
-						"courseID": 1133,
-						"courseName": "Work with Gemini Models in BigQuery",
+						"courseid": 1133,
+						"title": "Work with Gemini Models in BigQuery",
 						"type": "completion"
 					},
 					{
-						"courseID": 391,
-						"courseName": "Vertex AI Search for Commerce",
+						"courseid": 391,
+						"title": "Vertex AI Search for Commerce",
 						"type": "completion"
 					},
 					{
-						"courseID": 25,
-						"courseName": "Achieving Advanced Insights with BigQuery",
+						"courseid": 25,
+						"title": "Achieving Advanced Insights with BigQuery",
 						"type": "completion"
 					}
 				]
