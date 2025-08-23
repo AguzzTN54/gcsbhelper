@@ -1,20 +1,10 @@
+import { pb } from '../../db/pocketbase.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
-const token = Deno.env.get('PB_TOKEN') || '';
-const pbHost = Deno.env.get('PB_HOST') || 'http://localhost:8090';
-
 const validateCourse = async (courses: UserCourses[]) => {
-  const res = await fetch(pbHost + '/api/collections/courses/records?perPage=300', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  if (res.status !== 200) throw new Error('Course Validation Error ' + res.status);
-  const { items }: { items: { courseid: number; badgeid: number }[] } = await res.json();
+  const { items } = await pb('/api/collections/courses/records?perPage=300');
   const missingCourses = courses.filter(({ courseid }) => {
-    const isExist = items.find((c) => c.courseid === courseid || c.badgeid === courseid);
+    const isExist = items.find((c: Record<string, unknown>) => c.courseid === courseid || c.badgeid === courseid);
     return !isExist;
   });
 
@@ -38,31 +28,18 @@ const insertMissingCourses = async (newCourses: UserCourses[]) => {
     requests.push(item);
   }
 
-  const data = { requests };
-  const res = await fetch(pbHost + '/api/batch', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify(data),
-  });
-  const d = (await res.json()) || {};
-  if (res.status !== 200) throw new Error(JSON.stringify(d));
+  await pb('/api/batch', 'POST', { requests });
 };
 
 const checkStoredProfile = async (pbid: string): Promise<string[]> => {
-  const res = await fetch(pbHost + '/api/collections/profiles/records/' + pbid, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  if (res.status !== 200 && res.status !== 404) throw new Error('PB Error ' + res.status);
-  if (res.status === 404) return [];
-  const { earned_courses } = await res.json();
-  return earned_courses || [];
+  try {
+    const { earned_courses } = await pb('/api/collections/profiles/records/' + pbid);
+    return earned_courses || [];
+  } catch (err) {
+    const e = err as Record<string, string>;
+    if (e?.message?.match(/"status":404/)) return [];
+    throw e;
+  }
 };
 
 interface PBBatchRequest {
@@ -105,48 +82,22 @@ const insertNewCourses = async (pbid: string, newCourses: UserCourses[]): Promis
     requests.push(item);
   }
 
-  const data = { requests };
-  const res = await fetch(pbHost + '/api/batch', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify(data),
-  });
-  const d = (await res.json()) || {};
-  if (res.status !== 200) throw new Error(JSON.stringify(d));
-
-  return d;
+  const payload = { requests };
+  const data = await pb('/api/batch', 'POST', payload);
+  return data;
 };
 
 const deleteUnEarnedCourse = async (pbid: string, courseids: string[]) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
   const filter = encodeURIComponent(`((${courseFilter})&&profile='${pbid}')`);
-  const res = await fetch(pbHost + '/api/collections/course_enrollments/records?filter=' + filter, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-  });
-  if (res.status !== 200) throw new Error('Course Deletion Error ' + res.status);
-  const { items = [] } = await res.json();
+  const { items = [] } = await pb('/api/collections/course_enrollments/records?filter=' + filter);
   if (items.length < 1) return;
 
   const requests: PBBatchRequest[] = items.map(({ id }: { id: string }) => ({
     method: 'DELETE',
     url: '/api/collections/course_enrollments/records/' + id,
   }));
-
-  await fetch(pbHost + '/api/batch', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({ requests }),
-  });
+  await pb('/api/batch', 'POST', { requests });
 };
 
 const updateProfileCourseList = async (
@@ -163,14 +114,8 @@ const updateProfileCourseList = async (
 
     const newList = insertedCourses.map(({ body }) => body.course);
     const courseList = [...currentEarned.filter((c) => !deletedCourse.includes(c)), ...newList];
-    await fetch(pbHost + '/api/collections/profiles/records/' + pbid, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-      body: JSON.stringify({ earned_courses: courseList }),
-    });
+    const payload = { earned_courses: courseList };
+    await pb('/api/collections/profiles/records/' + pbid, 'PATCH', payload);
   } catch (e) {
     console.error(e);
   }
