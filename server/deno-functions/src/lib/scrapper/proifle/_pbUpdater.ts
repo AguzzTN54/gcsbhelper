@@ -31,13 +31,14 @@ const insertMissingCourses = async (newCourses: UserCourses[]) => {
   await pb('/api/batch', 'POST', { requests });
 };
 
-const checkStoredProfile = async (pbid: string): Promise<string[]> => {
+const checkStoredProfile = async (hexuuid: string): Promise<{ earned: string[]; facilitator?: string }> => {
   try {
-    const { earned_courses } = await pb('/api/collections/profiles/records/' + pbid);
-    return earned_courses || [];
+    const { earned_courses, facilitator } = await pb('/api/collections/profiles/records/' + hexuuid);
+    const earned = earned_courses || [];
+    return { earned, facilitator };
   } catch (err) {
     const e = err as Record<string, string>;
-    if (e?.message?.match(/"status":404/)) return [];
+    if (e?.message?.match(/"status":404/)) return { earned: [] };
     throw e;
   }
 };
@@ -59,12 +60,16 @@ interface PBBatchResponse {
   };
 }
 
-const insertNewCourses = async (pbid: string, newCourses: UserCourses[]): Promise<PBBatchResponse[]> => {
+const insertNewCourses = async (
+  hexuuid: string,
+  newCourses: UserCourses[],
+  facilitator?: string,
+): Promise<PBBatchResponse[]> => {
   const requests: PBBatchRequest[] = [
     {
       method: 'PUT',
       url: '/api/collections/profiles/records',
-      body: { id: pbid },
+      body: { id: hexuuid, facilitator: facilitator || null },
     },
   ];
 
@@ -73,8 +78,8 @@ const insertNewCourses = async (pbid: string, newCourses: UserCourses[]): Promis
       method: 'PUT',
       url: '/api/collections/course_enrollments/records',
       body: {
-        id: await shortShaId(`${pbid}${courseid}`),
-        profile: pbid,
+        id: await shortShaId(`${hexuuid}${courseid}`),
+        profile: hexuuid,
         course: await shortShaId(`${courseid}`),
         earned: date,
       },
@@ -87,9 +92,9 @@ const insertNewCourses = async (pbid: string, newCourses: UserCourses[]): Promis
   return data;
 };
 
-const deleteUnEarnedCourse = async (pbid: string, courseids: string[]) => {
+const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[]) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
-  const filter = encodeURIComponent(`((${courseFilter})&&profile='${pbid}')`);
+  const filter = encodeURIComponent(`((${courseFilter})&&profile='${hexuuid}')`);
   const { items = [] } = await pb('/api/collections/course_enrollments/records?filter=' + filter);
   if (items.length < 1) return;
 
@@ -101,7 +106,7 @@ const deleteUnEarnedCourse = async (pbid: string, courseids: string[]) => {
 };
 
 const updateProfileCourseList = async (
-  pbid: string,
+  hexuuid: string,
   currentEarned: string[],
   newcourses: PBBatchResponse[],
   deletedCourse: string[],
@@ -115,29 +120,38 @@ const updateProfileCourseList = async (
     const newList = insertedCourses.map(({ body }) => body.course);
     const courseList = [...currentEarned.filter((c) => !deletedCourse.includes(c)), ...newList];
     const payload = { earned_courses: courseList };
-    await pb('/api/collections/profiles/records/' + pbid, 'PATCH', payload);
+    await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', payload);
   } catch (e) {
     console.error(e);
   }
 };
 
-export const updateProfilePB = async (data: ParsedDOM, program?: string) => {
-  if (!data) return;
+const updateFacil = async (hexuuid: string, facil?: string) => {
   try {
-    const { courses, user } = data || {};
+    const facilitator = facil || null;
+    await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', { facilitator });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateProfilePB = async (data: ParsedDOM, program?: string, facilitator?: string) => {
+  if (!data) return;
+  const { courses, user } = data || {};
+  const hexuuid = await shortShaId(`${user.profileid}-${program || ''}`);
+  try {
     await validateCourse(courses);
-    const pbid = await shortShaId(`${user.profileid}-${program || ''}`);
-    const earnedCourses = await checkStoredProfile(pbid);
+    const { earned, facilitator: savedFacil } = await checkStoredProfile(hexuuid);
     const newEarnedCourses: UserCourses[] = [];
     for (const course of courses) {
       const shaId = await shortShaId(`${course.courseid}`);
-      const isExist = earnedCourses.includes(shaId);
+      const isExist = earned.includes(shaId);
       if (isExist) continue;
       newEarnedCourses.push(course);
     }
 
     const deletedCourses: string[] = [];
-    for (const course of earnedCourses) {
+    for (const course of earned) {
       let exist = false;
       for (const { courseid } of courses) {
         if ((await shortShaId(`${courseid}`)) === course) {
@@ -148,13 +162,14 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string) => {
       if (!exist) deletedCourses.push(course);
     }
 
-    if (deletedCourses.length > 0) deleteUnEarnedCourse(pbid, deletedCourses);
+    if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
-      console.log(pbid, 'No update detected');
+      if (facilitator !== savedFacil) await updateFacil(hexuuid, facilitator);
+      console.log(hexuuid, 'No update detected');
       return;
     }
-    const insertResult = await insertNewCourses(pbid, newEarnedCourses);
-    await updateProfileCourseList(pbid, earnedCourses, insertResult, deletedCourses);
+    const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, facilitator);
+    await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
   } catch (e) {
     console.error(e);
   }

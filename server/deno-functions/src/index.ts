@@ -43,8 +43,10 @@ app.get('/internal/identity', async (c) => {
   }
 
   const program = (c.req.query('program') ?? '').trim();
+  const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();
+  const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
   const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
-  const data = await profileScrapper(id, { program, save });
+  const data = await profileScrapper(id, { program, save, facilitator });
 
   if (data.code !== 200) {
     return c.json(data, data.code as ContentfulStatusCode);

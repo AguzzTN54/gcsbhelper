@@ -56,8 +56,9 @@ const getProfileID = (profileURL: string) => {
   return profileID;
 };
 
-export const profileScrapper = async (id: string, options?: { program?: string; save?: boolean }) => {
-  const { program, save } = options || {};
+type ScrapperOptions = { program?: string; save?: boolean; facilitator?: string };
+export const profileScrapper = async (id: string, options?: ScrapperOptions) => {
+  const { program, save, facilitator } = options || {};
   const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
   try {
     if (!id) throw new Error('No ID Attached');
@@ -69,7 +70,7 @@ export const profileScrapper = async (id: string, options?: { program?: string; 
     const [body] = bd?.split('</body>') || [''];
     if (!body) throw new Error();
     const parsed = parserFromDom(`<body>${body}</body>`, url);
-    if (save) updateProfilePB(parsed, program);
+    if (save) updateProfilePB(parsed, program, facilitator);
     return parsed;
   } catch (e) {
     console.log('Invalid ID', { cause: e });
