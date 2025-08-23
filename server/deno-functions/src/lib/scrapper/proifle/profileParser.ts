@@ -44,7 +44,8 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
   });
 
   const userName = window.document.querySelector('h1')?.textContent?.trim() || '';
-  const user = { name: userName, profileid };
+  const avatar = window.document.querySelector('ql-avatar')?.getAttribute('src') || '';
+  const user = { name: userName, profileid, avatar };
   const result = { user, courses, code: 200 };
   return result;
 };
