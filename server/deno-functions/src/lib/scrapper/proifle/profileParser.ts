@@ -46,7 +46,6 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
   const userName = window.document.querySelector('h1')?.textContent?.trim() || '';
   const user = { name: userName, profileid };
   const result = { user, courses, code: 200 };
-  updateProfilePB(result);
   return result;
 };
 
@@ -56,7 +55,8 @@ const getProfileID = (profileURL: string) => {
   return profileID;
 };
 
-export const profileScrapper = async (id: string) => {
+export const profileScrapper = async (id: string, options?: { program?: string; save?: boolean }) => {
+  const { program, save } = options || {};
   const gcsb = 'https://www.cloudskillsboost.google/public_profiles/';
   try {
     if (!id) throw new Error('No ID Attached');
@@ -68,6 +68,7 @@ export const profileScrapper = async (id: string) => {
     const [body] = bd?.split('</body>') || [''];
     if (!body) throw new Error();
     const parsed = parserFromDom(`<body>${body}</body>`, url);
+    if (save) updateProfilePB(parsed, program);
     return parsed;
   } catch (e) {
     console.log('Invalid ID', { cause: e });

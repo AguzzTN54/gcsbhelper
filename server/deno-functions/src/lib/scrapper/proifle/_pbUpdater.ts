@@ -121,12 +121,12 @@ const updateProfileCourseList = async (
   }
 };
 
-export const updateProfilePB = async (data: ParsedDOM) => {
+export const updateProfilePB = async (data: ParsedDOM, program?: string) => {
   if (!data) return;
   try {
     const { courses, user } = data || {};
     await validateCourse(courses);
-    const pbid = await shortShaId(user.profileid);
+    const pbid = await shortShaId(`${user.profileid}-${program || ''}`);
     const earnedCourses = await checkStoredProfile(pbid);
     const newEarnedCourses: UserCourses[] = [];
     for (const course of courses) {
@@ -159,4 +159,3 @@ export const updateProfilePB = async (data: ParsedDOM) => {
     console.error(e);
   }
 };
-

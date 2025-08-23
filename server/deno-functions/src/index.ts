@@ -3,7 +3,7 @@ import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
 import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 import { db } from './lib/db/denoKv.ts';
-import { createToken, verifyToken } from './lib//utils/hash.ts';
+import { verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 import { profileScrapper } from './lib/scrapper/proifle/profileParser.ts';
 
@@ -30,18 +30,22 @@ app.use(
 );
 
 // Endpoint to get temporary token
-app.get('/api/getToken', async (c) => {
-  const token = await createToken();
-  return c.json({ token });
-});
+// app.get('/api/getToken', async (c) => {
+//   const token = await createToken();
+//   return c.json({ token });
+// });
 
-app.get('/api/identity/:id', async (c) => {
+app.get('/internal/identity/:id', async (c) => {
   const token = c.req.header('x-subscribe-token');
   if (!token || !(await verifyToken(token))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
   const id = c.req.param('id');
-  const data = await profileScrapper(id);
+
+  const program = (c.req.query('program') ?? '').trim();
+  const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
+  const data = await profileScrapper(id, { program, save });
+
   if (data.code !== 200) {
     return c.json(data, data.code as ContentfulStatusCode);
   }
@@ -49,7 +53,7 @@ app.get('/api/identity/:id', async (c) => {
 });
 
 // Endpoint to receive subscription
-app.post('/api/subscribe', async (c) => {
+app.post('/internal/subscribe', async (c) => {
   const token = c.req.header('x-subscribe-token');
   if (!token || !(await verifyToken(token))) {
     return c.json({ error: 'Unauthorized' }, 401);
