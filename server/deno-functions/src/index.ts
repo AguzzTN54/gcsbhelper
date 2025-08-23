@@ -23,7 +23,7 @@ app.use(
   '*',
   cors({
     origin: CLIENT_ORIGIN || '',
-    allowHeaders: ['Content-Type', 'X-Subscribe-Token'],
+    allowHeaders: ['Content-Type', 'X-Arcade-Token'],
     allowMethods: ['GET', 'POST'],
     maxAge: 3600,
   }),
@@ -35,12 +35,12 @@ app.use(
 //   return c.json({ token });
 // });
 
-app.get('/internal/identity/:id', async (c) => {
-  const token = c.req.header('x-subscribe-token');
+app.get('/internal/identity', async (c) => {
+  const arcadeToken = c.req.header('x-arcade-token');
+  const [token, id = ''] = arcadeToken?.split('#') || [];
   if (!token || !(await verifyToken(token))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
-  const id = c.req.param('id');
 
   const program = (c.req.query('program') ?? '').trim();
   const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
@@ -54,7 +54,7 @@ app.get('/internal/identity/:id', async (c) => {
 
 // Endpoint to receive subscription
 app.post('/internal/subscribe', async (c) => {
-  const token = c.req.header('x-subscribe-token');
+  const token = c.req.header('x-arcade-token');
   if (!token || !(await verifyToken(token))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
