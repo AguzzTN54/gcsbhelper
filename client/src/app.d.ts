@@ -1,14 +1,23 @@
 import type { Dayjs } from 'dayjs';
-import { FacilitatorRegions } from '$lib/config';
+import { facilitatorRegions, gcsbPrograms } from '$lib/config';
 
 declare global {
 	namespace App {
-		export type FacilitatorRegion = (typeof FacilitatorRegions)[number];
+		export type FacilitatorRegion = (typeof facilitatorRegions)[number];
+		export type GCPProgram = (typeof gcsbPrograms)[number];
+
+		export interface UserInfo {
+			avatar: string;
+			name: string;
+			profileid: string;
+		}
 
 		export interface UserCourses {
-			courseID: number;
-			courseName: string;
-			date?: Dayjs | Date | string;
+			title: string;
+			courseid: number;
+			date: Dayjs | Date | string;
+			type: 'skill' | 'game';
+			badgeurl: string;
 		}
 
 		export interface SourceCourses extends UserCourses {
@@ -28,9 +37,8 @@ declare global {
 			list: CourseList[];
 		}
 
-		export interface ProfileData {
-			profileID: string;
-			user: string;
+		export interface FetchedProfile {
+			user: UserInfo;
 			courses: UserCourses[];
 		}
 	}

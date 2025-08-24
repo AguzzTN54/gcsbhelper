@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { PUBLIC_API_SERVER } from '$env/static/public';
-	import { createToken } from '$lib/helpers/crypto';
-	import { isValidUUID, uuidToHex } from '$lib/helpers/uuid';
+	import { loadProfile } from '$lib/helpers/profile-parser';
+	import { isValidUUID } from '$lib/helpers/uuid';
+	import { arcadeRegion } from '$lib/stores/app-store';
+	import lstorage, { localAccounts } from '$lib/helpers/localstorage';
 	import Button from '$reusable/Button.svelte';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Loading from '$reusable/Loading.svelte';
@@ -44,16 +45,13 @@
 	const fetchProfile = async () => {
 		try {
 			loading = true;
-			const profileid = uuidToHex(profileUUID);
-			const token = await createToken();
-			const res = await fetch(PUBLIC_API_SERVER + '/api/identity/' + profileid, {
-				headers: { 'x-subscribe-token': token }
-			});
-			if (res.status !== 200) throw new Error('Fetch Error');
-
-			const data = await res.json();
-			console.log(data);
-			loading = false;
+			fetchError = false;
+			const facilitator = $arcadeRegion;
+			const { user } = await loadProfile({ profileUUID, program: 'arcade', facilitator });
+			const { name, profileid: uuid, avatar } = user || {};
+			localAccounts.put({ name, uuid, avatar, facilitator });
+			lstorage.set('active', { program: 'arcade', uuid, facilitator });
+			goto('/arcade/dash');
 		} catch (e) {
 			console.error(e);
 			loading = false;

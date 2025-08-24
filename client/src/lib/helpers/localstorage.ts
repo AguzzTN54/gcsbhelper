@@ -1,68 +1,14 @@
-export const storageLocal = {
-	getData() {
-		const data = localStorage.getItem('GCSB_Helper');
-		if (!data) return { data: {} };
-		const parsed = JSON.parse(data);
-		return parsed;
-	},
-
-	get(key: string) {
-		const { data } = this.getData();
-		return data[key] || {};
-	},
-
-	set(key: string, value: unknown) {
-		const { data } = this.getData();
-		data[key] = value;
-		localStorage.setItem('GCSB_Helper', JSON.stringify({ data }));
-	}
-};
-
-export const accounts = {
-	getAll(type = 'arcade') {
-		const items = storageLocal.get(type);
-		return Array.isArray(items) ? items : [];
-	},
-
-	getByID(profileID: string, type = 'arcade') {
-		const accounts = this.getAll(type);
-		const selected = accounts.find(({ profileID: id }) => profileID === id);
-		return selected;
-	},
-
-	put({ profileID, name }: { profileID: string; name: string }, type: string = 'arcade') {
-		const accounts = this.getAll(type);
-		const isIndexed = accounts.findIndex(({ profileID: id }) => profileID === id);
-
-		if (isIndexed > -1) accounts[isIndexed].name = name;
-		else accounts.push({ profileID, name });
-		storageLocal.set(type, accounts);
-	},
-
-	delete(profileID: string, type = 'arcade') {
-		const accounts = this.getAll(type);
-		const removed = accounts.filter(({ profileID: id }) => profileID !== id);
-		storageLocal.set(type, removed);
-	}
-};
-
-export const localConfig = {
-	get(key: string) {
-		const config = storageLocal.get('config');
-		const isValue = config[key] !== null;
-		return isValue ? config[key] : null;
-	},
-	set(key: string, value: unknown) {
-		const config = storageLocal.get('config');
-		config[key] = value;
-		storageLocal.set('config', config);
-	}
-};
-
 import { browser } from '$app/environment';
 
+interface LocalAccountItem {
+	uuid: string;
+	name: string;
+	facilitator: App.FacilitatorRegion;
+	avatar: string;
+}
 interface LStorageData {
-	facilitator?: App.FacilitatorRegion;
+	active?: { program?: App.GCPProgram; uuid?: string; facilitator: App.FacilitatorRegion };
+	accounts?: Partial<Record<App.GCPProgram, LocalAccountItem[]>>;
 }
 
 const getData = (): LStorageData => {
@@ -90,3 +36,39 @@ const lstorage = {
 };
 
 export default lstorage;
+
+export const localAccounts = {
+	getAll(program: App.GCPProgram = 'arcade'): LocalAccountItem[] {
+		const allAccounts = lstorage.get('accounts');
+		const accounts = allAccounts?.[program] || [];
+		return accounts;
+	},
+
+	getByID(uuid: string, program: App.GCPProgram = 'arcade'): LocalAccountItem | undefined {
+		const accounts = localAccounts.getAll(program);
+		const selected = accounts.find(({ uuid: id }) => uuid === id);
+		return selected;
+	},
+
+	put(data: LocalAccountItem, program: App.GCPProgram = 'arcade') {
+		const { uuid, name } = data || {};
+		const allAccounts = lstorage.get('accounts');
+		const accounts = allAccounts?.[program] || [];
+		const isIndexed = accounts.findIndex(({ uuid: id }) => uuid === id);
+
+		if (isIndexed > -1) accounts[isIndexed].name = name;
+		else accounts.push(data);
+		const toStore = allAccounts || {};
+		toStore[program] = accounts;
+		lstorage.set('accounts', toStore);
+	},
+
+	delete(uuid: string, program: App.GCPProgram = 'arcade') {
+		const allAccounts = lstorage.get('accounts');
+		const accounts = allAccounts?.[program] || [];
+		const removed = accounts.filter(({ uuid: id }) => uuid !== id);
+		const toStore = allAccounts || {};
+		toStore[program] = removed;
+		lstorage.set('accounts', toStore);
+	}
+};

@@ -1,13 +1,35 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import { onMount, setContext } from 'svelte';
+	import { fetchedProfile } from '$lib/stores/app-store';
+	import { loadProfile } from '$lib/helpers/profile-parser';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
-	const { children } = $props();
+	const { children, data } = $props();
 	let scrolled = $state(false);
 	setContext('scrolled', (val: boolean) => (scrolled = val));
+
+	const profileLoaded = writable(false);
+	setContext('profileLoaded', profileLoaded);
+	let isFetchError = $state(false);
+	const loadBadgesFromProfile = async () => {
+		try {
+			profileLoaded.set(false);
+			if ($fetchedProfile?.user?.profileid) return;
+			const { facilitator, uuid = '' } = data || {};
+			await loadProfile({ profileUUID: uuid, facilitator, program: 'arcade' });
+			isFetchError = false;
+		} catch (e) {
+			console.error(e);
+			isFetchError = true;
+		} finally {
+			profileLoaded.set(true);
+		}
+	};
+	onMount(loadBadgesFromProfile);
 </script>
 
 <section

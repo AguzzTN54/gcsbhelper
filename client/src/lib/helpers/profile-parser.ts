@@ -1,81 +1,36 @@
-const cors_host = [
-	// 'https://cors.eu.org/',
-	// 'https://api.allorigins.win/raw?url=',
-	'https://cors-get-proxy.sirjosh.workers.dev/?url=',
-	// 'https://cors-proxy.fringe.zone/',
-	'https://api.wishsimulator.app/gcsb?u='
-];
+import { PUBLIC_API_SERVER } from '$env/static/public';
+import { arcadeSeason } from '$lib/config';
+import { fetchedProfile } from '$lib/stores/app-store';
+import { createToken } from './crypto';
+import { uuidToHex } from './uuid';
 
-interface ProfileResult {
-	error: boolean;
-	data?: App.ProfileData;
-}
-export const loadProfile = async (profileURL: string): Promise<ProfileResult> => {
-	try {
-		const cors = cors_host[Math.floor(Math.random() * cors_host.length)];
-		const profile = await fetch(cors + profileURL);
-		if (!profile.ok) throw new Error('Failed to Fecth');
+type LoadProfileOptions = { profileUUID: string } & (
+	| { facilitator?: App.FacilitatorRegion; program: 'arcade' }
+	| { program: 'juaragcp' }
+);
 
-		const txt = await profile.text();
-		const [, bd] = txt.split('<body');
-		const [body] = bd.split('</body>');
+export const loadProfile = async (option: LoadProfileOptions) => {
+	const { profileUUID, program } = option || {};
+	const profileid = uuidToHex(profileUUID);
+	const token = await createToken();
 
-		const data = parser(body);
-		const profileID = getProfileID(profileURL);
-		return { error: false, data: { ...data, profileID } };
-	} catch (e) {
-		console.error(e);
-		return { error: true };
+	const server = new URL(PUBLIC_API_SERVER + '/internal/identity');
+	if (option.program === 'arcade') {
+		server.searchParams.append('program', `arcade_${arcadeSeason}`);
+		const { facilitator } = option;
+		if (facilitator) server.searchParams.append('facilitator', facilitator);
+	} else {
+		server.searchParams.append('program', program);
 	}
-};
 
-const parser = (txtHTML: string) => {
-	const tmpEl = document.createElement('section');
-	tmpEl.innerHTML = txtHTML;
-
-	const courses = [] as App.UserCourses[];
-	const badges = tmpEl.querySelectorAll('.profile-badge');
-	badges.forEach((badgeEl) => {
-		const dateEl = badgeEl.querySelector('.ql-body-medium.l-mbs');
-		const [, dateTxt] = dateEl?.textContent?.split('Earned') || [];
-		const date = dateTxt.trim();
-
-		const learnBTN = badgeEl.querySelector('ql-button');
-		const modalID = learnBTN?.getAttribute('modal') || '';
-		const modalElement = tmpEl.querySelector(`#${modalID}`);
-		const courseName = modalElement?.getAttribute('headline') || '';
-
-		const qlButton = modalElement?.querySelector('ql-button');
-		const href = qlButton?.getAttribute('href');
-		if (!href) return null;
-		const [, , id] = href.split('/');
-		const courseID = parseInt(id, 10);
-
-		const itemData = { courseName, courseID, date };
-		courses.push(itemData);
+	const res = await fetch(server.href, {
+		headers: { 'x-arcade-token': `${token}#${profileid}` }
 	});
+	if (res.status !== 200) throw new Error('Fetch Error');
 
-	const user = tmpEl.querySelector('h1')?.textContent?.trim() || '';
-	return { user, courses };
-};
-
-// export const fetchOfficial = async (profileURL: string) => {
-// 	const profileID = getProfileID(profileURL);
-// 	if (!profileID) return null;
-
-// 	try {
-// 		const dbURL = `https://api.wishsimulator.app/gcsb?profile=${profileID}`;
-// 		const resource = await fetch(dbURL);
-// 		const data = await resource.json();
-// 		return { error: false, data: { ...data, profileID, official: true } };
-// 	} catch (e) {
-// 		console.error(e);
-// 		return { error: true, data: {} };
-// 	}
-// };
-
-const getProfileID = (profileURL: string) => {
-	const url = new URL(profileURL);
-	const [, , profileID] = url.pathname.split('/');
-	return profileID;
+	const data: App.FetchedProfile = await res.json();
+	const { profileid: uuid } = data.user;
+	if (!uuid) throw new Error('Missing ID');
+	fetchedProfile.set(data);
+	return data;
 };
