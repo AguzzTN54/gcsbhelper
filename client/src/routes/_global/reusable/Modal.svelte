@@ -3,7 +3,7 @@
 	import { self } from 'svelte/legacy';
 	import { fade, fly } from 'svelte/transition';
 
-	const { persist = false, children } = $props();
+	const { persist = false, children, hideclosebutton = false } = $props();
 	const modalHandle = getContext('modalHandle') as () => void;
 
 	const dismiss = () => {
@@ -24,13 +24,16 @@
 		in:fly={{ y: Math.random() < 0.5 ? -200 : 200, duration: 200 }}
 		out:fly={{ y: Math.random() < 0.5 ? -200 : 200, duration: 200 }}
 	>
-		<button
-			onclick={modalHandle}
-			class="absolute top-0 right-0 rounded-full flex items-center justify-center size-10 bg-gray-100 text-lg z-10 brutal-border translate-x-1/2 -translate-y-1/2 hover:bg-red-300 active:bg-red-400"
-			aria-label="close"
-		>
-			<i class="fasds fa-xmark"></i>
-		</button>
+		{#if !hideclosebutton}
+			<button
+				onclick={modalHandle}
+				class="absolute top-0 right-0 rounded-full flex items-center justify-center size-10 bg-gray-100 text-lg z-10 brutal-border translate-x-1/2 -translate-y-1/2 hover:bg-red-300 active:bg-red-400"
+				aria-label="close"
+			>
+				<i class="fasds fa-xmark"></i>
+			</button>
+		{/if}
+
 		<div
 			class="bg-amber-300 brutal-border-lg size-full -skew-y-2 -skew-x-3 rounded-tl-3xl overflow-hidden"
 		>

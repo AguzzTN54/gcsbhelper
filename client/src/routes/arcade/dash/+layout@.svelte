@@ -5,6 +5,7 @@
 	import { loadProfile } from '$lib/helpers/profile-parser';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import Modal from '$reusable/Modal.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
@@ -17,11 +18,11 @@
 	let isFetchError = $state(false);
 	const loadBadgesFromProfile = async () => {
 		try {
+			isFetchError = false;
 			profileLoaded.set(false);
 			if ($fetchedProfile?.user?.profileid) return;
 			const { facilitator, uuid = '' } = data || {};
 			await loadProfile({ profileUUID: uuid, facilitator, program: 'arcade' });
-			isFetchError = false;
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
@@ -31,6 +32,27 @@
 	};
 	onMount(loadBadgesFromProfile);
 </script>
+
+{#if isFetchError}
+	<Modal hideclosebutton persist>
+		<h2 class="text-center font-semibold text-xl">ERROR!</h2>
+		<article class="text-center mt-4">We couldn't load your Cloud Skills Boost profile!</article>
+		<div class="flex w-full justify-center gap-3 mt-5 mb-2">
+			<a
+				href="/arcade?new"
+				class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
+			>
+				<i class="fasdl fa-house text-amber-400"></i> Take Me Home
+			</a>
+			<button
+				onclick={() => loadBadgesFromProfile()}
+				class="px-2 py-1 brutal-border bg-sky-200 hover:bg-sky-300 active:bg-sky-400"
+			>
+				<i class="fasdl fa-arrow-rotate-right text-sky-400"></i> Try Again
+			</button>
+		</div>
+	</Modal>
+{/if}
 
 <section
 	class="sm:p-4 p-2 pt-4 !pb-0 size-full relative overflow-hidden bg flex flex-col justify-end"
