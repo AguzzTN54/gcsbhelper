@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
 	import { arcadeRegion } from '$lib/stores/app-store';
-	import { FacilitatorRegions } from '$lib/config';
+	import { facilitatorRegions } from '$lib/config';
 	import lstorage from '$lib/helpers/localstorage';
 	import Modal from '$reusable/Modal.svelte';
 
@@ -14,7 +14,7 @@
 		modalHandle(false);
 		persist = false;
 		arcadeRegion.set(region);
-		lstorage.set('facilitator', region);
+		lstorage.set('active', { facilitator: region });
 	};
 	setContext('modalHandle', () => {
 		modalHandle(!showModal);
@@ -22,14 +22,14 @@
 	});
 
 	onMount(() => {
-		const facilitator = lstorage.get('facilitator');
+		const { facilitator } = lstorage.get('active') || {};
 		if (!facilitator) {
 			modalHandle(true);
 			persist = true;
 			return;
 		}
 
-		const isValid = FacilitatorRegions.includes(facilitator);
+		const isValid = facilitatorRegions.includes(facilitator);
 		modalHandle(!isValid);
 		persist = !isValid;
 		if (!isValid) return;
@@ -48,7 +48,7 @@
 			<div class="text-center">
 				<div class="flex w-full justify-center gap-3 mt-5 mb-2">
 					<button
-						onclick={() => selectRegion('global')}
+						onclick={() => selectRegion('india')}
 						class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
 					>
 						Global (India)
