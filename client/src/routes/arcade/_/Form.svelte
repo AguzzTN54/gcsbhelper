@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { loadProfile } from '$lib/helpers/profile-parser';
+	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import lstorage, { localAccounts } from '$lib/helpers/localstorage';
@@ -47,8 +47,8 @@
 			loading = true;
 			fetchError = false;
 			const facilitator = $arcadeRegion;
-			const { user } = await loadProfile({ profileUUID, program: 'arcade', facilitator });
-			const { name, profileid: uuid, avatar } = user || {};
+			const { user } = await loadProfileAndBadges({ profileUUID, program: 'arcade', facilitator });
+			const { name, uuid, avatar } = user || {};
 			localAccounts.put({ name, uuid, avatar, facilitator });
 			lstorage.set('active', { program: 'arcade', uuid, facilitator });
 			goto('/arcade/dash');

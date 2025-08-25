@@ -9,17 +9,43 @@ declare global {
 		export interface UserInfo {
 			avatar: string;
 			name: string;
-			profileid: string;
+			uuid: string;
 		}
 
-		export interface UserCourses {
+		interface BasicCourse {
 			title: string;
 			courseid: number;
-			date: Dayjs | Date | string;
-			type: 'skill' | 'game';
 			badgeurl: string;
 		}
 
+		export interface UserCourses extends BasicCourse {
+			date: Dayjs | Date | string;
+			type: 'skill' | 'game';
+		}
+
+		export interface CourseItem extends BasicCourse {
+			badgeid: number;
+			earnDate?: Dayjs | Date | string;
+			earned: boolean;
+			fasttrack: boolean;
+			inactive: boolean;
+			level: string;
+			point: number;
+			token: string;
+			totallab: number;
+			type: 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
+			validity?: {
+				arcade: boolean;
+				facilitator?: boolean;
+			};
+		}
+
+		export interface InitData {
+			user: UserInfo;
+			courses: CourseItem[];
+		}
+
+		//  ======================================
 		export interface SourceCourses extends UserCourses {
 			type: 'skill' | 'completion';
 			required?: boolean;
@@ -35,11 +61,6 @@ declare global {
 			group: string;
 			title: string;
 			list: CourseList[];
-		}
-
-		export interface FetchedProfile {
-			user: UserInfo;
-			courses: UserCourses[];
 		}
 	}
 }

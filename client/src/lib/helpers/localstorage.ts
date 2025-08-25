@@ -51,13 +51,15 @@ export const localAccounts = {
 	},
 
 	put(data: LocalAccountItem, program: App.GCPProgram = 'arcade') {
-		const { uuid, name } = data || {};
+		const { uuid, name, facilitator } = data || {};
 		const allAccounts = lstorage.get('accounts');
 		const accounts = allAccounts?.[program] || [];
 		const isIndexed = accounts.findIndex(({ uuid: id }) => uuid === id);
 
-		if (isIndexed > -1) accounts[isIndexed].name = name;
-		else accounts.push(data);
+		if (isIndexed > -1) {
+			accounts[isIndexed].name = name;
+			accounts[isIndexed].facilitator = facilitator;
+		} else accounts.push(data);
 		const toStore = allAccounts || {};
 		toStore[program] = accounts;
 		lstorage.set('accounts', toStore);

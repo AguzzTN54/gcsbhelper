@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
 	import { onMount, setContext } from 'svelte';
-	import { fetchedProfile } from '$lib/stores/app-store';
-	import { loadProfile } from '$lib/helpers/profile-parser';
+	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
+	import { initData } from '$lib/stores/app-store';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Modal from '$reusable/Modal.svelte';
@@ -10,19 +10,20 @@
 	import NavMenu from './_/NavMenu.svelte';
 
 	const { children, data } = $props();
+	const { avatar, facilitator, name, uuid } = data;
+
 	let scrolled = $state(false);
 	setContext('scrolled', (val: boolean) => (scrolled = val));
-
 	const profileLoaded = writable(false);
 	setContext('profileLoaded', profileLoaded);
+
 	let isFetchError = $state(false);
 	const loadBadgesFromProfile = async () => {
 		try {
 			isFetchError = false;
 			profileLoaded.set(false);
-			if ($fetchedProfile?.user?.profileid) return;
-			const { facilitator, uuid = '' } = data || {};
-			await loadProfile({ profileUUID: uuid, facilitator, program: 'arcade' });
+			if ($initData && $initData.length > 0) return;
+			await loadProfileAndBadges({ profileUUID: uuid || '', facilitator, program: 'arcade' });
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
@@ -69,13 +70,13 @@
 	>
 		<div class="-skew-1 flex justify-center pb-3">
 			<div class="flex" class:scale-90={scrolled} class:-translate-y-[8%]={scrolled}>
-				<ProfilePic />
+				<ProfilePic src={avatar} />
 			</div>
 
 			{#if scrolled}
 				<div class="ml-4 w-full flex flex-col">
 					<a href="/arcade" class="relative w-fit">
-						<h1 class="font-semibold text-lg mb-1 text-overflow">Agus Sedunia Agus Sedunia</h1>
+						<h1 class="font-semibold text-lg mb-1 text-overflow">{name}</h1>
 					</a>
 					<NavMenu action />
 				</div>

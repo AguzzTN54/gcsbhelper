@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { Writable } from 'svelte/store';
 	import { getContext } from 'svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
-	import Countdown from '$reusable/Countdown.svelte';
+	import Countdown from '../_/Countdown.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 	import PointCard from './_/PointCard.svelte';
@@ -10,22 +11,21 @@
 	import Badges from './_/badges/Badges.svelte';
 	import Timeline from './_/Timeline.svelte';
 
+	const { data } = $props();
+	const { avatar, name, uuid, facilitator } = data;
+	const profileLoaded = getContext('profileLoaded') as Writable<boolean>;
 	const scrolled = getContext('scrolled') as (val: boolean) => void;
 
 	let firstRender = true;
 	const observeOutOfView = (node: HTMLElement) => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (firstRender) {
-					firstRender = false;
-					return;
-				}
+				if (firstRender) return (firstRender = false);
 				const entry = entries[0];
 				scrolled(entry.intersectionRatio === 0);
 			},
 			{ threshold: [0, 1] }
 		);
-
 		observer.observe(node);
 		return { destroy: () => observer.disconnect() };
 	};
@@ -43,11 +43,11 @@
 				use:observeOutOfView
 			>
 				<div class="w-20 scale-105 sm:block hidden">
-					<ProfilePic />
+					<ProfilePic src={avatar} />
 				</div>
 				<div class="ml-auto w-full pl-5 flex flex-col justify-center items-center sm:items-start">
 					<a href="/arcade" class="relative w-fit">
-						<h1 class="font-semibold text-2xl mb-1 text-overflow">Agus Sedunia Agus Sedunia</h1>
+						<h1 class="font-semibold text-2xl mb-1 text-overflow">{name}</h1>
 					</a>
 					<NavMenu action />
 				</div>
@@ -75,9 +75,6 @@
 		<div class="mt-auto sm:px-5 px-2 pt-5">
 			<div class="brutal-border p-2 w-full rounded-xl bg-amber-200 flex justify-center">
 				<div class="flex flex-col items-center relative z-1">
-					<span class="brutal-text after:!bg-indigo-100 text-xs sm:text-sm mb-2">
-						Arcade Facilitator ends in
-					</span>
 					<Countdown />
 				</div>
 			</div>

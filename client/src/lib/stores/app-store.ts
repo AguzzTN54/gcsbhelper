@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const arcadeRegion = writable<App.FacilitatorRegion>('unset');
-export const fetchedProfile = writable<App.FetchedProfile>();
+export const initData = writable<App.CourseItem[]>([]);
 
 export const arcadeProfile = writable({ profileID: '', name: '' });
 export const arcadeBadges = writable({});
