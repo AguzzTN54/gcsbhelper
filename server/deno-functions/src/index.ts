@@ -2,6 +2,7 @@ import { type PushSubscription } from 'https://esm.sh/@types/web-push@3.6.4/inde
 import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
 import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
+
 import { db } from './lib/db/denoKv.ts';
 import { verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
@@ -10,11 +11,37 @@ import { profileScrapper } from './lib/scrapper/proifle/profileParser.ts';
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
 
+const rateLimitStore = new Map<string, { count: number; reset: number }>();
+const limit = 50; // 100 req
+const windowMs = 60_000; // per minute
+
+app.use('*', async (c, next) => {
+  const ip = c.req.header('x-forwarded-for') ?? 'unknown';
+  const now = Date.now();
+  let record = rateLimitStore.get(ip);
+  if (!record || record.reset < now) {
+    // reset counter
+    record = { count: 0, reset: now + windowMs };
+    rateLimitStore.set(ip, record);
+  }
+
+  record.count++;
+  if (record.count > limit) {
+    return c.text('Too Many Requests', 429);
+  }
+
+  c.header('X-RateLimit-Limit', limit.toString());
+  c.header('X-RateLimit-Remaining', (limit - record.count).toString());
+  c.header('X-RateLimit-Reset', Math.floor(record.reset / 1000).toString());
+
+  await next();
+});
+
 app.use('*', async (c, next) => {
   const origin = c.req.header('origin');
   const userAgent = c.req.header('user-agent');
   if (!origin || !CLIENT_ORIGIN?.includes(origin) || !userAgent) {
-    return c.json({ error: 'Forbidden' }, 403);
+    return c.json({ error: 'Who Are You? What Are you doing bruh?' }, 403);
   }
   await next();
 });
