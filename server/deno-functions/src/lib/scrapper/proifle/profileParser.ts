@@ -17,7 +17,7 @@ const toUTC = (dateStr: string): string => {
 };
 
 const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
-  const profileid = getProfileID(url);
+  const uuid = getProfileID(url);
   const { window } = new JSDOM(htmlString || '', { url });
   const courses: UserCourses[] = [];
   const badges = window.document.querySelectorAll('.profile-badge');
@@ -45,7 +45,7 @@ const parserFromDom = (htmlString: string, url: string): ParsedDOM => {
 
   const userName = window.document.querySelector('h1')?.textContent?.trim() || '';
   const avatar = window.document.querySelector('ql-avatar')?.getAttribute('src') || '';
-  const user = { name: userName, profileid, avatar };
+  const user = { name: userName, uuid, avatar };
   const result = { user, courses, code: 200 };
   return result;
 };
@@ -74,6 +74,6 @@ export const profileScrapper = async (id: string, options?: ScrapperOptions) => 
     return parsed;
   } catch (e) {
     console.log('Invalid ID', { cause: e });
-    return { message: 'Invalid ID', code: 500 };
+    return { message: 'Failed to resolve profile page', code: 500 };
   }
 };

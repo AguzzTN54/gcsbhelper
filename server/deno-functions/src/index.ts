@@ -64,8 +64,8 @@ app.use(
 
 app.get('/internal/identity', async (c) => {
   const arcadeToken = c.req.header('x-arcade-token');
-  const [token, id = ''] = arcadeToken?.split('#') || [];
-  if (!token || !(await verifyToken(token))) {
+  const [time, token, id = ''] = arcadeToken?.split('.') || [];
+  if (!token || !(await verifyToken(time + '.' + token))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 

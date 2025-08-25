@@ -138,7 +138,7 @@ const updateFacil = async (hexuuid: string, facil?: string) => {
 export const updateProfilePB = async (data: ParsedDOM, program?: string, facilitator?: string) => {
   if (!data) return;
   const { courses, user } = data || {};
-  const hexuuid = await shortShaId(`${user.profileid}-${program || ''}`);
+  const hexuuid = await shortShaId(`${user.uuid}-${program || ''}`);
   try {
     await validateCourse(courses);
     const { earned, facilitator: savedFacil } = await checkStoredProfile(hexuuid);
