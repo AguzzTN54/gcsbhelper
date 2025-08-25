@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import bg from '$img/paper.webp';
-	import Countdown from '$reusable/Countdown.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import Countdown from './_/Countdown.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
 	const { children } = $props();
@@ -18,10 +18,7 @@
 				class="absolute top-0 left-0 z-1 -translate-y-[calc(100%+2.5rem)] sm:-translate-y-full flex justify-center sm:justify-start w-full sm:w-fit"
 			>
 				<div class="flex flex-col items-center sm:items-start mb-2">
-					<span class="brutal-text after:!bg-amber-600 text-white text-xs mb-0.5">
-						Time Remaining
-					</span>
-					<Countdown />
+					<Countdown small />
 				</div>
 			</div>
 		{/if}

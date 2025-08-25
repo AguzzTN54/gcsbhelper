@@ -6,7 +6,6 @@
 	import Modal from '$reusable/Modal.svelte';
 
 	const { showModal } = $props();
-
 	let persist = $state(false);
 	const modalHandle = getContext('handleFacilitatorSelector') as (val: boolean) => void;
 
@@ -14,7 +13,6 @@
 		modalHandle(false);
 		persist = false;
 		arcadeRegion.set(region);
-		lstorage.set('active', { facilitator: region });
 	};
 	setContext('modalHandle', () => {
 		modalHandle(!showModal);
