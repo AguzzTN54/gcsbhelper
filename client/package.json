@@ -37,7 +37,7 @@
 		"canvas-confetti": "^1.9.3",
 		"chart.js": "^4.5.0",
 		"dayjs": "^1.11.12",
-		"marked": "^13.0.2",
+		"fuse.js": "^7.1.0",
 		"overlayscrollbars": "^2.11.5",
 		"swiper": "^11.2.10"
 	},

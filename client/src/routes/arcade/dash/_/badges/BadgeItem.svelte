@@ -1,25 +1,60 @@
 <script lang="ts">
+	import { copyToClipboard } from '$lib/helpers/copy';
+	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import Donut from '$reusable/Donut.svelte';
-	const { complete = false, rated = false } = $props();
+	import Skeleton from '$reusable/Skeleton.svelte';
+	import BadgeImage from './BadgeImage.svelte';
+	import RateInput from './RateInput.svelte';
+
+	type Props = { data?: App.CourseItem; loading?: boolean };
+	const { data, loading }: Props = $props();
+
+	const { badgeurl, fasttrack, title, earned, validity, totallab, type, token } = data || {};
+	const isgame = ['wmp', 'trivia', 'game'].includes(type || '');
+	const rated = false;
+
+	const labeltxt: Record<string, string> = {
+		all: 'All',
+		game: 'Arcade Games',
+		skill: 'Skill Badge',
+		fasttrack: 'Fast Track',
+		labfree: 'Lab-Free',
+		unknown: 'Unknown'
+	};
 
 	const skewDeg = () => {
 		const degX = Math.random() * 4 - 2;
 		const degY = Math.random() * 4 - 2;
 		return `--degX:${degX.toFixed(2)}deg;--degY:${degY.toFixed(2)}deg;`;
 	};
+
+	const copy = async (text: string) => {
+		try {
+			await copyToClipboard(text);
+			pushToast({ message: 'Copied to Clipboard', type: 'success' });
+		} catch {}
+	};
 </script>
 
 <div
-	class:complete
+	class:earned
 	class:rated
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
-	{#if complete}
+	{#if earned}
 		<div
 			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-120 group-[:hover]:opacity-0 pointer-events-none"
 		></div>
+	{/if}
 
+	{#if !validity?.arcade && !validity?.facilitator && earned}
+		<span
+			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs bg-rose-700 text-white -skew-2 translate-y-1/3 translate-x-1/5"
+		>
+			Out of period
+		</span>
+	{:else if earned}
 		<span
 			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs bg-purple-800 text-white -skew-2 translate-y-1/3 translate-x-1/5"
 		>
@@ -27,45 +62,41 @@
 		</span>
 	{/if}
 
-	<div class="size-full rounded-tl-3xl rounded-br-3xl overflow-hidden">
+	<div class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden">
 		<div class="w-full aspect-video bg-gray-400 rounded-b-xl border-b-4 overflow-hidden relative">
-			{#if !complete || (rated && complete)}
-				<img
-					src="https://cdn.qwiklabs.com/H5Nw8iJDyQktGkZLbZBXV%2FwyW9tf2co6Sbpu67lz2dU%3D"
-					alt="Badge"
+			{#if loading}
+				<Skeleton class="size-full" />
+			{:else}
+				<BadgeImage
+					{badgeurl}
+					type={type || 'unknown'}
+					{isgame}
+					label={labeltxt[isgame ? 'game' : type || '']}
 				/>
 			{/if}
 
-			{#if !rated && complete}
-				<div
-					class="size-full bg-slate-100 absolute top-0 left-0 opacity-40 group-[:hover]:opacity-100 flex items-center justify-center"
-				>
-					<div class="flex flex-col items-center justify-center text-center text-xs w-9/12">
-						<span>Please help others by rating this course</span>
-						<div class="flex justify-between gap-1">
-							<button
-								class="bg-green-300 hover:bg-green-400 active:bg-green-500 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
-							>
-								Easy
-							</button>
-							<button
-								class="bg-amber-300 hover:bg-amber-400 active:bg-amber-500 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
-							>
-								Medium
-							</button>
-							<button
-								class="bg-red-300 hover:bg-red-400 active:bg-red-500 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
-							>
-								Hard
-							</button>
-						</div>
-					</div>
-				</div>
-			{:else if complete}
+			{#if !rated && earned}
+				<RateInput />
+			{:else if earned}
 				<div
 					class="bg-amber-200 text-amber-700 w-full p-0.5 absolute bottom-0 left-0 text-xs text-center"
 				>
-					Your rating: <button class="underline">intermediate</button>
+					Your rating: <button class="underline font-semibold">Intermediate</button>
+				</div>
+			{:else if isgame && token}
+				<div
+					class="bg-blue-200/90 text-blue-900 w-full p-0.5 absolute bottom-0 left-0 text-sm text-center"
+				>
+					Token:
+					<button
+						aria-label="Copy"
+						title="Copy"
+						class="font-bold select-text"
+						onclick={() => copy(token)}
+					>
+						{token}
+						<i class="fasdl fa-copy text-transparent"></i>
+					</button>
 				</div>
 			{/if}
 		</div>
@@ -73,36 +104,68 @@
 			<div class="block pt-1 pb-2">
 				<div class="inline-block text-xs">
 					<i class="fasdl fa-flask text-indigo-400"></i>
-					<span class="text-gray-600">6</span>
+					{#if loading}
+						<Skeleton class="inline-block h-3.5 w-8 rounded-full" />
+					{:else}
+						<span class="text-gray-600">{totallab}</span>
+					{/if}
+
 					<i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
-					<span class="text-gray-600">1209</span>
+					{#if loading}
+						<Skeleton class="inline-block h-3.5 w-12 rounded-full" />
+					{:else}
+						<span class="text-gray-600">1209</span>
+					{/if}
 				</div>
 
-				<span class="brutal-text after:!bg-amber-200 text-amber-800 !mx-1 text-[10px]">
-					Skill Badge
+				<span class="brutal-text !mx-1 text-[10px] label_{isgame ? 'game' : type || 'unknown'}">
+					{labeltxt[isgame ? 'game' : type || '']}
 				</span>
-				<span class="brutal-text after:!bg-sky-200 text-sky-800 !mx-1 text-[10px]">
-					<i class="fasdl fa-bolt"></i> Fast Track
-				</span>
+				{#if fasttrack}
+					<span class="brutal-text after:!bg-sky-200 text-sky-800 !mx-1 text-[10px]">
+						<i class="fasdl fa-bolt"></i> Fast Track
+					</span>
+				{/if}
 			</div>
-			<h3 class="text-xl leading-[120%] text-overflow" style="--line-number:2">
-				Enhance Gemini Model Capabilities Enhance Gemini Model Capabilities
-			</h3>
+
+			{#if loading}
+				<Skeleton class="w-full h-6 rounded-lg" />
+				<Skeleton class="w-7/12 mt-2 h-6 rounded-lg" />
+			{:else}
+				<h3 class="text-xl leading-[120%] text-overflow" {title} style="--line-number:2">
+					{title}
+				</h3>
+			{/if}
+
 			<div class="flex justify-between items-center pt-1">
-				<div class="flex items-center text-gray-600 gap-2">
-					<Donut size="1.2rem" values={{ easy: 50, hard: 10, medium: 40 }} stroke={20} />
-					<div class="leading-[100%]">
-						<span class="text-xs"> 80% reviews says it's </span>
-						<span class="brutal-text text-xs after:!bg-red-200 !ml-0 text-red-800">Hard</span>
+				{#if loading}
+					<div>
+						<Skeleton class="rounded-full size-5" />
 					</div>
-				</div>
-				<button
-					class="aspect-square w-10 bg-amber-300 brutal-border !border-[3px] rounded-full flex items-center justify-center hover:bg-amber-400"
-					aria-label="Enroll Now"
-					title="Enroll Now"
-				>
-					<i class="fasds fa-arrow-right-long"></i>
-				</button>
+					<div class="flex pl-2 pr-3 rounded w-full">
+						<Skeleton class="w-11/12	 h-4" />
+					</div>
+				{:else}
+					<div class="flex items-center text-gray-600 gap-2">
+						<Donut size="1.2rem" values={{ easy: 50, hard: 10, medium: 40 }} stroke={20} />
+						<div class="leading-[100%]">
+							<span class="text-xs"> 80% reviews says it's </span>
+							<span class="brutal-text text-xs after:!bg-red-200 !ml-0 text-red-800">Hard</span>
+						</div>
+					</div>
+				{/if}
+
+				{#if loading}
+					<Skeleton class="size-10 rounded-full aspect-square" />
+				{:else}
+					<button
+						class="aspect-square w-10 bg-amber-300 brutal-border !border-[3px] rounded-full flex items-center justify-center hover:bg-amber-400"
+						aria-label="Enroll Now"
+						title="Enroll Now"
+					>
+						<i class="fasds fa-arrow-right-long"></i>
+					</button>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -126,5 +189,15 @@
 
 		button::after {
 		}
+	}
+
+	.label_skill {
+		@apply after:!bg-amber-200 text-amber-800;
+	}
+	.label_game {
+		@apply after:!bg-indigo-200 text-indigo-800;
+	}
+	.label_unknown {
+		@apply hidden;
 	}
 </style>

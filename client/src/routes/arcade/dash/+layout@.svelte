@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
 	import { onMount, setContext } from 'svelte';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
-	import { initData } from '$lib/stores/app-store';
+	import { initData, profileReady } from '$lib/stores/app-store';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Modal from '$reusable/Modal.svelte';
+	import Toasts from '$reusable/Toast/Toasts.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
@@ -14,25 +14,25 @@
 
 	let scrolled = $state(false);
 	setContext('scrolled', (val: boolean) => (scrolled = val));
-	const profileLoaded = writable(false);
-	setContext('profileLoaded', profileLoaded);
 
 	let isFetchError = $state(false);
 	const loadBadgesFromProfile = async () => {
 		try {
 			isFetchError = false;
-			profileLoaded.set(false);
+			profileReady.set(false);
 			if ($initData && $initData.length > 0) return;
 			await loadProfileAndBadges({ profileUUID: uuid || '', facilitator, program: 'arcade' });
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
 		} finally {
-			profileLoaded.set(true);
+			profileReady.set(true);
 		}
 	};
 	onMount(loadBadgesFromProfile);
 </script>
+
+<Toasts />
 
 {#if isFetchError}
 	<Modal hideclosebutton persist>
