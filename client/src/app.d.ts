@@ -45,6 +45,16 @@ declare global {
 			courses: CourseItem[];
 		}
 
+		type ToastType = 'info' | 'success' | 'error' | 'warning';
+		interface Toast {
+			message: string;
+			id?: number;
+			dismissible?: boolean;
+			autoclose?: boolean;
+			timeout?: number;
+			type?: ToastType;
+		}
+
 		//  ======================================
 		export interface SourceCourses extends UserCourses {
 			type: 'skill' | 'completion';

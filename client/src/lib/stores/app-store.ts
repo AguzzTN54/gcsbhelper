@@ -1,7 +1,9 @@
 import { writable } from 'svelte/store';
+export const toastMsg = writable<App.Toast[]>([]);
 
 export const arcadeRegion = writable<App.FacilitatorRegion>('unset');
 export const initData = writable<App.CourseItem[]>([]);
+export const profileReady = writable<boolean>(false);
 
 export const arcadeProfile = writable({ profileID: '', name: '' });
 export const arcadeBadges = writable({});
