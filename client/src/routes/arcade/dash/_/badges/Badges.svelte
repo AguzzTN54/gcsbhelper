@@ -26,8 +26,8 @@
 		unknown: 'Unknown'
 	};
 
+	const labelKey = Object.keys(labeltxt);
 	const labels = $derived.by(() => {
-		const labelKey = Object.keys(labeltxt);
 		const fromGrouped = Object.entries(grouped).map(([type, arr]) => ({
 			type,
 			label: labeltxt[type],
@@ -52,8 +52,18 @@
 		return groupedData[activeGroup];
 	};
 
+	let showEarned = $state(true);
+	let maxCourseToShow = $state(12);
 	let query = $state('');
-	const list: App.CourseItem[] = $derived(getData($initData));
+
+	const list: App.CourseItem[] = $derived.by(() => {
+		const data = getData($initData).sort((a, b) => {
+			return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');
+		});
+		if (showEarned) return data;
+		return data.filter((d) => !d.earned);
+	});
+
 	const fuse = $derived(new Fuse(list, { keys: ['title', 'courseid', 'badgeid'] }));
 	const dataToShow = $derived.by<App.CourseItem[]>(() => {
 		const cleanQuery = query.trim();
@@ -97,7 +107,11 @@
 		<div
 			class="mt-auto w-full scale-90 origin-bottom-left flex justify-center lg:justify-start leading-[100%]"
 		>
-			<Checkbox>Show Completed Badges</Checkbox>
+			<Checkbox
+				checked={showEarned}
+				onchange={(e) => (showEarned = (e.target as HTMLInputElement).checked)}
+				>Show Completed Badges</Checkbox
+			>
 		</div>
 	</div>
 
@@ -115,16 +129,56 @@
 	</div>
 </div>
 
-<div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2">
-	<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-10">
-		{#if $profileReady}
-			{#each dataToShow as data (data)}
-				<BadgeItem {data} />
-			{/each}
+<div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2 pb-10">
+	{#if $profileReady}
+		{@const courses = dataToShow.filter((_, i) => i <= maxCourseToShow - 1)}
+		{#if courses.length < 1}
+			<div class="flex justify-center text-center w-full">No data to show!</div>
 		{:else}
+			<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-5">
+				{#each courses as data (data)}
+					<BadgeItem {data} />
+				{/each}
+			</div>
+		{/if}
+	{:else}
+		<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-5">
 			{#each Array(12) as _, i}
 				<BadgeItem loading />
 			{/each}
+		</div>
+	{/if}
+
+	<div class="flex justify-center flex-col items-center mt-5">
+		{#if dataToShow.length > maxCourseToShow}
+			<button
+				onclick={() => (maxCourseToShow = maxCourseToShow + 12)}
+				class="brutal-border !border-[3.5px] py-2 px-4 text-sm rounded-full bg-amber-300 hover:bg-amber-400 active:bg-amber-500"
+			>
+				Show More
+			</button>
+		{:else if $profileReady}
+			<span class="font-light text-amber-700"> That's All! </span>
+			<div class="w-10/12 h-1 bg-amber-700 eol"></div>
 		{/if}
 	</div>
 </div>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme' theme(reference);
+
+	.eol {
+		position: relative;
+		&::after,
+		&::before {
+			content: '';
+			@apply size-3 aspect-square absolute top-1/2 -translate-y-1/2 bg-amber-700;
+		}
+		&::before {
+			left: 0;
+		}
+		&::after {
+			right: 0;
+		}
+	}
+</style>

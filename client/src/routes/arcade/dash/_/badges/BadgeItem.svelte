@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
 	import { copyToClipboard } from '$lib/helpers/copy';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
+	import dayjs from '$lib/helpers/dateTime';
 	import Donut from '$reusable/Donut.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeImage from './BadgeImage.svelte';
@@ -8,11 +10,18 @@
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
-
-	const { badgeurl, fasttrack, title, earned, validity, totallab, type, token } = data || {};
+	const { badgeurl, fasttrack, title, earned, validity, totallab, type, token, courseid, enddate } =
+		data || {};
 	const isgame = ['wmp', 'trivia', 'game'].includes(type || '');
 	const rated = false;
 
+	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
+	const isLessThanAWeek = (enddate?: string | dayjs.Dayjs | Date) => {
+		if (isExpired || !enddate) return false;
+		const now = dayjs();
+		const end = dayjs(enddate);
+		return end.isBefore(now.add(7, 'day')) && end.isAfter(now);
+	};
 	const labeltxt: Record<string, string> = {
 		all: 'All',
 		game: 'Arcade Games',
@@ -42,24 +51,33 @@
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
-	{#if earned}
+	{#if earned || isExpired}
 		<div
 			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-120 group-[:hover]:opacity-0 pointer-events-none"
 		></div>
 	{/if}
 
+	{#snippet topLabel(text: string, className: string)}
+		<span
+			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs -skew-2 translate-y-1/3 translate-x-1/5 {className}"
+		>
+			{text}
+		</span>
+	{/snippet}
+
 	{#if !validity?.arcade && !validity?.facilitator && earned}
-		<span
-			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs bg-rose-700 text-white -skew-2 translate-y-1/3 translate-x-1/5"
-		>
-			Out of period
-		</span>
+		{@render topLabel('Out of period', 'bg-rose-700 text-white')}
+	{:else if earned && !type}
+		{@render topLabel('Unknown!?', 'bg-gray-300')}
 	{:else if earned}
-		<span
-			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs bg-purple-800 text-white -skew-2 translate-y-1/3 translate-x-1/5"
-		>
-			Completed
-		</span>
+		{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
+		{#if validity?.facilitator}
+			{@render topLabel('Facilitator', '!top-5 !-right-1 bg-indigo-800 text-white')}
+		{/if}
+	{:else if isExpired}
+		{@render topLabel('Expired!', 'bg-rose-700 text-white')}
+	{:else if isLessThanAWeek(enddate)}
+		{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
 	{/if}
 
 	<div class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden">
@@ -158,13 +176,17 @@
 				{#if loading}
 					<Skeleton class="size-10 rounded-full aspect-square" />
 				{:else}
-					<button
+					{@const path = isgame ? 'games' : 'course_templates'}
+					<a
+						onclick={courseid && courseid > 0 ? undefined : preventDefault(() => {})}
+						href="https://www.cloudskillsboost.google/{path}/{courseid}"
+						target="_blank"
 						class="aspect-square w-10 bg-amber-300 brutal-border !border-[3px] rounded-full flex items-center justify-center hover:bg-amber-400"
 						aria-label="Enroll Now"
 						title="Enroll Now"
 					>
 						<i class="fasds fa-arrow-right-long"></i>
-					</button>
+					</a>
 				{/if}
 			</div>
 		</div>
