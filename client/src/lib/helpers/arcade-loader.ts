@@ -5,7 +5,13 @@ import { arcadeSeason, facilitatorPeriode } from '$lib/config';
 import { createToken } from './crypto';
 import { uuidToHex } from './uuid';
 
-export const switchFacilitator = async (uuid: string, facilitator: App.FacilitatorRegion) => {
+interface SwitchFacilProps {
+	uuid: string;
+	facilitator: App.FacilitatorRegion;
+	courses: App.CourseItem[];
+}
+export const switchFacilitator = async (option: SwitchFacilProps) => {
+	const { courses, facilitator, uuid } = option;
 	const token = await createToken();
 	const profileid = uuidToHex(uuid);
 	const server = new URL(PUBLIC_API_SERVER + '/internal/switch');
@@ -14,7 +20,13 @@ export const switchFacilitator = async (uuid: string, facilitator: App.Facilitat
 		headers: { 'x-arcade-token': `${token}.${profileid}` },
 		body: JSON.stringify({ facilitator, program: arcadeSeason.seasonid })
 	});
-	if (res.status !== 200) throw new Error('Fetch Error');
+	if (!res.ok) throw new Error('Fetch Error');
+
+	const updatedData = courses.map((c) => {
+		const validity = validateBadge(c.earndate, facilitator);
+		return { ...c, validity };
+	});
+	initData.set(updatedData);
 };
 
 interface LoadProfileOptions {
