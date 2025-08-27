@@ -1,99 +1,118 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import {
 		Chart,
-		LineController,
-		LineElement,
-		PointElement,
+		BarController,
+		BarElement,
+		CategoryScale,
 		LinearScale,
 		Title,
-		CategoryScale,
 		Tooltip,
 		Legend
 	} from 'chart.js';
-
-	// Register chart.js components
-	Chart.register(
-		LineController,
-		LineElement,
-		PointElement,
-		LinearScale,
-		Title,
-		CategoryScale,
-		Tooltip,
-		Legend
-	);
+	import dayjs from '$lib/helpers/dateTime';
+	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import Skeleton from '$reusable/Skeleton.svelte';
 
 	let canvas = $state<HTMLCanvasElement>();
+	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
-	// Example data: last 7 days
-	const today = new Date();
-	const labels: string[] = [];
-	const dataValues: number[] = [];
+	const typeMap = $derived({
+		game: { label: 'Games', backgroundColor: '#59168b' },
+		skill: { label: 'Skill', backgroundColor: '#ffb900' },
+		...($arcadeRegion === 'india'
+			? { labfree: { label: 'Lab-Free', backgroundColor: '#a3b3ff' } }
+			: {}),
+		unknown: { label: 'Unknown', backgroundColor: '#d1d5dc' }
+	});
 
-	for (let i = 6; i >= 0; i--) {
-		const date = new Date(today);
-		date.setDate(today.getDate() - i);
-		labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+	const aggregateCourses = (data: App.CourseItem[]) => {
+		const today = dayjs().startOf('day');
+		const days = Array.from({ length: 7 }, (_, i) => {
+			return today.subtract(6 - i, 'day').format('YYYY-MM-DD');
+		});
 
-		// Fake random number of games completed
-		dataValues.push(Math.floor(Math.random() * 10) + 1);
-	}
+		const result = Object.entries(typeMap).map(([_, { label, backgroundColor }]) => ({
+			label,
+			data: Array(7).fill(0),
+			backgroundColor
+		}));
 
-	onMount(() => {
+		data.forEach((item) => {
+			const isgame = ['wmp', 'trivia', 'game'].includes(item.type || '');
+			const type = (isgame ? 'game' : item.type || 'unknown') as keyof typeof typeMap;
+			const earnDate = item.earndate ? dayjs(item.earndate).startOf('day') : null;
+
+			if (!earnDate) return;
+			const idx = days.findIndex((d) => earnDate.isSame(d, 'day'));
+			if (idx !== -1) {
+				const dataset = result.find((r) => r.label === typeMap[type]?.label);
+				if (dataset) {
+					dataset.data[idx] += 1;
+				}
+			}
+		});
+
+		return result;
+	};
+
+	$effect(() => {
 		if (!canvas) return;
-		new Chart(canvas, {
-			type: 'line',
-			data: {
-				labels,
-				datasets: [
-					{
-						label: 'Games Completed',
-						data: dataValues,
-						borderColor: 'rgb(75, 192, 192)',
-						backgroundColor: 'rgba(75, 192, 192, 0.2)',
-						tension: 0.3, // curve
-						fill: true,
-						pointRadius: 5,
-						pointHoverRadius: 7
-					}
-				]
-			},
+
+		const data = {
+			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+			datasets: aggregateCourses($initData)
+		};
+
+		const chart = new Chart(canvas, {
+			type: 'bar',
+			data,
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
 				animation: {
-					onComplete: () => {
-						// Optional: callback when animation finishes
-					},
 					delay: (context) => {
-						// Delay each point for a "draw" effect
 						return context.type === 'data' && context.mode === 'default'
 							? context.dataIndex * 200
 							: 0;
 					}
 				},
-				interaction: {
-					mode: 'nearest',
-					axis: 'xy',
-					intersect: false
-				},
 				plugins: {
-					legend: {
-						display: false
+					tooltip: {
+						mode: 'index',
+						intersect: false
 					}
 				},
+				interaction: {
+					mode: 'nearest',
+					axis: 'x',
+					intersect: false
+				},
 				scales: {
+					x: {
+						stacked: true
+					},
 					y: {
-						beginAtZero: true,
-						ticks: {
-							stepSize: 1
-						}
+						stacked: true,
+						beginAtZero: true
 					}
 				}
 			}
 		});
+
+		return () => chart?.destroy();
 	});
 </script>
 
-<canvas bind:this={canvas} class="size-full"></canvas>
+{#if $profileReady}
+	<canvas bind:this={canvas} class="size-full bg-indig"></canvas>
+{:else}
+	<div class="size-full items-end flex gap-[5%] px-5">
+		<Skeleton class="h-full w-full" />
+		<Skeleton class="h-5/12 w-full" />
+		<Skeleton class="h-10/12 w-full" />
+		<Skeleton class="h-10/12 w-full" />
+		<Skeleton class="h-full w-full" />
+		<Skeleton class="h-5/12 w-full" />
+		<Skeleton class="h-11/12 w-full" />
+	</div>
+{/if}

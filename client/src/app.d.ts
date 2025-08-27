@@ -3,10 +3,29 @@ import { facilitatorRegions, gcsbPrograms } from '$lib/config';
 
 declare global {
 	namespace App {
-		export type FacilitatorRegion = (typeof facilitatorRegions)[number];
-		export type GCPProgram = (typeof gcsbPrograms)[number];
+		type FacilitatorRegion = (typeof facilitatorRegions)[number];
+		type GCPProgram = (typeof gcsbPrograms)[number];
 
-		export interface UserInfo {
+		interface ArcadeStats {
+			points: {
+				game: number;
+				trivia: number;
+				skill: number;
+				wmp: number;
+			};
+			completeCourses: {
+				wmp: number;
+				game?: number;
+				trivia?: number;
+				skill?: number;
+				labfree?: number;
+			};
+			total?: number;
+			bonus?: number;
+			milestones?: string[];
+		}
+
+		interface UserInfo {
 			avatar: string;
 			name: string;
 			uuid: string;
@@ -18,12 +37,12 @@ declare global {
 			badgeurl: string;
 		}
 
-		export interface UserCourses extends BasicCourse {
+		interface UserCourses extends BasicCourse {
 			date: Dayjs | Date | string;
 			type: 'skill' | 'game';
 		}
 
-		export interface CourseItem extends BasicCourse {
+		interface CourseItem extends BasicCourse {
 			badgeid: number;
 			enddate?: Dayjs | Date | string;
 			earndate?: Dayjs | Date | string;
@@ -41,7 +60,7 @@ declare global {
 			};
 		}
 
-		export interface InitData {
+		interface InitData {
 			user: UserInfo;
 			courses: CourseItem[];
 		}
@@ -57,18 +76,18 @@ declare global {
 		}
 
 		//  ======================================
-		export interface SourceCourses extends UserCourses {
+		interface SourceCourses extends UserCourses {
 			type: 'skill' | 'completion';
 			required?: boolean;
 		}
 
-		export interface CourseList {
+		interface CourseList {
 			courses: (UserCourses & SourceCourses & { validity: boolean })[];
 			group: string;
 			title: string;
 		}
 
-		export interface DataScheme {
+		interface DataScheme {
 			group: string;
 			title: string;
 			list: CourseList[];
