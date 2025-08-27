@@ -68,6 +68,7 @@ export const hexToUuid = (base62: string): string => {
 	throw new ParseError(`PARSE_ERROR: invalid ID ${base62}`);
 };
 
-export const isValidUUID = (str: string): boolean => {
+export const isValidUUID = (str?: string): boolean => {
+	if (!str) return false;
 	return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
 };

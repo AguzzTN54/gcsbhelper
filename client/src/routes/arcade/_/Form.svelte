@@ -3,7 +3,7 @@
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { arcadeRegion } from '$lib/stores/app-store';
-	import lstorage, { localAccounts } from '$lib/helpers/localstorage';
+	import { localAccounts } from '$lib/helpers/localstorage';
 	import Button from '$reusable/Button.svelte';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Loading from '$reusable/Loading.svelte';
@@ -50,7 +50,6 @@
 			const { user } = await loadProfileAndBadges({ profileUUID, program: 'arcade', facilitator });
 			const { name, uuid, avatar } = user || {};
 			localAccounts.put({ name, uuid, avatar, facilitator });
-			lstorage.set('active', { program: 'arcade', uuid, facilitator });
 			goto('/arcade/dash');
 		} catch (e) {
 			console.error(e);

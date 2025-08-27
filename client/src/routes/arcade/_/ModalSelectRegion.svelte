@@ -2,7 +2,7 @@
 	import { getContext, onMount, setContext } from 'svelte';
 	import { arcadeRegion } from '$lib/stores/app-store';
 	import { facilitatorRegions } from '$lib/config';
-	import lstorage from '$lib/helpers/localstorage';
+	import { localAccounts } from '$lib/helpers/localstorage';
 	import Modal from '$reusable/Modal.svelte';
 
 	const { showModal } = $props();
@@ -14,13 +14,14 @@
 		persist = false;
 		arcadeRegion.set(region);
 	};
+
 	setContext('modalHandle', () => {
 		modalHandle(!showModal);
 		persist = false;
 	});
 
 	onMount(() => {
-		const { facilitator } = lstorage.get('active') || {};
+		const { facilitator } = localAccounts.getActive() || {};
 		if (!facilitator) {
 			modalHandle(true);
 			persist = true;

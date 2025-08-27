@@ -5,9 +5,9 @@ interface LocalAccountItem {
 	name: string;
 	facilitator: App.FacilitatorRegion;
 	avatar: string;
+	active?: boolean;
 }
 interface LStorageData {
-	active?: { program?: App.GCPProgram; uuid?: string; facilitator: App.FacilitatorRegion };
 	accounts?: Partial<Record<App.GCPProgram, LocalAccountItem[]>>;
 }
 
@@ -50,15 +50,24 @@ export const localAccounts = {
 		return selected;
 	},
 
-	put(data: LocalAccountItem, program: App.GCPProgram = 'arcade') {
-		const { uuid, name, facilitator } = data || {};
+	_removeActive(program: App.GCPProgram = 'arcade') {
 		const allAccounts = lstorage.get('accounts');
 		const accounts = allAccounts?.[program] || [];
+		const active = accounts.findIndex((a) => a.active);
+		if (active < 0) return { allAccounts, accounts };
+		delete accounts[active].active;
+		return { allAccounts, accounts };
+	},
+
+	put(data: LocalAccountItem, program: App.GCPProgram = 'arcade') {
+		const { uuid, name, facilitator } = data || {};
+		const { accounts, allAccounts } = localAccounts._removeActive(program);
 		const isIndexed = accounts.findIndex(({ uuid: id }) => uuid === id);
 
 		if (isIndexed > -1) {
 			accounts[isIndexed].name = name;
 			accounts[isIndexed].facilitator = facilitator;
+			accounts[isIndexed].active = true;
 		} else accounts.push(data);
 		const toStore = allAccounts || {};
 		toStore[program] = accounts;
@@ -72,5 +81,12 @@ export const localAccounts = {
 		const toStore = allAccounts || {};
 		toStore[program] = removed;
 		lstorage.set('accounts', toStore);
+	},
+
+	getActive(program: App.GCPProgram = 'arcade'): LocalAccountItem | undefined {
+		const allAccounts = lstorage.get('accounts');
+		const accounts = allAccounts?.[program] || [];
+		const active = accounts.find((a) => a.active);
+		return active;
 	}
 };
