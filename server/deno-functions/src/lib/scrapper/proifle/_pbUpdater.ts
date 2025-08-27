@@ -126,12 +126,14 @@ const updateProfileCourseList = async (
   }
 };
 
-const updateFacil = async (hexuuid: string, facil?: string) => {
+export const updateFacil = async (hexuuid: string, facil?: string) => {
   try {
     const facilitator = facil || null;
     await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', { facilitator });
+    return true;
   } catch (e) {
     console.error(e);
+    return false;
   }
 };
 

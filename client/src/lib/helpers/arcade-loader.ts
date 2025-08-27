@@ -5,6 +5,18 @@ import { arcadeSeason, facilitatorPeriode } from '$lib/config';
 import { createToken } from './crypto';
 import { uuidToHex } from './uuid';
 
+export const switchFacilitator = async (uuid: string, facilitator: App.FacilitatorRegion) => {
+	const token = await createToken();
+	const profileid = uuidToHex(uuid);
+	const server = new URL(PUBLIC_API_SERVER + '/internal/switch');
+	const res = await fetch(server.href, {
+		method: 'POST',
+		headers: { 'x-arcade-token': `${token}.${profileid}` },
+		body: JSON.stringify({ facilitator, program: arcadeSeason.seasonid })
+	});
+	if (res.status !== 200) throw new Error('Fetch Error');
+};
+
 interface LoadProfileOptions {
 	profileUUID: string;
 	facilitator?: App.FacilitatorRegion;
@@ -26,7 +38,7 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 
 	const server = new URL(PUBLIC_API_SERVER + '/internal/identity');
 	if (option.program === 'arcade') {
-		server.searchParams.append('program', `arcade_${arcadeSeason.seasonid}`);
+		server.searchParams.append('program', arcadeSeason.seasonid);
 		const { facilitator } = option;
 		if (facilitator) server.searchParams.append('facilitator', facilitator);
 	} else {

@@ -1,18 +1,35 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion, profileReady } from '$lib/stores/app-store';
 	import { facilitatorRegions } from '$lib/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
+	import { switchFacilitator } from '$lib/helpers/arcade-loader';
+	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import Modal from '$reusable/Modal.svelte';
 
 	const { showModal } = $props();
 	let persist = $state(false);
 	const modalHandle = getContext('handleFacilitatorSelector') as (val: boolean) => void;
 
-	const selectRegion = (region: App.FacilitatorRegion) => {
+	const selectRegion = async (region: App.FacilitatorRegion) => {
 		modalHandle(false);
 		persist = false;
-		arcadeRegion.set(region);
+
+		if (region === $arcadeRegion) return;
+		const currentActive = localAccounts.getActive();
+		if (!currentActive?.uuid) return;
+
+		try {
+			profileReady.set(false);
+			await switchFacilitator(currentActive.uuid, region);
+			arcadeRegion.set(region);
+			localAccounts.put({ ...currentActive, facilitator: region });
+		} catch (e) {
+			console.error(e);
+			pushToast({ message: 'Error Occurred!', type: 'error' });
+		} finally {
+			profileReady.set(true);
+		}
 	};
 
 	setContext('modalHandle', () => {
