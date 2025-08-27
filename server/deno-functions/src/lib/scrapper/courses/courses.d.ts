@@ -38,4 +38,3 @@ export interface Activity {
   inProgress: boolean;
   disabled: boolean;
 }
-

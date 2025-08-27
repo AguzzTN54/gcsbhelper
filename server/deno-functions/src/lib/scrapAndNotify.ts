@@ -4,6 +4,7 @@ import { sendNotification } from './utils/notification.ts';
 import { parseRSVPPage } from './scrapper/games/rsvp.ts';
 import { parseArcadePage } from './scrapper/games/arcade.ts';
 import { sha256 } from './utils/hash.ts';
+import { addGameToPB } from './scrapper/courses/games.ts';
 
 const crawlRSVP = true;
 
@@ -72,10 +73,10 @@ const notifyAndUpdate = async (diff: ArcadeContent[], prev: ArcadeContent[] = []
 
   console.log(`🎮 Found Total ${diff.length} new game(s)`);
   console.log('🔔 Sending Notification..');
+  addGameToPB(diff);
   await sendNotification(diff);
   console.log('✔️  Task Finished');
   return;
 };
 
 await scrapAndNotify();
-

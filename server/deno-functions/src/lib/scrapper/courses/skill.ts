@@ -115,4 +115,3 @@ export const loadSkillbadges = async () => {
 };
 
 await loadSkillbadges();
-
