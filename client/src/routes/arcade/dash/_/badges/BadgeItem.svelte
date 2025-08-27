@@ -21,7 +21,7 @@
 		token,
 		courseid,
 		enddate,
-		earnDate
+		earndate
 	} = data || {};
 	const isgame = ['wmp', 'trivia', 'game'].includes(type || '');
 	const rated = false;
@@ -108,12 +108,12 @@
 				<RateInput />
 			{/if}
 
-			{#if earned && earnDate}
+			{#if earned && earndate}
 				<div
 					class="bg-green-200 text-green-700 w-full p-0.5 absolute bottom-0 left-0 text-xs text-center"
 				>
 					Earned at <span class="font-semibold">
-						{dayjs(earnDate).format('DD MMM YYYY')}
+						{dayjs(earndate).format('DD MMM YYYY')}
 					</span>
 				</div>
 			{:else if isgame && token}

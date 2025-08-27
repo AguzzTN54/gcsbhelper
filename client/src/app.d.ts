@@ -25,8 +25,8 @@ declare global {
 
 		export interface CourseItem extends BasicCourse {
 			badgeid: number;
-			enddate: Dayjs | Date | string;
-			earnDate?: Dayjs | Date | string;
+			enddate?: Dayjs | Date | string;
+			earndate?: Dayjs | Date | string;
 			earned: boolean;
 			fasttrack: boolean;
 			inactive: boolean;

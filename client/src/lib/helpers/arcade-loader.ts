@@ -81,7 +81,7 @@ const badgeDataMerger = (
 			badgeid: type == 'game' ? courseid : 0,
 			courseid: type == 'game' ? 0 : courseid,
 			badgeurl: badgeurl,
-			earnDate: date,
+			earndate: date,
 			earned: false,
 			fasttrack: false,
 			inactive: false,
@@ -100,12 +100,12 @@ const badgeDataMerger = (
 			continue;
 		}
 
-		const { earnDate } = map.get(key)!;
+		const { earndate } = map.get(key)!;
 		map.set(key, {
 			...obj,
-			earnDate,
+			earndate,
 			earned: true,
-			validity: validateBadge(earnDate, facilitator)
+			validity: validateBadge(earndate, facilitator)
 		});
 	}
 
@@ -114,13 +114,13 @@ const badgeDataMerger = (
 
 type BadgeValidity = { arcade: boolean; facilitator: boolean };
 const validateBadge = (
-	earnDate?: string | Date | Dayjs,
+	earndate?: string | Date | Dayjs,
 	facilitator?: App.FacilitatorRegion
 ): BadgeValidity => {
-	if (!earnDate) return { arcade: false, facilitator: false };
+	if (!earndate) return { arcade: false, facilitator: false };
 
 	const { end: aEnd, start: aStart } = arcadeSeason;
-	const arcadeValidity = !dayjs(earnDate).isBefore(aStart) && !dayjs(earnDate).isAfter(aEnd);
+	const arcadeValidity = !dayjs(earndate).isBefore(aStart) && !dayjs(earndate).isAfter(aEnd);
 
 	if (!facilitator || facilitator === 'unset') {
 		return {
@@ -132,6 +132,6 @@ const validateBadge = (
 	const { end, start } = facilitatorPeriode[facilitator] || {};
 	return {
 		arcade: arcadeValidity,
-		facilitator: !dayjs(earnDate).isBefore(start) && !dayjs(earnDate).isAfter(end)
+		facilitator: !dayjs(earndate).isBefore(start) && !dayjs(earndate).isAfter(end)
 	};
 };
