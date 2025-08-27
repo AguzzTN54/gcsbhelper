@@ -68,7 +68,7 @@ export const localAccounts = {
 			accounts[isIndexed].name = name;
 			accounts[isIndexed].facilitator = facilitator;
 			accounts[isIndexed].active = true;
-		} else accounts.push(data);
+		} else accounts.push({ ...data, active: true });
 		const toStore = allAccounts || {};
 		toStore[program] = accounts;
 		lstorage.set('accounts', toStore);
