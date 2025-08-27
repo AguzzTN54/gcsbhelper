@@ -94,24 +94,21 @@
 </script>
 
 <div class="flex flex-col lg:flex-row lg:gap-10 pb-5">
-	<div class="w-full lg:w-1/3 md:pt-0 pt-5">
-		<div class="flex justify-between items-center">
-			<h2 class="text-lg my-3">Your Milestone</h2>
-			<button class="text-xs brutal-border px-2 py-1 !border-[2px]"> More </button>
+	{#if $arcadeRegion && $arcadeRegion !== 'unset'}
+		<div class="w-full lg:w-1/3 md:pt-0 pt-5">
+			<Milestone />
 		</div>
-		<div class="flex justify-center">
-			<div class="size-40 xl:size-50 aspect-square flex items-center justify-center">
-				<div class="scale-120 xl:scale-110">
-					{#if $arcadeRegion && $arcadeRegion !== 'unset' && pointSummary?.milestones}
-						<Milestone />
-					{/if}
-				</div>
-			</div>
-			<!--  -->
-		</div>
-	</div>
-	<div class="w-full lg:w-2/3 md:pt-0 pt-15">
-		<div class="flex justify-between items-center">
+	{/if}
+
+	<!-- Activity -->
+	<div
+		class="w-full md:pt-0 pt-15"
+		class:lg:w-[66.66%]={$arcadeRegion && $arcadeRegion !== 'unset'}
+	>
+		<div
+			class="flex justify-between items-center"
+			class:justify-center={!$arcadeRegion || $arcadeRegion === 'unset'}
+		>
 			<h2 class="text-lg my-3">Activity Chart</h2>
 		</div>
 		<div class="flex justify-center">

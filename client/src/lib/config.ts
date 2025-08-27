@@ -82,6 +82,7 @@ export const facilMilestones: Record<Exclude<App.FacilitatorRegion, 'unset'>, Mi
 			game: 10,
 			trivia: 7,
 			skill: 38,
+			labfree: 18,
 			bonus: 15
 		},
 		m4: {
@@ -89,6 +90,7 @@ export const facilMilestones: Record<Exclude<App.FacilitatorRegion, 'unset'>, Mi
 			game: 12,
 			trivia: 8,
 			skill: 52,
+			labfree: 24,
 			bonus: 25
 		}
 	}

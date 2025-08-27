@@ -14,6 +14,22 @@
 	import { onDestroy, untrack } from 'svelte';
 
 	const { milestones, completeCourses } = $derived($arcadeStats || {});
+	let showSelectMilestone = $state(false);
+	let activeMilestone = $derived.by(() => {
+		const region = $arcadeRegion;
+		if (!region || region === 'unset') return null;
+		const key = `m${milestones?.length || 1}`;
+		return facilMilestones[region]?.[key] || null;
+	});
+
+	const milestoneList = $derived.by(() => {
+		const region = $arcadeRegion;
+		if (!region || region === 'unset') return [];
+		const listObject = facilMilestones[region];
+		const list = Object.keys(listObject).map((k) => ({ key: k, m: listObject[k] }));
+		return list;
+	});
+
 	let canvas = $state<HTMLCanvasElement>();
 	Chart.register(
 		RadialLinearScale,
@@ -44,8 +60,7 @@
 			};
 		}
 
-		const key = `m${milestones?.length || 1}`;
-		const { game, skill, trivia, labfree } = facilMilestones[region]?.[key] || {};
+		const { game, skill, trivia, labfree } = activeMilestone || {};
 		return {
 			Games: game || 0,
 			Trivia: trivia || 0,
@@ -95,15 +110,7 @@
 		if (chartContent) {
 			chartContent.data.labels = Object.keys(maxValues);
 			chartContent.data.datasets[0].data = normalizedData(milestoneStandard);
-			chartContent.data.datasets[1] = {
-				label: 'Your Data',
-				data: normalizedData(dataValues),
-				fill: true,
-				clip: false,
-				backgroundColor: 'RGBA(254, 154, 0, 0.1)',
-				borderColor: 'RGB(254, 154, 0)',
-				pointBackgroundColor: 'RGB(254, 154, 0)'
-			};
+			chartContent.data.datasets[1].data = normalizedData(dataValues);
 			delete chartContent.options.plugins?.tooltip?.enabled;
 			chartContent.update();
 			return;
@@ -122,6 +129,15 @@
 						borderColor: 'rgba(0, 0, 0, 0.2)',
 						pointBackgroundColor: 'rgba(0, 0, 0, 0.2)',
 						borderWidth: 2
+					},
+					{
+						label: 'Your Data',
+						data: normalizedData(dataValues),
+						fill: true,
+						clip: false,
+						backgroundColor: 'RGBA(254, 154, 0, 0.1)',
+						borderColor: 'RGB(254, 154, 0)',
+						pointBackgroundColor: 'RGB(254, 154, 0)'
 					}
 				]
 			},
@@ -134,7 +150,7 @@
 					}
 				},
 				animation: {
-					duration: 2000,
+					duration: 1000,
 					easing: 'easeOutQuart',
 					delay: (context) => context.dataIndex * 200
 				},
@@ -217,4 +233,40 @@
 	});
 </script>
 
-<canvas class="size-full" bind:this={canvas}></canvas>
+<div class="flex justify-between items-center">
+	<h2 class="text-lg my-3">Milestone</h2>
+	<div class="relative">
+		<button
+			onclick={() => (showSelectMilestone = !showSelectMilestone)}
+			class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300"
+		>
+			{activeMilestone?.displayname || ''}
+			<i class="fasdl fa-caret-down"></i>
+		</button>
+		{#if showSelectMilestone}
+			<div class="absolute top-[calc(100%+2px)] right-0 text-xs bg-gray-100 w-full z-10">
+				{#each milestoneList as { key, m } (key)}
+					<button
+						onclick={() => {
+							activeMilestone = m;
+							showSelectMilestone = false;
+						}}
+						class="px-2 py-1.5 border-2 w-full text-right hover:bg-indigo-200 capitalize active:bg-indigo-300"
+						class:bg-amber-100={m.displayname === activeMilestone?.displayname}
+					>
+						{m.displayname}
+					</button>
+				{/each}
+			</div>
+		{/if}
+	</div>
+</div>
+<div class="flex justify-center">
+	<div class="size-40 xl:size-50 aspect-square flex items-center justify-center">
+		<div class="scale-120 xl:scale-110">
+			{#if milestones}
+				<canvas class="size-full" bind:this={canvas}></canvas>
+			{/if}
+		</div>
+	</div>
+</div>
