@@ -11,6 +11,7 @@
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
 	const {
+		point,
 		badgeurl,
 		fasttrack,
 		title,
@@ -62,6 +63,13 @@
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
+	{#if point && point > 0}
+		<div
+			class="absolute top-2 left-2 bg-lime-200/90 z-1 p-1 text-sm rounded text-lime-800 min-w-8 flex items-center justify-center"
+		>
+			<span> +{point} </span>
+		</div>
+	{/if}
 	{#if earned || isExpired}
 		<div
 			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-120 group-[:hover]:opacity-0 pointer-events-none"
@@ -76,19 +84,25 @@
 		</span>
 	{/snippet}
 
-	{#if !type}
-		{@render topLabel('Unknown Badge', 'bg-gray-300')}
-	{:else if !validity?.arcade && !validity?.facilitator && earned}
-		{@render topLabel('Out of period', 'bg-rose-700 text-white')}
-	{:else if earned}
-		{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
-		{#if validity?.facilitator}
-			{@render topLabel('Facilitator', '!top-5 !-right-1 bg-indigo-800 text-white')}
+	{#if !loading}
+		{#if !type}
+			<button
+				class="absolute top-0 right-0 py-1 z-10 pl-2 pr-1 text-xs -skew-2 translate-y-1/3 translate-x-1/5 bg-gray-300"
+			>
+				Unknown <i class="fasdl fa-caret-down"></i>
+			</button>
+		{:else if !validity?.arcade && !validity?.facilitator && earned}
+			{@render topLabel('Out of period', 'bg-rose-700 text-white')}
+		{:else if earned}
+			{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
+			{#if validity?.facilitator}
+				{@render topLabel('Facilitator', '!top-5 !-right-1 bg-indigo-800 text-white')}
+			{/if}
+		{:else if isExpired}
+			{@render topLabel('Expired!', 'bg-rose-700 text-white')}
+		{:else if isLessThanAWeek(enddate)}
+			{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
 		{/if}
-	{:else if isExpired}
-		{@render topLabel('Expired!', 'bg-rose-700 text-white')}
-	{:else if isLessThanAWeek(enddate)}
-		{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
 	{/if}
 
 	<div class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden">
@@ -135,20 +149,21 @@
 		</div>
 		<div class="p-2">
 			<div class="block pt-1 pb-2">
-				<div class="inline-block text-xs">
-					<i class="fasdl fa-flask text-indigo-400"></i>
+				<div class="inline text-xs">
 					{#if loading}
+						<i class="fasdl fa-flask text-indigo-400"></i>
 						<Skeleton class="inline-block h-3.5 w-8 rounded-full" />
-					{:else}
+					{:else if (totallab || 0) > 0}
+						<i class="fasdl fa-flask text-indigo-400"></i>
 						<span class="text-gray-600">{totallab}</span>
 					{/if}
 
-					<i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
+					<!-- <i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
 					{#if loading}
 						<Skeleton class="inline-block h-3.5 w-12 rounded-full" />
 					{:else}
 						<span class="text-gray-600">1209</span>
-					{/if}
+					{/if} -->
 				</div>
 
 				<span class="brutal-text !mx-1 text-[10px] label_{isgame ? 'game' : type || 'unknown'}">
@@ -233,6 +248,9 @@
 	}
 	.label_game {
 		@apply after:!bg-indigo-200 text-indigo-800;
+	}
+	.label_labfree {
+		@apply after:!bg-purple-200 text-purple-800;
 	}
 	.label_unknown {
 		@apply hidden;

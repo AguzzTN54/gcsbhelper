@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
-	import { initData, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeItem from './BadgeItem.svelte';
@@ -34,7 +34,8 @@
 			length: arr.length
 		}));
 
-		const init = untrack(() => $initData);
+		let init = untrack(() => $initData);
+		if ($arcadeRegion !== 'india') init = init.filter((s) => s.type !== 'labfree');
 		const fasttrack = init.filter(({ fasttrack }) => fasttrack);
 		const data = [
 			...fromGrouped,
@@ -42,6 +43,7 @@
 			{ type: 'fasttrack', label: 'Fast Track', length: fasttrack.length }
 		];
 		const sorted = data.sort((a, b) => labelKey.indexOf(a.type) - labelKey.indexOf(b.type));
+		if ($arcadeRegion !== 'india') return sorted.filter((s) => s.type !== 'labfree');
 		return sorted;
 	});
 
@@ -57,7 +59,9 @@
 	let query = $state('');
 
 	const list: App.CourseItem[] = $derived.by(() => {
-		const data = getData($initData).sort((a, b) => {
+		let data = getData($initData);
+		if ($arcadeRegion !== 'india') data = data.filter((d) => d.type !== 'labfree');
+		data = data.sort((a, b) => {
 			return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');
 		});
 		if (showEarned) return data;
@@ -77,7 +81,8 @@
 	<h2 class="font-semibold text-2xl px-2">BADGES</h2>
 </div>
 <div
-	class="w-full bg-gray-100 sticky z-90 top-0 left-0 -translate-y-2 flex justify-between lg:flex-row flex-col-reverse px-2 py-2 items-start gap-3"
+	class="w-full sticky z-90 top-0 left-0 -translate-y-2 flex justify-between lg:flex-row flex-col-reverse px-2 py-2 items-start gap-3
+	after:bg-gray-100 after:scale-x-105 after:absolute after:top-0 after:left-0 after:size-full after:-z-1"
 >
 	<div class="w-full mt-2 h-18 flex lg:mt-0 relative">
 		<div class="whitespace-nowrap overflow-auto w-full lg:pr-2 absolute top-0 left-0">
@@ -128,6 +133,17 @@
 		</span>
 	</div>
 </div>
+
+{#if activeGroup === 'unknown'}
+	<div
+		class="bg-amber-200 w-full mb-10 text-sm px-5 py-2 text-amber-800 relative after:bg-indigo-300 after:absolute after:top-0 after:left-0 after:size-full after:-z-1 after:scale-x-[100.5%] after:-skew-y-[0.5deg] after:-skew-x-2"
+	>
+		All badges below are ones you've earned but are not yet included in our system's calculation. If
+		you believe any of them should be counted, you can adjust it yourself by changing the <span
+			class="bg-gray-100 text-xs py-0.5 px-1 text-black">Unknown</span
+		> label to the relevant one.
+	</div>
+{/if}
 
 <div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2 pb-10">
 	{#if $profileReady}
