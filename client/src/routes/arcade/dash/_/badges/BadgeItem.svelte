@@ -10,8 +10,19 @@
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
-	const { badgeurl, fasttrack, title, earned, validity, totallab, type, token, courseid, enddate } =
-		data || {};
+	const {
+		badgeurl,
+		fasttrack,
+		title,
+		earned,
+		validity,
+		totallab,
+		type,
+		token,
+		courseid,
+		enddate,
+		earnDate
+	} = data || {};
 	const isgame = ['wmp', 'trivia', 'game'].includes(type || '');
 	const rated = false;
 
@@ -65,10 +76,10 @@
 		</span>
 	{/snippet}
 
-	{#if !validity?.arcade && !validity?.facilitator && earned}
+	{#if !type}
+		{@render topLabel('Unknown Badge', 'bg-gray-300')}
+	{:else if !validity?.arcade && !validity?.facilitator && earned}
 		{@render topLabel('Out of period', 'bg-rose-700 text-white')}
-	{:else if earned && !type}
-		{@render topLabel('Unknown!?', 'bg-gray-300')}
 	{:else if earned}
 		{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
 		{#if validity?.facilitator}
@@ -95,11 +106,15 @@
 
 			{#if !rated && earned}
 				<RateInput />
-			{:else if earned}
+			{/if}
+
+			{#if earned && earnDate}
 				<div
-					class="bg-amber-200 text-amber-700 w-full p-0.5 absolute bottom-0 left-0 text-xs text-center"
+					class="bg-green-200 text-green-700 w-full p-0.5 absolute bottom-0 left-0 text-xs text-center"
 				>
-					Your rating: <button class="underline font-semibold">Intermediate</button>
+					Earned at <span class="font-semibold">
+						{dayjs(earnDate).format('DD MMM YYYY')}
+					</span>
 				</div>
 			{:else if isgame && token}
 				<div
@@ -165,11 +180,11 @@
 					</div>
 				{:else}
 					<div class="flex items-center text-gray-600 gap-2">
-						<Donut size="1.2rem" values={{ easy: 50, hard: 10, medium: 40 }} stroke={20} />
+						<!-- <Donut size="1.2rem" values={{ easy: 50, hard: 10, medium: 40 }} stroke={20} />
 						<div class="leading-[100%]">
 							<span class="text-xs"> 80% reviews says it's </span>
 							<span class="brutal-text text-xs after:!bg-red-200 !ml-0 text-red-800">Hard</span>
-						</div>
+						</div> -->
 					</div>
 				{/if}
 

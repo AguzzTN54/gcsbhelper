@@ -23,7 +23,7 @@
 		skill: 'Skill Badge',
 		fasttrack: 'Fast Track',
 		labfree: 'Lab-Free',
-		unknown: 'Unknown'
+		unknown: 'Unlisted'
 	};
 
 	const labelKey = Object.keys(labeltxt);

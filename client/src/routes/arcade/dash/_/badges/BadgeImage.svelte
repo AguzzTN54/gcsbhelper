@@ -6,7 +6,7 @@
 
 <div
 	class="size-full flex items-center justify-center bg-[#f1f1f1] {type}"
-	class:pb-5={isgame && badgeurl}
+	class:p-2={isgame && badgeurl}
 >
 	{#if badgeurl}
 		<img
