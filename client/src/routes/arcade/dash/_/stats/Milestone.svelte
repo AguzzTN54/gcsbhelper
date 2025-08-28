@@ -107,10 +107,29 @@
 	$effect(() => {
 		if (!canvas) return;
 		const chartContent = untrack(() => chart);
+
+		const userDataValues = {
+			label: 'Your Data',
+			data: normalizedData(dataValues),
+			fill: true,
+			backgroundColor: 'RGBA(254, 154, 0, 0.1)',
+			borderColor: 'RGB(254, 154, 0)',
+			pointBackgroundColor: 'RGB(254, 154, 0)'
+		};
+
+		if (!$profileReady && chartContent) {
+			chartContent.data.labels = Object.keys(maxValues).map(() => 'loading');
+			chartContent.data.datasets[1].data = [];
+			if (chartContent.options.plugins) {
+				chartContent.options.plugins.tooltip = { enabled: true };
+			}
+			chartContent.update();
+			return;
+		}
+
 		if (chartContent) {
 			chartContent.data.labels = Object.keys(maxValues);
-			chartContent.data.datasets[0].data = normalizedData(milestoneStandard);
-			chartContent.data.datasets[1].data = normalizedData(dataValues);
+			chartContent.data.datasets[1] = userDataValues;
 			delete chartContent.options.plugins?.tooltip?.enabled;
 			chartContent.update();
 			return;
@@ -119,7 +138,9 @@
 		chart = new Chart(canvas, {
 			type: 'radar',
 			data: {
-				labels: ['Loading', 'Loading', 'Loading'],
+				labels: $profileReady
+					? Object.keys(maxValues)
+					: Object.keys(maxValues).map(() => 'loading'),
 				datasets: [
 					{
 						label: 'std',
@@ -130,15 +151,7 @@
 						pointBackgroundColor: 'rgba(0, 0, 0, 0.2)',
 						borderWidth: 2
 					},
-					{
-						label: 'Your Data',
-						data: normalizedData(dataValues),
-						fill: true,
-						clip: false,
-						backgroundColor: 'RGBA(254, 154, 0, 0.1)',
-						borderColor: 'RGB(254, 154, 0)',
-						pointBackgroundColor: 'RGB(254, 154, 0)'
-					}
+					userDataValues
 				]
 			},
 			options: {
@@ -238,7 +251,7 @@
 	<div class="relative">
 		<button
 			onclick={() => (showSelectMilestone = !showSelectMilestone)}
-			class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300"
+			class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300 whitespace-nowrap"
 		>
 			{activeMilestone?.displayname || ''}
 			<i class="fasdl fa-caret-down"></i>
