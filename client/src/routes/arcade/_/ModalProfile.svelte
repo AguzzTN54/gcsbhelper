@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { getContext } from 'svelte';
+	import { arcadeRegion } from '$lib/stores/app-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import img from '$img/avatar.webp';
 	import Modal from '$reusable/Modal.svelte';
@@ -19,6 +21,13 @@
 		if (profileUUID === active?.uuid) return;
 		const { facilitator } = localAccounts.getByID(profileUUID) || {};
 		await loadProfile?.(profileUUID, facilitator || 'unset');
+	};
+
+	const deleteAccount = (uuid: string) => {
+		localAccounts.delete(uuid);
+		arcadeRegion.set('unset');
+		modalHandle();
+		goto('/arcade');
 	};
 </script>
 
@@ -52,7 +61,11 @@
 						{regions[facilitator]}
 					</span>
 				</button>
-				<button aria-label="Delete" class="aspect-square w-12 bg-red-200">
+				<button
+					aria-label="Delete"
+					class="aspect-square w-12 bg-red-200 hover:bg-rose-400"
+					onclick={() => deleteAccount(uuid)}
+				>
 					<i class="fasdl fa-trash-can text-rose-300"></i>
 				</button>
 			</div>
