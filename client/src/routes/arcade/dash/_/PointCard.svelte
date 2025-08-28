@@ -6,8 +6,8 @@
 
 	const regions: Record<string, string> = {
 		indonesia: 'Facilitator Indonesia',
-		global: 'Global Facilitator',
-		unset: 'Regular Participan'
+		india: 'Facilitator India',
+		unset: 'Regular Participant'
 	};
 
 	let showModal = $state(false);

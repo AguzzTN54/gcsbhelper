@@ -17,7 +17,7 @@
 
 		if (region === $arcadeRegion) return;
 		const currentActive = localAccounts.getActive();
-		if (!currentActive?.uuid) return;
+		if (!currentActive?.uuid) return arcadeRegion.set(region);
 
 		try {
 			profileReady.set(false);
@@ -71,7 +71,7 @@
 						onclick={() => selectRegion('india')}
 						class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
 					>
-						Global (India)
+						India - Global
 					</button>
 					<button
 						onclick={() => selectRegion('indonesia')}

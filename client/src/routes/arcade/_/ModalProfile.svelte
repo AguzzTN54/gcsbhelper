@@ -7,7 +7,7 @@
 
 	const regions: Record<string, string> = {
 		indonesia: 'Indonesia',
-		india: 'India',
+		india: 'India - Global',
 		unset: 'Regular'
 	};
 	const modalHandle = getContext('modalHandle') as () => void;

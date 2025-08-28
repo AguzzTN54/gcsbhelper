@@ -6,7 +6,7 @@
 
 	const regions: Record<string, string> = {
 		indonesia: 'Indonesia',
-		global: 'Global (India)',
+		india: 'India - Global',
 		unset: 'Regular Participan'
 	};
 
