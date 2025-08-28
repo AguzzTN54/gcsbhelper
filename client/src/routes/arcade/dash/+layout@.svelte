@@ -41,7 +41,7 @@
 	setContext('loadDashProfile', loadDashProfile);
 
 	onMount(async () => {
-		if ($initData && $initData.length > 0) return;
+		if ($initData && $initData.length > 0) return profileReady.set(true);
 		if (!uuid) return;
 		await loadDashProfile(uuid, facilitator);
 	});
