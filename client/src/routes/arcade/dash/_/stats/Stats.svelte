@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { facilMilestones } from '$lib/config';
+	import { arcadeRewards, facilMilestones } from '$lib/config';
 	import { arcadeRegion, arcadeStats, initData, profileReady } from '$lib/stores/app-store';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Activities from './Activities.svelte';
@@ -9,6 +9,12 @@
 		return courses
 			.filter((c) => !!c.validity?.arcade && c.type === type)
 			.reduce((sum, c) => sum + c.point, 0);
+	};
+
+	const checkTier = (total: number) => {
+		return Object.entries(arcadeRewards)
+			.filter(([_, value]) => total >= value)
+			.pop()?.[0];
 	};
 
 	const calculatePoints = (
@@ -24,7 +30,11 @@
 			wmp: wmpBonus
 		};
 		const total = Object.values(points).reduce((p, c) => p + c, 0);
-		if (!region || region === 'unset') return { points, completeCourses: { wmp }, bonus: 0, total };
+		const tier = checkTier(total);
+
+		if (!region || region === 'unset') {
+			return { points, completeCourses: { wmp }, bonus: 0, total, tier };
+		}
 
 		const facilitatorCourses = courses.filter((c) => !!c.validity?.facilitator);
 		const typeCounts = facilitatorCourses.reduce(
@@ -51,7 +61,7 @@
 				typeCounts.skill >= m.skill &&
 				typeCounts.labfree >= (m.labfree || 0)
 			) {
-				bonus += m.bonus;
+				bonus = m.bonus;
 				achieved.push(m.displayname);
 			}
 		}
@@ -61,7 +71,8 @@
 			bonus,
 			total: total + bonus,
 			completeCourses: { ...typeCounts, wmp },
-			milestones: achieved
+			milestones: achieved,
+			tier: checkTier(total + bonus)
 		};
 	};
 

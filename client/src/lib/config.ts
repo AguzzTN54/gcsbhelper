@@ -95,3 +95,12 @@ export const facilMilestones: Record<Exclude<App.FacilitatorRegion, 'unset'>, Mi
 		}
 	}
 };
+
+export const arcadeRewards = {
+	start: 0,
+	novice: 25,
+	trooper: 45,
+	ranger: 65,
+	champion: 75,
+	legend: 95
+};

@@ -23,6 +23,7 @@ declare global {
 			total?: number;
 			bonus?: number;
 			milestones?: string[];
+			tier?: string;
 		}
 
 		interface UserInfo {
