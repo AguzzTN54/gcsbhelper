@@ -23,7 +23,8 @@
 			skill: countPoint(courses, 'skill'),
 			wmp: wmpBonus
 		};
-		if (!region || region === 'unset') return { points, completeCourses: { wmp } };
+		const total = Object.values(points).reduce((p, c) => p + c, 0);
+		if (!region || region === 'unset') return { points, completeCourses: { wmp }, bonus: 0, total };
 
 		const facilitatorCourses = courses.filter((c) => !!c.validity?.facilitator);
 		const typeCounts = facilitatorCourses.reduce(
@@ -55,11 +56,10 @@
 			}
 		}
 
-		const total = Object.values(points).reduce((p, c) => p + c, 0) + bonus;
 		return {
 			points,
-			total,
 			bonus,
+			total: total + bonus,
 			completeCourses: { ...typeCounts, wmp },
 			milestones: achieved
 		};

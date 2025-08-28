@@ -26,46 +26,42 @@
 	});
 
 	const aggregateCourses = (data: App.CourseItem[]) => {
+		const dayOffset = $arcadeRegion === 'unset' ? 14 : 7;
 		const today = dayjs().startOf('day');
-		const days = Array.from({ length: 7 }, (_, i) => {
-			return today.subtract(6 - i, 'day').format('YYYY-MM-DD');
-		});
-
-		const result = Object.entries(typeMap).map(([_, { label, backgroundColor }]) => ({
+		const days = Array.from({ length: dayOffset }, (_, i) =>
+			today.subtract(dayOffset - 1 - i, 'day').format('YYYY-MM-DD')
+		);
+		const labels = days.map((d) => dayjs(d).format('DD MMM'));
+		const datasets = Object.entries(typeMap).map(([_, { label, backgroundColor }]) => ({
 			label,
-			data: Array(7).fill(0),
+			data: Array(dayOffset).fill(0),
 			backgroundColor
 		}));
 
 		data.forEach((item) => {
-			const isgame = ['wmp', 'trivia', 'game'].includes(item.type || '');
-			const type = (isgame ? 'game' : item.type || 'unknown') as keyof typeof typeMap;
+			const isGame = ['wmp', 'trivia', 'game'].includes(item.type || '');
+			const type = (isGame ? 'game' : item.type || 'unknown') as keyof typeof typeMap;
 			const earnDate = item.earndate ? dayjs(item.earndate).startOf('day') : null;
 
 			if (!earnDate) return;
+
 			const idx = days.findIndex((d) => earnDate.isSame(d, 'day'));
 			if (idx !== -1) {
-				const dataset = result.find((r) => r.label === typeMap[type]?.label);
+				const dataset = datasets.find((r) => r.label === typeMap[type]?.label);
 				if (dataset) {
 					dataset.data[idx] += 1;
 				}
 			}
 		});
-
-		return result;
+		return { labels, datasets };
 	};
 
 	$effect(() => {
 		if (!canvas) return;
 
-		const data = {
-			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-			datasets: aggregateCourses($initData)
-		};
-
 		const chart = new Chart(canvas, {
 			type: 'bar',
-			data,
+			data: aggregateCourses($initData),
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
