@@ -1,35 +1,50 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
-	import { initData, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import { localAccounts } from '$lib/helpers/localstorage';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Modal from '$reusable/Modal.svelte';
 	import Toasts from '$reusable/Toast/Toasts.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
+	import Skeleton from '$reusable/Skeleton.svelte';
 
 	const { children, data } = $props();
-	const { avatar, facilitator, name, uuid } = data;
+	let tmp = $state<{ facilitator: App.FacilitatorRegion; uuid: string }>();
+	const { avatar, facilitator, name, uuid } = $derived.by(() => {
+		if (tmp && $profileReady) return localAccounts.getActive() || {};
+		return data || {};
+	});
 
 	let scrolled = $state(false);
 	setContext('scrolled', (val: boolean) => (scrolled = val));
 
 	let isFetchError = $state(false);
-	const loadBadgesFromProfile = async () => {
+	const loadDashProfile = async (profileUUID: string, facilitator: App.FacilitatorRegion) => {
 		try {
 			isFetchError = false;
 			profileReady.set(false);
-			if ($initData && $initData.length > 0) return;
-			await loadProfileAndBadges({ profileUUID: uuid || '', facilitator, program: 'arcade' });
+			if (!profileUUID) return;
+			tmp = { facilitator, uuid: profileUUID };
+			const res = await loadProfileAndBadges({ profileUUID, facilitator, program: 'arcade' });
+			const { name, uuid, avatar } = res.user || {};
+			localAccounts.put({ name, uuid, avatar, facilitator });
+			arcadeRegion.set(facilitator);
+			profileReady.set(true);
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
-		} finally {
-			profileReady.set(true);
 		}
 	};
-	onMount(loadBadgesFromProfile);
+	setContext('loadDashProfile', loadDashProfile);
+
+	onMount(async () => {
+		if ($initData && $initData.length > 0) return;
+		if (!uuid) return;
+		await loadDashProfile(uuid, facilitator);
+	});
 </script>
 
 <Toasts />
@@ -46,7 +61,7 @@
 				<i class="fasdl fa-house text-amber-400"></i> Take Me Home
 			</a>
 			<button
-				onclick={() => loadBadgesFromProfile()}
+				onclick={() => loadDashProfile(tmp?.uuid || '', tmp?.facilitator || 'unset')}
 				class="px-2 py-1 brutal-border bg-sky-200 hover:bg-sky-300 active:bg-sky-400"
 			>
 				<i class="fasdl fa-arrow-rotate-right text-sky-400"></i> Try Again
@@ -75,9 +90,11 @@
 
 			{#if scrolled}
 				<div class="ml-4 w-full flex flex-col">
-					<a href="/arcade" class="relative w-fit">
+					{#if $profileReady}
 						<h1 class="font-semibold text-lg mb-1 text-overflow">{name}</h1>
-					</a>
+					{:else}
+						<Skeleton class="w-30 max-w-full h-7 mb-2" />
+					{/if}
 					<NavMenu action />
 				</div>
 			{/if}

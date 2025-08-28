@@ -1,6 +1,8 @@
 <script lang="ts">
-	import type { Writable } from 'svelte/store';
 	import { getContext } from 'svelte';
+	import { profileReady } from '$lib/stores/app-store';
+	import { localAccounts } from '$lib/helpers/localstorage';
+	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '../_/Countdown.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
@@ -12,8 +14,10 @@
 	import Timeline from './_/Timeline.svelte';
 
 	const { data } = $props();
-	const { avatar, name, uuid, facilitator } = data;
-	const profileLoaded = getContext('profileLoaded') as Writable<boolean>;
+	const { avatar, name } = $derived.by(() => {
+		if ($profileReady) return localAccounts.getActive() || {};
+		return data || {};
+	});
 	const scrolled = getContext('scrolled') as (val: boolean) => void;
 
 	let firstRender = true;
@@ -31,6 +35,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{name} - Arcade Tracker</title>
+</svelte:head>
+
 <div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
 	<!-- left -->
 	<div
@@ -47,7 +55,11 @@
 				</div>
 				<div class="ml-auto w-full pl-5 flex flex-col justify-center items-center sm:items-start">
 					<a href="/arcade" class="relative w-fit">
-						<h1 class="font-semibold text-2xl mb-1 text-overflow">{name}</h1>
+						{#if $profileReady}
+							<h1 class="font-semibold text-2xl mb-1 text-overflow">{name}</h1>
+						{:else}
+							<Skeleton class="w-30 max-w-full h-7 mb-2" />
+						{/if}
 					</a>
 					<NavMenu action />
 				</div>
