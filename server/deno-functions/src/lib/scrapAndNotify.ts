@@ -24,10 +24,10 @@ export const scrapAndNotify = async (): Promise<void> => {
     const thisMonth = new Date().getMonth() + 1;
 
     // cancel checking if all games already out
-    if (periode === thisMonth && arcade.length >= 11) {
-      console.log('✔️  Task Finished: All Arcade in this month already released');
-      return;
-    }
+    // if (periode === thisMonth && arcade.length >= 11) {
+    //   console.log('✔️  Task Finished: All Arcade in this month already released');
+    //   return;
+    // }
 
     // crawl RSVP page
     let diff: ArcadeContent[] = [];
@@ -49,7 +49,7 @@ export const scrapAndNotify = async (): Promise<void> => {
     console.log('🌐 Fetching Arcade page..');
     const arcadeContent = await parseArcadePage();
 
-    if (!arcadeContent) return notifyAndUpdate(diff, periode === thisMonth ? arcade : [], hash);
+    if (!arcadeContent) return notifyAndUpdate(diff, arcade, hash);
     console.log('⚖️  Comparing From Arcade Page..');
     diff = findDiff(arcadeContent, arcade, diff) || [];
     return notifyAndUpdate(diff, periode === thisMonth ? arcade : [], hash);
@@ -73,7 +73,7 @@ const notifyAndUpdate = async (diff: ArcadeContent[], prev: ArcadeContent[] = []
 
   console.log(`🎮 Found Total ${diff.length} new game(s)`);
   console.log('🔔 Sending Notification..');
-  addGameToPB(diff);
+  await addGameToPB(diff);
   await sendNotification(diff);
   console.log('✔️  Task Finished');
   return;
