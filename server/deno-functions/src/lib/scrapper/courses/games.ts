@@ -55,7 +55,7 @@ interface Course {
 
 const insertToPb = async (course: Course) => {
   const { title, totallab, badgeurl, courseid, point, type, enddate, badgeid, token } = course || {};
-  if (!title || badgeid) return;
+  if (!title || !badgeid) return;
   try {
     const id = await shortShaId(`${badgeid}`);
     const requests = [
