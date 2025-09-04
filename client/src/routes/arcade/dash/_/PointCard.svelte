@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app-store';
 	import ModalSelectRegion from '../../_/ModalSelectRegion.svelte';
 	import Portal from '$reusable/Portal/Portal.svelte';
+	import Skeleton from '$reusable/Skeleton.svelte';
 
+	const { complete, milestones = [], tier, total } = $derived($arcadeStats || {});
 	const regions: Record<string, string> = {
 		indonesia: 'Facilitator Indonesia',
 		india: 'Facilitator India',
@@ -29,20 +31,42 @@
 			class="h-20 w-fit p-2 min-w-20 scale-105 border-r-2 border-b-2 overflow-hidden rounded-br-3xl flex items-center justify-center bg-indigo-100"
 		>
 			<div class="text-center translate-y-1/5">
-				<h1 class="font-bold text-3xl leading-[70%]">100</h1>
+				{#if $profileReady}
+					<h1 class="font-bold text-3xl leading-[70%]">{total}</h1>
+				{:else}
+					<Skeleton class="h-7 w-10 rounded-md -translate-y-1/5" />
+				{/if}
 				<span class="text-[size:10px] block"> points</span>
 			</div>
 		</div>
 		<div class="flex flex-col py-1 w-[calc(100%-5rem)] text-center items-center">
-			<h1 class="font-semibold text-lg brutal-text after:!bg-sky-200/80 w-fit">Arcade Ranger</h1>
-			<div class="grid grid-cols-2 text-sm mt-2">
-				<div class="">
-					<span class="font-light text-xs block">Badges</span>
-					<span class="font-extrabold">50</span>
+			{#if $profileReady}
+				<h1 class="font-semibold text-lg brutal-text after:!bg-sky-200/80 w-fit capitalize">
+					{tier !== 'start' ? 'Arcade ' + tier : 'No Tier'}
+				</h1>
+			{:else}
+				<Skeleton class="w-7/12 h-6" />
+			{/if}
+			<div class="grid grid-cols-2 text-sm mt-2 gap-1">
+				<div class="text-center">
+					<span class="font-light text-xs block">Valid Badges</span>
+					{#if $profileReady}
+						<span class="font-extrabold">
+							{complete.arcade}
+						</span>
+					{:else}
+						<Skeleton class="w-10 h-4 inline-block -mb-1" />
+					{/if}
 				</div>
 				<div class="">
 					<span class="font-light text-xs block">Milestone</span>
-					<span class="font-extrabold">milestone.2</span>
+					{#if $profileReady}
+						<span class="font-extrabold">
+							{[...(milestones || [])].reverse()[0] || '-'}
+						</span>
+					{:else}
+						<Skeleton class="w-15 h-4 inline-block -mb-1" />
+					{/if}
 				</div>
 			</div>
 		</div>
