@@ -36,28 +36,28 @@ export const facilMilestones: Record<Exclude<App.FacilitatorRegion, 'unset'>, Mi
 			game: 4,
 			trivia: 4,
 			skill: 10,
-			bonus: 5
+			bonus: 7
 		},
 		m2: {
 			displayname: 'milestone.2',
 			game: 6,
 			trivia: 6,
 			skill: 20,
-			bonus: 10
+			bonus: 14
 		},
 		m3: {
 			displayname: 'milestone.3',
 			game: 8,
 			trivia: 7,
 			skill: 30,
-			bonus: 15
+			bonus: 19
 		},
 		m4: {
 			displayname: 'Ultimate',
 			game: 10,
 			trivia: 8,
 			skill: 44,
-			bonus: 25
+			bonus: 28
 		}
 	},
 	india: {
