@@ -5,7 +5,6 @@
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import img from '$img/avatar.webp';
 	import Modal from '$reusable/Modal.svelte';
-	const allAccounts = localAccounts.getAll();
 
 	const regions: Record<string, string> = {
 		indonesia: 'Indonesia',
@@ -15,6 +14,7 @@
 	const modalHandle = getContext('modalHandle') as () => void;
 	const loadProfile = getContext('loadDashProfile') as (u: string, r: string) => Promise<void>;
 
+	let allAccounts = $state(localAccounts.getAll());
 	const active = localAccounts.getActive();
 	const selectAccount = async (profileUUID: string) => {
 		modalHandle();
@@ -26,6 +26,9 @@
 	const deleteAccount = (uuid: string) => {
 		localAccounts.delete(uuid);
 		arcadeRegion.set('unset');
+		allAccounts = localAccounts.getAll();
+		if (active?.uuid !== uuid) return;
+		// redirect if deleting the current active account
 		modalHandle();
 		goto('/arcade');
 	};
