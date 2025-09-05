@@ -13,12 +13,15 @@ declare global {
 				skill: number;
 				wmp: number;
 			};
-			completeCourses: {
-				wmp: number;
-				game?: number;
-				trivia?: number;
-				skill?: number;
-				labfree?: number;
+			complete: {
+				arcade: number;
+				facil: {
+					wmp: number;
+					game?: number;
+					trivia?: number;
+					skill?: number;
+					labfree?: number;
+				};
 			};
 			total?: number;
 			bonus?: number;

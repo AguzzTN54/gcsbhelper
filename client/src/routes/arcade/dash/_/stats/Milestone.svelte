@@ -13,7 +13,7 @@
 	import { facilMilestones } from '$lib/config';
 	import { onDestroy, untrack } from 'svelte';
 
-	const { milestones, completeCourses } = $derived($arcadeStats || {});
+	const { milestones, complete } = $derived($arcadeStats || {});
 	let showSelectMilestone = $state(false);
 	let activeMilestone = $derived.by(() => {
 		const region = $arcadeRegion;
@@ -82,7 +82,7 @@
 
 	// Current values
 	const dataValues = $derived.by(() => {
-		const { game, trivia, skill, labfree } = completeCourses || {};
+		const { game, trivia, skill, labfree } = complete?.facil || {};
 		return {
 			Games: game || 0,
 			Trivia: trivia || 0,
@@ -120,9 +120,6 @@
 		if (!$profileReady && chartContent) {
 			chartContent.data.labels = Object.keys(maxValues).map(() => 'loading');
 			chartContent.data.datasets[1].data = [];
-			if (chartContent.options.plugins) {
-				chartContent.options.plugins.tooltip = { enabled: true };
-			}
 			chartContent.update();
 			return;
 		}
@@ -130,7 +127,6 @@
 		if (chartContent) {
 			chartContent.data.labels = Object.keys(maxValues);
 			chartContent.data.datasets[1] = userDataValues;
-			delete chartContent.options.plugins?.tooltip?.enabled;
 			chartContent.update();
 			return;
 		}
@@ -253,21 +249,27 @@
 			onclick={() => (showSelectMilestone = !showSelectMilestone)}
 			class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300 whitespace-nowrap"
 		>
+			{#if milestones?.includes(activeMilestone?.displayname || '')}
+				<i class="fasdl fa-check"></i>
+			{/if}
 			{activeMilestone?.displayname || ''}
 			<i class="fasdl fa-caret-down"></i>
 		</button>
 		{#if showSelectMilestone}
-			<div class="absolute top-[calc(100%+2px)] right-0 text-xs bg-gray-100 w-full z-10">
+			<div class="absolute top-[calc(100%+2px)] right-0 text-xs bg-gray-100 w-fit z-10">
 				{#each milestoneList as { key, m } (key)}
 					<button
 						onclick={() => {
 							activeMilestone = m;
 							showSelectMilestone = false;
 						}}
-						class="px-2 py-1.5 border-2 w-full text-right hover:bg-indigo-200 capitalize active:bg-indigo-300"
+						class="px-2 py-1.5 border-2 w-full text-right hover:bg-indigo-200 capitalize active:bg-indigo-300 whitespace-nowrap"
 						class:bg-amber-100={m.displayname === activeMilestone?.displayname}
 					>
-						{m.displayname}
+						{#if milestones?.includes(m.displayname)}
+							<i class="fasdl fa-check"></i>
+						{/if}
+						<span>{m.displayname} </span>
 					</button>
 				{/each}
 			</div>

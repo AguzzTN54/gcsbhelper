@@ -29,11 +29,18 @@
 			skill: countPoint(courses, 'skill'),
 			wmp: wmpBonus
 		};
+		const totalbadges = courses.filter((c) => !!c.validity?.arcade).length;
 		const total = Object.values(points).reduce((p, c) => p + c, 0);
 		const tier = checkTier(total);
 
 		if (!region || region === 'unset') {
-			return { points, completeCourses: { wmp }, bonus: 0, total, tier };
+			return {
+				points,
+				total,
+				tier,
+				complete: { facil: { wmp }, arcade: totalbadges },
+				bonus: 0
+			};
 		}
 
 		const facilitatorCourses = courses.filter((c) => !!c.validity?.facilitator);
@@ -70,7 +77,7 @@
 			points,
 			bonus,
 			total: total + bonus,
-			completeCourses: { ...typeCounts, wmp },
+			complete: { facil: { ...typeCounts, wmp }, arcade: totalbadges },
 			milestones: achieved,
 			tier: checkTier(total + bonus)
 		};
