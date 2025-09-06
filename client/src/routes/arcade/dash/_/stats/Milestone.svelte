@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy, onMount, untrack } from 'svelte';
 	import {
 		Chart,
 		RadarController,
@@ -11,7 +12,7 @@
 	} from 'chart.js';
 	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app-store';
 	import { facilMilestones } from '$lib/config';
-	import { onDestroy, untrack } from 'svelte';
+	import Skeleton from '$reusable/Skeleton.svelte';
 
 	const { milestones, complete } = $derived($arcadeStats || {});
 	let showSelectMilestone = $state(false);
@@ -22,12 +23,8 @@
 		return facilMilestones[region]?.[key] || null;
 	});
 
-	const milestoneList = $derived.by(() => {
-		const region = $arcadeRegion;
-		if (!region || region === 'unset') return [];
-		const listObject = facilMilestones[region];
-		const list = Object.keys(listObject).map((k) => ({ key: k, m: listObject[k] }));
-		return list;
+	onMount(() => {
+		window.addEventListener('click', () => (showSelectMilestone = false));
 	});
 
 	let canvas = $state<HTMLCanvasElement>();
@@ -244,37 +241,86 @@
 
 <div class="flex justify-between items-center">
 	<h2 class="text-lg my-3">Milestone</h2>
-	<div class="relative">
-		<button
-			onclick={() => (showSelectMilestone = !showSelectMilestone)}
-			class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300 whitespace-nowrap"
-		>
-			{#if milestones?.includes(activeMilestone?.displayname || '')}
-				<i class="fasdl fa-check"></i>
+	{#if !$profileReady}
+		<Skeleton class="w-25 h-6" />
+	{:else}
+		<div class="relative">
+			<button
+				onclick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					showSelectMilestone = !showSelectMilestone;
+				}}
+				class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300 whitespace-nowrap"
+			>
+				{#if milestones?.includes(activeMilestone?.displayname || '')}
+					<i class="fasdl fa-check"></i>
+				{/if}
+				{activeMilestone?.displayname || ''}
+				<i class="fasdl fa-caret-down"></i>
+			</button>
+
+			{#if showSelectMilestone}
+				{@const mlist = facilMilestones[$arcadeRegion as Exclude<App.FacilitatorRegion, 'unset'>]}
+				<div
+					style="--item-length:{Object.keys(dataValues).length}"
+					class="absolute top-[calc(100%+2px)] right-0 lg:left-0 text-xs bg-gray-100 w-[calc(var(--item-length)*100%)] sm:w-[200%] lg:w-[calc(var(--item-length)*100%)] max-w-[87vw] z-10"
+				>
+					{#each Object.keys(mlist) as key (key)}
+						{@const m = mlist[key]}
+						{@const completed = milestones?.includes(m.displayname)}
+						<button
+							onclick={() => {
+								activeMilestone = m;
+								showSelectMilestone = false;
+							}}
+							class:completed
+							class:bg-green-100={m.displayname === activeMilestone?.displayname}
+							class="px-2 py-2 border-2 w-full text-left hover:bg-indigo-200 capitalize active:bg-indigo-200 whitespace-nowrap relative"
+						>
+							<div class="flex">
+								<i class="fasdl fa-check opacity-0" class:opacity-100={completed}></i>
+								<span class="uppercase font-semibold">{m.displayname} </span>
+								<span class="ml-auto text-lime-700 bg-lime-100"> +{m.bonus} </span>
+							</div>
+
+							<div
+								class="grid grid-cols-[var(--col)] sm:grid-cols-2 lg:grid-cols-[var(--col)] gap-2 mt-1"
+								style="--col:repeat(var(--item-length), minmax(0, 1fr))"
+							>
+								{#snippet milestoneSnippet(label: string, earned: number, needed: number)}
+									{@const percentage = (earned / needed) * 100}
+									{@const colors: Record<string, string> ={Games: 'bg-purple-800', Trivia:'bg-indigo-700', Skill:'bg-amber-400', 'Lab Free':'bg-sky-400'}}
+									<div class="col w-full">
+										<div class="flex justify-between">
+											<span>{label}</span>
+											<span class="opacity-70">
+												{earned}/{needed}
+											</span>
+										</div>
+										<div
+											class="relative h-1 w-full bg-slate-400/70"
+											style="--proggress:{percentage > 100 ? 100 : percentage}%"
+										>
+											<div class="{colors[label]} h-full w-[var(--proggress)]"></div>
+										</div>
+									</div>
+								{/snippet}
+								{#each Object.keys(dataValues) as k (k)}
+									{@const earned = dataValues[k as keyof typeof dataValues] || 0}
+									{@const neededKey = Object.keys(m).find((m) =>
+										k.match(new RegExp(m.split('').join('\\s*'), 'i'))
+									) as keyof typeof m | undefined}
+									{@const needed = neededKey ? (mlist[key][neededKey] as number) : 0}
+									{@render milestoneSnippet(k, earned, needed)}
+								{/each}
+							</div>
+						</button>
+					{/each}
+				</div>
 			{/if}
-			{activeMilestone?.displayname || ''}
-			<i class="fasdl fa-caret-down"></i>
-		</button>
-		{#if showSelectMilestone}
-			<div class="absolute top-[calc(100%+2px)] right-0 text-xs bg-gray-100 w-fit z-10">
-				{#each milestoneList as { key, m } (key)}
-					<button
-						onclick={() => {
-							activeMilestone = m;
-							showSelectMilestone = false;
-						}}
-						class="px-2 py-1.5 border-2 w-full text-right hover:bg-indigo-200 capitalize active:bg-indigo-300 whitespace-nowrap"
-						class:bg-amber-100={m.displayname === activeMilestone?.displayname}
-					>
-						{#if milestones?.includes(m.displayname)}
-							<i class="fasdl fa-check"></i>
-						{/if}
-						<span>{m.displayname} </span>
-					</button>
-				{/each}
-			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 </div>
 <div class="flex justify-center">
 	<div class="size-40 xl:size-50 aspect-square flex items-center justify-center">
@@ -285,3 +331,12 @@
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme' theme(reference);
+
+	.completed::after {
+		content: '';
+		@apply absolute top-0 h-full left-0 w-1 bg-green-500;
+	}
+</style>
