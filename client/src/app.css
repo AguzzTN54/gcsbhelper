@@ -16,6 +16,9 @@
 		-webkit-line-clamp: var(--line-number);
 		-webkit-box-orient: vertical;
 	}
+	.font-press {
+		font-family: var(--font-press);
+	}
 
 	.invalid {
 		@apply border-rose-500 bg-rose-50 focus:border-rose-500;
