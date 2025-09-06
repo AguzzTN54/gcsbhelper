@@ -70,7 +70,7 @@
 			<span> +{point} </span>
 		</div>
 	{/if}
-	{#if earned || isExpired}
+	{#if earned}
 		<div
 			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-120 group-[:hover]:opacity-0 pointer-events-none"
 		></div>
@@ -105,7 +105,10 @@
 		{/if}
 	{/if}
 
-	<div class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden">
+	<div
+		class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden"
+		class:grayscale-100={isExpired && !earned}
+	>
 		<div class="w-full aspect-video bg-gray-400 rounded-b-xl border-b-4 overflow-hidden relative">
 			{#if loading}
 				<Skeleton class="size-full" />
