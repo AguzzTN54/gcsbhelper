@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Swiper } from 'swiper';
-	import { arcadeRewards as rewards } from '$lib/config';
+	import { arcadeRewards as rewards } from '$lib/data/config';
 	import { arcadeStats, profileReady } from '$lib/stores/app-store';
 	import rewardBg from '$img/rewards.webp';
 	import Skeleton from '$reusable/Skeleton.svelte';

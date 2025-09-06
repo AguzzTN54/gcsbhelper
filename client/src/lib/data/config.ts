@@ -8,7 +8,7 @@ export const arcadeSeason: Periode & { seasonid: string } = {
 	end: '31 December 2025'
 };
 
-export const facilitatorPeriode: Record<Exclude<App.FacilitatorRegion, 'unset'>, Periode> = {
+export const facilitatorPeriode: Record<App.FacilitatorRegion, Periode> = {
 	indonesia: {
 		start: '2025-07-15T02:00:00Z',
 		end: '2025-09-16T18:00:00.000Z' // 17 Sep 2025 01:00
@@ -16,6 +16,10 @@ export const facilitatorPeriode: Record<Exclude<App.FacilitatorRegion, 'unset'>,
 	india: {
 		start: '2025-08-04T11:30:00Z',
 		end: '2025-10-06T18:29:00Z'
+	},
+	unset: {
+		start: '',
+		end: ''
 	}
 };
 

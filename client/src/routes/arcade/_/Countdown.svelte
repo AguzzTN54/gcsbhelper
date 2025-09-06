@@ -1,7 +1,7 @@
 <script>
 	import dayjs from '$lib/helpers/dateTime';
 	import { arcadeRegion } from '$lib/stores/app-store';
-	import { facilitatorPeriode, arcadeEndIn } from '$lib/config';
+	import { facilitatorPeriode, arcadeSeason } from '$lib/data/config';
 
 	const { small = false } = $props();
 
@@ -13,9 +13,9 @@
 
 	const endDate = $derived.by(() => {
 		const validRegions = ['india', 'indonesia'];
-		if (!validRegions.includes($arcadeRegion)) return arcadeEndIn;
+		if (!validRegions.includes($arcadeRegion)) return arcadeSeason.end;
 		const endIn = facilitatorPeriode[$arcadeRegion]?.end;
-		return endIn || arcadeEndIn;
+		return endIn || arcadeSeason.end;
 	});
 
 	const countdown = $derived([

@@ -11,7 +11,7 @@
 		Legend
 	} from 'chart.js';
 	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app-store';
-	import { facilMilestones } from '$lib/config';
+	import { facilMilestones } from '$lib/data/config';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
 	const { milestones, complete } = $derived($arcadeStats || {});

@@ -182,7 +182,7 @@
 
 <div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2 pb-10">
 	{#if $profileReady}
-		{@const courses = dataToShow.filter((_, i) => i <= maxCourseToShow - 1)}
+		{@const courses = (dataToShow || []).filter((_, i) => i <= maxCourseToShow - 1)}
 		{#if courses.length < 1}
 			<div class="flex justify-center text-center w-full">No data to show!</div>
 		{:else}

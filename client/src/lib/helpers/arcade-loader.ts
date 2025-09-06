@@ -1,7 +1,7 @@
 import { PUBLIC_API_SERVER, PUBLIC_PB_SERVER } from '$env/static/public';
 import { initData } from '$lib/stores/app-store';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
-import { arcadeSeason, facilitatorPeriode } from '$lib/config';
+import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
 import { createToken } from './crypto';
 import { uuidToHex } from './uuid';
 

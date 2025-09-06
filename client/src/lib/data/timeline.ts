@@ -1,4 +1,4 @@
-import { facilitatorPeriode } from '$lib/config';
+import { facilitatorPeriode } from '$lib/data/config';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 
 interface EventItem {

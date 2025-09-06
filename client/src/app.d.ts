@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs';
-import { facilitatorRegions, gcsbPrograms } from '$lib/config';
+import { facilitatorRegions, gcsbPrograms } from '$lib/data/config';
 
 declare global {
 	namespace App {

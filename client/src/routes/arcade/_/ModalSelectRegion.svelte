@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
 	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
-	import { facilitatorRegions } from '$lib/config';
+	import { facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { switchFacilitator } from '$lib/helpers/arcade-loader';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
