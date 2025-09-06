@@ -48,6 +48,7 @@ declare global {
 
 		interface CourseItem extends BasicCourse {
 			badgeid: number;
+			startdate?: Dayjs | Date | string;
 			enddate?: Dayjs | Date | string;
 			earndate?: Dayjs | Date | string;
 			earned: boolean;

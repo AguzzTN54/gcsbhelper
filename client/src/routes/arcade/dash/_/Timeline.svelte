@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Dayjs } from 'dayjs';
-	import dayjs from '$lib/helpers/dateTime';
+	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
+	import { getTimelineContents } from '$lib/data/timeline';
+	import { arcadeRegion, initData } from '$lib/stores/app-store';
 
 	let timelineW = $state(0);
 	let timelineH = $state(0);
 	const offset = 2;
-	const startDate = dayjs('05 Aug 2025', 'DD MMM YYYY');
-	const endDate = dayjs('31 Aug 2025', 'DD MMM YYYY');
+	const calendar = $derived(getTimelineContents($initData, $arcadeRegion));
 
 	interface DateList {
 		month: string;
 		dates: { date: number; day: string }[];
 	}
 	const getDateList = (): DateList[] => {
-		const extendedStart = startDate.subtract(offset, 'day');
-		const extendedEnd = endDate.add(offset, 'day');
+		const extendedStart = calendar.startrange.subtract(offset, 'day');
+		const extendedEnd = calendar.endrange.add(offset, 'day');
 		const grouped: DateList[] = [];
 		let current = extendedStart;
 
@@ -45,7 +45,7 @@
 
 	const timeNowPosition = (timenow: Dayjs): number => {
 		const now = dayjs(timenow);
-		const daysDiff = now.diff(startDate.startOf('day'), 'day');
+		const daysDiff = now.diff(calendar.startrange.startOf('day'), 'day');
 		const secondsInDay = 24 * 60 * 60;
 		const secondsToday = now.diff(now.startOf('day'), 'second');
 		const fractionToday = secondsToday / secondsInDay;
@@ -114,21 +114,67 @@
 
 			<!-- Strip -->
 			<div
-				class="mt-14 pb-5 text-sm translate-x-[calc(var(--dtw)/2)] relative z-20"
+				class="mt-12 pb-5 text-sm translate-x-[calc(var(--dtw)/2)] relative z-20"
 				bind:clientHeight={timelineH}
 			>
-				<button
-					class="my-2 w-[calc(20*var(--dtw))] bg-indigo-200 text-indigo-900 !border-[3px] py-2 px-4 rounded-lg relative flex brutal-border"
-				>
-					<span class="sticky left-0 top-0"> Arcade </span>
-				</button>
-
-				<button
-					class="my-2 w-[calc(20*var(--dtw))] ml-[calc(var(--dtw)*7)] bg-indigo-200 text-indigo-900 brutal-border !border-[3px] py-2 px-4 rounded-lg relative flex"
-				>
-					<span class="sticky left-0 top-0"> Arcade </span>
-				</button>
+				{#each calendar.timeline as itemperrow (itemperrow)}
+					{@const { startdate } = itemperrow[0]}
+					<div
+						style="--offset:{dayjs(startdate).diff(calendar.startrange, 'day', true) + offset}"
+						class="my-1 ml-[calc(var(--dtw)*var(--offset))] flex"
+					>
+						{#each itemperrow as { enddate, startdate, title, type, image }, i (title)}
+							<button
+								style="--w:{dayjs(enddate).diff(startdate, 'day', true)};
+									--ml:{dayjs(startdate).diff(itemperrow[i - 1]?.enddate || startdate, 'day', true)}"
+								class="w-[calc(var(--w)*var(--dtw))] ml-[calc(var(--dtw)*var(--ml))] bg-indigo-200 text-indigo-900 rounded-lg relative inline-flex justify-between {type}"
+							>
+								<span class="sticky -left-6 top-0 z-1 my-2 inline-block px-4 rounded-full">
+									{title}
+								</span>
+								{#if image}
+									<div class="flex w-25 h-full overflow-hidden sticky right-5 top-0 rounded-r-lg">
+										<img src={image} alt="Arcade" class="absolute top-0 right-0 -translate-y-2/5" />
+									</div>
+								{/if}
+							</button>
+						{/each}
+					</div>
+				{/each}
 			</div>
 		</div>
 	</ScrollArea>
 </div>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme' theme(reference);
+	button {
+		&.wmp {
+			span {
+				@apply bg-[#202124];
+			}
+			@apply text-white/80;
+			background-image: linear-gradient(to left, #1a6260, #202124);
+		}
+		&.game {
+			span {
+				@apply bg-[#202124];
+			}
+			@apply text-white/80;
+			background-image: linear-gradient(to left, #162a43, #202124);
+		}
+		&.trivia {
+			span {
+				@apply bg-[#202124];
+			}
+			@apply text-white/80;
+			background-image: linear-gradient(to left, #51364b, #202124);
+		}
+		&.expected {
+			span {
+				@apply bg-[#202124];
+			}
+			@apply text-white/80 bg-[#202124];
+		}
+	}
+</style>

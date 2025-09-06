@@ -11,7 +11,7 @@ export const arcadeSeason: Periode & { seasonid: string } = {
 export const facilitatorPeriode: Record<Exclude<App.FacilitatorRegion, 'unset'>, Periode> = {
 	indonesia: {
 		start: '2025-07-15T02:00:00Z',
-		end: '2025-09-09T16:59:00Z'
+		end: '2025-09-16T18:00:00.000Z' // 17 Sep 2025 01:00
 	},
 	india: {
 		start: '2025-08-04T11:30:00Z',
