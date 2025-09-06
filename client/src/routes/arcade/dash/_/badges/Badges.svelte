@@ -2,13 +2,20 @@
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
 	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeItem from './BadgeItem.svelte';
 
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
-		return $initData.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
+		let data = $initData || [];
+		if ($arcadeRegion !== 'india') {
+			data = data
+				.filter((d) => d.type !== 'labfree' || (d.type === 'labfree' && !!d.earned))
+				.map((d) => (d.type !== 'labfree' ? d : { ...d, type: null }));
+		}
+		return data.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
 			const gameType = ['trivia', 'wmp', 'arcade'].includes(course.type || '');
 			const type = gameType ? 'game' : course.type || 'unknown';
 			if (!acc[type]) acc[type] = [];
@@ -34,8 +41,7 @@
 			length: arr.length
 		}));
 
-		let init = untrack(() => $initData);
-		if ($arcadeRegion !== 'india') init = init.filter((s) => s.type !== 'labfree');
+		const init = untrack(() => $initData);
 		const fasttrack = init.filter(({ fasttrack }) => fasttrack);
 		const data = [
 			...fromGrouped,
@@ -43,15 +49,13 @@
 			{ type: 'fasttrack', label: 'Fast Track', length: fasttrack.length }
 		];
 		const sorted = data.sort((a, b) => labelKey.indexOf(a.type) - labelKey.indexOf(b.type));
-		if ($arcadeRegion !== 'india') return sorted.filter((s) => s.type !== 'labfree');
 		return sorted;
 	});
 
 	const getData = (data: App.CourseItem[]): App.CourseItem[] => {
 		if (activeGroup === 'all') return data;
 		if (activeGroup === 'fasttrack') return data.filter((d) => d.fasttrack);
-		const groupedData = untrack(() => grouped);
-		return groupedData[activeGroup];
+		return grouped[activeGroup];
 	};
 
 	let showEarned = $state(true);
@@ -59,13 +63,44 @@
 	let query = $state('');
 
 	const list: App.CourseItem[] = $derived.by(() => {
-		let data = getData($initData);
-		if ($arcadeRegion !== 'india') data = data.filter((d) => d.type !== 'labfree');
-		data = data.sort((a, b) => {
-			return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');
-		});
-		if (showEarned) return data;
-		return data.filter((d) => !d.earned);
+		let dt = getData($initData);
+		// Remove Unearned labfree for specific facilicator
+		if ($arcadeRegion !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
+		const game = dt
+			.filter((d) => d.type?.match(/game|trivia|wmp/))
+			.sort((a, b) => {
+				const now = dayjs();
+
+				const aDate = a.enddate ? dayjs(a.enddate) : null;
+				const bDate = b.enddate ? dayjs(b.enddate) : null;
+
+				const aValid = aDate?.isValid() ?? false;
+				const bValid = bDate?.isValid() ?? false;
+
+				// Sorting priority:
+				// 0 = valid, not expired, not earned
+				// 1 = valid, earned
+				// 2 = valid, expired (not earned)
+				// 3 = invalid
+				const aPriority = aValid ? (aDate!.isAfter(now) ? (a.earned ? 1 : 0) : 2) : 3;
+				const bPriority = bValid ? (bDate!.isAfter(now) ? (b.earned ? 1 : 0) : 2) : 3;
+				if (aPriority !== bPriority) return aPriority - bPriority;
+
+				// same group → sort by enddate ascending if valid
+				if (aValid && bValid) {
+					return aDate!.valueOf() - bDate!.valueOf();
+				}
+				return 0; // both invalid
+			});
+
+		const notGame = dt
+			.filter((d) => !d.type?.match(/game|trivia|wmp/))
+			.sort((a, b) => Number(a.earned) - Number(b.earned))
+			.sort((a, b) => {
+				return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');
+			});
+		if (showEarned) return [...game, ...notGame];
+		return [...game, ...notGame].filter((d) => !d.earned);
 	});
 
 	const fuse = $derived(new Fuse(list, { keys: ['title', 'courseid', 'badgeid'] }));
@@ -77,7 +112,7 @@
 	});
 </script>
 
-<div class="mt-10 lg:mt-15 text-center mb-3">
+<div class="mt-10 lg:mt-5 text-center mb-3">
 	<h2 class="font-semibold text-2xl px-2">BADGES</h2>
 </div>
 <div
@@ -175,7 +210,7 @@
 			</button>
 		{:else if $profileReady}
 			<span class="font-light text-amber-700"> That's All! </span>
-			<div class="w-10/12 h-1 bg-amber-700 eol"></div>
+			<div class="w-10/12 h-0.75 bg-amber-700 eol"></div>
 		{/if}
 	</div>
 </div>
@@ -188,7 +223,7 @@
 		&::after,
 		&::before {
 			content: '';
-			@apply size-3 aspect-square absolute top-1/2 -translate-y-1/2 bg-amber-700;
+			@apply size-2.5 aspect-square absolute top-1/2 -translate-y-1/2 bg-amber-700;
 		}
 		&::before {
 			left: 0;
