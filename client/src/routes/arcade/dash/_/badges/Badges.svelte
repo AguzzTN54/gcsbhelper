@@ -6,6 +6,7 @@
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeItem from './BadgeItem.svelte';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
 
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
@@ -119,30 +120,34 @@
 	class="w-full sticky z-90 top-0 left-0 -translate-y-2 flex justify-between lg:flex-row flex-col-reverse px-2 py-2 items-start gap-3
 	after:bg-gray-100 after:scale-x-105 after:absolute after:top-0 after:left-0 after:size-full after:-z-1"
 >
-	<div class="w-full mt-2 h-18 flex lg:mt-0 relative">
-		<div class="whitespace-nowrap overflow-auto w-full lg:pr-2 absolute top-0 left-0">
-			{#if $profileReady}
-				{#each labels as { label, length, type }}
-					<button
-						onclick={() => (activeGroup = type)}
-						class:active={activeGroup === type}
-						class:bg-amber-200={activeGroup === type}
-						class:pointer-events-none={activeGroup === type}
-						class="brutal-border py-2 px-3 rounded-full mr-2 text-xs leading-0 !border-[3px] hover:bg-indigo-200 active:bg-indigo-300 group"
-					>
-						<span>{label}</span>
-						<span
-							class="inline-block rounded-full bg-indigo-100 py-2 px-0.5 group-[.active]:bg-amber-300"
-						>
-							{length}
-						</span>
-					</button>
-				{/each}
-			{:else}
-				{#each Array(4) as _}
-					<Skeleton class="h-9 w-28 inline-block rounded-full mr-3" />
-				{/each}
-			{/if}
+	<div class="w-full mt-2 h-18 flex lg:mt-0 relative" id="labelpicker">
+		<div class="w-full lg:pr-2 absolute top-0 left-0">
+			<ScrollArea>
+				<div class="labelwrapper whitespace-nowrap">
+					{#if $profileReady}
+						{#each labels as { label, length, type }}
+							<button
+								onclick={() => (activeGroup = type)}
+								class:active={activeGroup === type}
+								class:bg-amber-200={activeGroup === type}
+								class:pointer-events-none={activeGroup === type}
+								class="brutal-border py-2 px-3 rounded-full mr-2 text-xs leading-0 !border-[3px] hover:bg-indigo-200 active:bg-indigo-300 group"
+							>
+								<span>{label}</span>
+								<span
+									class="inline-block rounded-full bg-indigo-100 py-2 px-0.5 group-[.active]:bg-amber-300"
+								>
+									{length}
+								</span>
+							</button>
+						{/each}
+					{:else}
+						{#each Array(4) as _}
+							<Skeleton class="h-9 w-28 inline-block rounded-full mr-3" />
+						{/each}
+					{/if}
+				</div>
+			</ScrollArea>
 		</div>
 		<div
 			class="mt-auto w-full scale-90 origin-bottom-left flex justify-center lg:justify-start leading-[100%]"
@@ -150,8 +155,9 @@
 			<Checkbox
 				checked={showEarned}
 				onchange={(e) => (showEarned = (e.target as HTMLInputElement).checked)}
-				>Show Completed Badges</Checkbox
 			>
+				Show Completed Badges
+			</Checkbox>
 		</div>
 	</div>
 
@@ -217,6 +223,13 @@
 
 <style lang="postcss">
 	@import 'tailwindcss/theme' theme(reference);
+
+	#labelpicker:has(:global(.os-scrollbar-visible)) {
+		@apply h-20;
+		.labelwrapper {
+			@apply mb-3;
+		}
+	}
 
 	.eol {
 		position: relative;
