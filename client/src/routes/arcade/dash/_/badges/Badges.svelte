@@ -113,7 +113,7 @@
 </script>
 
 <div class="mt-10 lg:mt-5 text-center mb-3">
-	<h2 class="font-semibold text-2xl px-2">BADGES</h2>
+	<h2 class="font-semibold text-2xl px-2 font-press">BADGES</h2>
 </div>
 <div
 	class="w-full sticky z-90 top-0 left-0 -translate-y-2 flex justify-between lg:flex-row flex-col-reverse px-2 py-2 items-start gap-3

@@ -82,7 +82,7 @@
 		>
 			<span
 				id="nowindicator"
-				class="inline-block text-xs bg-red-500 py-1 px-2 rounded-full leading-[110%] text-white mt-auto mb-2 -translate-x-1/2"
+				class="inline-block text-xs bg-red-500 py-1 px-2 rounded-full leading-[110%] text-white mt-auto mb-1 -translate-x-1/2"
 			>
 				{timeNow.format('HH:mm:ss')}
 			</span>

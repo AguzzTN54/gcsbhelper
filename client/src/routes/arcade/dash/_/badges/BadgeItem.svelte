@@ -72,7 +72,7 @@
 	{/if}
 	{#if earned}
 		<div
-			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-120 group-[:hover]:opacity-0 pointer-events-none"
+			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-110 group-[:hover]:opacity-0 pointer-events-none"
 		></div>
 	{/if}
 

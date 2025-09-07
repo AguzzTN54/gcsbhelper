@@ -193,7 +193,6 @@ export const getTimelineContents = (
 		...expectedNexMonth
 	];
 	const groupedEvents = groupTimeline(content);
-	console.log(groupedEvents);
 	return {
 		...getTimelineRange(content),
 		timeline: groupedEvents
