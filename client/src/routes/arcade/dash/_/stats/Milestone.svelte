@@ -123,6 +123,7 @@
 
 		if (chartContent) {
 			chartContent.data.labels = Object.keys(maxValues);
+			chartContent.data.datasets[0].data = normalizedData(milestoneStandard);
 			chartContent.data.datasets[1] = userDataValues;
 			chartContent.update();
 			return;
