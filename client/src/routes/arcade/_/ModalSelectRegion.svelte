@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import { activeProfile, arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
 	import { facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { switchFacilitator } from '$lib/helpers/arcade-loader';
@@ -16,7 +16,7 @@
 		persist = false;
 
 		if (region === $arcadeRegion) return;
-		const currentActive = localAccounts.getActive();
+		const currentActive = $activeProfile;
 		if (!currentActive?.uuid) return arcadeRegion.set(region);
 
 		try {

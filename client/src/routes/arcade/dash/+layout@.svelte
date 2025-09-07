@@ -35,11 +35,9 @@
 			profileReady.set(false);
 			tmp = { facilitator, uuid: profileUUID };
 			const res = await loadProfileAndBadges({ profileUUID, facilitator, program: 'arcade' });
-			const { name, uuid, avatar } = res.user || {};
-			localAccounts.put({ name, uuid, avatar, facilitator });
+			localAccounts.put({ ...(res.user || {}), facilitator });
 			arcadeRegion.set(facilitator);
 			profileReady.set(true);
-			incompleteCalculation.set(!!res.containsMissingCourse);
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;

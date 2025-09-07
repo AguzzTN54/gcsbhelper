@@ -1,5 +1,5 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
-import { initData } from '$lib/stores/app-store';
+import { activeProfile, incompleteCalculation, initData } from '$lib/stores/app-store';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
@@ -42,8 +42,10 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	const storedBadges = await loadBadgeList(courses, managerToken);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	initData.set(merged);
+	activeProfile.set(user);
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
-	return { user, courses, containsMissingCourse };
+	incompleteCalculation.set(containsMissingCourse);
+	return { user, courses };
 };
 
 const loadProfile = async (option: LoadProfileOptions, token: string) => {

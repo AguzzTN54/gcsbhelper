@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { profileReady } from '$lib/stores/app-store';
-	import { localAccounts } from '$lib/helpers/localstorage';
+	import { activeProfile, profileReady } from '$lib/stores/app-store';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '../_/Countdown.svelte';
@@ -15,7 +14,7 @@
 
 	const { data } = $props();
 	const { avatar, name } = $derived.by(() => {
-		if ($profileReady) return localAccounts.getActive() || {};
+		if ($profileReady) return $activeProfile || {};
 		return data || {};
 	});
 	const scrolled = getContext('scrolled') as (val: boolean) => void;

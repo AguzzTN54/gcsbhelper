@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getContext } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { activeProfile, arcadeRegion } from '$lib/stores/app-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import img from '$img/avatar.webp';
 	import Modal from '$reusable/Modal.svelte';
@@ -15,7 +15,7 @@
 	const loadProfile = getContext('loadDashProfile') as (u: string, r: string) => Promise<void>;
 
 	let allAccounts = $state(localAccounts.getAll());
-	const active = localAccounts.getActive();
+	const active = $derived($activeProfile);
 	const selectAccount = async (profileUUID: string) => {
 		modalHandle();
 		if (profileUUID === active?.uuid) return;
