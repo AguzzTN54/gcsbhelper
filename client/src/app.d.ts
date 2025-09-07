@@ -66,8 +66,11 @@ declare global {
 		}
 
 		interface InitData {
+			code?: 200 | 400 | 403;
+			token?: string;
+			containsMissingCourse?: boolean;
 			user: UserInfo;
-			courses: CourseItem[];
+			courses: UserCourses[];
 		}
 
 		type ToastType = 'info' | 'success' | 'error' | 'warning';

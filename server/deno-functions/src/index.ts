@@ -9,6 +9,7 @@ import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 import { profileScrapper } from './lib/scrapper/proifle/profileParser.ts';
 import { updateFacil } from './lib/scrapper/proifle/_pbUpdater.ts';
 import { hexToUuid } from './lib/utils/uuid.ts';
+import { getAccountToken } from './lib/db/pocketbase.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -52,7 +53,7 @@ app.use(
   '*',
   cors({
     origin: CLIENT_ORIGIN || '',
-    allowHeaders: ['Content-Type', 'X-Arcade-Token'],
+    allowHeaders: ['Content-Type', 'X-Arcade-Token', 'X-Arcade-Identity'],
     allowMethods: ['GET', 'POST'],
     maxAge: 3600,
   }),
@@ -66,8 +67,8 @@ app.use(
 
 app.get('/internal/identity', async (c) => {
   const arcadeToken = c.req.header('x-arcade-token');
-  const [time, token, id = ''] = arcadeToken?.split('.') || [];
-  if (!token || !(await verifyToken(time + '.' + token))) {
+  const id = c.req.header('x-arcade-identity');
+  if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
@@ -75,7 +76,9 @@ app.get('/internal/identity', async (c) => {
   const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();
   const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
   const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
-  const data = await profileScrapper(id, { program, save, facilitator });
+  const userdata = await profileScrapper(id, { program, save, facilitator });
+  const managerToken = await getAccountToken();
+  const data = { ...userdata, token: managerToken };
 
   if (data.code !== 200) {
     return c.json(data, data.code as ContentfulStatusCode);

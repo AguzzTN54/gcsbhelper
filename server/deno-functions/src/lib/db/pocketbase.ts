@@ -7,7 +7,7 @@ export const pb = async (
   payload?: Record<string, unknown> | null,
 ) => {
   const method = reqmethod || 'GET';
-  const res = await fetch(pbHost + path, {
+  const res = await fetch(pbHost + path.replace(pbHost, ''), {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -20,3 +20,21 @@ export const pb = async (
   return data;
 };
 
+export const getAccountToken = async () => {
+  try {
+    // Get Manager Account
+    const managerURL = new URL(pbHost + '/api/collections/manager/records');
+    managerURL.searchParams.append('filter', `email="gcsb@ekraf.dev"`);
+    const { items = [] } = (await pb(managerURL.href)) || {};
+    const managerId = items?.[0]?.id || '';
+    if (!managerId) throw new Error('PB Error: Manager ID not Found');
+
+    // Impersonate as Manager
+    const imURL = new URL(pbHost + '/api/collections/manager/impersonate/' + managerId);
+    const account = await pb(imURL.href, 'POST', { duration: 3600 }); //1hour
+    return account.token;
+  } catch (e) {
+    console.error(e);
+    return '';
+  }
+};

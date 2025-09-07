@@ -1,6 +1,7 @@
-import { PUBLIC_API_SERVER, PUBLIC_PB_SERVER } from '$env/static/public';
+import { PUBLIC_API_SERVER } from '$env/static/public';
 import { initData } from '$lib/stores/app-store';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
+import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
 import { createToken } from './crypto';
 import { uuidToHex } from './uuid';
@@ -35,13 +36,14 @@ interface LoadProfileOptions {
 	program: 'arcade' | 'juaragcp';
 }
 
-export const loadProfileAndBadges = async (option: LoadProfileOptions) => {
-	const token = await createToken();
-	const { courses, user } = await loadProfile(option, token);
-	const storedBadges = await loadBadgeList(token, courses);
+export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
+	const arcadetoken = await createToken();
+	const { courses, user, token: managerToken } = await loadProfile(option, arcadetoken);
+	const storedBadges = await loadBadgeList(courses, managerToken);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	initData.set(merged);
-	return { user, courses };
+	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
+	return { user, courses, containsMissingCourse };
 };
 
 const loadProfile = async (option: LoadProfileOptions, token: string) => {
@@ -58,11 +60,11 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 	}
 
 	const res = await fetch(server.href, {
-		headers: { 'x-arcade-token': `${token}.${profileid}` }
+		headers: { 'x-arcade-token': token, 'x-arcade-identity': profileid }
 	});
 	if (res.status !== 200) throw new Error('Fetch Error');
 
-	const data: { user: App.UserInfo; courses: App.UserCourses[] } = await res.json();
+	const data: App.InitData = await res.json();
 	const { uuid } = data.user;
 	if (!uuid) throw new Error('Missing ID');
 	return data;
@@ -76,20 +78,22 @@ interface PBItem extends App.CourseItem {
 	updated: string;
 }
 
-const loadBadgeList = async (token: string, courses: App.UserCourses[]): Promise<PBItem[]> => {
+const loadBadgeList = async (
+	courses: App.UserCourses[],
+	mangerToken?: string
+): Promise<PBItem[]> => {
 	const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
 	const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
 	const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
 	const filteridStr = filterid ? `|| (${filterid})` : '';
-	const url = new URL(PUBLIC_PB_SERVER + '/api/collections/courses/records');
-	url.searchParams.append('perPage', '200');
-	url.searchParams.append('filter', `((inactive=false && type != null)${filteridStr})`);
+	if (!mangerToken) return [];
+	if (!login(mangerToken)) return [];
 
-	const res = await fetch(url.href, {
-		headers: { 'x-arcade-token': token }
+	const data = await pb.collection('courses').getList(1, 500, {
+		filter: `((inactive=false && type != null)${filteridStr})`
 	});
-	const data = await res.json();
-	return data?.items || [];
+	const result = data.items as PBItem[];
+	return result || [];
 };
 
 const badgeDataMerger = (
@@ -102,9 +106,9 @@ const badgeDataMerger = (
 		const course: App.CourseItem = {
 			title,
 			type,
-			badgeid: type == 'game' ? courseid : 0,
-			courseid: type == 'game' ? 0 : courseid,
-			badgeurl: badgeurl,
+			badgeid: type === 'game' ? courseid : 0,
+			courseid: type === 'game' ? 0 : courseid,
+			badgeurl,
 			earndate: date,
 			earned: false,
 			fasttrack: false,
@@ -115,6 +119,17 @@ const badgeDataMerger = (
 			totallab: 0
 		};
 		map.set(courseid, course);
+	}
+
+	if (pbBadges.length === 0) {
+		for (const [key, course] of map) {
+			map.set(key, {
+				...course,
+				earned: true,
+				validity: validateBadge(course.earndate, facilitator)
+			});
+		}
+		return Array.from(map.values());
 	}
 
 	for (const { collectionId, collectionName, id, created, updated, ...obj } of pbBadges) {

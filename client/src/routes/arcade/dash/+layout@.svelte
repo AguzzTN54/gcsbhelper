@@ -6,10 +6,10 @@
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Modal from '$reusable/Modal.svelte';
+	import Skeleton from '$reusable/Skeleton.svelte';
 	import Toasts from '$reusable/Toast/Toasts.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
-	import Skeleton from '$reusable/Skeleton.svelte';
 
 	const { children, data } = $props();
 	let tmp = $state<{ facilitator: App.FacilitatorRegion; uuid: string }>();
@@ -22,9 +22,11 @@
 	setContext('scrolled', (val: boolean) => (scrolled = val));
 
 	let isFetchError = $state(false);
+	let isIncompleteData = $state(false);
 	const loadDashProfile = async (profileUUID: string, facilitator: App.FacilitatorRegion) => {
 		try {
 			isFetchError = false;
+			isIncompleteData = false;
 			profileReady.set(false);
 			if (!profileUUID) return;
 			tmp = { facilitator, uuid: profileUUID };
@@ -33,6 +35,7 @@
 			localAccounts.put({ name, uuid, avatar, facilitator });
 			arcadeRegion.set(facilitator);
 			profileReady.set(true);
+			isIncompleteData = !!res.containsMissingCourse;
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
@@ -48,6 +51,30 @@
 </script>
 
 <Toasts />
+
+{#if isIncompleteData}
+	<Modal hideclosebutton persist>
+		<h2 class="text-center font-semibold text-xl">Something went wrong!</h2>
+		<article class="text-center mt-4">
+			We couldn't load the calculation formula, so your progress isn't available right now. It looks
+			like there is an issue on the server, so please contact the <b>Author</b> as soon as possible.
+		</article>
+		<div class="flex w-full justify-center gap-3 mt-5 mb-2">
+			<button
+				onclick={() => (isIncompleteData = false)}
+				class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
+			>
+				<i class="fasdl fa-face-smile-upside-down text-amber-400"></i> Just Show My Badges
+			</button>
+			<button
+				onclick={() => loadDashProfile(tmp?.uuid || '', tmp?.facilitator || 'unset')}
+				class="px-2 py-1 brutal-border bg-sky-200 hover:bg-sky-300 active:bg-sky-400"
+			>
+				<i class="fasdl fa-arrow-rotate-right text-sky-400"></i> Try Again
+			</button>
+		</div>
+	</Modal>
+{/if}
 
 {#if isFetchError}
 	<Modal hideclosebutton persist>
