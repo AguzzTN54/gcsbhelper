@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
 	import { isValidUUID } from '$lib/helpers/uuid';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion, incompleteCalculation } from '$lib/stores/app-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import Button from '$reusable/Button.svelte';
 	import Checkbox from '$reusable/Checkbox.svelte';
@@ -47,9 +47,10 @@
 			loading = true;
 			fetchError = false;
 			const facilitator = $arcadeRegion;
-			const { user } = await loadProfileAndBadges({ profileUUID, program: 'arcade', facilitator });
-			const { name, uuid, avatar } = user || {};
+			const res = await loadProfileAndBadges({ profileUUID, program: 'arcade', facilitator });
+			const { name, uuid, avatar } = res?.user || {};
 			localAccounts.put({ name, uuid, avatar, facilitator });
+			incompleteCalculation.set(!!res.containsMissingCourse);
 			goto('/arcade/dash');
 		} catch (e) {
 			console.error(e);

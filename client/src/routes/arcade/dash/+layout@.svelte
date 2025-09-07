@@ -1,7 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { onMount, setContext } from 'svelte';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import {
+		arcadeRegion,
+		incompleteCalculation,
+		initData,
+		profileReady
+	} from '$lib/stores/app-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
@@ -22,20 +28,18 @@
 	setContext('scrolled', (val: boolean) => (scrolled = val));
 
 	let isFetchError = $state(false);
-	let isIncompleteData = $state(false);
 	const loadDashProfile = async (profileUUID: string, facilitator: App.FacilitatorRegion) => {
 		try {
 			isFetchError = false;
-			isIncompleteData = false;
+			incompleteCalculation.set(false);
 			profileReady.set(false);
-			if (!profileUUID) return;
 			tmp = { facilitator, uuid: profileUUID };
 			const res = await loadProfileAndBadges({ profileUUID, facilitator, program: 'arcade' });
 			const { name, uuid, avatar } = res.user || {};
 			localAccounts.put({ name, uuid, avatar, facilitator });
 			arcadeRegion.set(facilitator);
 			profileReady.set(true);
-			isIncompleteData = !!res.containsMissingCourse;
+			incompleteCalculation.set(!!res.containsMissingCourse);
 		} catch (e) {
 			console.error(e);
 			isFetchError = true;
@@ -44,15 +48,19 @@
 	setContext('loadDashProfile', loadDashProfile);
 
 	onMount(async () => {
-		if ($initData && $initData.length > 0) return profileReady.set(true);
-		if (!uuid) return;
+		if (!uuid) return goto('/arcade');
+		if ($initData && $initData.length > 0) {
+			tmp = { facilitator: $arcadeRegion, uuid };
+			profileReady.set(true);
+			return;
+		}
 		await loadDashProfile(uuid, facilitator);
 	});
 </script>
 
 <Toasts />
 
-{#if isIncompleteData}
+{#if $incompleteCalculation}
 	<Modal hideclosebutton persist>
 		<h2 class="text-center font-semibold text-xl">Something went wrong!</h2>
 		<article class="text-center mt-4">
@@ -61,7 +69,7 @@
 		</article>
 		<div class="flex w-full justify-center gap-3 mt-5 mb-2">
 			<button
-				onclick={() => (isIncompleteData = false)}
+				onclick={() => incompleteCalculation.set(false)}
 				class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
 			>
 				<i class="fasdl fa-face-smile-upside-down text-amber-400"></i> Just Show My Badges
