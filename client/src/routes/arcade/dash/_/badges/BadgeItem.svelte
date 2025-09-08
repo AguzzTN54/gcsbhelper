@@ -7,6 +7,8 @@
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeImage from './BadgeImage.svelte';
 	import RateInput from './RateInput.svelte';
+	import LabelPicker from './LabelPicker.svelte';
+	import { POINT_TABLE } from '$lib/helpers/calculator-arcade';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -17,14 +19,19 @@
 		title,
 		earned,
 		validity,
+		userinput,
 		totallab,
 		type,
 		token,
 		courseid,
+		badgeid,
 		enddate,
 		earndate
 	} = data || {};
-	const isgame = ['wmp', 'trivia', 'game'].includes(type || '');
+	const { label, rating } = userinput || {};
+	const courseType = type || label || 'unknown';
+	const isgame = ['wmp', 'trivia', 'game'].includes(courseType);
+	const coursePoint = type ? (point ?? 0) : (POINT_TABLE[courseType] ?? 0);
 	const rated = false;
 
 	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
@@ -63,11 +70,11 @@
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
-	{#if point && point > 0}
+	{#if coursePoint > 0}
 		<div
 			class="absolute top-2 left-2 bg-lime-200/90 z-1 p-1 text-sm rounded text-lime-800 min-w-8 flex items-center justify-center"
 		>
-			<span> +{point} </span>
+			<span> +{coursePoint} </span>
 		</div>
 	{/if}
 	{#if earned}
@@ -78,6 +85,7 @@
 
 	{#snippet topLabel(text: string, className: string)}
 		<span
+			class:!top-7={label}
 			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs -skew-2 translate-y-1/3 translate-x-1/5 {className}"
 		>
 			{text}
@@ -86,22 +94,23 @@
 
 	{#if !loading}
 		{#if !type}
-			<button
-				class="absolute top-0 right-0 py-1 z-10 pl-2 pr-1 text-xs -skew-2 translate-y-1/3 translate-x-1/5 bg-gray-300"
-			>
-				Unknown <i class="fasdl fa-caret-down"></i>
-			</button>
-		{:else if !validity?.arcade && !validity?.facilitator && earned}
-			{@render topLabel('Out of period', 'bg-rose-700 text-white')}
-		{:else if earned}
-			{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
-			{#if validity?.facilitator}
-				{@render topLabel('Facilitator', '!top-5 !-right-1 bg-indigo-800 text-white')}
+			<LabelPicker courseid={badgeid || courseid} {label} />
+		{/if}
+
+		{#if type}
+			{#if !validity?.arcade && !validity?.facilitator && earned}
+				{@render topLabel('Out of period', 'bg-rose-700 text-white')}
+			{:else if earned}
+				{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
+			{:else if isExpired}
+				{@render topLabel('Expired!', 'bg-rose-700 text-white')}
+			{:else if isLessThanAWeek(enddate)}
+				{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
 			{/if}
-		{:else if isExpired}
-			{@render topLabel('Expired!', 'bg-rose-700 text-white')}
-		{:else if isLessThanAWeek(enddate)}
-			{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
+		{/if}
+
+		{#if validity?.facilitator && courseType !== 'unknown'}
+			{@render topLabel('Facilitator', '!top-5 !-right-1 bg-indigo-800 text-white')}
 		{/if}
 	{/if}
 
@@ -115,9 +124,9 @@
 			{:else}
 				<BadgeImage
 					{badgeurl}
-					type={type || 'unknown'}
+					type={courseType}
 					{isgame}
-					label={labeltxt[isgame ? 'game' : type || '']}
+					label={labeltxt[isgame ? 'game' : courseType]}
 				/>
 			{/if}
 
@@ -169,8 +178,8 @@
 					{/if} -->
 				</div>
 
-				<span class="brutal-text !mx-1 text-[10px] label_{isgame ? 'game' : type || 'unknown'}">
-					{labeltxt[isgame ? 'game' : type || '']}
+				<span class="brutal-text !mx-1 text-[10px] label_{isgame ? 'game' : courseType}">
+					{labeltxt[isgame ? 'game' : courseType]}
 				</span>
 				{#if fasttrack}
 					<span class="brutal-text after:!bg-sky-200 text-sky-800 !mx-1 text-[10px]">

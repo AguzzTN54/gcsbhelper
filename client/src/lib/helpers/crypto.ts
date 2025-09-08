@@ -43,6 +43,24 @@ export const createToken = async (): Promise<string> => {
 	return `${payload}.${base64urlEncode(sig)}`;
 };
 
+export const sha256 = async (content: string): Promise<string> => {
+	const encoder = new TextEncoder();
+	const data = encoder.encode(content);
+	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+	// Convert buffer to hex string
+	return Array.from(new Uint8Array(hashBuffer))
+		.map((b) => b.toString(16).padStart(2, '0'))
+		.join('');
+};
+
+export const shortShaId = async (content: string): Promise<string> => {
+	const fullHash = await sha256(content);
+	const bigintVal = BigInt('0x' + fullHash);
+	const base36 = bigintVal.toString(36);
+	return base36.slice(0, 15).padEnd(15, '0');
+};
+
 // ============================================= DYNAMIC CIPHERTEXT ============================================
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const toBase62 = (bytes: Uint8Array<ArrayBuffer>) => {

@@ -1,87 +1,9 @@
 <script lang="ts">
-	import { arcadeRewards, facilMilestones } from '$lib/data/config';
+	import { calculatePoints } from '$lib/helpers/calculator-arcade';
 	import { arcadeRegion, arcadeStats, initData, profileReady } from '$lib/stores/app-store';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Activities from './Activities.svelte';
 	import Milestone from './Milestone.svelte';
-
-	const countPoint = (courses: App.CourseItem[], type: string) => {
-		return courses
-			.filter((c) => !!c.validity?.arcade && c.type === type)
-			.reduce((sum, c) => sum + c.point, 0);
-	};
-
-	const checkTier = (total: number) => {
-		return Object.entries(arcadeRewards)
-			.filter(([_, value]) => total >= value)
-			.pop()?.[0];
-	};
-
-	const calculatePoints = (
-		courses: App.CourseItem[],
-		region: App.FacilitatorRegion
-	): App.ArcadeStats => {
-		const wmp = courses.filter((c) => !!c.validity?.arcade && c.type === 'wmp').length;
-		const wmpBonus = wmp >= 6 ? 7 : 0;
-		const points = {
-			game: countPoint(courses, 'game'),
-			trivia: countPoint(courses, 'trivia'),
-			skill: countPoint(courses, 'skill'),
-			wmp: wmpBonus
-		};
-		const totalbadges = courses.filter((c) => !!c.validity?.arcade).length;
-		const total = Object.values(points).reduce((p, c) => p + c, 0);
-		const tier = checkTier(total);
-
-		if (!region || region === 'unset') {
-			return {
-				points,
-				total,
-				tier,
-				complete: { facil: { wmp }, arcade: totalbadges },
-				bonus: 0
-			};
-		}
-
-		const facilitatorCourses = courses.filter((c) => !!c.validity?.facilitator);
-		const typeCounts = facilitatorCourses.reduce(
-			(acc, c) => {
-				if (c.type === 'game') acc.game++;
-				else if (c.type === 'trivia') acc.trivia++;
-				else if (c.type === 'skill') acc.skill++;
-				else if (c.type === 'labfree') acc.labfree++;
-				return acc;
-			},
-			{ game: 0, trivia: 0, skill: 0, labfree: 0 }
-		);
-
-		// bonus points from milestones
-		let bonus = 0;
-		const achieved: string[] = [];
-		const milestones = facilMilestones[region];
-
-		for (const key in milestones) {
-			const m = milestones[key];
-			if (
-				typeCounts.game >= m.game &&
-				typeCounts.trivia >= m.trivia &&
-				typeCounts.skill >= m.skill &&
-				typeCounts.labfree >= (m.labfree || 0)
-			) {
-				bonus = m.bonus;
-				achieved.push(m.displayname);
-			}
-		}
-
-		return {
-			points,
-			bonus,
-			total: total + bonus,
-			complete: { facil: { ...typeCounts, wmp }, arcade: totalbadges },
-			milestones: achieved,
-			tier: checkTier(total + bonus)
-		};
-	};
 
 	const texts = {
 		game: 'Games',
@@ -96,6 +18,7 @@
 
 	const pointSummary = $derived(calculatePoints($initData, $arcadeRegion));
 	$effect(() => arcadeStats.set(pointSummary));
+
 	const statContent = $derived.by<PointData[]>(() => {
 		const { points, bonus, total } = pointSummary;
 		const pointdata: PointData[] = Object.keys(points).map((k) => ({
@@ -142,9 +65,9 @@
 	class="flex flex-col lg:flex-row p-2 my-5 md:my-0 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl lg:scale-85"
 >
 	<div class="w-full lg:w-25 text-center lg:text-left">
-		<h2 class="font-press font-bold pb-2 leading-[120%] mt-2 lg:pl-2">POINT DETAILS</h2>
+		<h2 class="font-bold pb-2 leading-[110%] text-2xl mt-2 lg:pl-2">POINT DETAILS</h2>
 	</div>
-	<div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 w-full gap-1">
+	<div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 w-full gap-1 ml-2">
 		{#snippet column({ key, number }: { key: string; number: number })}
 			<div class="text-center py-1 hover:bg-orange-100">
 				<h3 class="brutal-text text-md after:!bg-purple-200">{texts[key as keyof typeof texts]}</h3>

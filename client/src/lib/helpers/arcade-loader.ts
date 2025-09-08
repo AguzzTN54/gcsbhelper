@@ -3,7 +3,7 @@ import { activeProfile, incompleteCalculation, initData } from '$lib/stores/app-
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
-import { createToken } from './crypto';
+import { createToken, shortShaId } from './crypto';
 import { uuidToHex } from './uuid';
 
 interface SwitchFacilProps {
@@ -39,7 +39,7 @@ interface LoadProfileOptions {
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	const arcadetoken = await createToken();
 	const { courses, user, token: managerToken } = await loadProfile(option, arcadetoken);
-	const storedBadges = await loadBadgeList(courses, managerToken);
+	const storedBadges = await loadBadgeList(courses, managerToken, user.uuid);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	initData.set(merged);
 	activeProfile.set(user);
@@ -72,7 +72,7 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 	return data;
 };
 
-interface PBItem extends App.CourseItem {
+interface BasePB {
 	collectionId: string;
 	collectionName: string;
 	id: string;
@@ -80,22 +80,49 @@ interface PBItem extends App.CourseItem {
 	updated: string;
 }
 
+type PBItem = BasePB & App.CourseItem;
+
 const loadBadgeList = async (
 	courses: App.UserCourses[],
-	mangerToken?: string
+	mangerToken?: string,
+	uuid?: string
 ): Promise<PBItem[]> => {
 	const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
 	const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
 	const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
 	const filteridStr = filterid ? `|| (${filterid})` : '';
-	if (!mangerToken) return [];
+	if (!mangerToken || !uuid) return [];
 	if (!login(mangerToken)) return [];
+	const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+	// const enrollid = await shortShaId(`${profile}`)
+	// const filterProfile = `course_enrollments_via_course.profile='${profile}' &&`;
 
-	const data = await pb.collection('courses').getList(1, 500, {
-		filter: `((inactive=false && type != null)${filteridStr})`
-	});
-	const result = data.items as PBItem[];
-	return result || [];
+	try {
+		const enrolled = pb.collection('course_enrollments').getList(1, 500, {
+			filter: `profile="${profile}" && (difficulty != null || label != null)`
+		});
+		const courselist = pb.collection('courses').getList(1, 500, {
+			filter: `((inactive=false && type != null)${filteridStr})`
+		});
+
+		const unmerged = await Promise.all([enrolled, courselist]);
+		const data = unmerged[1].items.map((c) => {
+			const fromuser = unmerged[0].items.find((u) => u.course === c.id);
+			const userinput = {
+				label: fromuser?.label || null,
+				difficulty: fromuser?.difficulty || null
+			};
+			return { ...c, userinput };
+		});
+
+		// unmerged
+		const result = data as unknown as PBItem[];
+		return result || [];
+		return [];
+	} catch (e) {
+		console.error(e);
+		return [];
+	}
 };
 
 const badgeDataMerger = (
@@ -150,7 +177,8 @@ const badgeDataMerger = (
 		});
 	}
 
-	return Array.from(map.values());
+	const result = Array.from(map.values());
+	return result;
 };
 
 type BadgeValidity = { arcade: boolean; facilitator: boolean };

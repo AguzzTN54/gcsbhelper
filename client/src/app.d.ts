@@ -46,6 +46,7 @@ declare global {
 			type: 'skill' | 'game';
 		}
 
+		type CourseType = 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
 		interface CourseItem extends BasicCourse {
 			badgeid: number;
 			startdate?: Dayjs | Date | string;
@@ -58,7 +59,11 @@ declare global {
 			point: number;
 			token: string;
 			totallab: number;
-			type: 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
+			type: CourseType;
+			userinput?: {
+				label?: CourseType | 'special';
+				rating?: 'easy' | 'intermediate' | 'hard' | null;
+			};
 			validity?: {
 				arcade: boolean;
 				facilitator?: boolean;

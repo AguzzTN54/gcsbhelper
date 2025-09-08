@@ -17,7 +17,7 @@
 				.map((d) => (d.type !== 'labfree' ? d : { ...d, type: null }));
 		}
 		return data.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
-			const gameType = ['trivia', 'wmp', 'arcade'].includes(course.type || '');
+			const gameType = ['wmp', 'arcade'].includes(course.type || '');
 			const type = gameType ? 'game' : course.type || 'unknown';
 			if (!acc[type]) acc[type] = [];
 			acc[type].push(course);
@@ -27,7 +27,8 @@
 
 	const labeltxt: Record<string, string> = {
 		all: 'All',
-		game: 'Arcade Games',
+		game: 'Games',
+		trivia: 'Trivia',
 		skill: 'Skill Badge',
 		fasttrack: 'Fast Track',
 		labfree: 'Lab-Free',
@@ -68,7 +69,7 @@
 		// Remove Unearned labfree for specific facilicator
 		if ($arcadeRegion !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
 		const game = dt
-			.filter((d) => d.type?.match(/game|trivia|wmp/))
+			.filter((d) => d.type?.match(/game|wmp/))
 			.sort((a, b) => {
 				const now = dayjs();
 
@@ -95,7 +96,7 @@
 			});
 
 		const notGame = dt
-			.filter((d) => !d.type?.match(/game|trivia|wmp/))
+			.filter((d) => !d.type?.match(/game|wmp/))
 			.sort((a, b) => Number(a.earned) - Number(b.earned))
 			.sort((a, b) => {
 				return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');
