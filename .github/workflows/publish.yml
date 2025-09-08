@@ -53,7 +53,9 @@ jobs:
         env:
           PUBLIC_VAPID_KEY: ${{ secrets.PUBLIC_VAPID_KEY }}
           PRIVATE_VAPID_KEY: ${{ secrets.PRIVATE_VAPID_KEY }}
+          PUBLIC_SUPER_SECRET: ${{ secrets.PUBLIC_SUPER_SECRET }}
           PUBLIC_API_SERVER: ${{ secrets.PUBLIC_API_SERVER }}
+          PUBLIC_PB_SERVER: ${{ secrets.PUBLIC_PB_SERVER }}
 
       # Cloudflare Step
       - name: Publish to Cloudflare Pages
