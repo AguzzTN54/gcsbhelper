@@ -1,37 +1,37 @@
 <script>
-	import { onMount, setContext } from 'svelte';
-	import { juaraProfile } from '$lib/stores/app-store';
-	import { accounts } from '$lib/helpers/localstorage';
-	import { juaraDate, timeZone } from '$lib/helpers/dateTime';
-	import ModalProfile from '../_global/ModalProfile.svelte';
-	import Ornament from './_ornament.svelte';
-	import Forms from './Forms.svelte';
-	import Details from './Details.svelte';
-	import Summary from './Summary.svelte';
+	// import { onMount, setContext } from 'svelte';
+	// import { juaraProfile } from '$lib/stores/app-store';
+	// import { accounts } from '$lib/helpers/localstorage';
+	// import { juaraDate, timeZone } from '$lib/helpers/dateTime';
+	// import ModalProfile from '../_global/ModalProfile.svelte';
+	// import Ornament from './_ornament.svelte';
+	// import Forms from './Forms.svelte';
+	// import Details from './Details.svelte';
+	// import Summary from './Summary.svelte';
 
-	const { end, start } = juaraDate;
-	const startDate = start.format('DD MMMM YYYY, HH:mm');
-	const endDate = end.format('DD MMMM YYYY, HH:mm');
+	// const { end, start } = juaraDate;
+	// const startDate = start.format('DD MMMM YYYY, HH:mm');
+	// const endDate = end.format('DD MMMM YYYY, HH:mm');
 
-	const { name: user } = $derived($juaraProfile);
-	let showModal = $state(false);
-	let isLoaded = $state(false);
-	setContext('modalHandle', () => (showModal = !showModal));
+	// const { name: user } = $derived($juaraProfile);
+	// let showModal = $state(false);
+	// let isLoaded = $state(false);
+	// setContext('modalHandle', () => (showModal = !showModal));
 
-	onMount(() => {
-		if (isLoaded) return;
-		isLoaded = true;
-		if ($juaraProfile.profileID) return;
-		const savedAccounts = accounts.getAll('juaragcp');
-		const savedLength = savedAccounts.length;
-		if (savedLength < 1) return;
-		if (savedLength > 1) return (showModal = true);
-		const { profileID } = savedAccounts[0];
-		juaraProfile.set({ profileID });
-	});
+	// onMount(() => {
+	// 	if (isLoaded) return;
+	// 	isLoaded = true;
+	// 	if ($juaraProfile.profileID) return;
+	// 	const savedAccounts = accounts.getAll('juaragcp');
+	// 	const savedLength = savedAccounts.length;
+	// 	if (savedLength < 1) return;
+	// 	if (savedLength > 1) return (showModal = true);
+	// 	const { profileID } = savedAccounts[0];
+	// 	juaraProfile.set({ profileID });
+	// });
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	<title>JuaraGCP Progress Tracker</title>
 </svelte:head>
 
@@ -59,9 +59,9 @@
 
 {#if user}
 	<Details />
-{/if}
+{/if} -->
 
-<style>
+<!-- <style>
 	section {
 		overflow: hidden;
 		width: var(--screen-width);
@@ -111,4 +111,4 @@
 		align-items: center;
 		position: relative;
 	}
-</style>
+</style> -->
