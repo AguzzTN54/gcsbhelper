@@ -97,16 +97,14 @@
 			<LabelPicker courseid={badgeid || courseid} {label} />
 		{/if}
 
-		{#if type}
-			{#if !validity?.arcade && !validity?.facilitator && earned}
-				{@render topLabel('Out of period', 'bg-rose-700 text-white')}
-			{:else if earned}
-				{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
-			{:else if isExpired}
-				{@render topLabel('Expired!', 'bg-rose-700 text-white')}
-			{:else if isLessThanAWeek(enddate)}
-				{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
-			{/if}
+		{#if !validity?.arcade && !validity?.facilitator && earned && (type || (label && !type))}
+			{@render topLabel('Out of period', 'bg-rose-700 text-white')}
+		{:else if earned && type}
+			{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
+		{:else if isExpired}
+			{@render topLabel('Expired!', 'bg-rose-700 text-white')}
+		{:else if isLessThanAWeek(enddate)}
+			{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
 		{/if}
 
 		{#if validity?.facilitator && courseType !== 'unknown'}
@@ -124,14 +122,14 @@
 			{:else}
 				<BadgeImage
 					{badgeurl}
-					type={courseType}
 					{isgame}
+					type={courseType}
 					label={labeltxt[isgame ? 'game' : courseType]}
 				/>
 			{/if}
 
 			{#if !rated && earned}
-				<RateInput />
+				<RateInput rating={rating || ''} courseid={badgeid || courseid} />
 			{/if}
 
 			{#if earned && earndate}
