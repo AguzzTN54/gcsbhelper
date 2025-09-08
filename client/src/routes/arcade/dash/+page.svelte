@@ -41,7 +41,7 @@
 <div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
 	<!-- left -->
 	<div
-		class="lg:w-140 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-6 sm:pl-2 relative"
+		class="lg:w-120 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-6 sm:pl-2 relative"
 	>
 		<div class="sm:px-5 px-2">
 			<div
@@ -101,7 +101,7 @@
 
 	<!-- Right -->
 
-	<div class="w-full sm:w-1/2 lg:w-full">
+	<div class="w-full sm:w-1/2 lg:w-3/5 xl:w-full">
 		<ScrollArea id="rightpane" class="sm:py-2 sm:px-10 px-2">
 			<div id="content-stats"></div>
 			<Stats />

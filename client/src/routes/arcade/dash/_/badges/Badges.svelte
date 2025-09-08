@@ -132,7 +132,7 @@
 								class:active={activeGroup === type}
 								class:bg-amber-200={activeGroup === type}
 								class:pointer-events-none={activeGroup === type}
-								class="brutal-border py-2 px-3 rounded-full mr-2 text-xs leading-0 !border-[3px] hover:bg-indigo-200 active:bg-indigo-300 group"
+								class="brutal-border py-1.5 px-2 rounded-full mr-2 text-xs leading-0 !border-[3px] hover:bg-indigo-200 active:bg-indigo-300 group"
 							>
 								<span>{label}</span>
 								<span
@@ -193,14 +193,18 @@
 		{#if courses.length < 1}
 			<div class="flex justify-center text-center w-full">No data to show!</div>
 		{:else}
-			<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-5">
+			<div
+				class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5 lg:gap-7 xl:gap-10 pb-5"
+			>
 				{#each courses as data (data)}
 					<BadgeItem {data} />
 				{/each}
 			</div>
 		{/if}
 	{:else}
-		<div class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10 pb-5">
+		<div
+			class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5 lg:gap-7 xl:gap-10 pb-5"
+		>
 			{#each Array(12) as _, i}
 				<BadgeItem loading />
 			{/each}
@@ -225,10 +229,14 @@
 <style lang="postcss">
 	@import 'tailwindcss/theme' theme(reference);
 
+	#labelpicker :global(.os-scrollbar-visible) {
+		@apply hidden sm:block;
+	}
+
 	#labelpicker:has(:global(.os-scrollbar-visible)) {
-		@apply h-20;
+		@apply sm:h-20;
 		.labelwrapper {
-			@apply mb-3;
+			@apply sm:mb-3;
 		}
 	}
 
