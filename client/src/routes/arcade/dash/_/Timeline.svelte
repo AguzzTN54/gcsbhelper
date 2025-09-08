@@ -156,7 +156,8 @@
 			@apply text-white/80;
 			background-image: linear-gradient(to left, #1a6260, #202124);
 		}
-		&.game {
+		&.game,
+		&.special {
 			span {
 				@apply bg-[#202124];
 			}

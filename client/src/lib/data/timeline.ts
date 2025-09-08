@@ -38,7 +38,7 @@ const titles = {
 	trivia: 'Trivia',
 	wmp: 'Work Meet Play',
 	game: 'Games',
-	special: 'Special Games',
+	special: 'Special',
 	cert: 'Certification Zone'
 };
 const getDateRange = (
@@ -88,12 +88,15 @@ const getDateRange = (
 		);
 
 		const monthName = dayjs(month + '-01').format('MMMM');
+		const type = timelineType;
+		const title = type.match(/wmp|cert|special/) ? items[0].title : `${titles[type]} ${monthName}`;
+
 		return {
 			startdate: earliestStart.toISOString(),
 			enddate: farthestEnd.toISOString(),
-			title: `${titles[timelineType]} ${monthName}`,
 			image: items.find((i) => i.badgeurl)?.badgeurl || '',
-			type: timelineType
+			title,
+			type
 		};
 	});
 
