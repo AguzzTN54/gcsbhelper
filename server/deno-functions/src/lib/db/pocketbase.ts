@@ -7,7 +7,8 @@ export const pb = async (
   payload?: Record<string, unknown> | null,
 ) => {
   const method = reqmethod || 'GET';
-  const res = await fetch(pbHost + path.replace(pbHost, ''), {
+  const url = pbHost + path.replace(pbHost, '');
+  const res = await fetch(url, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -23,10 +24,12 @@ export const pb = async (
 export const getAccountToken = async () => {
   try {
     // Get Manager Account
-    const managerURL = new URL(pbHost + '/api/collections/manager/records');
-    managerURL.searchParams.append('filter', `email="gcsb@ekraf.dev"`);
-    const { items = [] } = (await pb(managerURL.href)) || {};
-    const managerId = items?.[0]?.id || '';
+    // const managerURL = new URL(pbHost + '/api/collections/manager/records');
+    // managerURL.searchParams.append('filter', `email="gcsb@ekraf.dev"`);
+    // const { items = [] } = (await pb(managerURL.href)) || {};
+    // const managerId = items?.[0]?.id || '';
+
+    const managerId = Deno.env.get('MANAGER_ID') || '';
     if (!managerId) throw new Error('PB Error: Manager ID not Found');
 
     // Impersonate as Manager
