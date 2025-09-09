@@ -1,5 +1,10 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
-import { activeProfile, incompleteCalculation, initData } from '$lib/stores/app-store';
+import {
+	activeProfile,
+	incompleteCalculation,
+	initData,
+	loadStepsDone
+} from '$lib/stores/app-store';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
@@ -37,14 +42,18 @@ interface LoadProfileOptions {
 }
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
+	loadStepsDone.set('init');
 	const arcadetoken = await createToken();
 	const { courses, user, token: managerToken } = await loadProfile(option, arcadetoken);
+	loadStepsDone.set('profile');
+	activeProfile.set(user);
+
 	const storedBadges = await loadBadgeList(courses, managerToken, user.uuid);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	initData.set(merged);
-	activeProfile.set(user);
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
 	incompleteCalculation.set(containsMissingCourse);
+	loadEnrollment(user.uuid);
 	return { user, courses };
 };
 
@@ -75,7 +84,6 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 interface BasePB {
 	collectionId: string;
 	collectionName: string;
-	id: string;
 	created: string;
 	updated: string;
 }
@@ -93,30 +101,14 @@ const loadBadgeList = async (
 	const filteridStr = filterid ? `|| (${filterid})` : '';
 	if (!mangerToken || !uuid) return [];
 	if (!login(mangerToken)) return [];
-	const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
-	// const enrollid = await shortShaId(`${profile}`)
-	// const filterProfile = `course_enrollments_via_course.profile='${profile}' &&`;
 
 	try {
-		const enrolled = pb.collection('course_enrollments').getList(1, 500, {
-			filter: `profile="${profile}" && (difficulty != null || label != null)`
-		});
-		const courselist = pb.collection('courses').getList(1, 500, {
+		const courselist = await pb.collection('courses').getList(1, 500, {
 			filter: `((inactive=false && type != null)${filteridStr})`
 		});
 
-		const unmerged = await Promise.all([enrolled, courselist]);
-		const data = unmerged[1].items.map((c) => {
-			const fromuser = unmerged[0].items.find((u) => u.course === c.id);
-			const userinput = {
-				label: fromuser?.label || null,
-				rating: fromuser?.difficulty || null
-			};
-			return { ...c, userinput };
-		});
-
 		// unmerged
-		const result = data as unknown as PBItem[];
+		const result = courselist.items as unknown as PBItem[];
 		return result || [];
 	} catch (e) {
 		console.error(e);
@@ -160,7 +152,7 @@ const badgeDataMerger = (
 		return Array.from(map.values());
 	}
 
-	for (const { collectionId, collectionName, id, created, updated, ...obj } of pbBadges) {
+	for (const { collectionId, collectionName, created, updated, ...obj } of pbBadges) {
 		const key = obj.badgeid || obj.courseid;
 		if (!map.has(key)) {
 			map.set(key, { ...obj, earned: false });
@@ -202,4 +194,24 @@ const validateBadge = (
 		arcade: arcadeValidity,
 		facilitator: !dayjs(earndate).isBefore(start) && !dayjs(earndate).isAfter(end)
 	};
+};
+
+const loadEnrollment = async (uuid: string) => {
+	const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+	const enrolled = await pb.collection('course_enrollments').getList(1, 500, {
+		filter: `profile="${profile}" && (difficulty != null || label != null)`
+	});
+
+	initData.update((courses) => {
+		const updated = courses.map((c) => {
+			const fromuser = enrolled?.items?.find((u) => u.course === c.id);
+			const userinput = {
+				label: fromuser?.label || null,
+				rating: fromuser?.difficulty || null
+			};
+			return { ...c, userinput };
+		});
+		return updated;
+	});
+	loadStepsDone.set('userenrolldata');
 };

@@ -48,6 +48,7 @@ declare global {
 
 		type CourseType = 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
 		interface CourseItem extends BasicCourse {
+			id?: string;
 			badgeid: number;
 			startdate?: Dayjs | Date | string;
 			enddate?: Dayjs | Date | string;

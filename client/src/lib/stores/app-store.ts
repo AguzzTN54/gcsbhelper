@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 export const toastMsg = writable<App.Toast[]>([]);
 
+type LoadSteps = 'init' | 'profile' | 'userenrolldata' | 'courselist' | 'stats' | 'done';
+export const loadStepsDone = writable<LoadSteps>();
 export const incompleteCalculation = writable<boolean>(false);
 export const arcadeRegion = writable<App.FacilitatorRegion>('unset');
 export const activeProfile = writable<App.UserInfo>();
