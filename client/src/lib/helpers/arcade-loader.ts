@@ -1,10 +1,5 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
-import {
-	activeProfile,
-	incompleteCalculation,
-	initData,
-	loadStepsDone
-} from '$lib/stores/app.svelte';
+import { activeProfile, incompleteCalculation, initData, loadSteps } from '$lib/stores/app.svelte';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
@@ -42,15 +37,16 @@ interface LoadProfileOptions {
 }
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
-	loadStepsDone.set('init');
+	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
 	const arcadetoken = await createToken();
 	const { courses, user, token: managerToken } = await loadProfile(option, arcadetoken);
-	loadStepsDone.set('profile');
+	loadSteps.profile = true;
 	activeProfile.set(user);
 
 	const storedBadges = await loadBadgeList(courses, managerToken, user.uuid);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	initData.set(merged);
+	loadSteps.courselist = true;
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
 	incompleteCalculation.set(containsMissingCourse);
 	loadEnrollment(user.uuid);
@@ -61,7 +57,7 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 	const { profileUUID, program } = option || {};
 	const profileid = uuidToHex(profileUUID);
 
-	const server = new URL(PUBLIC_API_SERVER + '/internal/identity');
+	const server = new URL(PUBLIC_API_SERVER + '/internal/identity/' + profileid);
 	if (option.program === 'arcade') {
 		server.searchParams.append('program', arcadeSeason.seasonid);
 		const { facilitator } = option;
@@ -70,9 +66,7 @@ const loadProfile = async (option: LoadProfileOptions, token: string) => {
 		server.searchParams.append('program', program);
 	}
 
-	const res = await fetch(server.href, {
-		headers: { 'x-arcade-token': token, 'x-arcade-identity': profileid }
-	});
+	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
 	if (res.status !== 200) throw new Error('Fetch Error');
 
 	const data: App.InitData = await res.json();
@@ -106,7 +100,6 @@ const loadBadgeList = async (
 		const courselist = await pb.collection('courses').getList(1, 500, {
 			filter: `((inactive=false && type != null)${filteridStr})`
 		});
-
 		// unmerged
 		const result = courselist.items as unknown as PBItem[];
 		return result || [];
@@ -213,5 +206,5 @@ const loadEnrollment = async (uuid: string) => {
 		});
 		return updated;
 	});
-	loadStepsDone.set('userenrolldata');
+	loadSteps.enrollmentdata = true;
 };

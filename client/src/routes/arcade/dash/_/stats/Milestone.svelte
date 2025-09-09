@@ -10,10 +10,11 @@
 		Tooltip,
 		Legend
 	} from 'chart.js';
-	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeRegion, arcadeStats, loadSteps, profileReady } from '$lib/stores/app.svelte';
 	import { facilMilestones } from '$lib/data/config';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
+	const ready = $derived($profileReady && loadSteps.enrollmentdata && loadSteps.courselist);
 	const { milestones, complete } = $derived($arcadeStats || {});
 	let showSelectMilestone = $state(false);
 	let activeMilestone = $derived.by(() => {
@@ -40,7 +41,7 @@
 
 	const milestoneStandard = $derived.by(() => {
 		const region = $arcadeRegion;
-		if (!$profileReady) {
+		if (!ready) {
 			return {
 				Games: 10,
 				Trivia: 10,
@@ -114,7 +115,7 @@
 			pointBackgroundColor: 'RGB(254, 154, 0)'
 		};
 
-		if (!$profileReady && chartContent) {
+		if (!ready && chartContent) {
 			chartContent.data.labels = Object.keys(maxValues).map(() => 'loading');
 			chartContent.data.datasets[1].data = [];
 			chartContent.update();
@@ -132,9 +133,7 @@
 		chart = new Chart(canvas, {
 			type: 'radar',
 			data: {
-				labels: $profileReady
-					? Object.keys(maxValues)
-					: Object.keys(maxValues).map(() => 'loading'),
+				labels: ready ? Object.keys(maxValues) : Object.keys(maxValues).map(() => 'loading'),
 				datasets: [
 					{
 						label: 'std',
@@ -242,7 +241,7 @@
 
 <div class="flex justify-between items-center">
 	<h2 class="text-lg my-3">Milestone</h2>
-	{#if !$profileReady}
+	{#if !ready}
 		<Skeleton class="w-25 h-6" />
 	{:else}
 		<div class="relative">

@@ -10,7 +10,7 @@
 		Legend
 	} from 'chart.js';
 	import dayjs from '$lib/helpers/dateTime';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeRegion, initData, loadSteps, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
 	let canvas = $state<HTMLCanvasElement>();
@@ -99,7 +99,7 @@
 	});
 </script>
 
-{#if $profileReady}
+{#if $profileReady && loadSteps.enrollmentdata && loadSteps.courselist}
 	<canvas bind:this={canvas} class="size-full bg-indig"></canvas>
 {:else}
 	<div class="size-full items-end flex gap-[5%] px-5">

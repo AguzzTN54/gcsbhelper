@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { Swiper } from 'swiper';
 	import { arcadeRewards as rewards } from '$lib/data/config';
-	import { arcadeStats, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeStats, loadSteps, profileReady } from '$lib/stores/app.svelte';
 	import rewardBg from '$img/rewards.webp';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
+	const ready = $derived($profileReady && loadSteps.enrollmentdata && loadSteps.courselist);
 	let swiperEl = $state<HTMLElement>();
 	let swiper = $state<Swiper>();
 	const rewardKeys = Object.keys(rewards) as (keyof typeof rewards)[];
@@ -47,7 +48,7 @@
 </script>
 
 <div class="pt-7 relative">
-	{#if !$profileReady}
+	{#if !ready}
 		<Skeleton class="w-full h-1.5 rounded-full translate-y-10" />
 	{/if}
 
@@ -58,7 +59,7 @@
 					class="swiper-slide !w-1/2 lg:!w-1/3 xl:!w-1/4 max-w-[250px] group select-none"
 					class:active={i === initIndex}
 				>
-					{#if !$profileReady}
+					{#if !ready}
 						<div class="mt-14 pb-12">
 							<Skeleton class="w-full aspect-[5/4]" />
 						</div>

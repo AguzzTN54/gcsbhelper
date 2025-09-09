@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { calculatePoints } from '$lib/helpers/calculator-arcade';
-	import { arcadeRegion, arcadeStats, initData, profileReady } from '$lib/stores/app.svelte';
+	import {
+		arcadeRegion,
+		arcadeStats,
+		initData,
+		loadSteps,
+		profileReady
+	} from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Activities from './Activities.svelte';
 	import Milestone from './Milestone.svelte';
@@ -71,7 +77,7 @@
 		{#snippet column({ key, number }: { key: string; number: number })}
 			<div class="text-center py-1 hover:bg-orange-100">
 				<h3 class="brutal-text text-md after:!bg-purple-200">{texts[key as keyof typeof texts]}</h3>
-				{#if $profileReady}
+				{#if $profileReady && loadSteps.enrollmentdata && loadSteps.courselist}
 					<span class="font-bold text-2xl block">{key === 'total' ? '' : '+'}{number}</span>
 				{:else}
 					<div class="flex justify-center pt-2">

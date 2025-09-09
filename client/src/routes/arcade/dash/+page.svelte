@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { activeProfile, profileReady } from '$lib/stores/app.svelte';
+	import { activeProfile, loadSteps, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '../_/Countdown.svelte';
@@ -14,7 +14,7 @@
 
 	const { data } = $props();
 	const { avatar, name } = $derived.by(() => {
-		if ($profileReady) return $activeProfile || {};
+		if ($profileReady || loadSteps.profile) return $activeProfile || {};
 		return data || {};
 	});
 	const scrolled = getContext('scrolled') as (val: boolean) => void;
@@ -54,7 +54,7 @@
 				</div>
 				<div class="ml-auto w-full pl-5 flex flex-col justify-center items-center sm:items-start">
 					<a href="/arcade" class="relative w-fit">
-						{#if $profileReady}
+						{#if $profileReady || loadSteps.profile}
 							<h1 class="font-semibold text-2xl mb-1 text-overflow">{name}</h1>
 						{:else}
 							<Skeleton class="w-30 max-w-full h-7 mb-2" />

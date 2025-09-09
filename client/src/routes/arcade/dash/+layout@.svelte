@@ -6,6 +6,7 @@
 		arcadeRegion,
 		incompleteCalculation,
 		initData,
+		loadSteps,
 		profileReady
 	} from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
@@ -123,7 +124,7 @@
 
 			{#if scrolled}
 				<div class="ml-4 w-full flex flex-col">
-					{#if $profileReady}
+					{#if $profileReady || loadSteps.profile}
 						<h1 class="font-semibold text-lg mb-1 text-overflow">{name}</h1>
 					{:else}
 						<Skeleton class="w-30 max-w-full h-7 mb-2" />
