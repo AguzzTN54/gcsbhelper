@@ -82,7 +82,10 @@ app.get('/internal/identity', async (c) => {
   if (data.code !== 200) {
     return c.json(data, data.code as ContentfulStatusCode);
   }
-  return c.json(data);
+  return c.json(data, 200, {
+    'Cache-Control': 'private, max-age=30, stale-while-revalidate=60',
+    Vary: 'X-Arcade-Identity',
+  });
 });
 
 app.post('/internal/switch', async (c) => {
