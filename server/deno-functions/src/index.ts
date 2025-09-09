@@ -6,8 +6,8 @@ import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 import { db } from './lib/db/denoKv.ts';
 import { shortShaId, verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
-import { profileScrapper } from './lib/scrapper/proifle/profileParser.ts';
-import { updateFacil } from './lib/scrapper/proifle/_pbUpdater.ts';
+import { profileScrapper } from './lib/scrapper/profile/profileParser.ts';
+import { updateFacil } from './lib/scrapper/profile/_pbUpdater.ts';
 import { hexToUuid } from './lib/utils/uuid.ts';
 import { getAccountToken } from './lib/db/pocketbase.ts';
 
