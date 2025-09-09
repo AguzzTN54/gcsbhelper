@@ -4,11 +4,9 @@ import { cors } from 'npm:hono/cors';
 import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 
 import { db } from './lib/db/denoKv.ts';
-import { shortShaId, verifyToken } from './lib//utils/hash.ts';
+import { verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 import { profileScrapper } from './lib/scrapper/profile/profileParser.ts';
-import { updateFacil } from './lib/scrapper/profile/_pbUpdater.ts';
-import { hexToUuid } from './lib/utils/uuid.ts';
 import { getAccountToken } from './lib/db/pocketbase.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
@@ -85,23 +83,6 @@ app.get('/internal/identity/:id', async (c) => {
   return c.json(data, 200, {
     'Cache-Control': 'private, max-age=30, stale-while-revalidate=60',
   });
-});
-
-app.post('/internal/switch', async (c) => {
-  const arcadeToken = c.req.header('x-arcade-token');
-  const [time, token, id = ''] = arcadeToken?.split('.') || [];
-  if (!token || !(await verifyToken(time + '.' + token))) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
-
-  const parsed = await c.req.json<{ facilitator: string; program: string }>();
-  const region = parsed?.facilitator?.trim().toLowerCase();
-  const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
-  const uuid = hexToUuid(id);
-  const pbHexid = await shortShaId(`${uuid}-${parsed?.program || ''}`);
-  const isUpdated = await updateFacil(pbHexid, facilitator);
-  if (isUpdated) return c.json({ success: true });
-  return c.json({ success: false }, 500 as ContentfulStatusCode);
 });
 
 // Endpoint to receive subscription

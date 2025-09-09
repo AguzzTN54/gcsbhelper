@@ -127,7 +127,7 @@ const updateProfileCourseList = async (
   }
 };
 
-export const updateFacil = async (hexuuid: string, facil?: string) => {
+const updateFacil = async (hexuuid: string, facil?: string) => {
   try {
     const facilitator = facil || null;
     await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', { facilitator });

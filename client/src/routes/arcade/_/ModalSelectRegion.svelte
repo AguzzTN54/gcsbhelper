@@ -1,15 +1,30 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
-	import { activeProfile, arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
-	import { facilitatorRegions } from '$lib/data/config';
+	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app.svelte';
+	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
-	import { switchFacilitator } from '$lib/helpers/arcade-loader';
+	import { shortShaId } from '$lib/helpers/crypto';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import Modal from '$reusable/Modal.svelte';
+	import pb from '$lib/helpers/pocketbase';
+	import { validateBadge } from '$lib/helpers/arcade-loader';
 
 	const { showModal } = $props();
 	let persist = $state(false);
 	const modalHandle = getContext('handleFacilitatorSelector') as (val: boolean) => void;
+
+	const switchFacilitator = async (facil: App.FacilitatorRegion, uuid: string) => {
+		initData.update((courses) => {
+			const updated = courses.map((c) => {
+				const validity = validateBadge(c.earndate, facil);
+				return { ...c, validity };
+			});
+			return updated;
+		});
+		const facilitator = facil === 'unset' || !facil ? null : facil;
+		const id = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+		await pb.collection('profiles').update(id, { id, facilitator });
+	};
 
 	const selectRegion = async (region: App.FacilitatorRegion) => {
 		modalHandle(false);
@@ -19,20 +34,14 @@
 		const currentActive = $activeProfile;
 		if (!currentActive?.uuid) return arcadeRegion.set(region);
 
+		arcadeRegion.set(region);
+		localAccounts.put({ ...currentActive, facilitator: region });
 		try {
-			profileReady.set(false);
-			await switchFacilitator({
-				courses: $initData,
-				uuid: currentActive.uuid,
-				facilitator: region
-			});
-			arcadeRegion.set(region);
-			localAccounts.put({ ...currentActive, facilitator: region });
+			await switchFacilitator(region, currentActive.uuid);
+			pushToast({ message: 'Facilitator Updated!', type: 'success' });
 		} catch (e) {
 			console.error(e);
 			pushToast({ message: 'Error Occurred!', type: 'error' });
-		} finally {
-			profileReady.set(true);
 		}
 	};
 

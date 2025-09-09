@@ -3,7 +3,7 @@ export const gcsbPrograms = ['arcade', 'juaragcp'] as const;
 
 type Periode = { start: string; end: string };
 export const arcadeSeason: Periode & { seasonid: string } = {
-	seasonid: 'arcade_2024h2',
+	seasonid: 'arcade_2025h2',
 	start: '01 July 2025',
 	end: '31 December 2025'
 };
