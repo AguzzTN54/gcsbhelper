@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContext, onMount } from 'svelte';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
@@ -6,6 +7,8 @@
 	import NavMenu from './_/NavMenu.svelte';
 
 	const { children } = $props();
+	const loaded = getContext('loaded') as () => void;
+	onMount(() => loaded?.());
 </script>
 
 <div class="flex items-end justify-center size-full">

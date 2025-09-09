@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { onMount, setContext } from 'svelte';
+	import { getContext, onMount, setContext } from 'svelte';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
 	import {
 		arcadeRegion,
@@ -46,6 +46,8 @@
 	};
 	setContext('loadDashProfile', loadDashProfile);
 
+	const loaded = getContext('loaded') as () => void;
+	onMount(() => loaded?.());
 	onMount(async () => {
 		if (!uuid) return goto('/arcade');
 		if ($initData && $initData.length > 0) {

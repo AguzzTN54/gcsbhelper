@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import 'swiper/css';
 	import '../app.css';
 	import splash from '$img/splash5.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Footer from './_global/Footer.svelte';
+	import Loading from '$reusable/Loading.svelte';
 
 	const { children } = $props();
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	const screenHeight = $derived(innerHeight ? `${innerHeight}px` : '100vh');
+
+	let loaded = $state(false);
+	setContext('loaded', () => (loaded = true));
 
 	onMount(() => {
 		if (!('serviceWorker' in navigator)) {
@@ -22,6 +26,13 @@
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
+
+{#if !loaded}
+	<div class="flex justify-center flex-col items-center size-full fixed bg-white z-150">
+		<Loading />
+		<span class="mt-4 block text-sm text-slate-600"> Wait for a second.. </span>
+	</div>
+{/if}
 
 <main
 	class="h-[var(--screen-height)] w-screen flex flex-col relative"
