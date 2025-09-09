@@ -65,9 +65,9 @@ app.use(
 //   return c.json({ token });
 // });
 
-app.get('/internal/identity', async (c) => {
+app.get('/internal/identity/:id', async (c) => {
   const arcadeToken = c.req.header('x-arcade-token');
-  const id = c.req.header('x-arcade-identity');
+  const id = c.req.param('id') || '';
   if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
@@ -84,7 +84,6 @@ app.get('/internal/identity', async (c) => {
   }
   return c.json(data, 200, {
     'Cache-Control': 'private, max-age=30, stale-while-revalidate=60',
-    Vary: 'X-Arcade-Identity',
   });
 });
 
