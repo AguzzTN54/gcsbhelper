@@ -64,12 +64,13 @@ const insertNewCourses = async (
   hexuuid: string,
   newCourses: UserCourses[],
   facilitator?: string,
+  program?: string,
 ): Promise<PBBatchResponse[]> => {
   const requests: PBBatchRequest[] = [
     {
       method: 'PUT',
       url: '/api/collections/profiles/records',
-      body: { id: hexuuid, facilitator: facilitator || null },
+      body: { id: hexuuid, facilitator: facilitator || null, program: program || null },
     },
   ];
 
@@ -167,10 +168,10 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
     if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
       if (facilitator !== savedFacil) await updateFacil(hexuuid, facilitator);
-      console.log(hexuuid, 'No update detected');
-      return;
+      // console.log(hexuuid, 'No update detected');
+      // return;
     }
-    const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, facilitator);
+    const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, facilitator, program);
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
   } catch (e) {
     console.error(e);
