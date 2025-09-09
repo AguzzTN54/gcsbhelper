@@ -2,7 +2,7 @@
 	import { arcadeSeason } from '$lib/data/config';
 	import { shortShaId } from '$lib/helpers/crypto';
 	import pb from '$lib/helpers/pocketbase';
-	import { activeProfile, initData } from '$lib/stores/app-store';
+	import { activeProfile, initData } from '$lib/stores/app.svelte';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 
 	const { rating = '', courseid } = $props();
@@ -20,6 +20,7 @@
 	};
 
 	const rateThis = async (myfeedback: DiffLevel) => {
+		editRate = false;
 		if (rating === myfeedback) return;
 
 		const { uuid } = $activeProfile;
@@ -29,7 +30,6 @@
 		try {
 			await pb.collection('course_enrollments').update(id, { difficulty: myfeedback });
 			updateInitdata(courseid, myfeedback);
-			editRate = false;
 			pushToast({ type: 'success', message: 'Thanks for your feedback' });
 		} catch (e) {
 			console.error(e);
@@ -47,8 +47,8 @@
 {#snippet button(text: string, className: string)}
 	<button
 		onclick={() => rateThis(text as DiffLevel)}
-		class:hidden={editRate && rating && rating !== text}
-		class="{className} capitalize hover:brightness-95 hover:block active:brightness-90 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
+		class:opacity-50={editRate && rating && rating !== text}
+		class="{className} capitalize hover:brightness-95 hover:opacity-100 active:brightness-90 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
 	>
 		{text}
 	</button>
@@ -71,7 +71,7 @@
 
 {#if editRate || !rating}
 	<div
-		class="size-full bg-slate-100 absolute top-0 left-0 opacity-0 group-[:hover]:opacity-100 flex items-center justify-center"
+		class="size-full bg-slate-100 absolute top-0 left-0 hidden group-[:hover]:flex items-center justify-center"
 	>
 		<div class="flex flex-col items-center justify-center text-center text-xs w-9/12">
 			<span>Please help others by rating this course</span>

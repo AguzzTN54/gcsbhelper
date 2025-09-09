@@ -1,6 +1,6 @@
 <script>
 	import dayjs from '$lib/helpers/dateTime';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { facilitatorPeriode, arcadeSeason } from '$lib/data/config';
 
 	const { small = false } = $props();

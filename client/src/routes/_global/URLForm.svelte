@@ -4,7 +4,7 @@
 	import type { EventHandler } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
 
-	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
+	import { arcadeProfile, juaraProfile } from '$lib/stores/app.svelte';
 	import { accounts } from '$lib/helpers/localstorage';
 	import { loadProfile } from '$lib/helpers/profile-parser';
 	import Loading from '$comp/LoaderAnimation.svelte';

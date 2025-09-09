@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { calculatePoints } from '$lib/helpers/calculator-arcade';
-	import { arcadeRegion, arcadeStats, initData, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, arcadeStats, initData, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Activities from './Activities.svelte';
 	import Milestone from './Milestone.svelte';

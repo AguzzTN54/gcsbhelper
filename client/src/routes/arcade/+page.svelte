@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import Portal from '$reusable/Portal/Portal.svelte';
 	import ModalSelectRegion from './_/ModalSelectRegion.svelte';
 	import Form from './_/Form.svelte';

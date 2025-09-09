@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	// import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
-	import { arcadeProfile, juaraProfile } from '$lib/stores/app-store';
+	import { arcadeProfile, juaraProfile } from '$lib/stores/app.svelte';
 	import { accounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
 	import Button from '$comp/Button.svelte';

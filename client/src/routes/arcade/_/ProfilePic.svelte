@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { profileReady } from '$lib/stores/app-store';
+	import { profileReady } from '$lib/stores/app.svelte';
 	import anonym from '$img/avatar.webp';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	const { src: avatar = '' } = $props();

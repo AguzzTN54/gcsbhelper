@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { lookupBadges } from '$lib/helpers/calculator-juaragcp';
 	import { accounts } from '$lib/helpers/localstorage';
-	import { juaraBadges, juaraProfile } from '$lib/stores/app-store';
+	import { juaraBadges, juaraProfile } from '$lib/stores/app.svelte';
 	import UrlForm from '../_global/URLForm.svelte';
 
 	const onResponse = (data: App.ProfileData) => {

@@ -4,7 +4,7 @@ import {
 	incompleteCalculation,
 	initData,
 	loadStepsDone
-} from '$lib/stores/app-store';
+} from '$lib/stores/app.svelte';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';

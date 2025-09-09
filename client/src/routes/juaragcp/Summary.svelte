@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { juaraBadges, juaraProfile } from '$lib/stores/app-store';
+	import { juaraBadges, juaraProfile } from '$lib/stores/app.svelte';
 	import { checkTier } from '$lib/helpers/calculator-juaragcp';
 	import Tier from './Tier.svelte';
 	import Tablepoint from './_tablepoint.svelte';

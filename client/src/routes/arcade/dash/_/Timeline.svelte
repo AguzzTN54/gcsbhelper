@@ -3,7 +3,7 @@
 	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
 	import { getTimelineContents } from '$lib/data/timeline';
-	import { arcadeRegion, initData } from '$lib/stores/app-store';
+	import { arcadeRegion, initData } from '$lib/stores/app.svelte';
 
 	let timelineW = $state(0);
 	let timelineH = $state(0);

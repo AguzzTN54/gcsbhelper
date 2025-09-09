@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { badgeCounter } from '$lib/helpers/calculator-juaragcp';
-	import { juaraBadges } from '$lib/stores/app-store';
+	import { juaraBadges } from '$lib/stores/app.svelte';
 	import Counter from '$comp/Counter.svelte';
 
 	const { completion, skill } = badgeCounter($juaraBadges);

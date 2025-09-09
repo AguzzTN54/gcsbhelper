@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
 	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';

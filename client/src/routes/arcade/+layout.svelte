@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from './_/Countdown.svelte';

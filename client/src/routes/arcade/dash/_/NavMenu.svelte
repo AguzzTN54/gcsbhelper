@@ -2,7 +2,7 @@
 	import { getContext, onDestroy, onMount, setContext, tick } from 'svelte';
 	import { getElement, getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
-	import { profileReady } from '$lib/stores/app-store';
+	import { profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Portal from '$reusable/Portal';
 	import ModalProfile from '../../_/ModalProfile.svelte';

@@ -10,7 +10,7 @@
 		Legend
 	} from 'chart.js';
 	import dayjs from '$lib/helpers/dateTime';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
 	let canvas = $state<HTMLCanvasElement>();

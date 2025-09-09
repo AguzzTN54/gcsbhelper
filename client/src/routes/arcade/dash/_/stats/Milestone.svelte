@@ -10,7 +10,7 @@
 		Tooltip,
 		Legend
 	} from 'chart.js';
-	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app-store';
+	import { arcadeRegion, arcadeStats, profileReady } from '$lib/stores/app.svelte';
 	import { facilMilestones } from '$lib/data/config';
 	import Skeleton from '$reusable/Skeleton.svelte';
 

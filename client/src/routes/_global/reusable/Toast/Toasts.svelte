@@ -1,5 +1,5 @@
 <script module lang="ts">
-	import { toastMsg } from '$lib/stores/app-store';
+	import { toastMsg } from '$lib/stores/app.svelte';
 
 	export const pushToast = ({
 		type = 'info',

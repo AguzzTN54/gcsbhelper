@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { activeProfile, profileReady } from '$lib/stores/app-store';
+	import { activeProfile, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '../_/Countdown.svelte';

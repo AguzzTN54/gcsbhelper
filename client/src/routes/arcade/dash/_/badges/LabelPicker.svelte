@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { stopPropagation } from 'svelte/legacy';
 	import { onMount } from 'svelte';
-	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app-store';
+	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import { shortShaId } from '$lib/helpers/crypto';
 	import { arcadeSeason } from '$lib/data/config';

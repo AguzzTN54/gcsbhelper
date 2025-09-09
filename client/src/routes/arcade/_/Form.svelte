@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
 	import { isValidUUID } from '$lib/helpers/uuid';
-	import { arcadeRegion } from '$lib/stores/app-store';
+	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import Button from '$reusable/Button.svelte';
 	import Checkbox from '$reusable/Checkbox.svelte';

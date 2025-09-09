@@ -7,7 +7,7 @@
 		incompleteCalculation,
 		initData,
 		profileReady
-	} from '$lib/stores/app-store';
+	} from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
@@ -63,7 +63,7 @@
 		<h2 class="text-center font-semibold text-xl">Something went wrong!</h2>
 		<article class="text-center mt-4">
 			We couldn't load the calculation formula, so your progress isn't available right now. It looks
-			like there is an issue on the server, so please contact the <b>Author</b> as soon as possible.
+			like there is an issue on the server, please contact the <b>Author</b> as soon as possible.
 		</article>
 		<div class="flex w-full justify-center gap-3 mt-5 mb-2">
 			<button
