@@ -26,7 +26,12 @@ export const createToken = async (): Promise<string> => {
 export const verifyToken = async (token: string): Promise<boolean> => {
   const [payload, sigB64] = token.split('.');
   if (!payload || !sigB64) return false;
-  if (Date.now() > parseInt(payload)) return false;
+
+  const expires = parseInt(payload);
+  const now = Date.now();
+
+  // allow 15s clock drift
+  if (now > expires + 15_000) return false;
 
   const key = await crypto.subtle.importKey('raw', toUint8(SECRET_KEY), { name: 'HMAC', hash: 'SHA-256' }, false, [
     'verify',
