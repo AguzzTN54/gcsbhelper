@@ -47,8 +47,8 @@
 {#snippet button(text: string, className: string)}
 	<button
 		onclick={() => rateThis(text as DiffLevel)}
-		class:opacity-30={editRate && rating && rating !== text}
-		class="{className} capitalize hover:brightness-95 hover:opacity-100 active:brightness-90 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
+		class:hidden={editRate && rating && rating !== text}
+		class="{className} capitalize hover:brightness-95 hover:block active:brightness-90 py-1 px-3 brutal-border !border-[2px] rounded-full relative"
 	>
 		{text}
 	</button>

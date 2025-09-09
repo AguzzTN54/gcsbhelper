@@ -110,7 +110,7 @@ const loadBadgeList = async (
 			const fromuser = unmerged[0].items.find((u) => u.course === c.id);
 			const userinput = {
 				label: fromuser?.label || null,
-				difficulty: fromuser?.difficulty || null
+				rating: fromuser?.difficulty || null
 			};
 			return { ...c, userinput };
 		});
@@ -118,7 +118,6 @@ const loadBadgeList = async (
 		// unmerged
 		const result = data as unknown as PBItem[];
 		return result || [];
-		return [];
 	} catch (e) {
 		console.error(e);
 		return [];
