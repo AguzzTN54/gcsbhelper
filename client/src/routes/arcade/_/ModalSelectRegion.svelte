@@ -8,6 +8,7 @@
 	import Modal from '$reusable/Modal.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import { validateBadge } from '$lib/helpers/arcade-loader';
+	import { page } from '$app/state';
 
 	const { showModal } = $props();
 	let persist = $state(false);
@@ -21,9 +22,15 @@
 			});
 			return updated;
 		});
+
+		if (!page.url.pathname.startsWith('/arcade/dash')) return;
+
+		// Update Facilitator on db
 		const facilitator = facil === 'unset' || !facil ? null : facil;
 		const id = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
 		await pb.collection('profiles').update(id, { id, facilitator });
+		localAccounts.put({ ...$activeProfile, facilitator: facil });
+		pushToast({ message: 'Facilitator Updated!', type: 'success' });
 	};
 
 	const selectRegion = async (region: App.FacilitatorRegion) => {
@@ -33,12 +40,10 @@
 		if (region === $arcadeRegion) return;
 		const currentActive = $activeProfile;
 		if (!currentActive?.uuid) return arcadeRegion.set(region);
-
 		arcadeRegion.set(region);
-		localAccounts.put({ ...currentActive, facilitator: region });
+
 		try {
 			await switchFacilitator(region, currentActive.uuid);
-			pushToast({ message: 'Facilitator Updated!', type: 'success' });
 		} catch (e) {
 			console.error(e);
 			pushToast({ message: 'Error Occurred!', type: 'error' });
