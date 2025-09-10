@@ -26,7 +26,7 @@
 
 {#if $toastMsg}
 	<div
-		class="fixed top-4 left-0 right-0 flex flex-col items-center gap-2 z-[1000] pointer-events-none"
+		class="toasts fixed top-4 left-0 right-0 flex flex-col items-center gap-2 z-[1000] pointer-events-none"
 	>
 		{#each $toastMsg as { type, id, dismissible, message, autoclose, timeout } (id)}
 			<div animate:flip={{ duration: (i) => 25 * Math.sqrt(i) }}>

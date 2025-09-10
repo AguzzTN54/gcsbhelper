@@ -6,13 +6,19 @@
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Portal from '$reusable/Portal';
 	import ModalProfile from '../../_/ModalProfile.svelte';
+	import ModalNotify from '../../_/ModalNotify.svelte';
 
 	const { action = false } = $props();
 
 	let active = $state('stats');
-	let showModal = $state(false);
-	setContext('modalHandle', () => (showModal = !showModal));
+	let showModalProfile = $state(false);
+	setContext('modalHandle', () => (showModalProfile = !showModalProfile));
 	const loadProfile = getContext('loadDashProfile') as (u: string, r: string) => Promise<void>;
+
+	let showModalNotif = $state(false);
+	setContext('modalNotifHandler', (val?: boolean) => {
+		showModalNotif = typeof val === 'boolean' ? val : !showModalNotif;
+	});
 
 	const links = [
 		{ slug: 'stats', icon: 'chart-line', text: 'Statistics' },
@@ -28,12 +34,17 @@
 	];
 
 	const actionClick = (slug: string) => {
-		if (slug === 'accounts') return (showModal = true);
+		if (slug === 'accounts') return (showModalProfile = true);
 		if (slug === 'profile') {
 			const active = localAccounts.getActive();
 			if (!active?.uuid) return;
 			const url = 'https://www.cloudskillsboost.google/public_profiles/' + active.uuid;
 			window.open(url, '_blank')?.focus();
+			return;
+		}
+
+		if (slug === 'notify') {
+			showModalNotif = true;
 			return;
 		}
 
@@ -85,8 +96,14 @@
 </script>
 
 <Portal target="#main">
-	{#if action && showModal}
+	{#if action && showModalProfile}
 		<ModalProfile />
+	{/if}
+</Portal>
+
+<Portal target="#main">
+	{#if action && showModalNotif}
+		<ModalNotify />
 	{/if}
 </Portal>
 

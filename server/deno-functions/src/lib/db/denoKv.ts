@@ -73,8 +73,8 @@ export const db = {
     }
     return allSubs;
   },
-  removeSubscription: async (key: Deno.KvKey) => {
+  removeSubscription: async (sub: PushSubscription) => {
+    const key = ['subs', await sha256(sub.endpoint)];
     await kv.delete(key);
   },
 };
-

@@ -97,6 +97,17 @@ app.post('/internal/subscribe', async (c) => {
   return c.json({ success: true });
 });
 
+app.post('/internal/unsubscribe', async (c) => {
+  const token = c.req.header('x-arcade-token');
+  if (!token || !(await verifyToken(token))) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  const data: PushSubscription = await c.req.json();
+  await db.removeSubscription(data);
+  return c.json({ success: true });
+});
+
 // Run every 5 minutes, run every Monday, tuesday and wednesday (Day expected of arcade release)
 Deno.cron('Scrap and Notify', '*/5 * * * 2-4', async () => {
   await scrapAndNotify();
