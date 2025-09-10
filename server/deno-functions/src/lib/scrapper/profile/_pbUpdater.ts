@@ -2,7 +2,16 @@ import { pb } from '../../db/pocketbase.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
 const validateCourse = async (courses: UserCourses[]) => {
-  const { items } = await pb('/api/collections/courses/records?perPage=300');
+  const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
+  const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
+  const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
+  const filter = encodeURIComponent(`(${filterid})`);
+
+  let items = [];
+  if (filterid) {
+    ({ items } = await pb('/api/collections/courses/records?perPage=1000&filter=' + filter));
+  }
+
   const missingCourses = courses.filter(({ courseid }) => {
     const isExist = items.find((c: Record<string, unknown>) => c.courseid === courseid || c.badgeid === courseid);
     return !isExist;
@@ -168,11 +177,12 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
     if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
       if (facilitator !== savedFacil) await updateFacil(hexuuid, facilitator);
-      // console.log(hexuuid, 'No update detected');
-      // return;
+      console.log(hexuuid, 'No update detected');
+      return;
     }
     const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, facilitator, program);
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
+    console.log('Profile Updated: ' + hexuuid);
   } catch (e) {
     console.error(e);
   }
