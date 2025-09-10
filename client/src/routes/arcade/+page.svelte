@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-	<title>CloudSkillBoost Arcade Progress Tracker</title>
+	<title>Arcade Progress Tracker 2025 - Cohort 2</title>
 </svelte:head>
 
 <Portal target="#main > div">
@@ -28,8 +28,12 @@
 
 <section class="font-extrabold p-2 flex flex-col h-full">
 	<h1 class="text-2xl sm:text-3xl md:text-4xl text-center p-3 mt-5 sm:mt-10 sm:p-5">
-		<span class="brutal-text after:!bg-sky-600 text-white italic"> Arcade </span> Progress Tracker
+		<span class="brutal-text after:!bg-sky-900 text-amber-300 font-press text-2xl"> Arcade </span> Progress
+		Tracker
 	</h1>
+	<div class="text-center font-medium -mt-2 text-2xl">
+		<span> Cohort 2 </span>
+	</div>
 
 	<Form />
 
@@ -47,8 +51,8 @@
 
 	<article class="mb-5 px-[2%] text-center sm:text-sm md:text-base text-xs">
 		<span class="brutal-text after:!bg-green-300">Privacy First</span> — This site does not collect
-		any personally identifiable data unless you want it to. We will only create a unique
-		<span class="brutal-text after:!bg-indigo-200">Hashed ID</span> solely to help us analyze course
+		any personally identifiable data unless you want it to. We will only create a
+		<span class="brutal-text after:!bg-indigo-200">unique ID</span> solely to help us analyze course
 		progress.
 	</article>
 </section>

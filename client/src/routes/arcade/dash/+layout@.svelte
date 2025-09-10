@@ -107,11 +107,11 @@
 {/if}
 
 <section
-	class="sm:p-4 p-2 pt-4 !pb-0 size-full relative overflow-hidden bg flex flex-col justify-end"
+	class="sm:p-4 p-2 pt-2 !pb-0 size-full relative overflow-hidden bg flex flex-col justify-end"
 >
 	<div
 		style="--bg:url({bg})"
-		class="-skew-1 h-[calc(100%-3rem)] sm:h-full w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] z-1 absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[1rem] brutal-border rounded-tl-3xl overflow-hidden bg-indigo-300 after:top-0 after:left-0 after:skew-1 after:-z-10 after:absolute after:size-full after:bg-gray-100"
+		class="-skew-1 h-[calc(100%-2rem)] sm:h-full w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] z-1 absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[1rem] brutal-border rounded-tl-3xl overflow-hidden bg-indigo-300 after:top-0 after:left-0 after:skew-1 after:-z-10 after:absolute after:size-full after:bg-gray-100"
 	></div>
 
 	<div
@@ -119,7 +119,7 @@
 		class:active={scrolled}
 		class:brutal-border={scrolled}
 	>
-		<div class="-skew-1 flex justify-center pb-3">
+		<div class="-skew-1 flex justify-center">
 			<div class="flex" class:scale-90={scrolled} class:-translate-y-[8%]={scrolled}>
 				<ProfilePic src={avatar} />
 			</div>

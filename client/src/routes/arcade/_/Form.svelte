@@ -5,7 +5,7 @@
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import Button from '$reusable/Button.svelte';
-	import Checkbox from '$reusable/Checkbox.svelte';
+	// import Checkbox from '$reusable/Checkbox.svelte';
 	import Loading from '$reusable/Loading.svelte';
 
 	const isGCSBUrl = (url: string) => /cloudskillsboost.google\/public_profiles\//.test(url);
@@ -26,7 +26,7 @@
 	let fetchError = $state(false);
 	let value = $state('');
 	let typed = $state(false);
-	let submitGlobal = $state(true);
+	// let submitGlobal = $state(true);
 	const profileUUID = $derived.by<string>(() => {
 		const profileLink = value.trim();
 		const isgcsb = isGCSBUrl(profileLink);
@@ -87,12 +87,12 @@
 			</span>
 		</div>
 
-		<Checkbox
+		<!-- <Checkbox
 			checked={submitGlobal}
 			onchange={(e) => (submitGlobal = (e.target as HTMLInputElement).checked)}
 		>
 			Submit to global analytics
-		</Checkbox>
+		</Checkbox> -->
 
 		<Button onclick={fetchProfile} disabled={!profileUUID}>
 			Calculate Points <i class="fasdl fa-stars text-rose-300"></i>

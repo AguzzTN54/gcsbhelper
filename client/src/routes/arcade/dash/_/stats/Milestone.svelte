@@ -290,7 +290,7 @@
 							>
 								{#snippet milestoneSnippet(label: string, earned: number, needed: number)}
 									{@const percentage = (earned / needed) * 100}
-									{@const colors: Record<string, string> ={Games: 'bg-purple-800', Trivia:'bg-indigo-700', Skill:'bg-amber-400', 'Lab Free':'bg-sky-400'}}
+									{@const colors: Record<string, string> ={Games: 'bg-indigo-700', Trivia:'bg-purple-800', Skill:'bg-amber-400', 'Lab Free':'bg-sky-400'}}
 									<div class="col w-full">
 										<div class="flex justify-between">
 											<span>{label}</span>

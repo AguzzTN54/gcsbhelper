@@ -71,7 +71,9 @@
 	class="flex flex-col lg:flex-row p-2 my-5 md:my-0 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl lg:scale-85"
 >
 	<div class="w-full lg:w-25 text-center lg:text-left">
-		<h2 class="font-bold pb-2 leading-[110%] text-2xl mt-2 lg:pl-2">POINT DETAILS</h2>
+		<h2 class="font-bold pb-2 leading-[110%] text-2xl md:text-lg xl:text-2xl mt-2 lg:pl-2">
+			POINT DETAILS
+		</h2>
 	</div>
 	<div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 w-full gap-1 ml-2">
 		{#snippet column({ key, number }: { key: string; number: number })}
