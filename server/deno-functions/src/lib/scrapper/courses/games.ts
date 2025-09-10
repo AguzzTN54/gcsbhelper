@@ -63,7 +63,7 @@ const insertToPb = async (course: Course) => {
   const { title, totallab, badgeurl, courseid, point, type, startdate, enddate, badgeid, token } = course || {};
   if (!title || !badgeid) return;
   try {
-    const id = await shortShaId(`${badgeid}`);
+    const id = await shortShaId(`g${badgeid}`);
     const requests = [
       {
         method: 'PUT',

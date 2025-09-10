@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { setContext } from 'svelte';
+	import { localAccounts } from '$lib/helpers/localstorage';
 	import Portal from '$reusable/Portal';
 	import ModalNotify from './ModalNotify.svelte';
 
@@ -41,7 +42,7 @@
 			<a
 				class:active={(slug || '#') === active}
 				class="py-2 px-3 whitespace-nowrap hover:bg-indigo-200 hover:opacity-100 opacity-65 group"
-				href="/arcade/{slug}"
+				href="/arcade/{localAccounts.getActive()?.uuid && !slug ? 'dash' : slug}"
 			>
 				<i class="fasdl fa-{icon} text-amber-400"></i>
 				<span class="lg:inline-block hidden group-[.active]:inline-block"> {text} </span>

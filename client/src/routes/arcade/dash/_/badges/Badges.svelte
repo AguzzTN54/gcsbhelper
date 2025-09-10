@@ -126,7 +126,7 @@
 			<ScrollArea>
 				<div class="labelwrapper whitespace-nowrap">
 					{#if $profileReady}
-						{#each labels as { label, length, type }}
+						{#each labels as { label, length, type } (label)}
 							<button
 								onclick={() => (activeGroup = type)}
 								class:active={activeGroup === type}
@@ -205,7 +205,7 @@
 		<div
 			class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5 lg:gap-7 xl:gap-10 pb-5"
 		>
-			{#each Array(12) as _, i}
+			{#each Array(12) as _, i (i)}
 				<BadgeItem loading />
 			{/each}
 		</div>

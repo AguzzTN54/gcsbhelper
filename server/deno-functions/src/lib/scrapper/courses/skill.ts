@@ -59,7 +59,7 @@ const insertToPb = async (course: Course & MoreCourseDetail) => {
     const [, , idParam] = path.split('/');
     const [stringId] = idParam.split('?');
     const courseid = parseInt(stringId, 10);
-    const id = await shortShaId(stringId);
+    const id = await shortShaId('c' + stringId);
 
     const data = {
       requests: [

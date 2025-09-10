@@ -1,6 +1,12 @@
 import { pb } from '../../db/pocketbase.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
+const getCourseId = (courseid: number, type: 'game' | 'skill'): string => {
+  const identifier = type === 'game' ? 'g' : 'c';
+  const id = `${identifier}${courseid}`;
+  return id;
+};
+
 const validateCourse = async (courses: UserCourses[]) => {
   const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
   const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
@@ -30,7 +36,7 @@ const insertMissingCourses = async (newCourses: UserCourses[]) => {
       body: {
         title,
         badgeurl,
-        id: await shortShaId(`${courseid}`),
+        id: await shortShaId(getCourseId(courseid, type)),
         ...(type === 'game' ? { badgeid: courseid } : { courseid }),
       },
     };
@@ -83,14 +89,15 @@ const insertNewCourses = async (
     },
   ];
 
-  for (const { courseid, date } of newCourses) {
+  for (const { courseid, date, type } of newCourses) {
+    const id = getCourseId(courseid, type);
     const item: PBBatchRequest = {
       method: 'PUT',
       url: '/api/collections/course_enrollments/records',
       body: {
-        id: await shortShaId(`${hexuuid}${courseid}`),
+        id: await shortShaId(`${hexuuid}${id}`),
         profile: hexuuid,
-        course: await shortShaId(`${courseid}`),
+        course: await shortShaId(id),
         earned: date,
       },
     };
@@ -156,7 +163,8 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
     const { earned, facilitator: savedFacil } = await checkStoredProfile(hexuuid);
     const newEarnedCourses: UserCourses[] = [];
     for (const course of courses) {
-      const shaId = await shortShaId(`${course.courseid}`);
+      const { courseid, type } = course || {};
+      const shaId = await shortShaId(getCourseId(courseid, type));
       const isExist = earned.includes(shaId);
       if (isExist) continue;
       newEarnedCourses.push(course);
@@ -165,8 +173,8 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
     const deletedCourses: string[] = [];
     for (const course of earned) {
       let exist = false;
-      for (const { courseid } of courses) {
-        if ((await shortShaId(`${courseid}`)) === course) {
+      for (const { courseid, type } of courses) {
+        if ((await shortShaId(getCourseId(courseid, type))) === course) {
           exist = true;
           break;
         }

@@ -200,7 +200,7 @@ const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
 		.join('||');
 
 	const stats = await pb.collection('course_stats').getList(1, 300, {
-		filter: `(${filter})`
+		filter: filter ? `(${filter})` : ''
 	});
 
 	initData.update((courses) => {

@@ -35,6 +35,7 @@ export const getAccountToken = async () => {
     // Impersonate as Manager
     const imURL = new URL(pbHost + '/api/collections/manager/impersonate/' + managerId);
     const account = await pb(imURL.href, 'POST', { duration: 3600 }); //1hour
+    if (!account.token) throw new Error('Failed to get token for your Manager ID');
     return account.token;
   } catch (e) {
     console.error(e);

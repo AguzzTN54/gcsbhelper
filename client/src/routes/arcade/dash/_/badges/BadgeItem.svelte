@@ -63,6 +63,7 @@
 	const courseType = type || label || 'unknown';
 	const isgame = ['wmp', 'trivia', 'game'].includes(courseType);
 	const coursePoint = type ? (point ?? 0) : (POINT_TABLE[courseType] ?? 0);
+	const cid = badgeid ? `g${badgeid}` : `c${courseid}`;
 
 	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
 	const isLessThanAWeek = (enddate?: string | dayjs.Dayjs | Date) => {
@@ -123,7 +124,7 @@
 
 	{#if !loading}
 		{#if !type}
-			<LabelPicker courseid={badgeid || courseid} {label} />
+			<LabelPicker courseid={cid} {label} />
 		{/if}
 
 		{#if !validity?.arcade && !validity?.facilitator && earned && (type || (label && !type))}
@@ -158,7 +159,7 @@
 			{/if}
 
 			{#if earned}
-				<RateInput rating={rating || ''} courseid={badgeid || courseid} />
+				<RateInput {rating} courseid={cid} />
 			{/if}
 
 			{#if earned && earndate}

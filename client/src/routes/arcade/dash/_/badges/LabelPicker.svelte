@@ -8,7 +8,8 @@
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
-	const { courseid, label } = $props();
+	type Props = { courseid: string; label: App.CourseType | 'special' | undefined };
+	const { courseid, label }: Props = $props();
 	const labelNcolor = $derived<
 		Partial<Record<Exclude<App.CourseType | 'special' | 'unknown', null>, string>>
 	>({
@@ -37,7 +38,7 @@
 		});
 	};
 
-	const selectLabel = async (cid: number, selected: App.CourseType | 'special' | 'unknown') => {
+	const selectLabel = async (cid: string, selected: App.CourseType | 'special' | 'unknown') => {
 		showPicker = false;
 		if (selectedlabel === selected) return;
 		loading = true;
@@ -51,7 +52,8 @@
 
 		try {
 			await pb.collection('course_enrollments').update(id, { label });
-			updateInitdata(cid, label);
+			const courseid = parseInt(cid.replace(/\D/g, ''), 10);
+			updateInitdata(courseid, label);
 			pushToast({ type: 'success', message: 'Label Updated' });
 		} catch (e) {
 			pushToast({ type: 'error', message: 'Failed to Update Course Label' });
