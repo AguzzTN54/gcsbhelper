@@ -47,6 +47,13 @@ declare global {
 		}
 
 		type CourseType = 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
+		interface CourseStats {
+			diff_easy: number;
+			diff_hard: number;
+			diff_medium: number;
+			enrollment_count: number;
+		}
+
 		interface CourseItem extends BasicCourse {
 			id?: string;
 			badgeid: number;
@@ -61,9 +68,10 @@ declare global {
 			token: string;
 			totallab: number;
 			type: CourseType;
+			stats?: CourseStats;
 			userinput?: {
 				label?: CourseType | 'special';
-				rating?: 'easy' | 'intermediate' | 'hard' | null;
+				rating?: 'easy' | 'medium' | 'hard' | null;
 			};
 			validity?: {
 				arcade: boolean;

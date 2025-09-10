@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 	import { copyToClipboard } from '$lib/helpers/copy';
+	import { POINT_TABLE } from '$lib/helpers/calculator-arcade';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import dayjs from '$lib/helpers/dateTime';
 	import Donut from '$reusable/Donut.svelte';
@@ -8,7 +9,7 @@
 	import BadgeImage from './BadgeImage.svelte';
 	import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
-	import { POINT_TABLE } from '$lib/helpers/calculator-arcade';
+	import { loadSteps } from '$lib/stores/app.svelte';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -26,13 +27,38 @@
 		courseid,
 		badgeid,
 		enddate,
-		earndate
+		earndate,
+		stats
 	} = data || {};
+
+	const { diff_easy, diff_hard, diff_medium, enrollment_count } = stats || {};
+	const diff = { easy: diff_easy || 0, medium: diff_medium || 0, hard: diff_hard || 0 };
+	const diffColor = {
+		easy: 'after:!bg-green-200 text-green-800',
+		medium: 'after:!bg-amber-200 text-amber-800',
+		hard: 'after:!bg-red-200 text-red-800'
+	};
+
+	const total = enrollment_count || 0;
+	let highestKey: keyof typeof diff = 'easy';
+	let highestVal = diff.easy;
+	const donutVal: Record<string, number> = {};
+	for (const [key, val] of Object.entries(diff) as [keyof typeof diff, number][]) {
+		donutVal[key] = total > 0 ? (val / total) * 100 : 0;
+		if (diff[key] > highestVal) {
+			highestKey = key;
+			highestVal = diff[key];
+		}
+	}
+	const feedback = {
+		rate: highestKey,
+		percent: total > 0 ? Number((highestVal / total).toFixed(2)) * 100 : 0
+	};
+
 	const { label, rating } = userinput || {};
 	const courseType = type || label || 'unknown';
 	const isgame = ['wmp', 'trivia', 'game'].includes(courseType);
 	const coursePoint = type ? (point ?? 0) : (POINT_TABLE[courseType] ?? 0);
-	const rated = false;
 
 	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
 	const isLessThanAWeek = (enddate?: string | dayjs.Dayjs | Date) => {
@@ -66,7 +92,6 @@
 
 <div
 	class:earned
-	class:rated
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
@@ -128,7 +153,7 @@
 				/>
 			{/if}
 
-			{#if !rated && earned}
+			{#if earned}
 				<RateInput rating={rating || ''} courseid={badgeid || courseid} />
 			{/if}
 
@@ -168,12 +193,14 @@
 						<span class="text-gray-600">{totallab}</span>
 					{/if}
 
-					<!-- <i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
+					<i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
 					{#if loading}
 						<Skeleton class="inline-block h-3.5 w-12 rounded-full" />
+					{:else if !loadSteps.stats}
+						<Skeleton class="inline-block h-3.5 w-7 rounded-full" />
 					{:else}
-						<span class="text-gray-600">1209</span>
-					{/if} -->
+						<span class="text-gray-600">{enrollment_count}</span>
+					{/if}
 				</div>
 
 				<span class="brutal-text !mx-1 text-[10px] label_{isgame ? 'game' : courseType}">
@@ -204,12 +231,20 @@
 						<Skeleton class="w-11/12	 h-4" />
 					</div>
 				{:else}
+					{@const { rate, percent } = feedback || {}}
 					<div class="flex items-center text-gray-600 gap-2">
-						<!-- <Donut size="1.2rem" values={{ easy: 50, hard: 10, medium: 40 }} stroke={20} />
-						<div class="leading-[100%]">
-							<span class="text-xs"> 80% reviews says it's </span>
-							<span class="brutal-text text-xs after:!bg-red-200 !ml-0 text-red-800">Hard</span>
-						</div> -->
+						<Donut size="1.2rem" values={diff} stroke={20} />
+
+						{#if percent > 0}
+							<div class="leading-[100%]">
+								<span class="text-xs"> {percent}% reviews says it's </span>
+								<span class="brutal-text text-xs !ml-0 {diffColor[rate]}">{rate}</span>
+							</div>
+						{:else}
+							<div class="leading-[100%]">
+								<span class="text-xs"> No User Review Yet </span>
+							</div>
+						{/if}
 					</div>
 				{/if}
 

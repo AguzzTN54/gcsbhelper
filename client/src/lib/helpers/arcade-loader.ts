@@ -25,7 +25,8 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	loadSteps.courselist = true;
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
 	incompleteCalculation.set(containsMissingCourse);
-	loadEnrollment(user.uuid);
+	if (courses.length > 0) loadEnrollment(user.uuid);
+	if (merged.length > 0) loadCourseStats(merged);
 	return { user, courses };
 };
 
@@ -68,15 +69,14 @@ const loadBadgeList = async (
 	const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
 	const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
 	const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
-	const filteridStr = filterid ? `|| (${filterid})` : '';
+	const filter = filterid ? ` || (${filterid})` : '';
 	if (!mangerToken || !uuid) return [];
 	if (!login(mangerToken)) return [];
 
 	try {
 		const courselist = await pb.collection('courses').getList(1, 500, {
-			filter: `((inactive=false && type != null)${filteridStr})`
+			filter: `((inactive=false && type != null)${filter})`
 		});
-		// unmerged
 		const result = courselist.items as unknown as PBItem[];
 		return result || [];
 	} catch (e) {
@@ -183,4 +183,33 @@ const loadEnrollment = async (uuid: string) => {
 		return updated;
 	});
 	loadSteps.enrollmentdata = true;
+};
+
+interface PBStats extends App.CourseStats {
+	collectionId: string;
+	collectionName: string;
+	id: string;
+	title: string;
+}
+
+const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
+	const filter = mergedcourses
+		.map((c) => c?.id)
+		.filter((v) => !!v)
+		.map((id) => `id="${id}"`)
+		.join('||');
+
+	const stats = await pb.collection('course_stats').getList(1, 300, {
+		filter: `(${filter})`
+	});
+
+	initData.update((courses) => {
+		const updated = courses.map((c) => {
+			const stat = stats.items.find((v) => v.id === c.id) as unknown as PBStats;
+			const { diff_easy, diff_hard, diff_medium, enrollment_count } = stat || {};
+			return { ...c, stats: { diff_easy, diff_hard, diff_medium, enrollment_count } };
+		});
+		return updated;
+	});
+	loadSteps.stats = true;
 };

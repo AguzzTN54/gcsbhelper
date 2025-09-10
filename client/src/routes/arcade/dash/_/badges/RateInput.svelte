@@ -6,7 +6,7 @@
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 
 	const { rating = '', courseid } = $props();
-	type DiffLevel = 'easy' | 'intermediate' | 'hard';
+	type DiffLevel = 'easy' | 'medium' | 'hard';
 
 	let editRate = $state(false);
 
@@ -39,7 +39,7 @@
 
 	const baseRating: Record<DiffLevel, string> = {
 		easy: 'bg-green-300',
-		intermediate: 'bg-amber-300',
+		medium: 'bg-amber-300',
 		hard: 'bg-red-300'
 	};
 </script>

@@ -14,7 +14,7 @@
 	>({
 		skill: 'bg-amber-600',
 		game: 'bg-blue-800',
-		trivia: 'bg-rose-700',
+		trivia: 'bg-pink-600',
 		special: 'bg-purple-700',
 		wmp: 'bg-emerald-700',
 		...($arcadeRegion === 'india' ? { labfree: 'bg-sky-500' } : {}),
@@ -70,7 +70,7 @@
 </script>
 
 <div
-	class="absolute top-0 right-0 translate-y-1/3 translate-x-1/5 z-20 bg-pur"
+	class="absolute top-0 right-0 translate-y-1/3 translate-x-1/5 z-20"
 	onmousedown={stopPropagation(() => {})}
 	tabindex="0"
 	role="listbox"
