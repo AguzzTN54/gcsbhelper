@@ -23,6 +23,7 @@
 		userinput,
 		totallab,
 		type,
+		// level,
 		token,
 		courseid,
 		badgeid,
@@ -37,9 +38,12 @@
 		easy: 'after:!bg-green-200 text-green-800',
 		medium: 'after:!bg-amber-200 text-amber-800',
 		hard: 'after:!bg-red-200 text-red-800'
+		// introductory: 'after:!bg-green-200 text-green-800',
+		// intermediate: 'after:!bg-yellow-200 text-yellow-800',
+		// advance: 'after:!bg-red-200 text-red-800'
 	};
 
-	const total = enrollment_count || 0;
+	const total = diff.easy + diff.hard + diff.medium;
 	let highestKey: keyof typeof diff = 'easy';
 	let highestVal = diff.easy;
 	const donutVal: Record<string, number> = {};
@@ -211,6 +215,16 @@
 						<i class="fasdl fa-bolt"></i> Fast Track
 					</span>
 				{/if}
+
+				<!-- {#if level}
+					<span
+						class="brutal-text capitalize !mx-1 text-[10px] {diffColor[
+							level as keyof typeof diffColor
+						]}"
+					>
+						{level}
+					</span>
+				{/if} -->
 			</div>
 
 			{#if loading}
@@ -233,7 +247,7 @@
 				{:else}
 					{@const { rate, percent } = feedback || {}}
 					<div class="flex items-center text-gray-600 gap-2">
-						<Donut size="1.2rem" values={diff} stroke={20} />
+						<Donut size="1.2rem" values={donutVal} stroke={20} />
 
 						{#if percent > 0}
 							<div class="leading-[100%]">
