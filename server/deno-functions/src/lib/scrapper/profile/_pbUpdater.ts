@@ -36,6 +36,7 @@ const insertMissingCourses = async (newCourses: UserCourses[]) => {
       body: {
         title,
         badgeurl,
+        inactive: type === 'game',
         id: await shortShaId(getCourseId(courseid, type)),
         ...(type === 'game' ? { badgeid: courseid } : { courseid }),
       },
