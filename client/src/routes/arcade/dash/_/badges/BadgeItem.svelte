@@ -3,14 +3,14 @@
 	import { copyToClipboard } from '$lib/helpers/copy';
 	import { POINT_TABLE } from '$lib/helpers/calculator-arcade';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
+	import { loadSteps } from '$lib/stores/app.svelte';
+	import { createCountdown } from '$lib/stores/countdown.svelte';
 	import dayjs from '$lib/helpers/dateTime';
 	import Donut from '$reusable/Donut.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeImage from './BadgeImage.svelte';
 	import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
-	import { loadSteps } from '$lib/stores/app.svelte';
-	import { createCountdown } from '$lib/stores/countdown.svelte';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -204,7 +204,11 @@
 						<i class="fasdl fa-flask text-indigo-400"></i>
 						<Skeleton class="inline-block h-3.5 w-8 rounded-full" />
 					{:else if (totallab || 0) > 0}
-						<i class="fasdl fa-flask text-indigo-400"></i>
+						{#if type === 'labfree'}
+							<i class="fasdl fa-puzzle text-indigo-300"></i>
+						{:else}
+							<i class="fasdl fa-flask text-indigo-400"></i>
+						{/if}
 						<span class="text-gray-600">{totallab}</span>
 					{/if}
 
