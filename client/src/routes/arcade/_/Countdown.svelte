@@ -2,14 +2,9 @@
 	import dayjs from '$lib/helpers/dateTime';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { facilitatorPeriode, arcadeSeason } from '$lib/data/config';
+	import { createCountdown } from '$lib/stores/countdown.svelte';
 
 	const { small = false } = $props();
-
-	let days = $state(0);
-	let hours = $state(0);
-	let minutes = $state(0);
-	let seconds = $state(0);
-	let timer = $state();
 
 	const endDate = $derived.by(() => {
 		const validRegions = ['india', 'indonesia'];
@@ -18,36 +13,15 @@
 		return endIn || arcadeSeason.end;
 	});
 
+	const timer = $derived(createCountdown(endDate));
+	const { d: days, h: hours, m: minutes, s: seconds } = $derived($timer);
+
 	const countdown = $derived([
 		{ time: days, text: 'd' },
 		{ time: hours, text: 'h' },
 		{ time: minutes, text: 'm' },
 		{ time: seconds, text: 's' }
 	]);
-
-	const updateCountdown = () => {
-		const now = dayjs();
-		const end = dayjs(endDate);
-		const diff = end.diff(now);
-
-		if (diff <= 0) {
-			clearInterval(timer);
-			days = hours = minutes = seconds = 0;
-			return;
-		}
-
-		const dur = dayjs.duration(diff);
-		days = dur.days() + dur.months() * 30 + dur.years() * 365;
-		hours = dur.hours();
-		minutes = dur.minutes();
-		seconds = dur.seconds();
-	};
-
-	$effect(() => {
-		updateCountdown();
-		timer = setInterval(updateCountdown, 1000);
-		return () => clearInterval(timer);
-	});
 </script>
 
 {#if ['india', 'indonesia'].includes($arcadeRegion)}

@@ -10,6 +10,7 @@
 	import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
 	import { loadSteps } from '$lib/stores/app.svelte';
+	import { createCountdown } from '$lib/stores/countdown.svelte';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -67,6 +68,13 @@
 
 	const { arcade, facilitator } = validity || {};
 	const isOutPeriode = !arcade && !facilitator && earned;
+	const expiryTimer = createCountdown(enddate);
+	const countdown = $derived.by(() => {
+		const { d, h, m, s } = $expiryTimer;
+		const time = `${d}d ${h}h ${m}m ${s}s`;
+		return time;
+	});
+
 	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
 	const isLessThanAWeek = (enddate?: string | dayjs.Dayjs | Date) => {
 		if (isExpired || !enddate) return false;
@@ -133,10 +141,10 @@
 			{@render topLabel('Out of period', 'bg-rose-700 text-white')}
 		{:else if earned && type}
 			{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
-		{:else if isExpired}
+		{:else if isExpired && type}
 			{@render topLabel('Expired!', 'bg-rose-700 text-white')}
 		{:else if isLessThanAWeek(enddate)}
-			{@render topLabel('Expiring Soon!', 'bg-amber-600 text-white')}
+			{@render topLabel(countdown, 'bg-amber-600 text-white')}
 		{/if}
 
 		{#if validity?.facilitator && courseType !== 'unknown'}
