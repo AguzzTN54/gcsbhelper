@@ -8,14 +8,41 @@ const getCourseId = (courseid: number, type: 'game' | 'skill'): string => {
 };
 
 const validateCourse = async (courses: UserCourses[]) => {
-  const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
-  const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
-  const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
-  const filter = encodeURIComponent(`(${filterid})`);
+  if (!courses?.length) return;
 
+  // Split array into chunks of maxSize
+  const chunkArray = <T>(arr: T[], maxSize: number): T[][] =>
+    arr.reduce((acc: T[][], _, i) => {
+      if (i % maxSize === 0) acc.push(arr.slice(i, i + maxSize));
+      return acc;
+    }, []);
+
+  // Build filter for one chunk
+  const buildFilter = (chunk: UserCourses[]) => {
+    const cids = chunk.filter((c) => c.type === 'skill').map((c) => `courseid="${c.courseid}"`);
+    const bids = chunk.filter((b) => b.type === 'game').map((c) => `badgeid="${c.courseid}"`);
+    const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
+    return filterid;
+  };
+
+  const chunks = chunkArray(courses, 100);
   let items = [];
-  if (filterid) {
-    ({ items } = await pb('/api/collections/courses/records?skipTotal=true&perPage=1000&filter=' + filter));
+
+  try {
+    const results = await Promise.all(
+      chunks.map(async (chunk) => {
+        const filter = buildFilter(chunk);
+        if (!filter) return [];
+        const queryParam = `skipTotal=true&perPage=1000&filter=${encodeURIComponent(filter)}`;
+        const resp = await pb(`/api/collections/courses/records?${queryParam}`);
+        return resp.items || [];
+      }),
+    );
+
+    items = results.flat();
+  } catch (e) {
+    console.error('Error validating courses:', e);
+    return; // early exit, skip inserting
   }
 
   const missingCourses = courses.filter(({ courseid }) => {

@@ -63,25 +63,48 @@ type PBItem = BasePB & App.CourseItem;
 
 const loadBadgeList = async (
 	courses: App.UserCourses[],
-	mangerToken?: string,
+	managerToken?: string,
 	uuid?: string
 ): Promise<PBItem[]> => {
-	const cids = courses.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
-	const bids = courses.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
-	const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
-	const filter = filterid ? ` || (${filterid})` : '';
-	if (!mangerToken || !uuid) return [];
-	if (!login(mangerToken)) return [];
+	if (!managerToken || !uuid) return [];
+	if (!login(managerToken)) return [];
+
+	// Split array into chunks of maxSize
+	const chunkArray = <T>(arr: T[], maxSize: number): T[][] =>
+		arr.reduce((acc: T[][], _, i) => {
+			if (i % maxSize === 0) acc.push(arr.slice(i, i + maxSize));
+			return acc;
+		}, []);
+
+	// Build filters per chunk
+	const buildFilter = (chunk: 'default' | App.UserCourses[]) => {
+		if (chunk === 'default') return '(inactive=false && type != null)';
+		const cids = chunk.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
+		const bids = chunk.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
+		const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
+		return filterid;
+	};
+
+	// Split into 100-sized chunks
+	const chunks: ('default' | App.UserCourses[])[] = [...chunkArray(courses, 100), 'default'];
 
 	try {
-		const courselist = await pb.collection('courses').getList(1, 500, {
-			filter: `((inactive=false && type != null)${filter})`,
-			skipTotal: true
-		});
-		const result = courselist.items as unknown as PBItem[];
-		return result || [];
+		const results = await Promise.all(
+			chunks.map(async (chunk, i) => {
+				const filter = buildFilter(chunk);
+				const courselist = await pb.collection('courses').getList(1, 500, {
+					filter,
+					requestKey: 'key' + i,
+					skipTotal: true
+				});
+				return courselist.items as unknown as PBItem[];
+			})
+		);
+
+		// Flatten all results
+		return results.flat();
 	} catch (e) {
-		console.error(e);
+		console.error('Error loading courses:', e);
 		return [];
 	}
 };
@@ -196,25 +219,43 @@ interface PBStats extends App.CourseStats {
 }
 
 const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
-	const filter = mergedcourses
-		.map((c) => c?.id)
-		.filter((v) => !!v)
-		.map((id) => `id="${id}"`)
-		.join('||');
+	const ids = mergedcourses.map((c) => c?.id).filter((v): v is string => !!v);
 
-	const stats = await pb.collection('course_stats').getList(1, 300, {
-		fields: 'diff_easy,diff_hard,diff_medium,enrollment_count,id',
-		filter: filter ? `(${filter})` : '',
-		skipTotal: true
-	});
+	if (!ids.length) return [];
 
-	initData.update((courses) => {
-		const updated = courses.map((c) => {
-			const stat = stats.items.find((v) => v.id === c.id) as unknown as PBStats;
-			const { diff_easy, diff_hard, diff_medium, enrollment_count } = stat || {};
-			return { ...c, stats: { diff_easy, diff_hard, diff_medium, enrollment_count } };
+	// split ids into chunks of 100
+	const chunkSize = 100;
+	const chunks: string[][] = [];
+	for (let i = 0; i < ids.length; i += chunkSize) {
+		chunks.push(ids.slice(i, i + chunkSize));
+	}
+
+	try {
+		const results = await Promise.all(
+			chunks.map((chunk, i) => {
+				const filter = chunk.map((id) => pb.filter('id={:id}', { id })).join('||');
+				return pb.collection('course_stats').getList(1, 300, {
+					fields: 'diff_easy,diff_hard,diff_medium,enrollment_count,id',
+					skipTotal: true,
+					requestKey: 'key' + i,
+					filter
+				});
+			})
+		);
+
+		// flatten items from all batches
+		const stats = results.flatMap((res) => res.items);
+
+		initData.update((courses) => {
+			const updated = courses.map((c) => {
+				const stat = stats.find((v) => v.id === c.id) as unknown as PBStats;
+				const { diff_easy, diff_hard, diff_medium, enrollment_count } = stat || {};
+				return { ...c, stats: { diff_easy, diff_hard, diff_medium, enrollment_count } };
+			});
+			return updated;
 		});
-		return updated;
-	});
-	loadSteps.stats = true;
+		loadSteps.stats = true;
+	} catch (e) {
+		console.error('Failed to get Stats' + e);
+	}
 };
