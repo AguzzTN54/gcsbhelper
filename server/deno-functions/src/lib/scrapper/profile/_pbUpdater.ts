@@ -15,7 +15,7 @@ const validateCourse = async (courses: UserCourses[]) => {
 
   let items = [];
   if (filterid) {
-    ({ items } = await pb('/api/collections/courses/records?perPage=1000&filter=' + filter));
+    ({ items } = await pb('/api/collections/courses/records?skipTotal=true&perPage=1000&filter=' + filter));
   }
 
   const missingCourses = courses.filter(({ courseid }) => {
@@ -113,7 +113,7 @@ const insertNewCourses = async (
 const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[]) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
   const filter = encodeURIComponent(`((${courseFilter})&&profile='${hexuuid}')`);
-  const { items = [] } = await pb('/api/collections/course_enrollments/records?filter=' + filter);
+  const { items = [] } = await pb('/api/collections/course_enrollments/records?skipTotal=true&filter=' + filter);
   if (items.length < 1) return;
 
   const requests: PBBatchRequest[] = items.map(({ id }: { id: string }) => ({

@@ -75,7 +75,8 @@ const loadBadgeList = async (
 
 	try {
 		const courselist = await pb.collection('courses').getList(1, 500, {
-			filter: `((inactive=false && type != null)${filter})`
+			filter: `((inactive=false && type != null)${filter})`,
+			skipTotal: true
 		});
 		const result = courselist.items as unknown as PBItem[];
 		return result || [];
@@ -168,7 +169,9 @@ export const validateBadge = (
 const loadEnrollment = async (uuid: string) => {
 	const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
 	const enrolled = await pb.collection('course_enrollments').getList(1, 500, {
-		filter: `profile="${profile}" && (difficulty != null || label != null)`
+		filter: `profile="${profile}" && (difficulty != null || label != null)`,
+		fields: 'course,difficulty,label',
+		skipTotal: true
 	});
 
 	initData.update((courses) => {
@@ -200,7 +203,9 @@ const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
 		.join('||');
 
 	const stats = await pb.collection('course_stats').getList(1, 300, {
-		filter: filter ? `(${filter})` : ''
+		fields: 'diff_easy,diff_hard,diff_medium,enrollment_count,id',
+		filter: filter ? `(${filter})` : '',
+		skipTotal: true
 	});
 
 	initData.update((courses) => {
