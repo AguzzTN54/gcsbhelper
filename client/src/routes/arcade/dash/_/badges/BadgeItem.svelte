@@ -65,6 +65,8 @@
 	const coursePoint = type ? (point ?? 0) : (POINT_TABLE[courseType] ?? 0);
 	const cid = badgeid ? `g${badgeid}` : `c${courseid}`;
 
+	const { arcade, facilitator } = validity || {};
+	const isOutPeriode = !arcade && !facilitator && earned;
 	const isExpired = !enddate ? false : dayjs(enddate).isBefore(new Date());
 	const isLessThanAWeek = (enddate?: string | dayjs.Dayjs | Date) => {
 		if (isExpired || !enddate) return false;
@@ -100,7 +102,7 @@
 	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
 	style="{skewDeg()};"
 >
-	{#if coursePoint > 0}
+	{#if coursePoint > 0 && !isOutPeriode}
 		<div
 			class="absolute top-2 left-2 bg-lime-200/90 z-1 p-1 text-sm rounded text-lime-800 min-w-8 flex items-center justify-center"
 		>
@@ -115,7 +117,7 @@
 
 	{#snippet topLabel(text: string, className: string)}
 		<span
-			class:!top-7={label}
+			class:!top-7={label && !type}
 			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs -skew-2 translate-y-1/3 translate-x-1/5 {className}"
 		>
 			{text}
@@ -127,7 +129,7 @@
 			<LabelPicker courseid={cid} {label} />
 		{/if}
 
-		{#if !validity?.arcade && !validity?.facilitator && earned && (type || (label && !type))}
+		{#if isOutPeriode && (type || (label && !type))}
 			{@render topLabel('Out of period', 'bg-rose-700 text-white')}
 		{:else if earned && type}
 			{@render topLabel('Completed', 'bg-purple-800 text-white !right-1')}
