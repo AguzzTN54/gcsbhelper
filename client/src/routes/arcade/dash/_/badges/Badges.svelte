@@ -2,11 +2,12 @@
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
 	import { arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeSeason } from '$lib/data/config';
 	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
-	import BadgeItem from './BadgeItem.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import BadgeItem from './BadgeItem.svelte';
 
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
@@ -18,7 +19,9 @@
 		}
 		return data.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
 			const gameType = ['wmp', 'arcade'].includes(course.type || '');
-			const type = gameType ? 'game' : course.type || 'unknown';
+			const invalid = dayjs(course.enddate).isBefore(arcadeSeason.start) && course.type != 'skill';
+			if (invalid) course.type = null;
+			const type = invalid ? 'unknown' : gameType ? 'game' : course.type || 'unknown';
 			if (!acc[type]) acc[type] = [];
 			acc[type].push(course);
 			return acc;
