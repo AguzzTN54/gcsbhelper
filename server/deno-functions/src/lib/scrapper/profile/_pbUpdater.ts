@@ -184,11 +184,16 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
     }
 
     if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses);
+
+    // Change facilitator only if user changed their facilitor
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
-      if (facilitator !== savedFacil) await updateFacil(hexuuid, facilitator);
-      console.log(hexuuid, 'No update detected');
+      if (facilitator !== savedFacil && savedFacil !== undefined) {
+        await updateFacil(hexuuid, facilitator);
+      }
+      console.log(hexuuid, savedFacil ? 'Empty Profile' : 'No update detected');
       return;
     }
+
     const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, facilitator, program);
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
     console.log('Profile Updated: ' + hexuuid);
