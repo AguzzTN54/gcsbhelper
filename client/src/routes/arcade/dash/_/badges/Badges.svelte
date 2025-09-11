@@ -68,7 +68,7 @@
 	let query = $state('');
 
 	const list: App.CourseItem[] = $derived.by(() => {
-		let dt = getData($initData);
+		let dt = getData($initData || []) || [];
 		// Remove Unearned labfree for specific facilicator
 		if ($arcadeRegion !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
 		const game = dt
