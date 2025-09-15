@@ -76,8 +76,8 @@
 			{/if}
 
 			<p class="p-2 bg-amber-200 text-amber-700 text-xs text-center">
-				This progress is only an estimate based on your earned badges. I can't guarantee accuracy,
-				but I hope it helps you decide which course to take next.
+				This progress is only a prediction based on your earned badges. I can't guarantee the
+				accuracy, but I hope it helps you decide which course to take next.
 			</p>
 
 			<div class="flex justify-center mt-3">

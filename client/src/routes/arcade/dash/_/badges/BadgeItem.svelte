@@ -283,7 +283,7 @@
 							{/if}
 						</div> -->
 
-						{#if type === 'skill' && typeof progress === 'number'}
+						{#if type === 'skill' && typeof progress === 'number' && (labs?.length || 0) > 0}
 							<div class="flex justify-between text-xs font-medium text-gray-500 pb-0.5">
 								<button
 									class="group"
