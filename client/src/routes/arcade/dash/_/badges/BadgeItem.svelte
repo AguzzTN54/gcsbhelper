@@ -11,6 +11,7 @@
 	import BadgeImage from './BadgeImage.svelte';
 	// import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
+	import { showLabs } from '../../../_/ModalLabs.svelte';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -284,7 +285,12 @@
 
 						{#if type === 'skill' && typeof progress === 'number'}
 							<div class="flex justify-between text-xs font-medium text-gray-500 pb-0.5">
-								<button class="group" aria-label="Lab info" title="Show Shared Labs">
+								<button
+									class="group"
+									aria-label="Lab info"
+									title="Show Shared Labs"
+									onclick={() => showLabs(courseid || 0, labs, title)}
+								>
 									<span> Estimated progress </span>
 									<i
 										class="fasdl fa-info size-4 rounded-full border group-[button:hover]:bg-sky-300"

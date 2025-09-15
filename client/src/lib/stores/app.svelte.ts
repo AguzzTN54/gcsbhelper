@@ -8,6 +8,7 @@ export const loadSteps = $state({
 	stats: false
 });
 
+export const completedLabs = writable<Set<string>>();
 export const incompleteCalculation = writable<boolean>(false);
 export const arcadeRegion = writable<App.FacilitatorRegion>('unset');
 export const activeProfile = writable<App.UserInfo>();

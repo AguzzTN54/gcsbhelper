@@ -7,7 +7,9 @@
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import Portal from '$reusable/Portal';
 	import BadgeItem from './BadgeItem.svelte';
+	import ModalLabs from '../../../_/ModalLabs.svelte';
 
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
@@ -116,6 +118,10 @@
 		return result.map((r) => r.item);
 	});
 </script>
+
+<Portal target="#main">
+	<ModalLabs />
+</Portal>
 
 <div class="mt-10 lg:mt-5 text-center mb-3">
 	<h2 class="font-semibold text-2xl px-2 font-press">BADGES</h2>

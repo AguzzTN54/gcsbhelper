@@ -1,5 +1,11 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
-import { activeProfile, incompleteCalculation, initData, loadSteps } from '$lib/stores/app.svelte';
+import {
+	activeProfile,
+	completedLabs as completedLabStore,
+	incompleteCalculation,
+	initData,
+	loadSteps
+} from '$lib/stores/app.svelte';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
@@ -262,7 +268,7 @@ const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
 };
 
 const loadProgress = (courses: App.CourseItem[]) => {
-	const labsCompleted = new Set();
+	const labsCompleted = new Set<string>();
 	courses
 		.filter((c) => c.earned)
 		.forEach((course) => {
@@ -275,5 +281,6 @@ const loadProgress = (courses: App.CourseItem[]) => {
 		return { ...c, progress };
 	});
 
+	completedLabStore.set(labsCompleted);
 	return updated;
 };
