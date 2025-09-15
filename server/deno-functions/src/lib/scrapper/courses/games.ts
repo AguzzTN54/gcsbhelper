@@ -3,6 +3,7 @@ import { JSDOM, DOMWindow } from 'npm:jsdom';
 import { type ArcadeContent } from '../../db/denoKv.ts';
 import { shortShaId } from '../../utils/hash.ts';
 import { pb } from '../../db/pocketbase.ts';
+import { DecodedCourseData } from './types.d.ts';
 
 const gcsb = 'https://www.cloudskillsboost.google';
 interface GcsbData {
@@ -12,6 +13,7 @@ interface GcsbData {
   enddate: string | null | Date;
   badgeurl: string;
   title: string;
+  labs: string[];
 }
 
 const getDate = (window: DOMWindow, dateIndex: number = 0): string | null => {
@@ -20,6 +22,22 @@ const getDate = (window: DOMWindow, dateIndex: number = 0): string | null => {
   const date = timeMS ? new Date(parseInt(timeMS)).toISOString() : null;
   return date;
 };
+
+const getLabs = (data: DecodedCourseData[]): string[] => {
+  const result: string[] = [];
+  data.forEach((item) => {
+    if (!Array.isArray(item.steps) || item.title === "What's Next") return;
+    item.steps.forEach((step) => {
+      if (!Array.isArray(step.activities)) return;
+      step.activities.forEach((activity) => {
+        if (!activity.title) return;
+        result.push(activity.title?.trim());
+      });
+    });
+  });
+  return result;
+};
+
 const crawlGamePage = async (id: number): Promise<GcsbData | null> => {
   try {
     const target = gcsb + '/games/' + id;
@@ -29,17 +47,16 @@ const crawlGamePage = async (id: number): Promise<GcsbData | null> => {
     const courseContent = window.document.querySelector('ql-course');
     const badgeid = parseInt(courseContent?.getAttribute('courseid') || '0');
 
-    const title = window.document.querySelector('h1.ql-display-large')?.textContent || '';
-    const badgeurl = window.document.querySelector('.game__badge > img')?.getAttribute('src') || '';
+    const title = window.document.querySelector('h1.ql-display-large')?.textContent?.trim() || '';
+    const badgeurl = window.document.querySelector('.game__badge > img')?.getAttribute('src')?.trim() || '';
 
     const dataString = courseContent?.getAttribute('modules');
     const data = dataString ? JSON.parse(dataString) : [];
-    const totallab = data
-      .filter((item: { title: string }) => item.title !== "What's Next")
-      .reduce((sum: number, item: { steps: string[] }) => sum + item.steps.length, 0);
+    const labs = getLabs(data);
+    const totallab = labs.length;
     const startdate = getDate(window, 0);
     const enddate = getDate(window, 1);
-    return { badgeid, totallab, startdate, enddate, badgeurl, title };
+    return { badgeid, totallab, startdate, enddate, badgeurl, title, labs };
   } catch (e) {
     console.error(e);
     return null;
@@ -52,6 +69,7 @@ interface Course {
   token?: string;
   title?: string;
   totallab?: number;
+  labs?: string[];
   badgeurl?: string;
   type?: string;
   startdate?: string | Date | null;
@@ -60,11 +78,21 @@ interface Course {
 }
 
 const insertToPb = async (course: Course) => {
-  const { title, totallab, badgeurl, courseid, point, type, startdate, enddate, badgeid, token } = course || {};
+  const { title, totallab, badgeurl, courseid, point, type, startdate, enddate, badgeid, token, labs } = course || {};
   if (!title || !badgeid) return;
   try {
     const id = await shortShaId(`g${badgeid}`);
+    const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
+    const labData = (await Promise.all(labrecords || [])).flat();
+    const labIds = labData.map((l) => l.id) || [];
+    const labRequest = labData.map(({ id, title }) => ({
+      method: 'PUT',
+      url: '/api/collections/labs/records',
+      body: { id, title },
+    }));
+
     const requests = [
+      ...labRequest,
       {
         method: 'PUT',
         url: '/api/collections/courses/records',
@@ -80,6 +108,7 @@ const insertToPb = async (course: Course) => {
           badgeid,
           token,
           point: point || 0,
+          labs: labIds,
         },
       },
     ];
@@ -96,7 +125,10 @@ const getType = (token: string, title?: string): string => {
 };
 
 export const addGameToPB = async (data: ArcadeContent[]) => {
+  let i = 0;
   for (const content of data) {
+    i++;
+    // if (i > 1) break;
     const { id: courseid, token, point } = content || {};
     const fromgcsb = await crawlGamePage(courseid);
     const type = getType(token, fromgcsb?.title);

@@ -79,4 +79,4 @@ const notifyAndUpdate = async (diff: ArcadeContent[], prev: ArcadeContent[] = []
   return;
 };
 
-await scrapAndNotify();
+// await scrapAndNotify();

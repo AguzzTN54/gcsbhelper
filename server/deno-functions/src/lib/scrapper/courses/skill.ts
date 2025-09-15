@@ -1,7 +1,8 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
-import type { Course, CourseContent } from './courses.d.ts';
+import type { Course, DecodedCourseData } from './types.d.ts';
 import { shortShaId } from '../../utils/hash.ts';
+import { pb } from '../../db/pocketbase.ts';
 
 const delay = (seconds: number) => {
   return new Promise<void>((resolve) => {
@@ -30,7 +31,24 @@ interface MoreCourseDetail {
   fasttrack: boolean;
   totallab: number;
   badgeurl: string;
+  labs: string[];
 }
+
+const getLabs = (data: DecodedCourseData[]): string[] => {
+  const result: string[] = [];
+  data.forEach((item) => {
+    if (!Array.isArray(item.steps) || item.title === "What's Next") return;
+    item.steps.forEach((step) => {
+      if (!Array.isArray(step.activities)) return;
+      step.activities.forEach((activity) => {
+        if (!activity.title) return;
+        result.push(activity.title?.trim());
+      });
+    });
+  });
+  return result.filter((t) => !!t);
+};
+
 const fetchCourseDetail = async ({ path }: Course) => {
   try {
     const res = await fetch(gcsb + path);
@@ -44,55 +62,54 @@ const fetchCourseDetail = async ({ path }: Course) => {
 
     const listContainer = window.document.querySelector('ql-course-outline');
     const modulesAttr = listContainer?.getAttribute('modules');
-    const list: CourseContent[] = modulesAttr ? JSON.parse(modulesAttr) : [];
-    const totallab = list[0].steps.length || 0;
-    const result = { fasttrack, badgeurl, totallab };
+    const list = modulesAttr ? JSON.parse(modulesAttr) : [];
+    const labs = getLabs(list);
+    const totallab = labs.length;
+    const result = { fasttrack, badgeurl, totallab, labs };
     return result;
   } catch {
-    return { fasttrack: false, badgeurl: '', totallab: 0 };
+    return { fasttrack: false, badgeurl: '', totallab: 0, labs: [] };
   }
 };
 
 const insertToPb = async (course: Course & MoreCourseDetail) => {
-  const { title, path, level, totallab, fasttrack, badgeurl } = course || {};
+  const { title, path, level, totallab, fasttrack, badgeurl, labs } = course || {};
   try {
     const [, , idParam] = path.split('/');
     const [stringId] = idParam.split('?');
     const courseid = parseInt(stringId, 10);
     const id = await shortShaId('c' + stringId);
 
-    const data = {
-      requests: [
-        {
-          method: 'PUT',
-          url: '/api/collections/courses/records',
-          body: {
-            id,
-            courseid,
-            title,
-            fasttrack,
-            totallab,
-            level,
-            badgeurl,
-            type: 'skill',
-            point: 0.5,
-          },
-        },
-      ],
-    };
+    const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
+    const labData = (await Promise.all(labrecords || [])).flat();
+    const labIds = labData.map((l) => l.id) || [];
+    const labRequest = labData.map(({ id, title }) => ({
+      method: 'PUT',
+      url: '/api/collections/labs/records',
+      body: { id, title },
+    }));
 
-    const token = Deno.env.get('PB_TOKEN') || '';
-    const pbHost = Deno.env.get('PB_HOST') || 'http://localhost:8090';
-    const res = await fetch(pbHost + '/api/batch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+    const requests = [
+      ...labRequest,
+      {
+        method: 'PUT',
+        url: '/api/collections/courses/records',
+        body: {
+          id,
+          courseid,
+          title,
+          fasttrack,
+          totallab,
+          level,
+          badgeurl,
+          labs: labIds,
+          type: 'skill',
+          point: 0.5,
+        },
       },
-      body: JSON.stringify(data),
-    });
-    const d = (await res.json()) || {};
-    if (res.status !== 200) throw new Error(JSON.stringify(d));
+    ];
+
+    await pb('/api/batch', 'POST', { requests });
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }
@@ -102,8 +119,9 @@ export const loadSkillbadges = async () => {
   const data = await fetchSkillbadges();
   console.log('🗃️  Data received, batch inser to PB');
 
-  let i = 1;
+  let i = 0;
   for (const content of data) {
+    // if (i > 1) break;
     const moreDetails = await fetchCourseDetail(content);
     console.log(`🚀 (${i}) Inserting "${content.title}" to PB`);
     await insertToPb({ ...content, ...moreDetails });

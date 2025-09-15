@@ -217,7 +217,7 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string, facilit
       if (facilitator !== savedFacil && savedFacil !== undefined) {
         await updateFacil(hexuuid, facilitator);
       }
-      console.log(hexuuid, savedFacil ? 'Empty Profile' : 'No update detected');
+      console.log(hexuuid, savedFacil === undefined ? 'Empty Profile' : 'No update detected');
       return;
     }
 

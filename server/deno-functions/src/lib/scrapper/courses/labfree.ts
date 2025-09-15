@@ -1,5 +1,5 @@
 import { JSDOM } from 'npm:jsdom';
-import type { CourseContent } from './courses.d.ts';
+import type { CourseContent } from './types.d.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
 const labfreestr =

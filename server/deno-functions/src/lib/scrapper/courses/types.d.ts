@@ -7,15 +7,6 @@ export interface Course {
   level: 'introductory' | 'intermediate' | 'advanced';
   credentialType: 'skill_badge' | null;
 }
-
-export interface CourseContent {
-  id: string;
-  title: string;
-  description: string | null;
-  steps: Step[];
-  expanded: boolean;
-}
-
 export interface Step {
   id: string;
   prompt: string | null;
@@ -37,4 +28,25 @@ export interface Activity {
   isComplete: boolean;
   inProgress: boolean;
   disabled: boolean;
+}
+
+interface CourseDataActivity {
+  id: number;
+  title?: string;
+  href?: string | null;
+  // add other fields if needed
+}
+
+interface CourseDataStep {
+  id: number;
+  prompt?: string | null;
+  isOptional: boolean;
+  activities: CourseDataActivity[];
+}
+
+interface DecodedCourseData {
+  id: number;
+  title: string;
+  description?: string | null;
+  steps: CourseDataStep[];
 }
