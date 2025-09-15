@@ -21,12 +21,13 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 
 	const storedBadges = await loadBadgeList(courses, managerToken, user.uuid);
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
-	initData.set(merged);
+	const basicData = loadProgress(merged);
+	initData.set(basicData);
 	loadSteps.courselist = true;
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
 	incompleteCalculation.set(containsMissingCourse);
 	if (courses.length > 0) loadEnrollment(user.uuid);
-	if (merged.length > 0) loadCourseStats(merged);
+	if (basicData.length > 0) loadCourseStats(basicData);
 	return { user, courses };
 };
 
@@ -78,7 +79,7 @@ const loadBadgeList = async (
 
 	// Build filters per chunk
 	const buildFilter = (chunk: 'default' | App.UserCourses[]) => {
-		if (chunk === 'default') return '(inactive=false && type != null)';
+		if (chunk === 'default') return '(inactive=false&&type!=null)';
 		const cids = chunk.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
 		const bids = chunk.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
 		const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
@@ -87,7 +88,6 @@ const loadBadgeList = async (
 
 	// Split into 100-sized chunks
 	const chunks: ('default' | App.UserCourses[])[] = [...chunkArray(courses, 100), 'default'];
-
 	try {
 		const results = await Promise.all(
 			chunks.map(async (chunk, i) => {
@@ -95,7 +95,8 @@ const loadBadgeList = async (
 				const courselist = await pb.collection('courses').getList(1, 500, {
 					filter,
 					requestKey: 'key' + i,
-					skipTotal: true
+					skipTotal: true,
+					expand: 'labs'
 				});
 				return courselist.items as unknown as PBItem[];
 			})
@@ -258,4 +259,21 @@ const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
 	} catch (e) {
 		console.error('Failed to get Stats' + e);
 	}
+};
+
+const loadProgress = (courses: App.CourseItem[]) => {
+	const labsCompleted = new Set();
+	courses
+		.filter((c) => c.earned)
+		.forEach((course) => {
+			course.labs?.forEach((lab) => labsCompleted.add(lab));
+		});
+
+	const updated = courses.map((c) => {
+		const completedLabs = c.labs?.filter((lab) => labsCompleted.has(lab));
+		const progress = completedLabs?.length;
+		return { ...c, progress };
+	});
+
+	return updated;
 };

@@ -6,15 +6,16 @@
 	import { loadSteps } from '$lib/stores/app.svelte';
 	import { createCountdown } from '$lib/stores/countdown.svelte';
 	import dayjs from '$lib/helpers/dateTime';
-	import Donut from '$reusable/Donut.svelte';
+	// import Donut from '$reusable/Donut.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeImage from './BadgeImage.svelte';
-	import RateInput from './RateInput.svelte';
+	// import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
 	const {
+		id,
 		point,
 		badgeurl,
 		fasttrack,
@@ -25,6 +26,8 @@
 		totallab,
 		type,
 		// level,
+		labs,
+		progress,
 		token,
 		courseid,
 		badgeid,
@@ -34,31 +37,31 @@
 	} = data || {};
 
 	const { diff_easy, diff_hard, diff_medium, enrollment_count } = stats || {};
-	const diff = { easy: diff_easy || 0, medium: diff_medium || 0, hard: diff_hard || 0 };
-	const diffColor = {
-		easy: 'after:!bg-green-200 text-green-800',
-		medium: 'after:!bg-amber-200 text-amber-800',
-		hard: 'after:!bg-red-200 text-red-800'
-		// introductory: 'after:!bg-green-200 text-green-800',
-		// intermediate: 'after:!bg-yellow-200 text-yellow-800',
-		// advance: 'after:!bg-red-200 text-red-800'
-	};
+	// const diff = { easy: diff_easy || 0, medium: diff_medium || 0, hard: diff_hard || 0 };
+	// const diffColor = {
+	// 	easy: 'after:!bg-green-200 text-green-800',
+	// 	medium: 'after:!bg-amber-200 text-amber-800',
+	// 	hard: 'after:!bg-red-200 text-red-800'
+	// 	// introductory: 'after:!bg-green-200 text-green-800',
+	// 	// intermediate: 'after:!bg-yellow-200 text-yellow-800',
+	// 	// advance: 'after:!bg-red-200 text-red-800'
+	// };
 
-	const total = diff.easy + diff.hard + diff.medium;
-	let highestKey: keyof typeof diff = 'easy';
-	let highestVal = diff.easy;
-	const donutVal: Record<string, number> = {};
-	for (const [key, val] of Object.entries(diff) as [keyof typeof diff, number][]) {
-		donutVal[key] = total > 0 ? (val / total) * 100 : 0;
-		if (diff[key] > highestVal) {
-			highestKey = key;
-			highestVal = diff[key];
-		}
-	}
-	const feedback = {
-		rate: highestKey,
-		percent: total > 0 ? Number((highestVal / total).toFixed(2)) * 100 : 0
-	};
+	// const total = diff.easy + diff.hard + diff.medium;
+	// let highestKey: keyof typeof diff = 'easy';
+	// let highestVal = diff.easy;
+	// const donutVal: Record<string, number> = {};
+	// for (const [key, val] of Object.entries(diff) as [keyof typeof diff, number][]) {
+	// 	donutVal[key] = total > 0 ? (val / total) * 100 : 0;
+	// 	if (diff[key] > highestVal) {
+	// 		highestKey = key;
+	// 		highestVal = diff[key];
+	// 	}
+	// }
+	// const feedback = {
+	// 	rate: highestKey,
+	// 	percent: total > 0 ? Number((highestVal / total).toFixed(2)) * 100 : 0
+	// };
 
 	const { label, rating } = userinput || {};
 	const courseType = type || label || 'unknown';
@@ -168,9 +171,9 @@
 				/>
 			{/if}
 
-			{#if earned}
+			<!-- {#if earned}
 				<RateInput {rating} courseid={cid} />
-			{/if}
+			{/if} -->
 
 			{#if earned && earndate}
 				<div
@@ -246,12 +249,14 @@
 				<Skeleton class="w-full h-6 rounded-lg" />
 				<Skeleton class="w-7/12 mt-2 h-6 rounded-lg" />
 			{:else}
-				<h3 class="text-xl leading-[120%] text-overflow" {title} style="--line-number:2">
-					{title}
-				</h3>
+				<div class="h-12">
+					<h3 class="text-xl leading-[120%] text-overflow" {title} style="--line-number:2">
+						{title}
+					</h3>
+				</div>
 			{/if}
 
-			<div class="flex justify-between items-center pt-1">
+			<div class="flex justify-between items-end pt-1">
 				{#if loading}
 					<div>
 						<Skeleton class="rounded-full size-5" />
@@ -260,18 +265,40 @@
 						<Skeleton class="w-11/12	 h-4" />
 					</div>
 				{:else}
-					{@const { rate, percent } = feedback || {}}
-					<div class="flex items-center text-gray-600 gap-2">
-						<Donut size="1.2rem" values={donutVal} stroke={20} />
+					<!-- {@const { rate, percent } = feedback || {}} -->
+					<div class="flex-col flex justify-end w-[calc(100%-3rem)]">
+						<!-- <div class="flex text-gray-600 gap-2">
+							<Donut size="1.2rem" values={donutVal} stroke={20} />
 
-						{#if percent > 0}
-							<div class="leading-[100%]">
-								<span class="text-xs"> {percent}% reviews says it's </span>
-								<span class="brutal-text text-xs !ml-0 {diffColor[rate]}">{rate}</span>
+							{#if percent > 0}
+								<div class="leading-[100%]">
+									<span class="text-xs"> {percent}% reviews says it's </span>
+									<span class="brutal-text text-xs !ml-0 {diffColor[rate]}">{rate}</span>
+								</div>
+							{:else}
+								<div class="leading-[100%]">
+									<span class="text-xs"> No User Review Yet </span>
+								</div>
+							{/if}
+						</div> -->
+
+						{#if type === 'skill' && typeof progress === 'number'}
+							<div class="flex justify-between text-xs font-medium text-gray-500 pb-0.5">
+								<button class="group" aria-label="Lab info" title="Show Shared Labs">
+									<span> Estimated progress </span>
+									<i
+										class="fasdl fa-info size-4 rounded-full border group-[button:hover]:bg-sky-300"
+									></i>
+								</button>
+								<span> {progress}/{labs?.length || 0} </span>
 							</div>
-						{:else}
-							<div class="leading-[100%]">
-								<span class="text-xs"> No User Review Yet </span>
+							<div class="flex items-center text-gray-600 gap-0.5">
+								{#each labs || [] as _, i (i)}
+									<div
+										class:bg-slate-300={i >= progress}
+										class="w-full h-1 bg-amber-400 rounded-full"
+									></div>
+								{/each}
 							</div>
 						{/if}
 					</div>

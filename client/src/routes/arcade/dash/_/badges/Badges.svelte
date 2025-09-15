@@ -72,7 +72,7 @@
 		// Remove Unearned labfree for specific facilicator
 		if ($arcadeRegion !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
 		const game = dt
-			.filter((d) => d.type?.match(/game|wmp/))
+			.filter((d) => d.type?.match(/game|trivia|wmp/))
 			.sort((a, b) => {
 				const now = dayjs();
 
@@ -99,7 +99,7 @@
 			});
 
 		const notGame = dt
-			.filter((d) => !d.type?.match(/game|wmp/))
+			.filter((d) => !d.type?.match(/game|wmp|trivia/))
 			.sort((a, b) => Number(a.earned) - Number(b.earned))
 			.sort((a, b) => {
 				return labelKey.indexOf(a.type || 'unknown') - labelKey.indexOf(b.type || 'unknown');

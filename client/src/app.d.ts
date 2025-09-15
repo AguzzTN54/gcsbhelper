@@ -68,6 +68,8 @@ declare global {
 			token: string;
 			totallab: number;
 			type: CourseType;
+			progress?: number;
+			labs?: string[];
 			stats?: CourseStats;
 			userinput?: {
 				label?: CourseType | 'special';
