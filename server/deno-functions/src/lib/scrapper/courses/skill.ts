@@ -46,7 +46,8 @@ const getLabs = (data: DecodedCourseData[]): string[] => {
       });
     });
   });
-  return result.filter((t) => !!t);
+  const labs = result.filter((t) => !!t && !t.match(/course badge/i));
+  return labs;
 };
 
 const fetchCourseDetail = async ({ path }: Course) => {
