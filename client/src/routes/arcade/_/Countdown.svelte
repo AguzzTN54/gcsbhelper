@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import dayjs from '$lib/helpers/dateTime';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { facilitatorPeriode, arcadeSeason } from '$lib/data/config';
@@ -6,11 +6,16 @@
 
 	const { small = false } = $props();
 
-	const endDate = $derived.by(() => {
+	const isFacil = $derived.by(() => {
 		const validRegions = ['india', 'indonesia'];
-		if (!validRegions.includes($arcadeRegion)) return arcadeSeason.end;
-		const endIn = facilitatorPeriode[$arcadeRegion]?.end;
-		return endIn || arcadeSeason.end;
+		return validRegions.includes($arcadeRegion);
+	});
+
+	const endIn = $derived(facilitatorPeriode[$arcadeRegion]?.end);
+	const endDate = $derived.by(() => {
+		const arcend = arcadeSeason.end;
+		if (!isFacil || dayjs(endIn).isBefore(Date.now())) return arcend;
+		return endIn;
 	});
 
 	const timer = $derived(createCountdown(endDate));
@@ -24,7 +29,7 @@
 	]);
 </script>
 
-{#if ['india', 'indonesia'].includes($arcadeRegion)}
+{#if isFacil && dayjs(endIn).isAfter(Date.now())}
 	<span
 		class="brutal-text after:!bg-sky-900 text-white text-xs sm:text-sm mb-0.5"
 		class:!mb-2={!small}
@@ -41,6 +46,7 @@
 		Time Remaining
 	</span>
 {/if}
+
 <div class="flex gap-1 text-lg font-mono">
 	{#each countdown as { text, time }}
 		<div
