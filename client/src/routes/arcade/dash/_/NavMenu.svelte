@@ -115,6 +115,7 @@
 	{:else}
 		{#each action ? actions : links as { icon, slug, text }}
 			<button
+				id={action ? 'action-' + slug : slug}
 				onclick={() => buttonClick(slug)}
 				class:active={active === slug}
 				aria-label={text}

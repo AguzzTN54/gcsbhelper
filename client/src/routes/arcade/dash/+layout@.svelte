@@ -15,6 +15,7 @@
 	import Modal from '$reusable/Modal.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Toasts from '$reusable/Toast/Toasts.svelte';
+	import Tour from '$reusable/Tour.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
@@ -60,6 +61,7 @@
 </script>
 
 <Toasts />
+<Tour />
 
 {#if $incompleteCalculation}
 	<Modal hideclosebutton persist>
@@ -111,7 +113,7 @@
 >
 	<div
 		style="--bg:url({bg})"
-		class="-skew-1 h-[calc(100%-2rem)] sm:h-full w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] z-1 absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[1rem] brutal-border rounded-tl-3xl overflow-hidden bg-indigo-300 after:top-0 after:left-0 after:skew-1 after:-z-10 after:absolute after:size-full after:bg-gray-100"
+		class="-skew-1 h-[calc(100%-2rem)] sm:h-full w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] z-1 fixed bottom-0 left-1/2 -translate-x-1/2 translate-y-[1rem] brutal-border rounded-tl-3xl overflow-hidden bg-indigo-300 after:top-0 after:left-0 after:skew-1 after:-z-10 after:absolute after:size-full after:bg-gray-100"
 	></div>
 
 	<div

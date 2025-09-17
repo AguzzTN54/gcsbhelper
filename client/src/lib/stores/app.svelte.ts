@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 export const toastMsg = writable<App.Toast[]>([]);
+export const screenSize = writable({ width: 0, height: 0 });
 
 export const loadSteps = $state({
 	profile: false,

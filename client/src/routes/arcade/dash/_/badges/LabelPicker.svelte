@@ -72,7 +72,7 @@
 </script>
 
 <div
-	class="absolute top-0 right-0 translate-y-1/3 translate-x-1/5 z-20"
+	class="labelpicker absolute top-0 right-0 translate-y-1/3 translate-x-1/5 z-20"
 	onmousedown={stopPropagation(() => {})}
 	tabindex="0"
 	role="listbox"
@@ -91,7 +91,9 @@
 	{/if}
 
 	{#if showPicker}
-		<div class="absolute top-[110%] right-0 bg-gray-300 -skew-y-2 text-sm min-w-full w-fit">
+		<div
+			class="label-selection absolute top-[110%] right-0 bg-gray-300 -skew-y-2 text-sm min-w-full w-fit"
+		>
 			{#each labelsTxt as label (label)}
 				<button
 					onclick={() => selectLabel(courseid, label as App.CourseType | 'special' | 'unknown')}

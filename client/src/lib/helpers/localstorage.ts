@@ -9,6 +9,8 @@ interface LocalAccountItem {
 }
 interface LStorageData {
 	accounts?: Partial<Record<App.GCPProgram, LocalAccountItem[]>>;
+	arcadeTourComplete?: boolean;
+	arcadeUnlistedBadgeTour?: boolean;
 }
 
 const getData = (): LStorageData => {

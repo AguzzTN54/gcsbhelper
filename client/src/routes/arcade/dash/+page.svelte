@@ -83,7 +83,7 @@
 			<Timeline />
 		</div>
 
-		<div class="mt-auto sm:px-5 px-2 pt-5">
+		<div class="mt-auto sm:px-5 px-2 pt-2">
 			<div class="brutal-border p-2 w-full rounded-xl bg-amber-200 flex justify-center">
 				<div class="flex flex-col items-center relative z-1">
 					<Countdown />
@@ -102,7 +102,7 @@
 	<!-- Right -->
 
 	<div class="w-full sm:w-1/2 lg:w-3/5 xl:w-full">
-		<ScrollArea id="rightpane" class="sm:py-2 sm:px-10 px-2">
+		<ScrollArea id="rightpane" class="sm:py-2 sm:px-10 px-4">
 			<div id="content-stats"></div>
 			<Stats />
 			<Reward />

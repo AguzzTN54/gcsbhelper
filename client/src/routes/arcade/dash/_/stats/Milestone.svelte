@@ -246,6 +246,7 @@
 	{:else}
 		<div class="relative">
 			<button
+				id="select-milestone"
 				onclick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();

@@ -1,13 +1,14 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
-	import { arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeProfile, arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
 	import { arcadeSeason } from '$lib/data/config';
 	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Portal from '$reusable/Portal';
+	import { initTour } from '../_tour.svelte';
 	import BadgeItem from './BadgeItem.svelte';
 	import ModalLabs from '../../../_/ModalLabs.svelte';
 
@@ -117,6 +118,8 @@
 		const result = fuse.search(query);
 		return result.map((r) => r.item);
 	});
+
+	$effect(() => initTour(labels.map((l) => l.type)));
 </script>
 
 <Portal target="#main">
@@ -137,6 +140,7 @@
 					{#if $profileReady}
 						{#each labels as { label, length, type } (label)}
 							<button
+								id="label-{type}"
 								onclick={() => (activeGroup = type)}
 								class:active={activeGroup === type}
 								class:bg-amber-200={activeGroup === type}

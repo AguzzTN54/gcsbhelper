@@ -3,15 +3,17 @@
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import 'swiper/css';
 	import '../app.css';
+	import { screenSize } from '$lib/stores/app.svelte';
 	import splash from '$img/splash5.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
-	import Footer from './_global/Footer.svelte';
 	import Loading from '$reusable/Loading.svelte';
+	import Footer from './_global/Footer.svelte';
 
 	const { children } = $props();
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	const screenHeight = $derived(innerHeight ? `${innerHeight}px` : '100vh');
+	$effect(() => screenSize.set({ width: innerWidth, height: innerHeight }));
 
 	let loaded = $state(false);
 	setContext('loaded', () => (loaded = true));
