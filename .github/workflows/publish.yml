@@ -51,6 +51,7 @@ jobs:
       - name: Building the App
         run: pnpm build
         env:
+          PUBLIC_GITHUB_SHA: ${{ github.sha }}
           PUBLIC_VAPID_KEY: ${{ secrets.PUBLIC_VAPID_KEY }}
           PRIVATE_VAPID_KEY: ${{ secrets.PRIVATE_VAPID_KEY }}
           PUBLIC_SUPER_SECRET: ${{ secrets.PUBLIC_SUPER_SECRET }}
