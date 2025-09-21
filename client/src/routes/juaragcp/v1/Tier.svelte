@@ -70,11 +70,11 @@
 	});
 </script>
 
-<div class="tier">
+<div class="relative size-full">
 	{#if tier === 0 || status === 'incomplete'}
-		<h3>NO TIER</h3>
+		<h3 class="mt-8 inline-block w-fit text-5xl font-bold">NO TIER</h3>
 	{:else}
-		<h3>TIER {tier}</h3>
+		<h3 class="mt-8 inline-block w-fit text-5xl font-bold">TIER {tier}</h3>
 
 		<div class="info">
 			<button class="primary_hover_after"> ? </button>
@@ -105,25 +105,6 @@
 {/if}
 
 <style>
-	.tier {
-		position: relative;
-		padding: calc(0.01 * var(--screen-height));
-		width: fit-content;
-		margin: auto;
-	}
-	.tier h3 {
-		font-size: calc(0.1 * var(--screen-height));
-		font-weight: 800;
-		width: fit-content;
-		display: inline-block;
-	}
-
-	@media screen and (max-width: 540px) {
-		.tier h3 {
-			font-size: calc(0.07 * var(--screen-height));
-		}
-	}
-
 	a {
 		text-decoration: underline;
 	}

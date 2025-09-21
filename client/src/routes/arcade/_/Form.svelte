@@ -4,29 +4,15 @@
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
+	import { isGCSBUrl, validateURL } from '$lib/helpers/loader.profile';
 	import Button from '$reusable/Button.svelte';
-	// import Checkbox from '$reusable/Checkbox.svelte';
 	import Loading from '$reusable/Loading.svelte';
-
-	const isGCSBUrl = (url: string) => /cloudskillsboost.google\/public_profiles\//.test(url);
-	const validateURL = (url: string) => {
-		const pattern = new RegExp(
-			'^([a-zA-Z]+:\\/\\/)?' + // protocol
-				'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-				'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-				'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-				'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-				'(\\#[-a-z\\d_]*)?$', // fragment locator
-			'i'
-		);
-		return pattern.test(url);
-	};
 
 	let loading = $state(false);
 	let fetchError = $state(false);
 	let value = $state('');
 	let typed = $state(false);
-	// let submitGlobal = $state(true);
+
 	const profileUUID = $derived.by<string>(() => {
 		const profileLink = value.trim();
 		const isgcsb = isGCSBUrl(profileLink);

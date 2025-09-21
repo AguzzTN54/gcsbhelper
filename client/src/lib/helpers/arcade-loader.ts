@@ -1,4 +1,3 @@
-import { PUBLIC_API_SERVER } from '$env/static/public';
 import {
 	activeProfile,
 	completedLabs as completedLabStore,
@@ -9,19 +8,12 @@ import {
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb, { login } from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
-import { createToken, shortShaId } from './crypto';
-import { uuidToHex } from './uuid';
-
-interface LoadProfileOptions {
-	profileUUID: string;
-	facilitator?: App.FacilitatorRegion;
-	program: 'arcade' | 'juaragcp';
-}
+import { shortShaId } from './crypto';
+import { loadProfile, type LoadProfileOptions } from './loader.profile';
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
-	const arcadetoken = await createToken();
-	const { courses, user, token: managerToken } = await loadProfile(option, arcadetoken);
+	const { courses, user, token: managerToken } = await loadProfile(option);
 	loadSteps.profile = true;
 	activeProfile.set(user);
 
@@ -35,28 +27,6 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	if (courses.length > 0) loadEnrollment(user.uuid);
 	if (basicData.length > 0) loadCourseStats(basicData);
 	return { user, courses };
-};
-
-const loadProfile = async (option: LoadProfileOptions, token: string) => {
-	const { profileUUID, program } = option || {};
-	const profileid = uuidToHex(profileUUID);
-
-	const server = new URL(PUBLIC_API_SERVER + '/internal/identity/' + profileid);
-	if (option.program === 'arcade') {
-		server.searchParams.append('program', arcadeSeason.seasonid);
-		const { facilitator } = option;
-		if (facilitator) server.searchParams.append('facilitator', facilitator);
-	} else {
-		server.searchParams.append('program', program);
-	}
-
-	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
-	if (res.status !== 200) throw new Error('Fetch Error');
-
-	const data: App.InitData = await res.json();
-	const { uuid } = data.user;
-	if (!uuid) throw new Error('Missing ID');
-	return data;
 };
 
 interface BasePB {

@@ -3,8 +3,8 @@ import { browser } from '$app/environment';
 interface LocalAccountItem {
 	uuid: string;
 	name: string;
-	facilitator: App.FacilitatorRegion;
 	avatar: string;
+	facilitator?: App.FacilitatorRegion;
 	active?: boolean;
 }
 interface LStorageData {

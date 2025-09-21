@@ -130,23 +130,23 @@
 	@import 'tailwindcss/theme' theme(reference);
 
 	:global {
-		.os-scrollbar-vertical .os-scrollbar-track {
+		#arcade .os-scrollbar-vertical .os-scrollbar-track {
 			@apply relative;
 			&::after {
 				content: '';
-				@apply bg-amber-900 rounded-none top-0 left-1/2 -translate-x-1/2 h-full w-[2px] absolute -z-1;
+				@apply absolute top-0 left-1/2 -z-1 h-full w-[2px] -translate-x-1/2 rounded-none bg-amber-900;
 			}
 		}
 
-		.os-scrollbar-horizontal .os-scrollbar-track {
+		#arcade .os-scrollbar-horizontal .os-scrollbar-track {
 			@apply relative;
 			&::after {
 				content: '';
-				@apply bg-amber-900 rounded-none top-1/2 left-0 -translate-y-1/2 w-full h-[2px] absolute -z-1;
+				@apply absolute top-1/2 left-0 -z-1 h-[2px] w-full -translate-y-1/2 rounded-none bg-amber-900;
 			}
 		}
 
-		.os-scrollbar-handle {
+		#arcade .os-scrollbar-handle {
 			--os-handle-max-size: 4rem;
 			@apply rounded-none bg-amber-900;
 		}

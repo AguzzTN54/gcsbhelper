@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { getContext, onMount, setContext } from 'svelte';
 	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app.svelte';
 	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { shortShaId } from '$lib/helpers/crypto';
-	import { pushToast } from '$reusable/Toast/Toasts.svelte';
-	import Modal from '$reusable/Modal.svelte';
-	import pb from '$lib/helpers/pocketbase';
 	import { validateBadge } from '$lib/helpers/arcade-loader';
-	import { page } from '$app/state';
+	import { pushToast } from '$reusable/Toast/Toasts.svelte';
+	import pb from '$lib/helpers/pocketbase';
+	import Modal from '$reusable/Modal.svelte';
 
 	const { showModal } = $props();
 	let persist = $state(false);

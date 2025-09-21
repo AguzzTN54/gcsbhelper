@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { onMount, setContext } from 'svelte';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import 'swiper/css';
 	import '../app.css';
 	import { screenSize } from '$lib/stores/app.svelte';
-	import splash from '$img/splash5.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Loading from '$reusable/Loading.svelte';
 	import Footer from './_global/Footer.svelte';
@@ -24,27 +24,30 @@
 			return;
 		}
 		navigator.serviceWorker.register('/sw.js');
+		if (!page.url.pathname.startsWith('/arcade')) {
+			loaded = true;
+		}
 	});
 </script>
+
+<svelte:head>
+	<title>CloudSkillBoost Helper Tools</title>
+</svelte:head>
 
 <svelte:window bind:innerHeight bind:innerWidth />
 
 {#if !loaded}
-	<div class="flex justify-center flex-col items-center size-full fixed bg-white z-150">
+	<div class="fixed z-150 flex size-full flex-col items-center justify-center bg-white">
 		<Loading />
 		<span class="mt-4 block text-sm text-slate-600"> Wait for a second.. </span>
 	</div>
 {/if}
 
 <main
-	class="h-[var(--screen-height)] w-screen flex flex-col relative"
+	id={page.route.id?.includes('/arcade') ? 'arcade' : 'juaragcp'}
+	class="relative flex h-[var(--screen-height)] w-screen flex-col"
 	style="--screen-height:{screenHeight};--screen-width:{innerWidth}px;"
 >
-	<img
-		src={splash}
-		alt="splash"
-		class="size-full object-cover absolute left-0 -z-1 top-0 pointer-events-none"
-	/>
 	<ScrollArea id="main">
 		{@render children()}
 	</ScrollArea>

@@ -11,6 +11,7 @@
 		"strict": true,
 		"moduleResolution": "bundler",
 		"noImplicitThis": false,
-		"typeRoots": ["node_modules/@types"]
+		"typeRoots": ["./types", "node_modules/@types"],
+		"types": ["canvas-confetti"]
 	}
 }

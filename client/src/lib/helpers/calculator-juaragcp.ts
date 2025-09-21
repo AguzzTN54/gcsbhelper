@@ -1,5 +1,8 @@
+import { juaraSeason } from '$lib/data/config';
 import db from '$lib/data/juaragcp.json';
-import dayjs, { juaraDate } from './dateTime';
+import dayjs from './dateTime';
+
+const { seasonid, end, start } = juaraSeason;
 
 export const lookupBadges = (userData: App.UserCourses[]) => {
 	const sourcedata = db as App.DataScheme[];
@@ -23,7 +26,6 @@ const checkItem = (dt: App.SourceCourses, userData: App.UserCourses[]) => {
 	const d = dayjs(date);
 	dt.date = d;
 
-	const { end, start } = juaraDate;
 	const startDate = d.isSame(start, 'date') || d.isAfter(start);
 	const endDate = d.isBefore(end) || d.isSame(end, 'date');
 	const validity = startDate && endDate;

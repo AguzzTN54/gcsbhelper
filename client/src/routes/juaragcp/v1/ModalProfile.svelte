@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	// import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { arcadeProfile, juaraProfile } from '$lib/stores/app.svelte';
-	import { accounts } from '$lib/helpers/localstorage';
+	import { localAccounts } from '$lib/helpers/localstorage';
 	import Modal from '$comp/Modal.svelte';
 	import Button from '$comp/Button.svelte';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
 
 	const { target = 'arcade' } = $props();
 	const profile = target === 'arcade' ? arcadeProfile : juaraProfile;
 
 	const modalHandle = getContext('modalHandle') as () => void;
-	let myAccounts = $state(accounts.getAll(target).filter(({ profileID }) => !!profileID));
+	let myAccounts = $state(localAccounts.getAll('juaragcp').filter(({ uuid }) => !!uuid));
 
 	const { profileID: activeProfile } = $profile;
 	const selectAccount = (profileID: string) => {
@@ -20,8 +20,8 @@
 	};
 
 	const deleteAccount = (profileID: string) => {
-		myAccounts = myAccounts.filter(({ profileID: id }) => profileID !== id);
-		accounts.delete(profileID, target);
+		myAccounts = myAccounts.filter(({ uuid: id }) => profileID !== id);
+		localAccounts.delete(profileID, 'juaragcp');
 	};
 
 	const addNew = () => {
@@ -37,26 +37,22 @@
 			<div class="iete" style="text-align: center;">No Data</div>
 		{:else}
 			<div class="scroll">
-				<!-- <OverlayScrollbarsComponent options={{ scrollbars: { theme: 'os-theme-dark' } }} defer>
+				<ScrollArea>
 					<div class="list">
-						{#each myAccounts as { name, profileID }}
-							<div class="item" class:active={activeProfile === profileID}>
-								<button class="name" onclick={() => selectAccount(profileID)}>
+						{#each myAccounts as { name, uuid }}
+							<div class="item" class:active={activeProfile === uuid}>
+								<button class="name" onclick={() => selectAccount(uuid)}>
 									{name}
 								</button>
 								<div class="delete">
-									<button
-										class="delete"
-										aria-label="Delete"
-										onclick={() => deleteAccount(profileID)}
-									>
+									<button class="delete" aria-label="Delete" onclick={() => deleteAccount(uuid)}>
 										<i class="gc-trash"></i>
 									</button>
 								</div>
 							</div>
 						{/each}
 					</div>
-				</OverlayScrollbarsComponent> -->
+				</ScrollArea>
 			</div>
 		{/if}
 	</div>
