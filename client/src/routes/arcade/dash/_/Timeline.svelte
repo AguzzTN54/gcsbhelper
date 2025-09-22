@@ -67,13 +67,13 @@
 </script>
 
 <div
-	class="size-full overflow-hidden mt-2 min-h-[calc(var(--tm-height)+1.5rem)] sm:min-h-auto"
+	class="mt-2 size-full min-h-[calc(var(--tm-height)+1.5rem)] overflow-hidden sm:min-h-auto"
 	bind:clientWidth={timelineW}
 	style="--tm-width:{timelineW}px;--tm-height:{timelineH}px;--dtw:calc(var(--tm-width)/7)"
 >
 	<ScrollArea horizontal id="timeline">
 		<div
-			class="relative h-[98%] w-0.5 bg-red-500 z-21 flex"
+			class="relative z-21 flex h-[98%] w-0.5 bg-red-500"
 			style="transform: translateX(
 				calc(var(--dtw)/2
 				+ var(--dtw)*{offset}
@@ -82,30 +82,30 @@
 		>
 			<span
 				id="nowindicator"
-				class="inline-block text-xs bg-red-500 py-1 px-2 rounded-full leading-[110%] text-white mt-auto mb-1 -translate-x-1/2"
+				class="mt-auto mb-1 inline-block -translate-x-1/2 rounded-full bg-red-500 px-2 py-1 text-xs leading-[110%] text-white"
 			>
 				{timeNow.format('HH:mm:ss')}
 			</span>
 		</div>
 
 		<div class="absolute top-0 left-0 h-full min-h-fit" id="timeline-grid">
-			<div class="h-full absolute flex top-0 left-0 z-10">
+			<div class="absolute top-0 left-0 z-10 flex h-full">
 				{#each getDateList() as { dates, month }}
 					<div class="flex h-full">
-						<div class="w-0 sticky left-0 top-0">
+						<div class="sticky top-0 left-0 w-0">
 							<span
-								class="h-fit inline-block text-sm px-2 bg-purple-200 text-purple-800 font-bold -translate-y-1/5"
+								class="inline-block h-fit -translate-y-1/5 bg-purple-200 px-2 text-sm font-bold text-purple-800"
 							>
 								{month}
 							</span>
 						</div>
 						{#each dates as { date, day }}
-							<div class="w-[var(--dtw)] flex flex-col">
+							<div class="flex w-[var(--dtw)] flex-col">
 								<div class="head flex flex-col text-center text-sm">
-									<span class="text-gray-600 font-light">{day}</span>
-									<span class="font-semibold inline-block mt-0.5"> {date} </span>
+									<span class="font-light text-gray-600">{day}</span>
+									<span class="mt-0.5 inline-block font-semibold"> {date} </span>
 								</div>
-								<span class="line h-[calc(100%-3rem)] bg-gray-400 w-[1px] mx-auto"> </span>
+								<span class="line mx-auto h-[calc(100%-3rem)] w-[1px] bg-gray-400"> </span>
 							</div>
 						{/each}
 					</div>
@@ -114,7 +114,7 @@
 
 			<!-- Strip -->
 			<div
-				class="mt-12 pb-5 text-sm translate-x-[calc(var(--dtw)/2)] relative z-20"
+				class="relative z-20 mt-12 translate-x-[calc(var(--dtw)/2)] pb-5 text-sm"
 				bind:clientHeight={timelineH}
 			>
 				{#each calendar.timeline as itemperrow (itemperrow)}
@@ -127,13 +127,16 @@
 							<button
 								style="--w:{dayjs(enddate).diff(startdate, 'day', true)};
 									--ml:{dayjs(startdate).diff(itemperrow[i - 1]?.enddate || startdate, 'day', true)}"
-								class="w-[calc(var(--w)*var(--dtw))] ml-[calc(var(--dtw)*var(--ml))] bg-indigo-200 text-indigo-900 rounded-lg relative inline-flex justify-between {type}"
+								class="relative ml-[calc(var(--dtw)*var(--ml))] inline-flex w-[calc(var(--w)*var(--dtw))] justify-between rounded-lg bg-indigo-200 text-indigo-900 {type}"
 							>
-								<span class="sticky -left-6 top-0 z-1 my-2 inline-block px-4 rounded-full">
+								<span
+									class="text-overflow sticky top-0 -left-6 z-1 my-2 inline-block rounded-full px-4 text-left"
+									style="--line-number:1"
+								>
 									{title}
 								</span>
 								{#if image}
-									<div class="flex w-25 h-full overflow-hidden sticky right-5 top-0 rounded-r-lg">
+									<div class="sticky top-0 right-5 flex h-full w-25 overflow-hidden rounded-r-lg">
 										<img src={image} alt="Arcade" class="absolute top-0 right-0 -translate-y-2/5" />
 									</div>
 								{/if}
@@ -157,7 +160,8 @@
 			background-image: linear-gradient(to left, #1a6260, #202124);
 		}
 		&.game,
-		&.special {
+		&.special,
+		&.cert {
 			span {
 				@apply bg-[#202124];
 			}
@@ -175,7 +179,7 @@
 			span {
 				@apply bg-[#202124];
 			}
-			@apply text-white/80 bg-[#202124];
+			@apply bg-[#202124] text-white/80;
 		}
 	}
 </style>

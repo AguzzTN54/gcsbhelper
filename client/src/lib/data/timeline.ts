@@ -89,7 +89,9 @@ const getDateRange = (
 
 		const monthName = dayjs(month + '-01').format('MMMM');
 		const type = timelineType;
-		const title = type.match(/wmp|cert|special/) ? items[0].title : `${titles[type]} ${monthName}`;
+		const title = type.match(/wmp|cert|special/)
+			? items[0].title?.replace(/Work Meets Play/, 'WMP').replace(/Skills(.+)Zone/, 'Cert Zone')
+			: `${titles[type]} ${monthName}`;
 
 		return {
 			startdate: earliestStart.toISOString(),
