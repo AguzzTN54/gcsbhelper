@@ -22,34 +22,34 @@
 	<title>Arcade Progress Tracker 2025 - Cohort 2</title>
 </svelte:head>
 
-<Portal target="#main > div">
+<Portal target="#main">
 	<ModalSelectRegion {showModal} />
 </Portal>
 
-<section class="font-extrabold p-2 flex flex-col h-full">
-	<h1 class="text-2xl sm:text-3xl md:text-4xl text-center p-3 mt-5 sm:mt-10 sm:p-5">
-		<span class="brutal-text after:!bg-sky-900 text-amber-300 font-press text-2xl"> Arcade </span> Progress
+<section class="flex h-full flex-col p-2 font-extrabold">
+	<h1 class="mt-5 p-3 text-center text-2xl sm:mt-10 sm:p-5 sm:text-3xl md:text-4xl">
+		<span class="brutal-text font-press text-2xl text-amber-300 after:!bg-sky-900"> Arcade </span> Progress
 		Tracker
 	</h1>
-	<div class="text-center font-medium -mt-2 text-2xl">
+	<div class="-mt-2 text-center text-2xl font-medium">
 		<span> Cohort 2 </span>
 	</div>
 
 	<Form />
 
-	<div class="text-sm mb-5 text-center">
+	<div class="mb-5 text-center text-sm">
 		<span>Arcade Facilitator</span>
 		<div class="flex justify-center">
 			<button
 				onclick={() => handleFacilitatorSelector?.()}
-				class="brutal-border pl-5 pr-3 py-1 !border-[4px] hover:bg-indigo-200 active:bg-indigo-300 text-xs"
+				class="brutal-border !border-[4px] py-1 pr-3 pl-5 text-xs hover:bg-indigo-200 active:bg-indigo-300"
 			>
 				{regions[$arcadeRegion]} <i class="fasdl fa-caret-down text-amber-200"></i>
 			</button>
 		</div>
 	</div>
 
-	<article class="mb-5 px-[2%] text-center sm:text-sm md:text-base text-xs">
+	<article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
 		<span class="brutal-text after:!bg-green-300">Privacy First</span> — This site does not collect
 		any personally identifiable data unless you want it to. We will only create a
 		<span class="brutal-text after:!bg-indigo-200">unique ID</span> solely to help us analyze course

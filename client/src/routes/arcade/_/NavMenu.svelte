@@ -22,7 +22,7 @@
 	});
 </script>
 
-<Portal target="#main > div">
+<Portal target="#main">
 	{#if showModal}
 		<ModalNotify />
 	{/if}
@@ -33,19 +33,19 @@
 		{#if slug === 'notify'}
 			<button
 				onclick={() => (showModal = true)}
-				class="py-2 px-3 whitespace-nowrap hover:bg-indigo-200 hover:opacity-100 opacity-65 group"
+				class="group px-3 py-2 whitespace-nowrap opacity-65 hover:bg-indigo-200 hover:opacity-100"
 			>
 				<i class="fasdl fa-{icon} text-amber-400"></i>
-				<span class="lg:inline-block hidden group-[.active]:inline-block"> {text} </span>
+				<span class="hidden group-[.active]:inline-block lg:inline-block"> {text} </span>
 			</button>
 		{:else}
 			<a
 				class:active={(slug || '#') === active}
-				class="py-2 px-3 whitespace-nowrap hover:bg-indigo-200 hover:opacity-100 opacity-65 group"
+				class="group px-3 py-2 whitespace-nowrap opacity-65 hover:bg-indigo-200 hover:opacity-100"
 				href="/arcade/{localAccounts.getActive()?.uuid && !slug ? 'dash' : slug}"
 			>
 				<i class="fasdl fa-{icon} text-amber-400"></i>
-				<span class="lg:inline-block hidden group-[.active]:inline-block"> {text} </span>
+				<span class="hidden group-[.active]:inline-block lg:inline-block"> {text} </span>
 			</a>
 		{/if}
 	{/each}
@@ -55,6 +55,6 @@
 	@import 'tailwindcss/theme' theme(reference);
 
 	a.active {
-		@apply bg-gray-100 opacity-100 pointer-events-none;
+		@apply pointer-events-none bg-gray-100 opacity-100;
 	}
 </style>
