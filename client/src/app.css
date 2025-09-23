@@ -19,6 +19,15 @@
 	.font-press {
 		font-family: var(--font-press);
 	}
+	.font-fancy {
+		font-family: var(--font-fancy);
+	}
+	.font-main {
+		font-family: var(--font-main);
+	}
+	.font-brutal {
+		font-family: var(--font-brutal);
+	}
 
 	.invalid {
 		@apply border-rose-500 bg-rose-50 focus:border-rose-500;
@@ -44,10 +53,10 @@
 	}
 
 	.brutal-text {
-		@apply inline-block relative mx-2 z-1;
+		@apply relative z-1 mx-2 inline-block;
 		&::after {
 			content: '';
-			@apply size-full top-1/2 left-1/2 bg-indigo-700 absolute -z-1 scale-110 -skew-y-1 -translate-x-1/2 -translate-y-1/2;
+			@apply absolute top-1/2 left-1/2 -z-1 size-full -translate-x-1/2 -translate-y-1/2 scale-110 -skew-y-1 bg-indigo-700;
 		}
 	}
 
@@ -59,21 +68,12 @@
 :root {
 	interpolate-size: allow-keywords;
 	--line-number: 1;
-	--font-body:
+	--font-main: 'Montserrat', sans-serif;
+	--font-press: 'Press Start 2P', system-ui;
+	--font-fancy: 'Kaushan Script', cursive;
+	--font-brutal:
 		'Epilogue', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-press: 'Press Start 2P', system-ui;
-	--color-theme-1: #2d95f1;
-	--color-theme-2: #23c2f6;
-	--color-gradient: linear-gradient(70deg, var(--color-theme-1) 45%, var(--color-theme-2));
-	--color-text: rgba(0, 0, 0, 0.7);
-	--color-bg: #eff1f7;
-
-	--white: #ffffff;
-	--greyLight-1: #e4ebf5;
-	--greyLight-2: #c8d0e7;
-	--greyLight-3: #b1bad4;
-	--greyDark: #383f51;
 
 	--inner-primary: inset 0.2rem 0.2rem 0.5rem #1880b4, inset -0.2rem -0.2rem 0.5rem #82cef4;
 	--inner-error: inset 0.2rem 0.2rem 0.5rem #ff9a9a, inset -0.2rem -0.2rem 0.5rem var(--white);
@@ -99,7 +99,7 @@
 
 body,
 html {
-	font-family: var(--font-body);
+	font-family: var(--font-main);
 	font-optical-sizing: auto;
 	font-weight: 500;
 	font-style: normal;

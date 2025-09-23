@@ -1,5 +1,8 @@
 <script>
-	import UIV1 from './v1';
+	// import UIV1 from './v1';
+	import UIV2 from './v2';
 </script>
 
-<UIV1 />
+<UIV2 />
+
+<!-- <UIV1 /> -->

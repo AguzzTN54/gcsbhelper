@@ -65,3 +65,16 @@
 {#if name}
 	<Details />
 {/if}
+
+<style lang="postcss">
+	:global {
+		:root {
+			--color-theme-1: #2d95f1;
+			--color-theme-2: #23c2f6;
+			--color-gradient: linear-gradient(70deg, var(--color-theme-1) 45%, var(--color-theme-2));
+			--white: #ffffff;
+			--greyLight-1: #e4ebf5;
+			--greyLight-2: #c8d0e7;
+		}
+	}
+</style>

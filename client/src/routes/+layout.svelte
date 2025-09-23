@@ -5,7 +5,6 @@
 	import 'swiper/css';
 	import '../app.css';
 	import { screenSize } from '$lib/stores/app.svelte';
-	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Loading from '$reusable/Loading.svelte';
 	import Footer from './_global/Footer.svelte';
 
@@ -14,10 +13,10 @@
 	let innerWidth = $state(0);
 	const screenHeight = $derived(innerHeight ? `${innerHeight}px` : '100vh');
 	$effect(() => screenSize.set({ width: innerWidth, height: innerHeight }));
+	const id = $derived(page.route.id?.includes('/arcade') ? 'arcade' : 'juaragcp');
 
 	let loaded = $state(false);
 	setContext('loaded', () => (loaded = true));
-
 	onMount(() => {
 		if (!('serviceWorker' in navigator)) {
 			console.error('Service workers are not supported.');
@@ -44,12 +43,13 @@
 {/if}
 
 <main
-	id={page.route.id?.includes('/arcade') ? 'arcade' : 'juaragcp'}
-	class="relative flex h-[var(--screen-height)] w-screen flex-col"
+	{id}
+	class="relative flex h-[var(--screen-height)] w-screen flex-col
+	font-{id === 'arcade' ? 'brutal' : 'main'}"
 	style="--screen-height:{screenHeight};--screen-width:{innerWidth}px;"
 >
-	<ScrollArea id="main">
+	<div id="main" class="relative flex size-full translate-0 overflow-hidden">
 		{@render children()}
-	</ScrollArea>
+	</div>
 	<Footer />
 </main>
