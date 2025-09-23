@@ -7,13 +7,14 @@
 	import { screenSize } from '$lib/stores/app.svelte';
 	import Loading from '$reusable/Loading.svelte';
 	import Footer from './_global/Footer.svelte';
+	import Loader from './juaragcp/v2/comp/Loader.svelte';
 
 	const { children } = $props();
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	const screenHeight = $derived(innerHeight ? `${innerHeight}px` : '100vh');
 	$effect(() => screenSize.set({ width: innerWidth, height: innerHeight }));
-	const id = $derived(page.route.id?.includes('/arcade') ? 'arcade' : 'juaragcp');
+	const id = $derived(page.route.id?.includes('/juaragcp') ? 'juaragcp' : 'arcade');
 
 	let loaded = $state(false);
 	setContext('loaded', () => (loaded = true));
@@ -23,7 +24,7 @@
 			return;
 		}
 		navigator.serviceWorker.register('/sw.js');
-		if (!page.url.pathname.startsWith('/arcade')) {
+		if (!page.url.pathname.match(/\/arcade|\/juaragcp/)) {
 			loaded = true;
 		}
 	});
@@ -35,7 +36,9 @@
 
 <svelte:window bind:innerHeight bind:innerWidth />
 
-{#if !loaded}
+{#if id === 'juaragcp'}
+	<Loader {loaded} />
+{:else if !loaded}
 	<div class="fixed z-150 flex size-full flex-col items-center justify-center bg-white">
 		<Loading />
 		<span class="mt-4 block text-sm text-slate-600"> Wait for a second.. </span>

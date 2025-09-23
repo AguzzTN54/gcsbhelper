@@ -1,5 +1,5 @@
-<script>
-	import { onMount, setContext } from 'svelte';
+<script lang="ts">
+	import { onMount, setContext, getContext } from 'svelte';
 	import { juaraProfile } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import dayjs, { timeZone } from '$lib/helpers/dateTime';
@@ -18,12 +18,12 @@
 	let showModal = $state(false);
 	let isLoaded = $state(false);
 	setContext('modalHandle', () => (showModal = !showModal));
-
-	$inspect($juaraProfile);
+	const loaded = getContext('loaded') as () => void;
 
 	onMount(() => {
 		if (isLoaded) return;
 		isLoaded = true;
+		loaded?.();
 		if ($juaraProfile.profileID) return;
 		const savedAccounts = localAccounts.getAll('juaragcp');
 		const savedLength = savedAccounts.length;

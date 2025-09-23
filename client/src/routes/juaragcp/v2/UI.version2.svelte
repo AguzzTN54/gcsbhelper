@@ -1,5 +1,6 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
+	import { getContext, onMount } from 'svelte';
+	import { screenSize } from '$lib/stores/app.svelte';
 	import particleConfig from '$lib/data/particle.config';
 	import Flag from './illustration/Flag.svelte';
 	import FreeEntry from './illustration/FreeEntry.svelte';
@@ -11,16 +12,19 @@
 	import Leaf2 from './illustration/Leaf2.svelte';
 	import Leaves from './illustration/Leaves.svelte';
 	import SunMoon from './illustration/SunMoon.svelte';
-	import { screenSize } from '$lib/stores/app.svelte';
 	// import Loader from './illustration/Loader.svelte';
 
+	const loaded = getContext('loaded') as () => void;
 	onMount(() => {
 		const script = document.createElement('script');
 		script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
 		document.head.appendChild(script);
 		const prCount = $screenSize.width <= 640 ? 10 : 15;
-		// @ts-ignore
-		script.onload = () => window.particlesJS?.('particle', particleConfig(prCount));
+		script.onload = () => {
+			// @ts-ignore
+			window.particlesJS?.('particle', particleConfig(prCount));
+			loaded?.();
+		};
 	});
 </script>
 
