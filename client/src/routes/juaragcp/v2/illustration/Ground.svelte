@@ -1,4 +1,4 @@
-<div class="absolute bottom-0 left-0 w-[105%] -translate-x-[2%] translate-y-[40%]">
+<div class="ground absolute bottom-0 left-0 w-[105%] -translate-x-[2%] translate-y-[40%]">
 	<svg version="1.2" class="size-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1510 185">
 		<path
 			class="fill-[#553326]"

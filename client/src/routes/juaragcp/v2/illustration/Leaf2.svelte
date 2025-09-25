@@ -73,7 +73,7 @@
 		animation-name: leaf;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-direction: alternate-reverse;
+		animation-direction: reverse;
 	}
 
 	.leaves.flip {
@@ -116,14 +116,11 @@
 		0% {
 			transform: rotate(20deg);
 		}
-		45% {
+		52% {
 			transform: rotate(-20deg);
 		}
-		50% {
+		60% {
 			transform: rotate(-20deg);
-		}
-		90% {
-			transform: rotate(20deg);
 		}
 		100% {
 			transform: rotate(20deg);
