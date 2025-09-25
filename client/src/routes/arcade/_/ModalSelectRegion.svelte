@@ -5,7 +5,7 @@
 	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { shortShaId } from '$lib/helpers/crypto';
-	import { validateBadge } from '$lib/helpers/arcade-loader';
+	import { validateBadge } from '$lib/helpers/loader-arcade';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import Modal from '$reusable/Modal.svelte';
@@ -80,16 +80,16 @@
 			</h1>
 
 			<div class="text-center">
-				<div class="flex w-full justify-center gap-3 mt-5 mb-2">
+				<div class="mt-5 mb-2 flex w-full justify-center gap-3">
 					<button
 						onclick={() => selectRegion('india')}
-						class="px-2 py-1 brutal-border bg-amber-200 hover:bg-amber-300 active:bg-amber-400"
+						class="brutal-border bg-amber-200 px-2 py-1 hover:bg-amber-300 active:bg-amber-400"
 					>
 						India - Global
 					</button>
 					<button
 						onclick={() => selectRegion('indonesia')}
-						class="px-2 py-1 brutal-border bg-rose-200 hover:bg-rose-300 active:bg-rose-400"
+						class="brutal-border bg-rose-200 px-2 py-1 hover:bg-rose-300 active:bg-rose-400"
 					>
 						Indonesia
 					</button>
@@ -99,7 +99,7 @@
 				</button>
 			</div>
 
-			<div class="mt-5 text-xs text-center text-gray-600">
+			<div class="mt-5 text-center text-xs text-gray-600">
 				Do not see your Region? Please let me know <a
 					href="https://github.com/AguzzTN54/gcsbhelper"
 					class="brutal-text text-white after:!bg-gray-700">here</a

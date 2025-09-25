@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { loadProfileAndBadges } from '$lib/helpers/arcade-loader';
+	import { loadProfileAndBadges } from '$lib/helpers/loader-arcade';
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
@@ -45,15 +45,15 @@
 	};
 </script>
 
-<div class="flex w-full py-5 flex-col h-full items-center justify-center">
+<div class="flex h-full w-full flex-col items-center justify-center py-5">
 	{#if loading}
 		<Loading />
-		<span class="inline-block mt-5"> Hang tight! We’re grabbing your data… </span>
+		<span class="mt-5 inline-block"> Hang tight! We’re grabbing your data… </span>
 	{:else}
 		{#if fetchError}
 			<div class="text-center text-red-600">Unable to load your data. Please try again!</div>
 		{/if}
-		<div class="input relative rounded-full w-10/12 sm:w-[60%]">
+		<div class="input relative w-10/12 rounded-full sm:w-[60%]">
 			<input
 				bind:value
 				oninput={() => {
@@ -63,11 +63,11 @@
 				type="text"
 				class:!border-red-600={fetchError || (!profileUUID && typed)}
 				class:!text-red-600={fetchError || (!profileUUID && typed)}
-				class="brutal-border !border-[4px] bg-gray-100 rounded-full h-16 px-5 placeholder:font-medium w-full outline-0"
+				class="brutal-border h-16 w-full rounded-full !border-[4px] bg-gray-100 px-5 outline-0 placeholder:font-medium"
 				placeholder="Input Public Profile URL"
 			/>
 			<span
-				class="absolute top-0 right-0 text-[1.75rem] md:text-[2.5rem] translate-x-2/3 -translate-y-1/2"
+				class="absolute top-0 right-0 translate-x-2/3 -translate-y-1/2 text-[1.75rem] md:text-[2.5rem]"
 			>
 				<i class="fasdl fa-sparkles text-indigo-400"></i>
 			</span>
@@ -92,7 +92,7 @@
 	.input::after,
 	.input::before {
 		content: '';
-		@apply absolute top-0 left-0 size-full bg-indigo-400 block -z-1 skew-y-[2deg] rounded-full;
+		@apply absolute top-0 left-0 -z-1 block size-full skew-y-[2deg] rounded-full bg-indigo-400;
 	}
 	.input::after {
 		@apply skew-y-[1.5deg] bg-amber-300;
