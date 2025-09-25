@@ -28,11 +28,21 @@
 			loaded?.();
 		};
 	});
+
+	const onScroll = (e: Event) => {
+		const target = e.target as HTMLElement;
+		const scrollTop = target.scrollTop;
+		const elements = document.querySelectorAll<HTMLElement>('[data-parallax]');
+		elements.forEach((el) => {
+			const speed = parseFloat(el.dataset.parallax || '0.5');
+			el.style.transform = `translateY(${scrollTop * speed}px)`;
+		});
+	};
 </script>
 
-<ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]">
+<ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]" {onScroll}>
 	<section class="size-full text-[var(--color-secondary)]">
-		<div id="particle" class="pointer-events-none absolute top-0 left-0 size-full"></div>
+		<div id="particle" class="pointer-events-none fixed top-0 left-0 z-0 size-full"></div>
 		<header class="relative z-50 flex items-start p-2 font-bold sm:p-[2%]">
 			<a
 				href="/arcade"
@@ -113,17 +123,27 @@
 		class="pointer-events-none absolute top-0 left-0 h-[calc(100%*var(--height))] w-full overflow-hidden"
 	>
 		<div class="relative h-[calc(100%/var(--height))] w-full">
-			<FreeEntry />
-			<SunMoon />
-			<Gapura1 />
-			<Gapura2 />
-			<Janur />
-			<Flag />
+			<div class="absolute top-0 left-0 size-full" data-parallax="0.7">
+				<SunMoon />
+			</div>
+			<div class="relative size-full" data-parallax="0.5">
+				<FreeEntry />
+				<Gapura1 />
+				<Gapura2 />
+				<Janur />
+				<Flag />
+			</div>
+		</div>
+
+		<div class="absolute top-0 left-0 z-10 h-[calc(100%/var(--height))] w-full">
 			<Ground />
 		</div>
 	</div>
 
-	<div class="pointer-events-none fixed bottom-0 left-0 z-50 size-full overflow-hidden">
+	<div
+		class="pointer-events-none fixed bottom-0 left-0 z-50 size-full overflow-hidden"
+		data-parallax="0.3"
+	>
 		<Leaf1 />
 		<Leaf2 />
 		<Leaf2 flip />
