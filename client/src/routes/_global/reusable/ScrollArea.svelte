@@ -60,6 +60,7 @@
 </script>
 
 <script lang="ts">
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { OverlayScrollbars, type PartialOptions } from 'overlayscrollbars';
 
@@ -68,6 +69,7 @@
 		onScroll = () => {},
 		shadowOnScroll = false,
 		class: className = '',
+		style = '',
 		horizontal = false,
 		id = ''
 	} = $props();
@@ -83,25 +85,85 @@
 		return null;
 	};
 
-	const handleWheel = (e: WheelEvent) => {
-		if (e.deltaY !== 0) {
-			const parent = getElement(osID);
-			if (!parent) return;
-			parent.scrollLeft += e.deltaY / 4;
-			e.preventDefault();
+	let currentPos = $state(0);
+	let targetPos = $state(0);
+	let isAnimating = $state(false);
+	const ease = $state(0.08); // smoothness factor
+
+	const animateWheelScroll = (scrollArea: HTMLElement, horizontal: boolean) => {
+		if (!isAnimating) {
+			isAnimating = true;
+			const step = () => {
+				currentPos += (targetPos - currentPos) * ease;
+
+				if (horizontal) {
+					scrollArea.scrollLeft = currentPos;
+				} else {
+					scrollArea.scrollTop = currentPos;
+				}
+
+				// ✅ only stop when really close to target (or at edges)
+				if (Math.abs(targetPos - currentPos) > 0.5) {
+					requestAnimationFrame(step);
+				} else {
+					currentPos = targetPos; // snap final small gap
+					if (horizontal) scrollArea.scrollLeft = currentPos;
+					else scrollArea.scrollTop = currentPos;
+					isAnimating = false;
+				}
+			};
+			requestAnimationFrame(step);
 		}
+	};
+
+	const handleWheel = (e: WheelEvent) => {
+		e.preventDefault();
+		const parent = getElement(osID);
+		if (!parent) return;
+
+		// init if fresh
+		if (!isAnimating) {
+			currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
+			targetPos = currentPos;
+		}
+
+		let delta = 0;
+
+		if (horizontal) {
+			// ✅ allow both vertical wheel (deltaY) and real horizontal wheel (deltaX)
+			delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+		} else {
+			delta = e.deltaY;
+		}
+
+		// accumulate target
+		targetPos += delta;
+
+		// ✅ Clamp target within scroll bounds
+		const maxScroll = horizontal
+			? parent.scrollWidth - parent.clientWidth
+			: parent.scrollHeight - parent.clientHeight;
+
+		targetPos = Math.max(0, Math.min(targetPos, maxScroll));
+
+		animateWheelScroll(parent, horizontal);
 	};
 
 	onMount(() => {
 		if (!element) return;
 		osInstance[osID] = OverlayScrollbars(
 			element,
-			{ scrollbars: { theme: 'os-theme-dark' } },
+			{
+				scrollbars: {
+					theme: 'os-theme-dark',
+					autoHide: page.route.id?.includes('/juaragcp') ? 'scroll' : undefined
+				}
+			},
 			{ scroll: onscroll }
 		);
 
 		// convert vertical wheel -> horizontal scroll
-		if (!horizontal) return;
+		// if (!horizontal) return;
 		const viewport = osInstance[osID].elements().viewport;
 		viewport.addEventListener('wheel', handleWheel, { passive: false });
 	});
@@ -115,7 +177,7 @@
 	});
 </script>
 
-<div class="size-full {className}" id={osID} bind:this={element}>
+<div class="size-full {className}" {style} id={osID} bind:this={element}>
 	{#if shadowOnScroll}
 		<div
 			class:opacity-0={!scrolled}
@@ -146,7 +208,7 @@
 			}
 		}
 
-		#arcade .os-scrollbar-handle {
+		.os-scrollbar-handle {
 			--os-handle-max-size: 4rem;
 			@apply rounded-none bg-amber-900;
 		}
