@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getContext, onMount, setContext } from 'svelte';
-	import { loadProfileAndBadges } from '$lib/helpers/loader-arcade';
+	import { loadProfileAndBadges } from '$lib/helpers/loader.arcade';
 	import {
 		arcadeRegion,
 		incompleteCalculation,

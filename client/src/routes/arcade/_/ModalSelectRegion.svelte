@@ -5,7 +5,7 @@
 	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { shortShaId } from '$lib/helpers/crypto';
-	import { validateBadge } from '$lib/helpers/loader-arcade';
+	import { validateBadge } from '$lib/helpers/loader.arcade';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import Modal from '$reusable/Modal.svelte';

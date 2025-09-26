@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { loadProfileAndBadges } from '$lib/helpers/loader-arcade';
+	import { loadProfileAndBadges } from '$lib/helpers/loader.arcade';
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { arcadeRegion } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
