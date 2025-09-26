@@ -74,7 +74,12 @@ app.get('/internal/identity/:id', async (c) => {
   const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();
   const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
   const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
-  const promise = await Promise.all([profileScrapper(id, { program, save, facilitator }), getAccountToken()]);
+  const tokenize = (c.req.query('tokenize') ?? 'true').trim().toLowerCase() !== 'false';
+
+  const promise = await Promise.all([
+    profileScrapper(id, { program, save, facilitator }),
+    ...(tokenize ? [getAccountToken()] : []),
+  ]);
   const data = { ...(promise[0] || {}), token: promise[1] || '' };
 
   if (data.code !== 200) {
