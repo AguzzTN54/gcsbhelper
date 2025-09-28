@@ -38,12 +38,12 @@ declare global {
 		interface BasicCourse {
 			title: string;
 			courseid: number;
-			badgeurl: string;
+			badgeurl?: string;
 		}
 
 		interface UserCourses extends BasicCourse {
-			date: Dayjs | Date | string;
-			type: 'skill' | 'game';
+			date?: Dayjs | Date | string;
+			type: 'skill' | 'game' | 'completion';
 		}
 
 		type CourseType = 'skill' | 'game' | 'wmp' | 'trivia' | 'labfree' | 'completion' | null;
@@ -96,6 +96,18 @@ declare global {
 			autoclose?: boolean;
 			timeout?: number;
 			type?: ToastType;
+		}
+
+		// JuaraGCP
+		interface JuaraBadge {
+			courseid: number;
+			title: string;
+			type: 'skill' | 'completion';
+			required?: boolean;
+			badgeurl?: string;
+			date?: Dayjs | Date | string;
+			validity?: boolean;
+			totallab?: number;
 		}
 
 		//  ======================================

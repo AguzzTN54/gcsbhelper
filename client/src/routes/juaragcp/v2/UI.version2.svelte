@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { getContext, onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { activeProfile, screenSize } from '$lib/stores/app.svelte';
+	import { getContext, onMount } from 'svelte';
+	import { useQuery } from '$lib/stores/query-store';
+	import { localAccounts } from '$lib/helpers/localstorage';
+	import { activeProfile, juaraBadges, screenSize } from '$lib/stores/app.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import particleConfig from '$lib/data/particle.config';
 	import Flag from './illustration/Flag.svelte';
@@ -16,8 +18,11 @@
 	import SunMoon from './illustration/SunMoon.svelte';
 	import Timeline from './Timeline.svelte';
 	import Badges from './Badges';
+	import Form from './Form.svelte';
+	import Summary from './Summary.svelte';
 
-	const profileLoaded = $derived($activeProfile?.uuid);
+	const q = $derived(useQuery($activeProfile?.uuid || ''));
+	const profileLoaded = $derived($juaraBadges.length > 0 && !$q.isLoading);
 	const loaded = getContext('loaded') as () => void;
 	onMount(() => {
 		const script = document.createElement('script');
@@ -29,6 +34,10 @@
 			window.particlesJS?.('particle', particleConfig(prCount));
 			loaded?.();
 		};
+
+		// Check Local Profile
+		const profile = localAccounts.getActive('juaragcp');
+		if (profile?.uuid) activeProfile.set(profile);
 	});
 
 	const onScroll = (e: Event) => {
@@ -40,13 +49,18 @@
 			el.style.transform = `translateY(${scrollTop * speed}px)`;
 		});
 	};
+
+	const scrollToTimeline = () => {
+		const timeline = document.getElementById('timeline');
+		timeline?.scrollIntoView({ behavior: 'smooth' });
+	};
 </script>
 
 <ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]" {onScroll}>
+	<div id="particle" class="pointer-events-none fixed top-0 left-0 -z-1 size-full"></div>
 	<section class="sticky top-0 left-0 size-full text-[var(--color-secondary)]">
-		<div id="particle" class="pointer-events-none fixed top-0 left-0 z-0 size-full"></div>
 		<header class="relative z-50 flex items-start p-2 font-bold sm:p-[2%]">
-			{#if profileLoaded}
+			{#if typeof $activeProfile === 'object'}
 				<h1 class="font-fancy text-stroke p-2 text-center sm:p-0" in:fade>
 					<span class="text-2xl font-bold sm:text-3xl">JuaraGCP</span>
 					<span class="ml-2 inline-block -translate-y-1/2">S12</span>
@@ -98,15 +112,29 @@
 					</h2>
 				</div>
 			{/if}
+
+			{#if profileLoaded}
+				<Summary />
+			{:else}
+				<Form />
+				<a
+					href="/#"
+					class="text-stroke relative mt-4 inline-block text-xs font-semibold uppercase after:absolute after:top-1/2 after:left-1/2 after:-z-10 after:h-0.5 after:w-full after:-translate-x-1/2 after:-translate-y-1/2 after:scale-x-150 after:bg-[var(--color-secondary)] sm:hidden"
+				>
+					Daftar Sekarang!
+				</a>
+			{/if}
 		</div>
 
 		{#if profileLoaded}
 			<button
+				in:fade
+				onclick={scrollToTimeline}
 				aria-label="Scroll Down"
-				class="group absolute bottom-[10%] left-1/2 z-50 flex aspect-[1/1.75] w-8 -translate-x-1/2 justify-center rounded-full border-2 pt-2 text-3xl duration-300"
+				class="group group absolute bottom-[10%] left-1/2 z-50 flex aspect-[1/1.75] w-8 -translate-x-1/2 justify-center rounded-full border-2 pt-2 text-3xl duration-300 hover:bg-[var(--color-secondary)]"
 			>
 				<span
-					class="block h-4 w-1 animate-bounce rounded-full bg-[var(--color-secondary)]"
+					class="block h-4 w-1 animate-bounce rounded-full bg-[var(--color-secondary)] group-hover:bg-[var(--color-primary)]"
 					style="animation-duration: 2s;"
 				>
 				</span>
@@ -120,17 +148,14 @@
 		<Badges />
 	{/if}
 
-	<div class="pointer-events-none fixed top-0 left-0 size-full overflow-hidden">
-		<div class="absolute top-0 left-0 size-full">
-			<SunMoon />
-		</div>
-		<div class="relative size-full">
+	<div class="pointer-events-none fixed top-0 left-0 -z-1 size-full overflow-hidden">
+		<div class="max-h-[] absolute right-0 bottom-0 translate-x-1/2 md:translate-x-0">
 			<Gapura1 />
-			<Gapura2 />
-			<Janur />
-			<Flag />
 		</div>
-
+		<SunMoon />
+		<Gapura2 />
+		<Janur />
+		<Flag />
 		<FreeEntry />
 		<Ground />
 	</div>
@@ -142,7 +167,9 @@
 		<Leaf1 />
 		<Leaf2 />
 		<Leaf2 flip />
-		<Leaves />
+		<div class="absolute right-1/2 bottom-0 w-[35%] min-w-[300px] translate-y-[15%]">
+			<Leaves />
+		</div>
 	</div>
 </ScrollArea>
 

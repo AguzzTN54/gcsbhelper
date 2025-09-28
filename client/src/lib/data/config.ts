@@ -9,9 +9,9 @@ export const arcadeSeason: Periode & { seasonid: string } = {
 };
 
 export const juaraSeason: Periode & { seasonid: string } = {
-	seasonid: 'juaragcp_s12',
-	start: '21 August 2025, 12:00 UTC+8',
-	end: '1 September 2025, 23:59 UTC+8'
+	seasonid: 'juaragcp_s11',
+	start: '31 January 2025, 12:00 GMT+7',
+	end: '2 March 2025, 23:59 GMT+7'
 };
 
 export const facilitatorPeriode: Record<App.FacilitatorRegion, Periode> = {

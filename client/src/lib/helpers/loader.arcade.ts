@@ -6,18 +6,19 @@ import {
 	loadSteps
 } from '$lib/stores/app.svelte';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
-import pb, { login } from '$lib/helpers/pocketbase';
+import pb from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
 import { shortShaId } from './crypto';
 import { loadProfile, type LoadProfileOptions } from './loader.profile';
+import { loadBadgeList, type PBItem } from './loader.badge';
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
-	const { courses, user, token: managerToken } = await loadProfile(option);
+	const { courses, user, token } = await loadProfile(option);
 	loadSteps.profile = true;
 	activeProfile.set(user);
 
-	const storedBadges = await loadBadgeList(courses, managerToken, user.uuid);
+	const storedBadges = await loadBadgeList({ courses, token, uuid: user.uuid });
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	const basicData = loadProgress(merged);
 	initData.set(basicData);
@@ -27,63 +28,6 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	if (courses.length > 0) loadEnrollment(user.uuid);
 	if (basicData.length > 0) loadCourseStats(basicData);
 	return { user, courses };
-};
-
-interface BasePB {
-	collectionId: string;
-	collectionName: string;
-	created: string;
-	updated: string;
-}
-
-type PBItem = BasePB & App.CourseItem;
-
-const loadBadgeList = async (
-	courses: App.UserCourses[],
-	managerToken?: string,
-	uuid?: string
-): Promise<PBItem[]> => {
-	if (!managerToken || !uuid) return [];
-	if (!login(managerToken)) return [];
-
-	// Split array into chunks of maxSize
-	const chunkArray = <T>(arr: T[], maxSize: number): T[][] =>
-		arr.reduce((acc: T[][], _, i) => {
-			if (i % maxSize === 0) acc.push(arr.slice(i, i + maxSize));
-			return acc;
-		}, []);
-
-	// Build filters per chunk
-	const buildFilter = (chunk: 'default' | App.UserCourses[]) => {
-		if (chunk === 'default') return '(inactive=false&&type!=null)';
-		const cids = chunk.filter((c) => c.type === 'skill').map((c) => `courseid=${c.courseid}`);
-		const bids = chunk.filter((b) => b.type === 'game').map((c) => `badgeid=${c.courseid}`);
-		const filterid = [bids.join('||'), cids.join('||')].filter((ids) => !!ids).join('||');
-		return filterid;
-	};
-
-	// Split into 100-sized chunks
-	const chunks: ('default' | App.UserCourses[])[] = [...chunkArray(courses, 100), 'default'];
-	try {
-		const results = await Promise.all(
-			chunks.map(async (chunk, i) => {
-				const filter = buildFilter(chunk);
-				const courselist = await pb.collection('courses').getList(1, 500, {
-					filter,
-					requestKey: 'key' + i,
-					skipTotal: true,
-					expand: 'labs'
-				});
-				return courselist.items as unknown as PBItem[];
-			})
-		);
-
-		// Flatten all results
-		return results.flat();
-	} catch (e) {
-		console.error('Error loading courses:', e);
-		return [];
-	}
 };
 
 const badgeDataMerger = (
