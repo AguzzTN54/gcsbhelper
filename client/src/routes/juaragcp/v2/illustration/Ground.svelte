@@ -1,5 +1,10 @@
-<div class="ground absolute bottom-0 left-0 w-[105%] -translate-x-[2%] translate-y-[40%]">
-	<svg version="1.2" class="size-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1510 185">
+<div class="ground absolute bottom-0 left-0 w-full translate-y-[40%] overflow-hidden">
+	<svg
+		version="1.2"
+		class="size-full origin-left -translate-x-[2%] scale-x-105"
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 1510 185"
+	>
 		<path
 			class="fill-[#553326]"
 			d="m0.9 185c0-68.7 0.4-89.6 0.3-158.3 32.2-7.8 51.3 0.9 75.9-1.1 18.6-1.5 38.2-17.6 54.8-21.8 34.2-8.6 71.6 0.9 112.1 20.8 82.6 40.4 171.6 82.8 262.9 83.7 57.9 0.6 64.5-50.8 154.6-17 164.8 61.9 215.5-41.4 316.3-55.6 31.2-4.4 65.5 15 102.4 18.8 30.8 3.2 63.8-10.5 95.3-1.5 10.8 3 24.5 26.5 61 20.3 57.2-9.8 48 19.9 86.9 19.4 27.6-0.4 66.9-20.1 90.5-30.7 27.7-12.4 64.1-2.9 92-15.1 2.3-1.1 3-0.4 3.2 1.3v1.1c-0.2 2.1-0.8 5.1-0.8 8.5-1.7 72.2-0.3 54.1 0.3 127.2z"

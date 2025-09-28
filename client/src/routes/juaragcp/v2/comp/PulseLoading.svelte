@@ -5,7 +5,7 @@
 <div class="loader-icon" class:dark>
 	<span></span>
 </div>
-<div class="text" class:dark>Tunggu Sebentar..</div>
+<div class="text" class:dark>Waiting..</div>
 
 <style>
 	.text {
