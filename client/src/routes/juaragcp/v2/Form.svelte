@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import { untrack } from 'svelte';
 	import { activeProfile } from '$lib/stores/app.svelte';
 	import { createQuery } from '$lib/stores/query-store';
 	import { loadJuaraProfile } from '$lib/helpers/loader.juaragcp';
 	import { isGCSBUrl, validateURL } from '$lib/helpers/loader.profile';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { isValidUUID } from '$lib/helpers/uuid';
+	import { modalHandle } from './ModalProfile.svelte';
 	import PulseLoading from './comp/PulseLoading.svelte';
 
 	let value = $state('');
@@ -29,6 +31,7 @@
 	const q = $derived.by(() => {
 		return createQuery({
 			enabled: false,
+			cacheTime: 0, // never evict
 			queryKey: profileUUID,
 			queryFn: async () => {
 				const res = await loadJuaraProfile({ profileUUID, program: 'juaragcp' });
@@ -42,7 +45,7 @@
 	$effect(() => {
 		if (!$activeProfile?.uuid) return;
 		value = `https://www.cloudskillsboost.google/public_profiles/${$activeProfile.uuid}`;
-		$q.refetch();
+		untrack(() => $q.refetch());
 	});
 </script>
 
@@ -64,9 +67,23 @@
 				class="h-16 w-full rounded-full border-[4px] border-[var(--color-secondary)] bg-[var(--color-primary)]/90 pr-15 pl-8 font-bold outline-0 backdrop-blur-xs transition-colors duration-300 placeholder:font-semibold focus:border-amber-600"
 				placeholder="Input Public Profile URL"
 			/>
-			<span class="absolute top-1/2 right-0 -translate-1/2 -translate-x-1/2 text-2xl opacity-50">
-				<i class="fasds fa-link"></i>
-			</span>
+
+			{#if localAccounts.getAll('juaragcp').length > 0}
+				<button
+					onclick={modalHandle}
+					class="duo absolute top-1/2 right-0 aspect-square size-11 -translate-x-3 -translate-y-1/2 rounded-full bg-[var(--color-secondary)] text-[var(--color-primary)] hover:bg-amber-900"
+					aria-label="Accounts"
+					title="Accounts"
+				>
+					<i class="fasds fa-users"></i>
+				</button>
+			{:else}
+				<span
+					class="absolute top-1/2 right-0 -translate-x-1/2 -translate-y-1/2 text-2xl opacity-50"
+				>
+					<i class="fasds fa-link"></i>
+				</span>
+			{/if}
 		</div>
 	</div>
 
