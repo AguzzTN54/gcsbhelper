@@ -88,7 +88,7 @@
 	let currentPos = $state(0);
 	let targetPos = $state(0);
 	let isAnimating = $state(false);
-	const ease = $state(0.08); // smoothness factor
+	const ease = $state(0.12); // smoothness factor
 
 	const animateWheelScroll = (scrollArea: HTMLElement, horizontal: boolean) => {
 		if (!isAnimating) {
@@ -102,7 +102,7 @@
 					scrollArea.scrollTop = currentPos;
 				}
 
-				// ✅ only stop when really close to target (or at edges)
+				// only stop when really close to target (or at edges)
 				if (Math.abs(targetPos - currentPos) > 0.5) {
 					requestAnimationFrame(step);
 				} else {
@@ -130,7 +130,7 @@
 		let delta = 0;
 
 		if (horizontal) {
-			// ✅ allow both vertical wheel (deltaY) and real horizontal wheel (deltaX)
+			// allow both vertical wheel (deltaY) and real horizontal wheel (deltaX)
 			delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
 		} else {
 			delta = e.deltaY;
@@ -139,7 +139,7 @@
 		// accumulate target
 		targetPos += delta;
 
-		// ✅ Clamp target within scroll bounds
+		// Clamp target within scroll bounds
 		const maxScroll = horizontal
 			? parent.scrollWidth - parent.clientWidth
 			: parent.scrollHeight - parent.clientHeight;
@@ -147,6 +147,93 @@
 		targetPos = Math.max(0, Math.min(targetPos, maxScroll));
 
 		animateWheelScroll(parent, horizontal);
+	};
+
+	let touchStart = $state(0);
+	let lastTime = 0;
+	let isTouching = false;
+	let velocitySamples: number[] = [];
+	const fingerStopThreshold = 0.2;
+
+	const handleTouchStart = (e: TouchEvent) => {
+		const parent = getElement(osID);
+		if (!parent) return;
+
+		currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
+		targetPos = currentPos;
+
+		touchStart = horizontal ? e.touches[0].clientX : e.touches[0].clientY;
+		lastTime = performance.now();
+		velocitySamples = [];
+		isTouching = true;
+	};
+
+	const handleTouchMove = (e: TouchEvent) => {
+		const parent = getElement(osID);
+		if (!parent) return;
+
+		e.preventDefault();
+
+		const now = performance.now();
+		const dt = now - lastTime || 16;
+		lastTime = now;
+
+		const pos = horizontal ? e.touches[0].clientX : e.touches[0].clientY;
+		const delta = touchStart - pos;
+		touchStart = pos;
+
+		const v = delta / dt;
+		velocitySamples.push(v);
+		if (velocitySamples.length > 5) velocitySamples.shift(); // keep last 5
+
+		// follow finger
+		targetPos += delta;
+
+		const maxScroll = horizontal
+			? parent.scrollWidth - parent.clientWidth
+			: parent.scrollHeight - parent.clientHeight;
+		targetPos = Math.max(0, Math.min(targetPos, maxScroll));
+
+		if (horizontal) parent.scrollLeft = targetPos;
+		else parent.scrollTop = targetPos;
+	};
+
+	const handleTouchEnd = () => {
+		isTouching = false;
+
+		const parent = getElement(osID);
+		if (!parent) return;
+
+		currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
+
+		// ✅ Check the last movement: if the finger stopped, do not apply inertia
+		const lastMovement = velocitySamples[velocitySamples.length - 1] || 0;
+		if (Math.abs(lastMovement) < fingerStopThreshold) return; // finger already stopped
+
+		// Average velocity from recent samples
+		const avgVelocity = velocitySamples.reduce((a, b) => a + b, 0) / velocitySamples.length || 0;
+		if (Math.abs(avgVelocity) < 0.05) return; // too small, ignore
+
+		let velocity = avgVelocity * 35; // scale factor
+		const decay = 0.95;
+
+		const step = () => {
+			if (isTouching) return;
+
+			velocity *= decay;
+			if (Math.abs(velocity) < 0.2) return;
+
+			const maxScroll = horizontal
+				? parent.scrollWidth - parent.clientWidth
+				: parent.scrollHeight - parent.clientHeight;
+
+			targetPos = Math.max(0, Math.min(targetPos + velocity, maxScroll));
+
+			animateWheelScroll(parent, horizontal);
+			requestAnimationFrame(step);
+		};
+
+		requestAnimationFrame(step);
 	};
 
 	onMount(() => {
@@ -162,10 +249,12 @@
 			{ scroll: onscroll }
 		);
 
-		// convert vertical wheel -> horizontal scroll
-		// if (!horizontal) return;
 		const viewport = osInstance[osID].elements().viewport;
 		viewport.addEventListener('wheel', handleWheel, { passive: false });
+		viewport.addEventListener('touchstart', handleTouchStart, { passive: false });
+		viewport.addEventListener('touchmove', handleTouchMove, { passive: false });
+		viewport.addEventListener('touchend', handleTouchEnd, { passive: false });
+		viewport.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 	});
 
 	$effect(() => () => {
@@ -173,6 +262,10 @@
 		if (!horizontal) return;
 		const viewport = osInstance[osID].elements().viewport;
 		viewport.removeEventListener('wheel', handleWheel);
+		viewport.removeEventListener('touchstart', handleTouchStart);
+		viewport.removeEventListener('touchmove', handleTouchMove);
+		viewport.removeEventListener('touchend', handleTouchEnd);
+		viewport.removeEventListener('touchcancel', handleTouchEnd);
 		osInstance[osID].destroy();
 	});
 </script>
