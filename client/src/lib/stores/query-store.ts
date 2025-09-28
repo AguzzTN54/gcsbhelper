@@ -1,3 +1,4 @@
+// src/lib/query.ts
 import { writable, get, type Readable } from 'svelte/store';
 
 type QueryKey = string | unknown[];
@@ -21,6 +22,7 @@ export interface QueryOptions<T = unknown> {
 	initialData?: T | null;
 	enabled?: boolean;
 	queryKey: QueryKey;
+	maxRetries?: number;
 	queryFn: () => Promise<T>;
 }
 
@@ -36,9 +38,13 @@ interface CacheEntry<T> {
 	lastTouched: number;
 	evictionTimer?: ReturnType<typeof setTimeout> | null;
 	options: QueryOptions<T>;
+	retryCount: number;
 }
 
 const globalCache = new Map<string, CacheEntry<any>>();
+
+/** Helper: wait */
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 /** Core: createQuery */
 export const createQuery = <T = unknown>(
@@ -50,11 +56,12 @@ export const createQuery = <T = unknown>(
 } => {
 	const {
 		staleTime = 0,
-		cacheTime = 1000 * 60 * 1,
+		cacheTime = 1000 * 60 * 1, // 1 min
 		initialData = null,
 		enabled = true,
 		queryKey,
-		queryFn
+		queryFn,
+		maxRetries = 3
 	} = options;
 
 	const key = serializeKey(queryKey);
@@ -87,11 +94,14 @@ export const createQuery = <T = unknown>(
 		fetchPromise: null,
 		lastTouched: Date.now(),
 		evictionTimer: null,
-		options: { ...options, staleTime, cacheTime, initialData, enabled }
+		retryCount: 0,
+		options: { ...options, staleTime, cacheTime, initialData, enabled, maxRetries }
 	};
 
-	/** ✅ Core fetcher: only 2 updates emitted */
+	/** ✅ Core fetcher: single promise that handles retries internally (no infinite loop) */
 	const fetchData = async (force = false): Promise<void> => {
+		if (entry.fetchPromise) return entry.fetchPromise;
+
 		const state = get(writableStore);
 		const now = Date.now();
 		const entryStaleTime = entry.options.staleTime ?? 0;
@@ -99,48 +109,57 @@ export const createQuery = <T = unknown>(
 		if (!force && state.data !== null && now - state.updatedAt < entryStaleTime) {
 			return;
 		}
-		if (entry.fetchPromise) return entry.fetchPromise;
 
-		// 1️⃣ Update once for loading
-		writableStore.set({
-			data: state.data,
-			error: null,
-			isLoading: true,
-			updatedAt: state.updatedAt,
-			refetch: refetchBound,
-			invalidate: invalidateBound
-		});
+		entry.fetchPromise = (async () => {
+			// loading once
+			writableStore.set({
+				data: state.data,
+				error: null,
+				isLoading: true,
+				updatedAt: state.updatedAt,
+				refetch: refetchBound,
+				invalidate: invalidateBound
+			});
 
-		const p = (async () => {
-			try {
-				const data = await entry.queryFn();
-				// 2️⃣ Update once for success
-				writableStore.set({
-					data,
-					error: null,
-					isLoading: false,
-					updatedAt: Date.now(),
-					refetch: refetchBound,
-					invalidate: invalidateBound
-				});
-			} catch (err) {
-				// 2️⃣ Update once for error
-				writableStore.set({
-					data: null,
-					error: err,
-					isLoading: false,
-					updatedAt: Date.now(),
-					refetch: refetchBound,
-					invalidate: invalidateBound
-				});
-			} finally {
-				entry.fetchPromise = null;
-				entry.lastTouched = Date.now();
+			const max = entry.options.maxRetries ?? 3;
+			let lastError: unknown = null;
+			for (let attempt = 1; attempt <= max; attempt++) {
+				try {
+					const data = await entry.queryFn();
+
+					// success
+					writableStore.set({
+						data,
+						error: null,
+						isLoading: false,
+						updatedAt: Date.now(),
+						refetch: refetchBound,
+						invalidate: invalidateBound
+					});
+					entry.fetchPromise = null;
+					return;
+				} catch (err) {
+					lastError = err;
+					if (attempt < max) {
+						const backoffMs = Math.min(1000 * 2 ** (attempt - 1), 30_000);
+						await sleep(backoffMs);
+						continue; // retry
+					}
+				}
 			}
-		})();
 
-		entry.fetchPromise = p;
-		return p;
+			// after max attempts, surface error once
+			writableStore.set({
+				data: null,
+				error: lastError,
+				isLoading: false,
+				updatedAt: Date.now(),
+				refetch: refetchBound,
+				invalidate: invalidateBound
+			});
+			entry.fetchPromise = null;
+		})();
+		return entry.fetchPromise;
 	};
 
 	// ✅ Bound methods
@@ -229,7 +248,8 @@ export const createQuery = <T = unknown>(
 		remove: removeBound
 	};
 
-	if (enabled) void fetchData(true);
+	// start initial fetch if enabled
+	if (enabled) fetchData(true);
 
 	return entry.store;
 };
