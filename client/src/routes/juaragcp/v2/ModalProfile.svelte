@@ -35,6 +35,14 @@
 		activeProfile.set({ name: '', uuid: '', avatar: '' });
 		modalHandle();
 	};
+
+	let imageErrorAttempt = 0;
+	const onImageError = (e: Event) => {
+		if (imageErrorAttempt > 1) return;
+		imageErrorAttempt++;
+		const el = e.target as HTMLImageElement;
+		el.src = img;
+	};
 </script>
 
 <Portal target="#main">
@@ -47,7 +55,8 @@
 			</div>
 			<div class="px-5 pt-4 pb-5">
 				<div class="max-h-50 overflow-auto">
-					{#each allAccounts() as { avatar, name, uuid, active }, i}
+					{#each allAccounts() as { avatar, name, uuid }, i}
+						{@const active = uuid === activeuuid}
 						<div
 							class="flex w-full items-center border-t-1 border-[var(--color-secondary)]/40 transition-colors duration-300 hover:bg-[var(--color-secondary)]/10"
 							class:!border-t-0={i === 0}
@@ -58,7 +67,7 @@
 								onclick={() => selectAccount(uuid)}
 							>
 								<img
-									onerror={(e) => ((e.target as HTMLImageElement).src = img)}
+									onerror={onImageError}
 									src={avatar || img}
 									alt={name}
 									class="aspect-square size-10 rounded-full object-cover"

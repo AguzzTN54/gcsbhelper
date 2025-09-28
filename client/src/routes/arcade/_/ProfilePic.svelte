@@ -4,17 +4,25 @@
 	import Skeleton from '$reusable/Skeleton.svelte';
 	const { src: avatar = '' } = $props();
 	const src = $derived(avatar || anonym);
+
+	let imageErrorAttempt = 0;
+	const onImageError = (e: Event) => {
+		if (imageErrorAttempt > 1) return;
+		imageErrorAttempt++;
+		const el = e.target as HTMLImageElement;
+		el.src = anonym;
+	};
 </script>
 
-<div class="size-20 bg-amber-300 rounded-full p-0.5">
-	<div class="size-full bg-indigo-300 rounded-full overflow-hidden object-cover p-1">
+<div class="size-20 rounded-full bg-amber-300 p-0.5">
+	<div class="size-full overflow-hidden rounded-full bg-indigo-300 object-cover p-1">
 		{#if $profileReady || loadSteps.profile}
 			{#key src}
 				<img
 					{src}
-					onerror={(e) => ((e.target as HTMLImageElement).src = anonym)}
+					onerror={onImageError}
 					alt="Profile"
-					class="rounded-full brutal-border !border-[3px]"
+					class="brutal-border rounded-full !border-[3px]"
 				/>
 			{/key}
 		{:else}

@@ -32,12 +32,20 @@
 		modalHandle();
 		goto('/arcade');
 	};
+
+	let imageErrorAttempt = 0;
+	const onImageError = (e: Event) => {
+		if (imageErrorAttempt > 1) return;
+		imageErrorAttempt++;
+		const el = e.target as HTMLImageElement;
+		el.src = img;
+	};
 </script>
 
 <Modal>
-	<h1 class="text-center font-semibold uppercase text-xl">Switch Account</h1>
+	<h1 class="text-center text-xl font-semibold uppercase">Switch Account</h1>
 	<div class="mt-5"></div>
-	<div class="overflow-auto max-h-50">
+	<div class="max-h-50 overflow-auto">
 		{#each allAccounts as { avatar, facilitator, name, uuid, active }, i}
 			<div
 				class="flex w-full items-center border-t-2 hover:bg-gray-200"
@@ -45,23 +53,23 @@
 				class:bg-indigo-100={active}
 			>
 				<button
-					class="w-full text-left flex items-center py-0.5 text-sm"
+					class="flex w-full items-center py-0.5 text-left text-sm"
 					onclick={() => selectAccount(uuid)}
 				>
 					<img
-						onerror={(e) => ((e.target as HTMLImageElement).src = img)}
+						onerror={onImageError}
 						src={avatar || img}
 						alt={name}
-						class="rounded-full object-cover aspect-square size-10"
+						class="aspect-square size-10 rounded-full object-cover"
 					/>
-					<span class="inline-block ml-2">{name}</span>
+					<span class="ml-2 inline-block">{name}</span>
 					<span
-						class="inline-block ml-2 text-xs"
+						class="ml-2 inline-block text-xs"
 						class:bg-sky-200={facilitator === 'india'}
 						class:bg-orange-200={facilitator === 'indonesia'}
 						class:bg-violet-200={facilitator === 'unset'}
 					>
-						{regions[facilitator]}
+						{regions[facilitator || 'unset']}
 					</span>
 				</button>
 				<button
@@ -75,6 +83,6 @@
 		{/each}
 	</div>
 	<div class="mt-5 flex justify-center">
-		<a class="py-2 px-5 bg-amber-300 border-4" href="/arcade?new"> Add New Account</a>
+		<a class="border-4 bg-amber-300 px-5 py-2" href="/arcade?new"> Add New Account</a>
 	</div>
 </Modal>
