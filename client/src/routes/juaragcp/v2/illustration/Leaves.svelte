@@ -1,4 +1,4 @@
-<div class="leaves">
+<div class="leaves w-full">
 	<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 354 227">
 		<g class="left">
 			<path
@@ -58,15 +58,6 @@
 </div>
 
 <style>
-	.leaves {
-		width: 35%;
-		position: absolute;
-		bottom: 0;
-		right: 50%;
-		transform: translateY(15%);
-		min-width: 300px;
-	}
-
 	svg {
 		width: 100%;
 	}

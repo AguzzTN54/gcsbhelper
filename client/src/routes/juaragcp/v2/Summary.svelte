@@ -1,5 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
+	import { modalHandle } from './ModalProfile.svelte';
 	import { activeProfile } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	const earned = [
@@ -8,8 +9,8 @@
 		{ title: 'Total', points: 18 }
 	];
 
-	const { uuid } = $activeProfile;
-	const q = useQuery(uuid);
+	const { uuid, name } = $derived($activeProfile);
+	const q = $derived(useQuery(uuid));
 </script>
 
 <div
@@ -17,13 +18,14 @@
 	in:fade
 >
 	<button
+		onclick={modalHandle}
 		class="w-fit rounded-full bg-[var(--color-secondary)] px-5 py-1.5 font-semibold text-[var(--color-primary)] transition-colors duration-300 hover:bg-amber-900"
 	>
-		Toto Wid
+		{name}
 		<div class="fasds fa-caret-down text-[var(--color-third)]"></div>
 	</button>
 	<h1 class="text-stroke py-4 text-[3.5rem] leading-[120%] font-black uppercase sm:text-[6rem]">
-		Tier 2
+		###!
 	</h1>
 
 	<div

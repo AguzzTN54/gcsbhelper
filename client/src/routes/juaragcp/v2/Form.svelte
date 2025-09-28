@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { activeProfile } from '$lib/stores/app.svelte';
 	import { createQuery } from '$lib/stores/query-store';
 	import { loadJuaraProfile } from '$lib/helpers/loader.juaragcp';
@@ -46,7 +47,7 @@
 </script>
 
 {#if $q.isLoading}
-	<div class="flex h-[170px] w-full flex-col items-center justify-center">
+	<div class="flex h-[170px] w-full flex-col items-center justify-center" in:fade>
 		<PulseLoading dark />
 	</div>
 {:else}

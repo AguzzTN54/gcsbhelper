@@ -3,7 +3,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
-	import { activeProfile, juaraBadges, screenSize } from '$lib/stores/app.svelte';
+	import { activeProfile, screenSize } from '$lib/stores/app.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import particleConfig from '$lib/data/particle.config';
 	import Flag from './illustration/Flag.svelte';
@@ -20,10 +20,12 @@
 	import Badges from './Badges';
 	import Form from './Form.svelte';
 	import Summary from './Summary.svelte';
+	import ModalProfile from './ModalProfile.svelte';
 
 	const q = $derived(useQuery($activeProfile?.uuid || ''));
-	const profileLoaded = $derived($juaraBadges.length > 0 && !$q.isLoading);
+	const profileLoaded = $derived($q.data && !$q.isLoading);
 	const loaded = getContext('loaded') as () => void;
+
 	onMount(() => {
 		const script = document.createElement('script');
 		script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
@@ -57,6 +59,8 @@
 </script>
 
 <ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]" {onScroll}>
+	<ModalProfile />
+
 	<div id="particle" class="pointer-events-none fixed top-0 left-0 -z-1 size-full"></div>
 	<section class="sticky top-0 left-0 size-full text-[var(--color-secondary)]">
 		<header class="relative z-50 flex items-start p-2 font-bold sm:p-[2%]">
