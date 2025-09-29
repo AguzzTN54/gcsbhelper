@@ -1,5 +1,5 @@
 import { regularbadges, skillbadges } from '$lib/data/juaragcp';
-import { activeProfile, juaraBadges, loadSteps } from '$lib/stores/app.svelte';
+import { activeProfile, loadSteps } from '$lib/stores/app.svelte';
 import { juaraSeason } from '$lib/data/config';
 import dayjs from '$lib/helpers/dateTime';
 import { loadBadgeList } from './loader.badge';
@@ -12,7 +12,6 @@ export const loadJuaraProfile = async (option: LoadProfileOptions): Promise<App.
 	loadSteps.profile = true;
 	activeProfile.set(user);
 	const data = mergeUserBadgesToDbBadges(courses);
-	juaraBadges.set(data);
 	loadSteps.courselist = true;
 
 	// loadBadgeData(user.uuid, token);
@@ -21,7 +20,7 @@ export const loadJuaraProfile = async (option: LoadProfileOptions): Promise<App.
 	// incompleteCalculation.set(containsMissingCourse);
 	// if (courses.length > 0) loadEnrollment(user.uuid);
 	// if (basicData.length > 0) loadCourseStats(basicData);
-	return { user, courses };
+	return { user, courses: data };
 };
 
 const mergeUserBadgesToDbBadges = (usercourses: App.UserCourses[]): App.JuaraBadge[] => {

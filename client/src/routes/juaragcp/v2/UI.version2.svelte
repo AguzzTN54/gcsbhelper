@@ -3,9 +3,9 @@
 	import { getContext, onMount } from 'svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
-	import { activeProfile, screenSize } from '$lib/stores/app.svelte';
-	import ScrollArea from '$reusable/ScrollArea.svelte';
+	import { activeProfile, juaraBadges, screenSize } from '$lib/stores/app.svelte';
 	import particleConfig from '$lib/data/particle.config';
+	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Flag from './illustration/Flag.svelte';
 	import FreeEntry from './illustration/FreeEntry.svelte';
 	import Gapura1 from './illustration/Gapura1.svelte';
@@ -25,6 +25,7 @@
 	const q = $derived(useQuery($activeProfile?.uuid || ''));
 	const profileLoaded = $derived($q.data && !$q.isLoading);
 	const loaded = getContext('loaded') as () => void;
+	$effect(() => juaraBadges.set((($q.data as App.InitData)?.courses as App.JuaraBadge[]) || []));
 
 	onMount(() => {
 		const script = document.createElement('script');
