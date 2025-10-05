@@ -14,8 +14,6 @@
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Modal from '$reusable/Modal.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
-	import Toasts from '$reusable/Toast/Toasts.svelte';
-	import Tour from '$reusable/Tour.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
 
@@ -59,9 +57,6 @@
 		await loadDashProfile(uuid, facilitator || 'unset');
 	});
 </script>
-
-<Toasts />
-<Tour />
 
 {#if $incompleteCalculation}
 	<Modal hideclosebutton persist>

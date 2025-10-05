@@ -6,6 +6,8 @@
 	import '../app.css';
 	import { screenSize } from '$lib/stores/app.svelte';
 	import Loading from '$reusable/Loading.svelte';
+	import Toasts from '$reusable/Toast/Toasts.svelte';
+	import Tour from '$reusable/Tour.svelte';
 	import Footer from './_global/Footer.svelte';
 	import Loader from './juaragcp/v2/comp/Loader.svelte';
 
@@ -44,6 +46,9 @@
 		<span class="mt-4 block text-sm text-slate-600"> Wait for a second.. </span>
 	</div>
 {/if}
+
+<Toasts />
+<Tour />
 
 <main
 	{id}
