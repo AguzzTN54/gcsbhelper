@@ -4,9 +4,10 @@
 	import { activeProfile, juaraBadges } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	import { modalHandle } from './ModalProfile.svelte';
-	import { whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
+	import { analyzeBadges, whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
 
 	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
+	const potential = $derived(analyzeBadges($juaraBadges || []));
 	const earned = $derived.by(() => {
 		const { completion, skill, total } = tierdata;
 		return [
@@ -75,8 +76,8 @@
 		{name}
 		<div class="fasds fa-caret-down text-[var(--color-third)]"></div>
 	</button>
-	{#if !isvalid}
-		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">{tier}</h1>
+	{#if !isvalid || potential.tier === 'notier'}
+		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">##NotEligible!</h1>
 	{:else}
 		<h1 class="text-stroke py-4 text-[3.5rem] leading-[120%] font-black uppercase sm:text-[6rem]">
 			{tier}

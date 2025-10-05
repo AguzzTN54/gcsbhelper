@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { activeProfile, juaraBadges, loadSteps } from '$lib/stores/app.svelte';
 	import { delay } from '$lib/helpers/dateTime';
+	import { analyzeBadges } from '$lib/helpers/calculator-juaragcp';
 	import { dismissTour, startTour } from '$reusable/Tour.svelte';
 	import { watchTargetPosition } from '$reusable/ScrollArea.svelte';
 	import ListColumnItem from './_list-column-item.svelte';
@@ -15,6 +16,7 @@
 		activeType = type;
 		dismissTour();
 	};
+	const potential = $derived(analyzeBadges($juaraBadges || []));
 
 	let tourLoaded = $state(false);
 	$effect(() => {
@@ -87,14 +89,47 @@
 			Regular Badges <i class="fasds fa-puzzle"></i>
 		</button>
 	</div>
-	<div class="px-10 py-5 sm:px-8 md:px-12 md:py-10 lg:px-15 xl:px-20" id="badgelist">
+
+	<div class="px-10 py-5 sm:px-8 md:px-12 md:py-10 lg:px-15 xl:px-20">
 		<!-- <div class="w-full">
 			{#each Array(10) as _, i (i)}
 				<ListRowItem {i} />
         {/each}
       </div> -->
 
-		<div class="grid w-full gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-7 xl:gap-10">
+		<div class="pb-10 text-center text-sm md:text-base">
+			{#if potential.tier === 'notier'}
+				<article
+					class="inline-block rounded-xl border-2 border-dashed border-rose-900 px-5 py-2 text-rose-900"
+				>
+					Hanya tersisa <span class="font-bold">{potential.skill}</span> Skill Badges dan
+					<span class="font-bold">{potential.completion}</span>
+					Regular Badges yang dapat dikerjakan,
+					<span class="font-semibold">tidak cukup untuk mencapai Tier 1</span>!
+				</article>
+			{:else if potential.isvalid}
+				<article>
+					Terdapat <span class="font-bold">{potential.skill}</span> Skill Badges dan
+					<span class="font-bold">{potential.completion}</span>
+					Regular Badges yang dapat dikerjakan untuk mencapai
+					<span class="font-bold capitalize"> {potential.tier} </span>
+					{#if potential.bonus > 0}
+						dan mendapatkan {potential.bonus} point bonus skill badge
+					{/if}
+				</article>
+			{:else}
+				<article
+					class="inline-block rounded-xl border-2 border-dashed border-rose-900 px-5 py-2 text-rose-900"
+				>
+					Terdapat badge yang tidak valid, silahkan reset badge pada profile CloudSkillBoost atau
+					mendaftarkan akun baru terlebih dahulu!
+				</article>
+			{/if}
+		</div>
+		<div
+			class="grid w-full gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-7 xl:gap-10"
+			id="badgelist"
+		>
 			{#each dataToShow as data, i (data)}
 				<div class="size-full" in:fade={{ delay: i * 25 + 150 }}>
 					<ListColumnItem {data} />
