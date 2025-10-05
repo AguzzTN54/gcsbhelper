@@ -1,6 +1,10 @@
 <script lang="ts">
-	import { juaraBadges } from '$lib/stores/app.svelte';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { activeProfile, juaraBadges, loadSteps } from '$lib/stores/app.svelte';
+	import { delay } from '$lib/helpers/dateTime';
+	import { startTour } from '$reusable/Tour.svelte';
+	import { watchTargetPosition } from '$reusable/ScrollArea.svelte';
 	import ListColumnItem from './_list-column-item.svelte';
 	// import ListRowItem from './_list-row-item.svelte';
 
@@ -10,6 +14,57 @@
 		if (activeType === type) return;
 		activeType = type;
 	};
+
+	let tourLoaded = $state(false);
+	$effect(() => {
+		$activeProfile || (tourLoaded = false);
+	});
+	$effect(() => {
+		if (tourLoaded) return;
+		if (!(loadSteps.courselist && loadSteps.profile)) return;
+		const incompleteRequired = dataToShow.filter((j) => j.required && !j.validity);
+		if (incompleteRequired.length < 1) return;
+		const { date } = incompleteRequired[0];
+		if (!date) return;
+
+		tourLoaded = true;
+		delay(1000).then(() =>
+			startTour([
+				{
+					container: '#juaragcp > div[data-overlayscrollbars-viewport]',
+					element: '.badgeitem.required',
+					scrollToView: false,
+					message:
+						'Kamu telah menyelesaikan badge <b>mandatory</b> di luar periode event, silahkan membuat akun baru terlebih dahulu agar memenuhi syarat Tier!'
+				}
+			])
+		);
+	});
+
+	onMount(() => {
+		const { stop } = watchTargetPosition(
+			'#badgelist',
+			{ threshold: 0.1 },
+			(pos, observer, entry) => {
+				if (pos.intersectionRatio >= 0.1) {
+					stop();
+
+					const incompleteRequired = dataToShow.filter((j) => j.required && !j.validity);
+					if (incompleteRequired.length < 1) return;
+					const { date } = incompleteRequired[0];
+					if (date) return;
+					startTour([
+						{
+							container: '#juaragcp > div[data-overlayscrollbars-viewport]',
+							element: '.badgeitem.required',
+							message:
+								'Badge dengan label <b>"Mandatory"</b> harus dikerjakan, jangan sampai lupa ya!'
+						}
+					]);
+				}
+			}
+		);
+	});
 </script>
 
 <section class="relative z-10 -mt-1 bg-[var(--color-primary)]">
@@ -31,7 +86,7 @@
 			Regular Badges <i class="fasds fa-puzzle"></i>
 		</button>
 	</div>
-	<div class="px-10 py-5 sm:px-8 md:px-12 md:py-10 lg:px-15 xl:px-20">
+	<div class="px-10 py-5 sm:px-8 md:px-12 md:py-10 lg:px-15 xl:px-20" id="badgelist">
 		<!-- <div class="w-full">
 			{#each Array(10) as _, i (i)}
 				<ListRowItem {i} />

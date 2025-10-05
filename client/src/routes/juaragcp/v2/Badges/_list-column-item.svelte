@@ -8,6 +8,8 @@
 
 <div
 	class:earned={date}
+	class:required
+	class:invalid={!validity && date}
 	class="badgeitem relative w-full rounded-3xl border-6 border-[var(--color-secondary)] bg-[var(--color-primary)] pb-4 transition-colors duration-300 hover:border-[var(--color-third)]"
 >
 	{#snippet label(text: string, classname: string)}
@@ -85,6 +87,10 @@
 			content: '';
 			transition: opacity 0.3s;
 			@apply pointer-events-none absolute top-0 left-0 z-2 size-full scale-104 rounded-3xl bg-[var(--color-primary)]/70 brightness-95 backdrop-grayscale-100;
+		}
+
+		&.invalid.required::after {
+			@apply bg-red-700/20;
 		}
 	}
 </style>

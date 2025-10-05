@@ -20,6 +20,51 @@
 		return { x, y };
 	};
 
+	interface Position {
+		isVisible: boolean;
+		intersectionRatio: number;
+	}
+
+	type Callback = (
+		pos: Position,
+		observer: IntersectionObserver,
+		entry: IntersectionObserverEntry
+	) => void;
+
+	export function watchTargetPosition(
+		selector: string | HTMLElement,
+		options: IntersectionObserverInit = {},
+		callback: Callback
+	): {
+		observer: IntersectionObserver;
+		stop: () => void;
+		getPosition: () => Position;
+	} {
+		const target = typeof selector !== 'string' ? selector : document.querySelector(selector);
+		if (!target) throw new Error('Target element not found');
+
+		const currentPosition: Position = {
+			isVisible: false,
+			intersectionRatio: 0
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				currentPosition.isVisible = entry.isIntersecting;
+				currentPosition.intersectionRatio = entry.intersectionRatio;
+				callback(currentPosition, observer, entry);
+			});
+		}, options);
+
+		observer.observe(target);
+
+		return {
+			observer,
+			stop: () => observer.unobserve(target!),
+			getPosition: () => ({ ...currentPosition })
+		};
+	}
+
 	type SmoothScrollParams = {
 		id: string;
 		targetPosition: { x: number; y: number };

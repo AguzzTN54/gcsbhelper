@@ -12,6 +12,7 @@
 			  };
 		dynamic?: boolean;
 		navigateOnTargetClick?: boolean;
+		scrollToView?: boolean;
 		onclick?: () => void;
 	}
 
@@ -89,7 +90,10 @@
 			}
 
 			if (step.targetNode) {
-				step.targetNode.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+				if (typeof step.scrollToView !== 'boolean' || step.scrollToView) {
+					step.targetNode.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+				}
+
 				if (step.navigateOnTargetClick) {
 					step.targetNode.addEventListener('click', onNext, { once: true });
 				}
@@ -225,7 +229,7 @@
 {#if steps.length}
 	<div
 		class:isOffscreen
-		class="tour-backdrop fixed top-0 left-0 size-full z-[999999] pointer-events-none"
+		class="tour-backdrop pointer-events-none fixed top-0 left-0 z-[999999] size-full"
 		style={spotlightStylestring}
 		transition:fade={{ duration: 250 }}
 	>
@@ -239,20 +243,20 @@
 				></div>
 
 				<div
-					class="tour-prompt fixed text-xs sm:text-sm min-w-50 sm:max-w-[25em] max-w-10/12 pointer-events-auto"
+					class="tour-prompt pointer-events-auto fixed max-w-10/12 min-w-50 text-xs sm:max-w-[25em] sm:text-sm"
 					class:tour-prompt-top={promptPos === 'top'}
 					class:tour-prompt-center={promptPos === 'center'}
 					in:receive={promptTransition}
 					out:send={promptTransition}
 				>
 					<div
-						class="tour-arrow absolute mt-[0.1em] border-solid border-[0_.5em_0.5em_0.5em] border-black border-x-transparent"
+						class="tour-arrow absolute mt-[0.1em] border-[0_.5em_0.5em_0.5em] border-solid border-black border-x-transparent"
 					></div>
 					<div
-						class="tour-body mt-[0.5em] bg-gray-100 border-4 border-black rounded-tl-3xl rounded-br-3xl py-2 px-4 -skew-x-4"
+						class="tour-body mt-[0.5em] -skew-x-4 rounded-tl-3xl rounded-br-3xl border-4 border-black bg-gray-100 px-4 py-2"
 					>
 						<div class="skew-x-4">
-							<div class="tour-content py-1">{step.message}</div>
+							<div class="tour-content py-1">{@html step.message}</div>
 							<div class="tour-footer flex items-center justify-center">
 								<div class="tour-footer-left">
 									<!-- {#if currentStepPos < steps.length - 1}
@@ -264,7 +268,7 @@
 									{#if currentStepPos !== 0 && (hasNavigation || (typeof step.navigation === 'object' && step.navigation.back))}
 										<button
 											onclick={onBack}
-											class="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-xs"
+											class="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300"
 										>
 											Back
 										</button>
@@ -273,9 +277,9 @@
 									{#if hasNavigation || (typeof step.navigation === 'object' && step.navigation.next)}
 										<button
 											onclick={onNext}
-											class="bg-amber-300 hover:bg-amber-400 px-2 py-1 rounded text-xs ml-2"
+											class="ml-2 rounded bg-amber-300 px-2 py-1 text-xs hover:bg-amber-400"
 										>
-											{currentStepPos < steps.length - 1 ? 'Next' : 'Done'}
+											{currentStepPos < steps.length - 1 ? 'Next' : 'OK'}
 										</button>
 									{/if}
 								</div>
@@ -337,7 +341,7 @@
 	}
 
 	.tour-prompt.tour-prompt-top > .tour-arrow {
-		@apply border-[0.5em_0.5em_0_0.5em] mt-0 mb-[0.1em];
+		@apply mt-0 mb-[0.1em] border-[0.5em_0.5em_0_0.5em];
 	}
 
 	.tour-prompt.tour-prompt-top > .tour-body {
@@ -345,7 +349,7 @@
 	}
 
 	.tour-prompt.tour-prompt-center > .tour-arrow {
-		@apply border-[0_0.5em] !my-0;
+		@apply !my-0 border-[0_0.5em];
 	}
 
 	.tour-prompt.tour-prompt-center > .tour-body {
