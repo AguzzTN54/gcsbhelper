@@ -1,10 +1,41 @@
+<script lang="ts">
+	import dayjs from '$lib/helpers/dateTime';
+	import BadgeImage from './_badge-image.svelte';
+
+	const { data }: { data: App.JuaraBadge } = $props();
+	const { title, courseid, validity, date, badgeurl, type, required, totallab } = data || {};
+</script>
+
 <div
-	class="w-full rounded-3xl border-6 border-[var(--color-secondary)] pb-4 transition-colors duration-300 hover:border-[var(--color-third)]"
+	class:earned={date}
+	class="badgeitem relative w-full rounded-3xl border-6 border-[var(--color-secondary)] bg-[var(--color-primary)] pb-4 transition-colors duration-300 hover:border-[var(--color-third)]"
 >
+	{#snippet label(text: string, classname: string)}
+		<span
+			class="absolute top-0 right-0 z-5 translate-x-4 translate-y-1/3 rounded-full px-3 py-1 text-xs font-semibold text-green-50 {classname}"
+		>
+			{text}
+		</span>
+	{/snippet}
+
+	{#if date && validity}
+		{@render label('Complete', 'bg-green-700')}
+	{:else if date && !validity}
+		{@render label('Out of Period', 'bg-red-700')}
+	{/if}
+
 	<div
 		class="relative aspect-video w-full overflow-hidden rounded-t-2xl bg-[var(--color-secondary)]/10"
 	>
-		ok
+		<BadgeImage {badgeurl} />
+		{#if date}
+			<span
+				class:!bg-[#ceddd1]={date && validity}
+				class="absolute bottom-0 left-0 z-1 block w-full bg-[#ddd6ce] px-3 py-1 text-center text-xs font-semibold text-[var(--color-secondary)]"
+			>
+				Earned: {dayjs(date).format('DD MMMM YYYY')}
+			</span>
+		{/if}
 	</div>
 
 	<div class="duo px-4 py-1">
@@ -15,15 +46,45 @@
 			<i class="fasds fa-users ml-2 inline-block opacity-50"></i>
 			<span>100</span>
 		</div>
+		{#if required}
+			<span
+				class="ml-1 inline-block scale-90 rounded-full bg-amber-600 px-2 py-0.5 text-xs font-semibold text-white"
+			>
+				Mandatory
+			</span>
+		{/if}
 	</div>
-	<h3 class="text-overflow px-4 text-xl leading-[120%] font-semibold" style="--line-number:2">
-		Iki Contoh Judul Mantab Bros
+	<h3
+		class="text-overflow h-[48px] px-4 text-xl leading-[120%] font-semibold"
+		style="--line-number:2"
+	>
+		{title}
 	</h3>
-	<div class="mt-4 px-4">
-		<button
-			class="duo w-full rounded-full bg-[var(--color-secondary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] transition-colors duration-300 hover:bg-amber-800"
+	<div class="mt-4 px-4 text-center">
+		<a
+			href="https://www.cloudskillsboost.google/course_templates/{courseid}"
+			class="duo block w-full rounded-full bg-[var(--color-secondary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] transition-colors duration-300 hover:bg-amber-800"
 		>
-			Enroll Now! <i class="fasds fa-rocket-launch"></i>
-		</button>
+			{#if date}
+				View <i class="fasds fa-eye"></i>
+			{:else}
+				Enroll Now! <i class="fasds fa-rocket-launch"></i>
+			{/if}
+		</a>
 	</div>
 </div>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme' theme(reference);
+	.badgeitem {
+		&:hover::after {
+			opacity: 0;
+		}
+
+		&.earned::after {
+			content: '';
+			transition: opacity 0.3s;
+			@apply pointer-events-none absolute top-0 left-0 z-2 size-full scale-104 rounded-3xl bg-[var(--color-primary)]/70 brightness-95 backdrop-grayscale-100;
+		}
+	}
+</style>
