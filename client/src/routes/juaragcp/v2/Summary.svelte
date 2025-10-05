@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { modalHandle } from './ModalProfile.svelte';
+	import confetti from 'canvas-confetti';
 	import { activeProfile, juaraBadges } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
+	import { modalHandle } from './ModalProfile.svelte';
 	import { whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
 
-	const tierdata = $derived(whatIsMyTier($juaraBadges || []));
+	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
 	const earned = $derived.by(() => {
 		const { completion, skill, total } = tierdata;
 		return [
@@ -17,6 +18,50 @@
 
 	const { uuid, name } = $derived($activeProfile);
 	const q = $derived(useQuery(uuid));
+
+	// Confetti
+	const randomInRange = (min: number, max: number) => {
+		return Math.random() * (max - min) + min;
+	};
+
+	const colors = ['fbbc04', 'f89701', '4285f4', '2367d8', 'ff6c4b', 'd22b1d', '178935', '34a853'];
+	const normalTierConfetti = () => {
+		const tier2Config = { particleCount: 20, spread: 55, colors: colors };
+		confetti({ ...tier2Config, angle: 60, origin: { x: 0, y: 1 } });
+		confetti({ ...tier2Config, angle: 120, origin: { x: 1, y: 1 } });
+	};
+
+	const specialConfetti = (duration: number, timeLeft: number) => {
+		const defaults = {
+			startVelocity: 25,
+			spread: 360,
+			ticks: 500,
+			zIndex: 0,
+			particleCount: 50 * (timeLeft / duration),
+			colors
+		};
+
+		confetti({
+			...defaults,
+			origin: { x: randomInRange(0.1, 0.5), y: Math.random() - 0.2 }
+		});
+		confetti({
+			...defaults,
+			origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 }
+		});
+	};
+
+	$effect(() => {
+		if (!tier.match(/tier1|tier2/)) return;
+		const duration = 3 * 1000;
+		const animationEnd = Date.now() + duration;
+		const interval = setInterval(() => {
+			const timeLeft = animationEnd - Date.now();
+			if (timeLeft <= 0) return clearInterval(interval);
+			if (earned[2].points <= 16) return normalTierConfetti();
+			specialConfetti(duration, timeLeft);
+		}, 200);
+	});
 </script>
 
 <div
@@ -30,11 +75,11 @@
 		{name}
 		<div class="fasds fa-caret-down text-[var(--color-third)]"></div>
 	</button>
-	{#if !tierdata.isvalid}
-		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">{tierdata.tier}</h1>
+	{#if !isvalid}
+		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">{tier}</h1>
 	{:else}
 		<h1 class="text-stroke py-4 text-[3.5rem] leading-[120%] font-black uppercase sm:text-[6rem]">
-			{tierdata.tier}
+			{tier}
 		</h1>
 	{/if}
 
