@@ -1,13 +1,19 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { modalHandle } from './ModalProfile.svelte';
-	import { activeProfile } from '$lib/stores/app.svelte';
+	import { activeProfile, juaraBadges } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
-	const earned = [
-		{ title: 'Skill Badges', points: 10 },
-		{ title: 'Regular Badges', points: 8 },
-		{ title: 'Total', points: 18 }
-	];
+	import { whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
+
+	const tierdata = $derived(whatIsMyTier($juaraBadges || []));
+	const earned = $derived.by(() => {
+		const { completion, skill, total } = tierdata;
+		return [
+			{ title: 'Skill Badges', points: skill },
+			{ title: 'Regular Badges', points: completion },
+			{ title: 'Total', points: total }
+		];
+	});
 
 	const { uuid, name } = $derived($activeProfile);
 	const q = $derived(useQuery(uuid));
@@ -24,9 +30,13 @@
 		{name}
 		<div class="fasds fa-caret-down text-[var(--color-third)]"></div>
 	</button>
-	<h1 class="text-stroke py-4 text-[3.5rem] leading-[120%] font-black uppercase sm:text-[6rem]">
-		###!
-	</h1>
+	{#if !tierdata.isvalid}
+		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">{tierdata.tier}</h1>
+	{:else}
+		<h1 class="text-stroke py-4 text-[3.5rem] leading-[120%] font-black uppercase sm:text-[6rem]">
+			{tierdata.tier}
+		</h1>
+	{/if}
 
 	<div
 		class="relative grid w-full grid-cols-2 gap-y-2 rounded-2xl border-4 bg-[var(--color-primary)] py-2 sm:grid-cols-3"

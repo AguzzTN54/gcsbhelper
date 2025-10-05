@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { activeProfile, juaraBadges, loadSteps } from '$lib/stores/app.svelte';
 	import { delay } from '$lib/helpers/dateTime';
-	import { startTour } from '$reusable/Tour.svelte';
+	import { dismissTour, startTour } from '$reusable/Tour.svelte';
 	import { watchTargetPosition } from '$reusable/ScrollArea.svelte';
 	import ListColumnItem from './_list-column-item.svelte';
 	// import ListRowItem from './_list-row-item.svelte';
@@ -13,6 +13,7 @@
 	const selectType = (type: App.JuaraBadge['type']) => {
 		if (activeType === type) return;
 		activeType = type;
+		dismissTour();
 	};
 
 	let tourLoaded = $state(false);
@@ -35,7 +36,7 @@
 					element: '.badgeitem.required',
 					scrollToView: false,
 					message:
-						'Kamu telah menyelesaikan badge <b>mandatory</b> di luar periode event, silahkan membuat akun baru terlebih dahulu agar memenuhi syarat Tier!'
+						'Kamu telah menyelesaikan badge <b>mandatory</b> <u>di luar periode event</u>, silahkan mendaftarkan akun baru agar memenuhi syarat Tier!'
 				}
 			])
 		);

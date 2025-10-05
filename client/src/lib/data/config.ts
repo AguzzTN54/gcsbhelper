@@ -2,16 +2,28 @@ export const facilitatorRegions = ['india', 'indonesia', 'unset'] as const;
 export const gcsbPrograms = ['arcade', 'juaragcp'] as const;
 
 type Periode = { start: string; end: string };
-export const arcadeSeason: Periode & { seasonid: string } = {
-	seasonid: 'arcade2025_cohort2',
-	start: '01 July 2025',
-	end: '31 December 2025'
-};
 
+// JuaraGCP
 export const juaraSeason: Periode & { seasonid: string } = {
 	seasonid: 'juaragcp_s11',
 	start: '31 January 2025, 12:00 GMT+7',
 	end: '2 March 2025, 23:59 GMT+7'
+};
+
+interface JuaraTier {
+	skill: number;
+	total: number;
+}
+export const juaraTier: Record<'tier1' | 'tier2', JuaraTier> = {
+	tier1: { skill: 5, total: 10 },
+	tier2: { skill: 8, total: 16 }
+};
+
+// ARCADE
+export const arcadeSeason: Periode & { seasonid: string } = {
+	seasonid: 'arcade2025_cohort2',
+	start: '01 July 2025',
+	end: '31 December 2025'
 };
 
 export const facilitatorPeriode: Record<App.FacilitatorRegion, Periode> = {
