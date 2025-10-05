@@ -1,44 +1,50 @@
 import { regularbadges, skillbadges } from '$lib/data/juaragcp';
-import { activeProfile, loadSteps } from '$lib/stores/app.svelte';
+import { activeProfile, juaraBadges, loadSteps } from '$lib/stores/app.svelte';
 import { juaraSeason } from '$lib/data/config';
 import dayjs from '$lib/helpers/dateTime';
-import { loadBadgeList } from './loader.badge';
+import { loadBadgeList, loadBadgeStats } from './loader.badge';
 import { loadProfile, type LoadProfileOptions } from './loader.profile';
 
-const { end, seasonid, start } = juaraSeason;
+const { end, start } = juaraSeason;
 export const loadJuaraProfile = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
-	const { courses, user, token } = await loadProfile(option);
+
+	const loadPbBadges = loadBadgeList({
+		courses: [...regularbadges, ...skillbadges],
+		loadGivenCourseOnly: true
+	});
+	const [{ user, courses }, pbBadges] = await Promise.all([loadProfile(option), loadPbBadges]);
+
 	loadSteps.profile = true;
 	activeProfile.set(user);
-	const data = mergeUserBadgesToDbBadges(courses);
+	const data = mergeUserBadgesToDbBadges(courses, pbBadges);
 	loadSteps.courselist = true;
-
-	// loadBadgeData(user.uuid, token);
-
-	// const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
-	// incompleteCalculation.set(containsMissingCourse);
-	// if (courses.length > 0) loadEnrollment(user.uuid);
-	// if (basicData.length > 0) loadCourseStats(basicData);
+	loadStatsData(data);
 	return { user, courses: data };
 };
 
-const mergeUserBadgesToDbBadges = (usercourses: App.UserCourses[]): App.JuaraBadge[] => {
+const mergeUserBadgesToDbBadges = (
+	usercourses: App.UserCourses[],
+	pbBadges: App.CourseItem[]
+): App.JuaraBadge[] => {
 	const dbBadges = [...regularbadges, ...skillbadges];
 	const merged = dbBadges.map(({ courseid, title, type, required }) => {
 		const samerecord = usercourses.find((uc) => uc.courseid === courseid);
+		const pbRecord = pbBadges.find((pb) => pb.courseid === courseid);
 		const { title: userTitle, badgeurl, date } = samerecord || {};
 		const badgeDate = date ? dayjs(date) : null;
 		const validity = (badgeDate && !badgeDate.isAfter(end) && !badgeDate.isBefore(start)) || false;
 
 		const result: App.JuaraBadge = {
+			id: pbRecord?.id,
 			title: userTitle ?? title,
 			courseid,
 			type,
 			required,
-			badgeurl,
 			date,
-			validity
+			validity,
+			badgeurl: badgeurl || pbRecord?.badgeurl,
+			totallab: pbRecord?.totallab
 		};
 		return result;
 	});
@@ -46,14 +52,29 @@ const mergeUserBadgesToDbBadges = (usercourses: App.UserCourses[]): App.JuaraBad
 	return merged;
 };
 
-const loadBadgeData = async (uuid: string, token?: string) => {
-	if (!token || !uuid) return;
-	const storedBadges = await loadBadgeList({
-		courses: [...regularbadges, ...skillbadges],
-		token,
-		uuid: uuid,
-		loadGivenCourseOnly: true
-	});
+interface PBStats extends App.CourseStats {
+	collectionId: string;
+	collectionName: string;
+	id: string;
+	title: string;
+}
 
-	console.log('storedBadges', storedBadges);
+const loadStatsData = async (data: App.JuaraBadge[]) => {
+	const ids = data.map((c) => c?.id).filter((v): v is string => !!v);
+	if (ids.length < 1) return [];
+
+	try {
+		const stats = await loadBadgeStats(ids);
+		juaraBadges.update((courses) => {
+			const updated = courses.map((c) => {
+				const stat = stats.find((v) => v.id === c.id) as unknown as PBStats;
+				const { enrollment_count } = stat || {};
+				return { ...c, enrollment_count };
+			});
+			return updated;
+		});
+		loadSteps.stats = true;
+	} catch (e) {
+		console.error('Failed to get Stats' + e);
+	}
 };

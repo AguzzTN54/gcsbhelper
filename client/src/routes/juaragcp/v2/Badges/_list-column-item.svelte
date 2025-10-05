@@ -1,9 +1,12 @@
 <script lang="ts">
 	import dayjs from '$lib/helpers/dateTime';
+	import { loadSteps } from '$lib/stores/app.svelte';
+	import Skeleton from '$reusable/Skeleton.svelte';
 	import BadgeImage from './_badge-image.svelte';
 
 	const { data }: { data: App.JuaraBadge } = $props();
-	const { title, courseid, validity, date, badgeurl, type, required, totallab } = data || {};
+	const { title, courseid, validity, date, badgeurl, required, totallab, enrollment_count } =
+		data || {};
 </script>
 
 <div
@@ -43,10 +46,14 @@
 	<div class="duo px-4 py-1">
 		<div class="inline text-xs">
 			<i class="fasds fa-flask opacity-50"></i>
-			<span>4</span>
+			<span>{totallab}</span>
 
 			<i class="fasds fa-users ml-2 inline-block opacity-50"></i>
-			<span>100</span>
+			{#if !loadSteps.stats}
+				<Skeleton class="inline-block h-3.5 w-7 rounded-full" />
+			{:else}
+				<span>{enrollment_count}</span>
+			{/if}
 		</div>
 		{#if required}
 			<span

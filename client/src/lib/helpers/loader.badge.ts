@@ -12,14 +12,12 @@ export type PBItem = BasePB & App.CourseItem;
 interface LoadBadgeOptions {
 	courses: App.UserCourses[];
 	token?: string;
-	uuid?: string;
 	loadGivenCourseOnly?: boolean;
 }
 
 export const loadBadgeList = async (options: LoadBadgeOptions): Promise<PBItem[]> => {
-	const { courses, token, uuid, loadGivenCourseOnly } = options;
-	if (!token || !uuid) return [];
-	if (!login(token)) return [];
+	const { courses, token, loadGivenCourseOnly } = options;
+	if (token) login(token);
 
 	// Split array into chunks of maxSize
 	const chunkArray = <T>(arr: T[], maxSize: number): T[][] =>
@@ -64,4 +62,28 @@ export const loadBadgeList = async (options: LoadBadgeOptions): Promise<PBItem[]
 		console.error('Error loading courses:', e);
 		return [];
 	}
+};
+
+export const loadBadgeStats = async (ids: string[]) => {
+	if (ids.length < 1) return [];
+	const chunkSize = 100;
+	const chunks: string[][] = [];
+	for (let i = 0; i < ids.length; i += chunkSize) {
+		chunks.push(ids.slice(i, i + chunkSize));
+	}
+	const results = await Promise.all(
+		chunks.map((chunk, i) => {
+			const filter = chunk.map((id) => pb.filter('id={:id}', { id })).join('||');
+			return pb.collection('course_stats').getList(1, 300, {
+				fields: 'diff_easy,diff_hard,diff_medium,enrollment_count,id',
+				skipTotal: true,
+				requestKey: 'key' + i,
+				filter
+			});
+		})
+	);
+
+	// flatten items from all batches
+	const stats = results.flatMap((res) => res.items);
+	return stats;
 };

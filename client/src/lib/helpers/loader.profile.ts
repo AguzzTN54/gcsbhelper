@@ -24,6 +24,7 @@ export const loadProfile = async (option: LoadProfileOptions) => {
 		// Juara GCP Params
 	} else if (program === 'juaragcp') {
 		server.searchParams.append('program', juaraSeason.seasonid);
+		server.searchParams.append('tokenize', 'false');
 	}
 
 	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });

@@ -10,7 +10,7 @@ import pb from '$lib/helpers/pocketbase';
 import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
 import { shortShaId } from './crypto';
 import { loadProfile, type LoadProfileOptions } from './loader.profile';
-import { loadBadgeList, type PBItem } from './loader.badge';
+import { loadBadgeList, loadBadgeStats, type PBItem } from './loader.badge';
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
@@ -18,7 +18,7 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	loadSteps.profile = true;
 	activeProfile.set(user);
 
-	const storedBadges = await loadBadgeList({ courses, token, uuid: user.uuid });
+	const storedBadges = await loadBadgeList({ courses, token });
 	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
 	const basicData = loadProgress(merged);
 	initData.set(basicData);
@@ -141,32 +141,10 @@ interface PBStats extends App.CourseStats {
 
 const loadCourseStats = async (mergedcourses: App.CourseItem[]) => {
 	const ids = mergedcourses.map((c) => c?.id).filter((v): v is string => !!v);
-
-	if (!ids.length) return [];
-
-	// split ids into chunks of 100
-	const chunkSize = 100;
-	const chunks: string[][] = [];
-	for (let i = 0; i < ids.length; i += chunkSize) {
-		chunks.push(ids.slice(i, i + chunkSize));
-	}
+	if (ids.length < 1) return [];
 
 	try {
-		const results = await Promise.all(
-			chunks.map((chunk, i) => {
-				const filter = chunk.map((id) => pb.filter('id={:id}', { id })).join('||');
-				return pb.collection('course_stats').getList(1, 300, {
-					fields: 'diff_easy,diff_hard,diff_medium,enrollment_count,id',
-					skipTotal: true,
-					requestKey: 'key' + i,
-					filter
-				});
-			})
-		);
-
-		// flatten items from all batches
-		const stats = results.flatMap((res) => res.items);
-
+		const stats = await loadBadgeStats(ids);
 		initData.update((courses) => {
 			const updated = courses.map((c) => {
 				const stat = stats.find((v) => v.id === c.id) as unknown as PBStats;

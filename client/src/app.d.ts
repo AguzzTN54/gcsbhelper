@@ -100,6 +100,7 @@ declare global {
 
 		// JuaraGCP
 		interface JuaraBadge {
+			id?: string;
 			courseid: number;
 			title: string;
 			type: 'skill' | 'completion';
@@ -108,6 +109,7 @@ declare global {
 			date?: Dayjs | Date | string;
 			validity?: boolean;
 			totallab?: number;
+			enrollment_count?: number;
 		}
 
 		//  ======================================
