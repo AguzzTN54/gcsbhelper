@@ -20,18 +20,26 @@
 		targetNode?: Element | null;
 	}
 	let steps = $state<TourStep[]>([]);
+	let currentStepPos = $state(0);
+	let stepOnStage = $state<TourStep[]>([]);
+	let promptPos = $state('');
+
 	export const startTour = (_steps: TourStepProps[]) => {
 		steps = _steps;
 	};
+
+	const reset = () => {
+		steps = [];
+		currentStepPos = 0;
+		stepOnStage = [];
+	};
+
+	export const dismissTour = reset;
 </script>
 
 <script>
 	import { crossfade, fade, fly, type FlyParams } from 'svelte/transition';
 	import { screenSize } from '$lib/stores/app.svelte';
-
-	let currentStepPos = $state(0);
-	let stepOnStage = $state<TourStep[]>([]);
-	let promptPos = $state('');
 
 	const hasNavigation = $derived.by(() => {
 		if (!steps || !steps.length) return false;
@@ -103,12 +111,6 @@
 		stepOnStage = [step];
 	};
 
-	const reset = () => {
-		steps = [];
-		currentStepPos = 0;
-		stepOnStage = [];
-	};
-
 	const onNext = () => {
 		steps[currentStepPos].onclick?.();
 		startStep(++currentStepPos);
@@ -146,11 +148,21 @@
 		const arrowStyle = arrowNode.style;
 		const getNum = (str: string) => parseInt(str) || 0;
 
+		const checkTarget = (targetRect: DOMRect) => {
+			const obj = targetRect.toJSON() as { x: number };
+			const isValid = Object.values(obj).reduce((a: number, b: number) => a + b, 0) !== 0;
+			return isValid;
+		};
+
 		const updatePos = () => {
+			if (step.element && !step.targetNode) return reset();
+
 			if (step.targetNode) {
 				// set prompt position
 				const promptRect = promptNode.getBoundingClientRect();
 				const targetRect = step.targetNode.getBoundingClientRect();
+				const validTarget = checkTarget(targetRect);
+				if (!validTarget) return reset();
 
 				if (targetRect.bottom + promptRect.height + 5 < document.body.clientHeight) {
 					promptStyle.top = `${targetRect.bottom}px`;
@@ -190,22 +202,23 @@
 					width: `${targetRect.width}px`,
 					height: `${targetRect.height}px`
 				};
-			} else {
-				// set prompt to center
-				const bodyRect = bodyNode.getBoundingClientRect();
 
-				promptStyle.top = `${(document.body.clientHeight - bodyRect.height) / 2}px`;
-				promptStyle.left = `${(document.body.clientWidth - bodyRect.width) / 2}px`;
-				promptPos = 'center';
-
-				// set spotlight to center
-				spotlightStyle = {
-					top: `${document.body.clientHeight / 2}px`,
-					left: `${document.body.clientWidth / 2}px`,
-					width: '0',
-					height: '0'
-				};
+				return;
 			}
+			// set prompt to center
+			const bodyRect = bodyNode.getBoundingClientRect();
+
+			promptStyle.top = `${(document.body.clientHeight - bodyRect.height) / 2}px`;
+			promptStyle.left = `${(document.body.clientWidth - bodyRect.width) / 2}px`;
+			promptPos = 'center';
+
+			// set spotlight to center
+			spotlightStyle = {
+				top: `${document.body.clientHeight / 2}px`,
+				left: `${document.body.clientWidth / 2}px`,
+				width: '0',
+				height: '0'
+			};
 		};
 
 		updatePos();

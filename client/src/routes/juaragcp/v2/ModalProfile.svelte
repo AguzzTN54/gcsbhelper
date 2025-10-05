@@ -9,6 +9,7 @@
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { activeProfile } from '$lib/stores/app.svelte';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
+	import { dismissTour } from '$reusable/Tour.svelte';
 	import img from '$img/avatar.webp';
 	import Modal from './comp/Modal.svelte';
 	setContext('modalHandle', modalHandle);
@@ -18,6 +19,7 @@
 
 	const selectAccount = (uuid: string) => {
 		modalHandle();
+		dismissTour();
 		const targetProfile = localAccounts.getByID(uuid, 'juaragcp');
 		if (!targetProfile) return pushToast({ type: 'error', message: 'Invalid Account' });
 		activeProfile.set(targetProfile);
@@ -26,6 +28,7 @@
 	const deleteAccount = (uuid: string) => {
 		localAccounts.delete(uuid, 'juaragcp');
 		modalHandle();
+		dismissTour();
 
 		if (activeuuid !== uuid) return;
 		activeProfile.set({ name: '', uuid: '', avatar: '' });
@@ -34,6 +37,7 @@
 	const addAccount = () => {
 		activeProfile.set({ name: '', uuid: '', avatar: '' });
 		modalHandle();
+		dismissTour();
 	};
 
 	let imageErrorAttempt = 0;
