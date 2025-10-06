@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { getContext, onMount, setContext } from 'svelte';
-	import { loadProfileAndBadges } from '$lib/helpers/loader.arcade';
+	import { MetaTags } from 'svelte-meta-tags';
 	import {
 		arcadeRegion,
 		incompleteCalculation,
@@ -9,6 +10,7 @@
 		loadSteps,
 		profileReady
 	} from '$lib/stores/app.svelte';
+	import { loadProfileAndBadges } from '$lib/helpers/loader.arcade';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import bg from '$img/paper.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
@@ -20,9 +22,10 @@
 	const { children, data } = $props();
 	let tmp = $state<{ facilitator: App.FacilitatorRegion; uuid: string }>();
 	const { avatar, facilitator, name, uuid } = $derived.by(() => {
-		if (tmp && $profileReady) return localAccounts.getActive() || {};
-		return data || {};
+		if (tmp && $profileReady) return localAccounts.getActive() || data || {};
+		return data;
 	});
+	const title = $derived(`${name ? name + ' - ' : ''} ${page.data?.pageMetaTags?.title}`);
 
 	let scrolled = $state(false);
 	setContext('scrolled', (val: boolean) => (scrolled = val));
@@ -57,6 +60,8 @@
 		await loadDashProfile(uuid, facilitator || 'unset');
 	});
 </script>
+
+<MetaTags {title} />
 
 {#if $incompleteCalculation}
 	<Modal hideclosebutton persist>

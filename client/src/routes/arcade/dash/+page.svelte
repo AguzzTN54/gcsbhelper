@@ -34,30 +34,26 @@
 	};
 </script>
 
-<svelte:head>
-	<title>{name} - Arcade Tracker</title>
-</svelte:head>
-
-<div class="size-full flex flex-col sm:flex-row pr-2 sm:pr-0">
+<div class="flex size-full flex-col pr-2 sm:flex-row sm:pr-0">
 	<!-- left -->
 	<div
-		class="lg:w-120 sm:w-1/2 w-full max-w-full sm:border-r-4 border-[color:var(--stroke)] flex flex-col py-2 sm:pr-6 sm:pl-2 relative"
+		class="relative flex w-full max-w-full flex-col border-[color:var(--stroke)] py-2 sm:w-1/2 sm:border-r-4 sm:pr-6 sm:pl-2 lg:w-120"
 	>
-		<div class="sm:px-5 px-2">
+		<div class="px-2 sm:px-5">
 			<div
-				class="flex sm:pt-2 pb-5 sm:pl-2 text-center sm:text-left"
+				class="flex pb-5 text-center sm:pt-2 sm:pl-2 sm:text-left"
 				id="profile-id"
 				use:observeOutOfView
 			>
-				<div class="w-20 scale-105 sm:block hidden">
+				<div class="hidden w-20 scale-105 sm:block">
 					<ProfilePic src={avatar} />
 				</div>
-				<div class="ml-auto w-full pl-5 flex flex-col justify-center items-center sm:items-start">
+				<div class="ml-auto flex w-full flex-col items-center justify-center pl-5 sm:items-start">
 					<a href="/arcade" class="relative w-fit">
 						{#if $profileReady || loadSteps.profile}
-							<h1 class="font-semibold text-2xl mb-1 text-overflow">{name}</h1>
+							<h1 class="text-overflow mb-1 text-2xl font-semibold">{name}</h1>
 						{:else}
-							<Skeleton class="w-30 max-w-full h-7 mb-2" />
+							<Skeleton class="mb-2 h-7 w-30 max-w-full" />
 						{/if}
 					</a>
 					<NavMenu action />
@@ -67,7 +63,7 @@
 			<PointCard />
 		</div>
 
-		<div class="px-2 pt-8 pb-12 md:pt-5 md:pb-10 sm:px-5 h-full">
+		<div class="h-full px-2 pt-8 pb-12 sm:px-5 md:pt-5 md:pb-10">
 			<div class="text-center sm:text-left">
 				<span class="inline-block">
 					Don’t miss out on the games!
@@ -83,9 +79,9 @@
 			<Timeline />
 		</div>
 
-		<div class="mt-auto sm:px-5 px-2 pt-2">
-			<div class="brutal-border p-2 w-full rounded-xl bg-amber-200 flex justify-center">
-				<div class="flex flex-col items-center relative z-1">
+		<div class="mt-auto px-2 pt-2 sm:px-5">
+			<div class="brutal-border flex w-full justify-center rounded-xl bg-amber-200 p-2">
+				<div class="relative z-1 flex flex-col items-center">
 					<Countdown />
 				</div>
 			</div>
@@ -93,7 +89,7 @@
 
 		<!-- Navigation -->
 		<div
-			class="absolute z-10 top-1/2 right-0 -translate-y-1/2 translate-x-[calc(50%+2px)] hidden sm:block"
+			class="absolute top-1/2 right-0 z-10 hidden translate-x-[calc(50%+2px)] -translate-y-1/2 sm:block"
 		>
 			<NavMenu />
 		</div>
@@ -102,7 +98,7 @@
 	<!-- Right -->
 
 	<div class="w-full sm:w-1/2 lg:w-3/5 xl:w-full">
-		<ScrollArea id="rightpane" class="sm:py-2 sm:px-10 px-4">
+		<ScrollArea id="rightpane" class="px-4 sm:px-10 sm:py-2">
 			<div id="content-stats"></div>
 			<Stats />
 			<Reward />

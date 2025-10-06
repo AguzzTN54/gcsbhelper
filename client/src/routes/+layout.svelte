@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount, setContext } from 'svelte';
+	import { MetaTags, deepMerge } from 'svelte-meta-tags';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import 'swiper/css';
 	import '../app.css';
@@ -11,12 +12,13 @@
 	import Footer from './_global/Footer.svelte';
 	import Loader from './juaragcp/v2/comp/Loader.svelte';
 
-	const { children } = $props();
+	const { children, data } = $props();
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	const screenHeight = $derived(innerHeight ? `${innerHeight}px` : '100vh');
 	$effect(() => screenSize.set({ width: innerWidth, height: innerHeight }));
 	const id = $derived(page.route.id?.includes('/juaragcp') ? 'juaragcp' : 'arcade');
+	const metaTags = $derived(deepMerge(data.baseMetaTags, page.data.pageMetaTags));
 
 	let loaded = $state(false);
 	setContext('loaded', () => (loaded = true));
@@ -32,11 +34,9 @@
 	});
 </script>
 
-<svelte:head>
-	<title>CloudSkillBoost Helper Tools</title>
-</svelte:head>
-
 <svelte:window bind:innerHeight bind:innerWidth />
+
+<MetaTags {...metaTags} />
 
 {#if id === 'juaragcp'}
 	<Loader {loaded} />

@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { fade } from 'svelte/transition';
 	import { getContext, onMount } from 'svelte';
+	import { MetaTags } from 'svelte-meta-tags';
 	import { useQuery } from '$lib/stores/query-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { activeProfile, juaraBadges, screenSize } from '$lib/stores/app.svelte';
+	import { createCountdown } from '$lib/stores/countdown.svelte';
 	import particleConfig from '$lib/data/particle.config';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Flag from './illustration/Flag.svelte';
@@ -26,6 +29,10 @@
 	const profileLoaded = $derived($q.data && !$q.isLoading);
 	const loaded = getContext('loaded') as () => void;
 	$effect(() => juaraBadges.set((($q.data as App.InitData)?.courses as App.JuaraBadge[]) || []));
+	const title = $derived.by(() => {
+		const { name } = $activeProfile || {};
+		return `${name ? name + ' - ' : ''} ${page.data.pageMetaTags.title}`;
+	});
 
 	onMount(() => {
 		const script = document.createElement('script');
@@ -59,6 +66,8 @@
 	};
 </script>
 
+<MetaTags {title} />
+
 <ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]" {onScroll}>
 	<ModalProfile />
 
@@ -85,7 +94,7 @@
 			<nav class="none mr-30 ml-auto hidden whitespace-nowrap sm:block">
 				<span class="text-stroke px-2 text-lg text-[var(--color-secondary)]"> 10d 1h 23m 11s </span>
 				<a
-					href="https://docs.google.com/forms/d/1sTb9gQRgvTa101MSU1_nuEsMU7rbyzvMBEu928rKoQA"
+					href="/"
 					target="_blank"
 					rel="noreferrer"
 					class="rounded-full bg-[var(--color-secondary)] px-6 py-2 text-lg !font-semibold text-[var(--color-primary)] uppercase transition-colors duration-300 hover:bg-amber-800"

@@ -18,10 +18,6 @@
 	setContext('handleFacilitatorSelector', handleFacilitatorSelector);
 </script>
 
-<svelte:head>
-	<title>Arcade Progress Tracker 2025 - Cohort 2</title>
-</svelte:head>
-
 <Portal target="#main">
 	<ModalSelectRegion {showModal} />
 </Portal>
