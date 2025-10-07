@@ -112,6 +112,15 @@ declare global {
 			enrollment_count?: number;
 		}
 
+		interface JuaraCalendar {
+			date: dayjs.Dayjs;
+			inCurrentMonth: boolean;
+			today: boolean;
+			start: boolean;
+			end: boolean;
+			eventRange: boolean;
+		}
+
 		//  ======================================
 		interface SourceCourses extends UserCourses {
 			type: 'skill' | 'completion';

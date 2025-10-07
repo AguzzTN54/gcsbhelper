@@ -19,7 +19,7 @@
 	import Leaf2 from './illustration/Leaf2.svelte';
 	import Leaves from './illustration/Leaves.svelte';
 	import SunMoon from './illustration/SunMoon.svelte';
-	import Timeline from './Timeline.svelte';
+	import Timeline from './Timeline/Timeline.svelte';
 	import Badges from './Badges';
 	import Form from './Form.svelte';
 	import Summary from './Summary.svelte';
@@ -64,6 +64,14 @@
 		const timeline = document.getElementById('timeline');
 		timeline?.scrollIntoView({ behavior: 'smooth' });
 	};
+
+	const enddate = '19 October 2025';
+	const timer = createCountdown(enddate);
+	const countdown = $derived.by(() => {
+		const { d, h, m, s } = $timer;
+		const time = `${d}d ${h}h ${m}m ${s}s`;
+		return time;
+	});
 </script>
 
 <MetaTags {title} />
@@ -92,7 +100,9 @@
 			{/if}
 
 			<nav class="none mr-30 ml-auto hidden whitespace-nowrap sm:block">
-				<span class="text-stroke px-2 text-lg text-[var(--color-secondary)]"> 10d 1h 23m 11s </span>
+				<span class="text-stroke px-2 text-lg text-[var(--color-secondary)]" title={enddate}>
+					{countdown}
+				</span>
 				<a
 					href="/"
 					target="_blank"
@@ -112,7 +122,7 @@
 					class="mx-auto mb-2 block w-50 rounded-full border-4 border-[var(--color-primary)] bg-[var(--color-secondary)] py-1.5 text-center text-sm font-semibold text-[var(--color-primary)] sm:hidden"
 					style="word-spacing: .5rem;"
 				>
-					10d 1h 23m 11s
+					{countdown}
 				</span>
 
 				<div class="font-fancy text-stroke text-center">
