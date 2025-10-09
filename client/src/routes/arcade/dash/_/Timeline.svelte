@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
-	import { getTimelineContents } from '$lib/data/timeline';
+	import { getTimelineContents } from '$lib/helpers/timeline.arcade';
 	import { arcadeRegion, initData } from '$lib/stores/app.svelte';
 
 	let timelineW = $state(0);
