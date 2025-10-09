@@ -118,7 +118,8 @@ declare global {
 			today: boolean;
 			start: boolean;
 			end: boolean;
-			eventRange: boolean;
+			inPeriode: boolean;
+			hasEvent: boolean;
 		}
 
 		//  ======================================

@@ -12,18 +12,19 @@
 	<div
 		class="grid grid-cols-7 gap-y-2 overflow-hidden rounded-3xl bg-[var(--color-primary)] md:gap-y-3 md:py-2"
 	>
-		{#each daterange as { date, end, eventRange, inCurrentMonth, start, today }, i}
+		{#each daterange as { date, end, inPeriode, inCurrentMonth, hasEvent, start, today }, i}
 			<div
 				class="date-item relative z-1 flex aspect-square items-center justify-center overflow-hidden text-black lg:aspect-[5/3.5]"
 				class:start
 				class:end
 				class:today
-				class:range={eventRange}
+				class:range={inPeriode}
 			>
 				<button
 					class="relative flex aspect-square h-full items-center justify-center rounded-full p-2 text-[var(--color-secondary)] transition-colors duration-300 hover:bg-amber-800/80 hover:text-[var(--color-primary)]"
 					class:!bg-[var(--color-secondary)]={start || end}
-					class:!text-[var(--color-primary)]={start || end}
+					class:!text-[var(--color-primary)]={start || end || hasEvent}
+					class:bg-amber-700={hasEvent}
 					class:notInCurrentMonth={!inCurrentMonth}
 					title={start ? 'Start JuaraGCP' : end ? 'Deadline JuaraGCP' : ''}
 				>

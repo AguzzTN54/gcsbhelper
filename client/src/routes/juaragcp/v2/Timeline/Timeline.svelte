@@ -34,7 +34,7 @@
 </script>
 
 <div
-	class="relative z-9 bg-[var(--color-secondary)] pb-10 text-[var(--color-primary)] sm:pb-15 md:pt-20 md:pb-40"
+	class="relative z-9 bg-[var(--color-secondary)] pb-10 text-[var(--color-primary)] sm:pb-15 md:pt-20 md:pb-25"
 >
 	<div class="ground pointer-events-none absolute top-0 left-0 -z-1 w-full">
 		<Ground />
