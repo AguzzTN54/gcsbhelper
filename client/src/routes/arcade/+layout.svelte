@@ -16,7 +16,7 @@
 <img
 	src={splash}
 	alt="splash"
-	class="size-full object-cover absolute left-0 -z-1 top-0 pointer-events-none"
+	class="pointer-events-none absolute top-0 left-0 -z-1 size-full object-cover"
 />
 
 {#if page.route.id === '/arcade/dash'}
@@ -24,16 +24,16 @@
 	{@render children()}
 {:else}
 	<!-- not logged in -->
-	<div class="flex items-end justify-center size-full">
+	<div class="flex size-full items-end justify-center">
 		<div
-			class="w-[95%] md:w-9/12 bg-gray-100 h-[calc(90%-2rem)] sm:h-[90%] relative rounded-t-3xl rounded-tr-none !border-b-0 brutal-border-lg brutal-shadow"
+			class="brutal-border-lg brutal-shadow relative h-[calc(90%-2rem)] w-[95%] rounded-t-3xl rounded-tr-none !border-b-0 bg-gray-100 sm:h-[90%] md:w-9/12"
 		>
 			<!-- Countdown -->
 			{#if $arcadeRegion && $arcadeRegion !== 'unset'}
 				<div
-					class="absolute top-0 left-0 z-1 -translate-y-[calc(100%+2.5rem)] sm:-translate-y-full flex justify-center sm:justify-start w-full sm:w-fit"
+					class="absolute top-0 left-0 z-1 flex w-full -translate-y-[calc(100%+2.5rem)] justify-center sm:w-fit sm:-translate-y-full sm:justify-start"
 				>
-					<div class="flex flex-col items-center sm:items-start mb-2">
+					<div class="mb-2 flex flex-col items-center sm:items-start">
 						<Countdown small />
 					</div>
 				</div>
@@ -41,19 +41,19 @@
 
 			<!-- Menu -->
 			<div
-				class="absolute rounded-tr-3xl bottom-full right-0 translate-y-[1.2rem] pb-3 brutal-shadow brutal-border-lg translate-x-[6px] overflow-hidden"
+				class="brutal-shadow brutal-border-lg absolute right-0 bottom-full translate-x-[6px] translate-y-[1.2rem] overflow-hidden rounded-tr-3xl pb-3"
 			>
 				<NavMenu />
 			</div>
 
 			<!-- Paper Background -->
 			<div
-				class="absolute top-0 right-0 size-full bg-gray-100 pointer-events-none rounded-tl-3xl overflow-hidden"
+				class="pointer-events-none absolute top-0 right-0 size-full overflow-hidden rounded-tl-3xl bg-gray-100"
 			>
 				<img
 					src={bg}
 					alt="Paper Bg"
-					class="object-cover opacity-30 size-full"
+					class="size-full object-cover opacity-30"
 					style="mask-image: linear-gradient(to bottom, transparent 5%, black 20%);"
 				/>
 			</div>

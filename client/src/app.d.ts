@@ -1,7 +1,12 @@
+import type TrackerClass from '@openreplay/tracker';
 import type { Dayjs } from 'dayjs';
 import { facilitatorRegions, gcsbPrograms } from '$lib/data/config';
 
 declare global {
+	interface Window {
+		__opr?: TrackerClass;
+	}
+
 	namespace App {
 		type FacilitatorRegion = (typeof facilitatorRegions)[number];
 		type GCPProgram = (typeof gcsbPrograms)[number];

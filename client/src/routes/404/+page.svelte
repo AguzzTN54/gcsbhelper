@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
+	const onclick = async () => {
+		throw new Error('This Is Error Tess');
+	};
 </script>
 
 <MetaTags title="404 Page Not Found" />
@@ -64,6 +67,8 @@
 		</svg>
 	</div>
 	<div class="mt-10 p-2">
-		<a href="/" class="bg-sky-500 px-5 py-2 text-white hover:bg-amber-700"> Back To Home </a>
+		<button class="bg-sky-500 px-5 py-2 text-white hover:bg-amber-700" {onclick}>
+			Back To Home
+		</button>
 	</div>
 </section>

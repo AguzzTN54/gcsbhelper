@@ -31,7 +31,6 @@
 	const q = $derived.by(() => {
 		return createQuery({
 			enabled: false,
-			cacheTime: 0, // never evict
 			queryKey: profileUUID,
 			queryFn: async () => {
 				const res = await loadJuaraProfile({ profileUUID, program: 'juaragcp' });
@@ -44,6 +43,7 @@
 
 	$effect(() => {
 		if (!$activeProfile?.uuid) return;
+		window.__opr?.setUserID($activeProfile.name.slice(0, 4).padEnd(10, '*'));
 		value = `https://www.cloudskillsboost.google/public_profiles/${$activeProfile.uuid}`;
 		untrack(() => $q.refetch());
 	});

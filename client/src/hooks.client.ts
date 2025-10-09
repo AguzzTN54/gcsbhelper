@@ -1,21 +1,46 @@
 import { dev } from '$app/environment';
-import { PUBLIC_GITHUB_SHA } from '$env/static/public';
-import * as Sentry from '@sentry/sveltekit';
+import { PUBLIC_GITHUB_SHA, PUBLIC_OPR_PROJECT_KEY } from '$env/static/public';
 import type { HandleClientError } from '@sveltejs/kit';
+import Tracker from '@openreplay/tracker';
 
-Sentry.init({
-	dsn: 'https://72efb29fcfa6497cb626eecc4a7f06e3@sink.wishsimulator.app/1',
-	sendDefaultPii: true,
-	tracesSampleRate: 1.0,
-	enableLogs: true,
-	environment: dev ? 'development' : 'production',
-	release: 'gcsb-helper@' + PUBLIC_GITHUB_SHA,
-	integrations: [Sentry.httpClientIntegration(), Sentry.browserTracingIntegration()]
+window.__opr = new Tracker({
+	projectKey: PUBLIC_OPR_PROJECT_KEY,
+	ingestPoint: 'https://sink.mantan.dev/ingest',
+	revID: 'gcsb-helper@' + PUBLIC_GITHUB_SHA,
+	respectDoNotTrack: true,
+	__DISABLE_SECURE_MODE: dev || window.location.hostname === 'localhost'
 });
 
-const errorhandler: HandleClientError = async (error) => {
-	const errorId = crypto.randomUUID();
-	return { ...error, errorId };
+if (!dev) {
+	window.addEventListener('unhandledrejection', (error) => {
+		window.__opr?.handleError(error);
+		window.__opr?.start();
+	});
+	window.addEventListener('error', (error) => {
+		window.__opr?.handleError(error);
+		window.__opr?.start();
+	});
+}
+
+const isPromiseRejectionEvent = (v: unknown): v is PromiseRejectionEvent => {
+	return v instanceof PromiseRejectionEvent;
 };
 
-export const handleError: HandleClientError = Sentry.handleErrorWithSentry(errorhandler);
+const isErrorEvent = (v: unknown): v is ErrorEvent => {
+	return v instanceof ErrorEvent;
+};
+
+const isError = (v: unknown): v is Error => {
+	return v instanceof Error;
+};
+
+export const handleError: HandleClientError = async (error) => {
+	const errorId = crypto.randomUUID();
+	const val = error.error;
+	if (isError(val) || isErrorEvent(val) || isPromiseRejectionEvent(val)) {
+		window.__opr?.handleError(val);
+	} else {
+		window.__opr?.handleError(new Error(String(val)));
+	}
+	return { ...error, errorId };
+};

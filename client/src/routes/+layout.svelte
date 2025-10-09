@@ -20,6 +20,11 @@
 	const id = $derived(page.route.id?.includes('/juaragcp') ? 'juaragcp' : 'arcade');
 	const metaTags = $derived(deepMerge(data.baseMetaTags, page.data.pageMetaTags));
 
+	$effect(() => {
+		const gevent = page.url.pathname.split('/')[1] || 'unknown';
+		window.__opr?.setMetadata('skillboost', gevent);
+	});
+
 	let loaded = $state(false);
 	setContext('loaded', () => (loaded = true));
 	onMount(() => {

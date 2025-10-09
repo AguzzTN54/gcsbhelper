@@ -49,7 +49,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Building the App
-        run: pnpm build
+        run: pnpm build:prod
         env:
           PUBLIC_GITHUB_SHA: ${{ github.sha }}
           PUBLIC_VAPID_KEY: ${{ secrets.PUBLIC_VAPID_KEY }}
@@ -57,6 +57,8 @@ jobs:
           PUBLIC_SUPER_SECRET: ${{ secrets.PUBLIC_SUPER_SECRET }}
           PUBLIC_API_SERVER: ${{ secrets.PUBLIC_API_SERVER }}
           PUBLIC_PB_SERVER: ${{ secrets.PUBLIC_PB_SERVER }}
+          PUBLIC_OPR_PROJECT_KEY: ${{ secrets.PUBLIC_OPR_PROJECT_KEY }}
+          PRIVATE_OPR_API_KEY: ${{ secrets.PRIVATE_OPR_API_KEY }}
 
       # Cloudflare Step
       - name: Publish to Cloudflare Pages
