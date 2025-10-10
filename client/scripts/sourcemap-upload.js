@@ -21,7 +21,7 @@ const uploadSourceMaps = async () => {
 			PROJECT_KEY,
 			`./build/_app/immutable/${folder}`,
 			`https://gcsbhelper.pages.dev/_app/immutable/${folder}`,
-			'https://sink.mantan.dev/api'
+			'https://opr.mantan.dev/api'
 		);
 		console.log(folder, upload);
 	}

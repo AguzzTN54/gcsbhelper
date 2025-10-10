@@ -6,6 +6,7 @@
 		"build": "vite build",
 		"build:map": "vite build && node --env-file=.env scripts/sourcemap-upload.js",
 		"build:prod": "vite build && node scripts/sourcemap-upload.js",
+		"upload-map": "node --env-file=.env scripts/sourcemap-upload.js",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -14,6 +15,7 @@
 	},
 	"devDependencies": {
 		"@openreplay/sourcemap-uploader": "^3.0.13",
+		"@sentry/cli": "^2.56.0",
 		"@sveltejs/adapter-static": "^3.0.9",
 		"@sveltejs/kit": "^2.42.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.0",
@@ -40,6 +42,7 @@
 	"type": "module",
 	"dependencies": {
 		"@openreplay/tracker": "^16.4.9",
+		"@sentry/sveltekit": "^10.19.0",
 		"canvas-confetti": "^1.9.3",
 		"chart.js": "^4.5.0",
 		"dayjs": "^1.11.12",
@@ -50,6 +53,7 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
+			"@sentry/cli",
 			"@tailwindcss/oxide",
 			"esbuild",
 			"sharp",

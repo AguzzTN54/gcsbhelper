@@ -42,7 +42,7 @@
 	});
 
 	$effect(() => {
-		if (!$activeProfile?.uuid) return;
+		if (!$activeProfile?.uuid) return window.__opr?.setUserID('');
 		window.__opr?.setUserID($activeProfile.name.slice(0, 4).padEnd(10, '*'));
 		value = `https://www.cloudskillsboost.google/public_profiles/${$activeProfile.uuid}`;
 		untrack(() => $q.refetch());
