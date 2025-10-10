@@ -9,6 +9,9 @@ const config = {
 		runes: true
 	},
 	kit: {
+		prerender: {
+			origin: 'https://gcsbhelper.pages.dev'
+		},
 		adapter: adapter(),
 		alias: {
 			$comp: path.resolve('./src/components'),
