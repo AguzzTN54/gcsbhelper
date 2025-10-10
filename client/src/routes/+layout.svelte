@@ -11,6 +11,7 @@
 	import Tour from '$reusable/Tour.svelte';
 	import Footer from './_global/Footer.svelte';
 	import Loader from './juaragcp/v2/comp/Loader.svelte';
+	import Modal from '$reusable/Modal.svelte';
 
 	const { children, data } = $props();
 	let innerHeight = $state(0);
@@ -54,6 +55,13 @@
 
 <Toasts />
 <Tour />
+
+<Modal hideclosebutton persist>
+	<div class="text-center">
+		<h1 class="text-2xl font-bold">UNDER MAINTENANCE!</h1>
+		<p>Please Come Back Later!</p>
+	</div>
+</Modal>
 
 <main
 	{id}
