@@ -1,4 +1,4 @@
-import { pb } from '../../db/pocketbase.ts';
+import pb from '../../db/pocketbase.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
 const getCourseId = (courseid: number, type: 'game' | 'skill'): string => {
@@ -33,9 +33,8 @@ const validateCourse = async (courses: UserCourses[]) => {
       chunks.map(async (chunk) => {
         const filter = buildFilter(chunk);
         if (!filter) return [];
-        const queryParam = `skipTotal=true&perPage=1000&filter=${encodeURIComponent(filter)}`;
-        const resp = await pb(`/api/collections/courses/records?${queryParam}`);
-        return resp.items || [];
+        const res = await pb.collection('courses').getFullList({ filter, skipTotal: true, perPage: 1000 });
+        return res || [];
       }),
     );
 
@@ -55,28 +54,22 @@ const validateCourse = async (courses: UserCourses[]) => {
 };
 
 const insertMissingCourses = async (newCourses: UserCourses[]) => {
-  const requests: PBBatchRequest[] = [];
+  const batch = pb.createBatch();
   for (const { courseid, type, title, badgeurl } of newCourses) {
-    const item: PBBatchRequest = {
-      method: 'POST',
-      url: '/api/collections/courses/records',
-      body: {
-        title,
-        badgeurl,
-        inactive: type === 'game',
-        id: await shortShaId(getCourseId(courseid, type)),
-        ...(type === 'game' ? { badgeid: courseid } : { courseid }),
-      },
-    };
-    requests.push(item);
+    batch.collection('courses').create({
+      title,
+      badgeurl,
+      inactive: type === 'game',
+      id: await shortShaId(getCourseId(courseid, type)),
+      ...(type === 'game' ? { badgeid: courseid } : { courseid }),
+    });
   }
-
-  await pb('/api/batch', 'POST', { requests });
+  await batch.send();
 };
 
 const checkStoredProfile = async (hexuuid: string): Promise<{ earned: string[]; facilitator?: string }> => {
   try {
-    const { earned_courses, facilitator } = await pb('/api/collections/profiles/records/' + hexuuid);
+    const { earned_courses, facilitator } = await pb.collection('profiles').getOne(hexuuid);
     const earned = earned_courses || [];
     return { earned, facilitator };
   } catch (err) {
@@ -109,45 +102,38 @@ const insertNewCourses = async (
   facilitator?: string,
   program?: string,
 ): Promise<PBBatchResponse[]> => {
-  const requests: PBBatchRequest[] = [
-    {
-      method: 'PUT',
-      url: '/api/collections/profiles/records',
-      body: { id: hexuuid, facilitator: facilitator || null, program: program || null },
-    },
-  ];
+  const batch = pb.createBatch();
 
+  batch.collection('profiles').upsert({
+    id: hexuuid,
+    facilitator: facilitator || null,
+    program: program || null,
+  });
   for (const { courseid, date, type } of newCourses) {
     const id = getCourseId(courseid, type);
-    const item: PBBatchRequest = {
-      method: 'PUT',
-      url: '/api/collections/course_enrollments/records',
-      body: {
-        id: await shortShaId(`${hexuuid}${id}`),
-        profile: hexuuid,
-        course: await shortShaId(id),
-        earned: date,
-      },
-    };
-    requests.push(item);
+    batch.collection('course_enrollments').upsert({
+      id: await shortShaId(`${hexuuid}${id}`),
+      profile: hexuuid,
+      course: await shortShaId(id),
+      earned: date,
+    });
   }
 
-  const payload = { requests };
-  const data = await pb('/api/batch', 'POST', payload);
-  return data;
+  const data = await batch.send();
+  return data as PBBatchResponse[];
 };
 
 const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[]) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
   const filter = encodeURIComponent(`((${courseFilter})&&profile='${hexuuid}')`);
-  const { items = [] } = await pb('/api/collections/course_enrollments/records?skipTotal=true&filter=' + filter);
+  const items = (await pb.collection('course_enrollments').getFullList({ filter, skipTotal: true })) || [];
   if (items.length < 1) return;
 
-  const requests: PBBatchRequest[] = items.map(({ id }: { id: string }) => ({
-    method: 'DELETE',
-    url: '/api/collections/course_enrollments/records/' + id,
-  }));
-  await pb('/api/batch', 'POST', { requests });
+  const batch = pb.createBatch();
+  for (const { id } of items) {
+    batch.collection('course_enrollments').delete(id);
+  }
+  await batch.send();
 };
 
 const updateProfileCourseList = async (
@@ -165,7 +151,7 @@ const updateProfileCourseList = async (
     const newList = insertedCourses.map(({ body }) => body.course);
     const courseList = [...currentEarned.filter((c) => !deletedCourse.includes(c)), ...newList];
     const payload = { earned_courses: courseList };
-    await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', payload);
+    await pb.collection('profiles').update(hexuuid, payload);
   } catch (e) {
     console.error(e);
   }
@@ -174,7 +160,7 @@ const updateProfileCourseList = async (
 const updateFacil = async (hexuuid: string, facil?: string) => {
   try {
     const facilitator = facil || null;
-    await pb('/api/collections/profiles/records/' + hexuuid, 'PATCH', { facilitator });
+    await pb.collection('profiles').update(hexuuid, { facilitator });
     return true;
   } catch (e) {
     console.error(e);

@@ -2,7 +2,8 @@
   "version": "5",
   "specifiers": {
     "npm:hono@*": "4.8.5",
-    "npm:jsdom@*": "26.1.0"
+    "npm:jsdom@*": "26.1.0",
+    "npm:pocketbase@*": "0.26.5"
   },
   "npm": {
     "@asamuzakjp/css-color@3.2.0_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
@@ -143,6 +144,9 @@
       "dependencies": [
         "entities"
       ]
+    },
+    "pocketbase@0.26.5": {
+      "integrity": "sha512-SXcq+sRvVpNxfLxPB1C+8eRatL7ZY4o3EVl/0OdE3MeR9fhPyZt0nmmxLqYmkLvXCN9qp3lXWV/0EUYb3MmMXQ=="
     },
     "punycode@2.3.1": {
       "integrity": "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="

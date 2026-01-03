@@ -2,7 +2,7 @@
 import { JSDOM } from 'npm:jsdom';
 import type { Course, DecodedCourseData } from './types.d.ts';
 import { shortShaId } from '../../utils/hash.ts';
-import { pb } from '../../db/pocketbase.ts';
+import pb from '../../db/pocketbase.ts';
 
 const delay = (seconds: number) => {
   return new Promise<void>((resolve) => {
@@ -84,33 +84,25 @@ const insertToPb = async (course: Course & MoreCourseDetail) => {
     const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
     const labData = (await Promise.all(labrecords || [])).flat();
     const labIds = labData.map((l) => l.id) || [];
-    const labRequest = labData.map(({ id, title }) => ({
-      method: 'PUT',
-      url: '/api/collections/labs/records',
-      body: { id, title },
-    }));
 
-    const requests = [
-      ...labRequest,
-      {
-        method: 'PUT',
-        url: '/api/collections/courses/records',
-        body: {
-          id,
-          courseid,
-          title,
-          fasttrack,
-          totallab,
-          level,
-          badgeurl,
-          labs: labIds,
-          type: 'skill',
-          point: 0.5,
-        },
-      },
-    ];
+    const batch = pb.createBatch();
+    for (const { id, title } of labData) {
+      batch.collection('labs').upsert({ id, title });
+    }
 
-    await pb('/api/batch', 'POST', { requests });
+    batch.collection('courses').upsert({
+      id,
+      courseid,
+      title,
+      fasttrack,
+      totallab,
+      level,
+      badgeurl,
+      labs: labIds,
+      type: 'skill',
+      point: 0.5,
+    });
+    await batch.send();
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }

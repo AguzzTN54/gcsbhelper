@@ -2,7 +2,7 @@
 import { JSDOM, DOMWindow } from 'npm:jsdom';
 import { type ArcadeContent } from '../../db/denoKv.ts';
 import { shortShaId } from '../../utils/hash.ts';
-import { pb } from '../../db/pocketbase.ts';
+import pb from '../../db/pocketbase.ts';
 import { DecodedCourseData } from './types.d.ts';
 
 const gcsb = 'https://www.cloudskillsboost.google';
@@ -85,34 +85,27 @@ const insertToPb = async (course: Course) => {
     const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
     const labData = (await Promise.all(labrecords || [])).flat();
     const labIds = labData.map((l) => l.id) || [];
-    const labRequest = labData.map(({ id, title }) => ({
-      method: 'PUT',
-      url: '/api/collections/labs/records',
-      body: { id, title },
-    }));
 
-    const requests = [
-      ...labRequest,
-      {
-        method: 'PUT',
-        url: '/api/collections/courses/records',
-        body: {
-          id,
-          enddate,
-          startdate,
-          courseid,
-          title,
-          totallab,
-          badgeurl,
-          type,
-          badgeid,
-          token,
-          point: point || 0,
-          labs: labIds,
-        },
-      },
-    ];
-    await pb('/api/batch', 'POST', { requests });
+    const batch = pb.createBatch();
+    for (const { id, title } of labData) {
+      batch.collection('labs').upsert({ id, title });
+    }
+
+    batch.collection('courses').upsert({
+      id,
+      enddate,
+      startdate,
+      courseid,
+      title,
+      totallab,
+      badgeurl,
+      type,
+      badgeid,
+      token,
+      point: point || 0,
+      labs: labIds,
+    });
+    await batch.send();
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }

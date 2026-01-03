@@ -3,19 +3,18 @@ migrate((app) => {
   const collection = app.findCollectionByNameOrId("pbc_3414089001")
 
   // add field
-  collection.fields.addAt(3, new Field({
+  collection.fields.addAt(8, new Field({
+    "cascadeDelete": false,
+    "collectionId": "pbc_1687431684",
     "hidden": false,
-    "id": "select2755300790",
-    "maxSelect": 1,
-    "name": "facilitator",
+    "id": "relation1401378634",
+    "maxSelect": 999,
+    "minSelect": 0,
+    "name": "events",
     "presentable": false,
     "required": false,
     "system": false,
-    "type": "select",
-    "values": [
-      "id",
-      "in"
-    ]
+    "type": "relation"
   }))
 
   return app.save(collection)
@@ -23,7 +22,7 @@ migrate((app) => {
   const collection = app.findCollectionByNameOrId("pbc_3414089001")
 
   // remove field
-  collection.fields.removeById("select2755300790")
+  collection.fields.removeById("relation1401378634")
 
   return app.save(collection)
 })

@@ -7,7 +7,7 @@
     "start": "deno run --unstable-kv --allow-env --env-file --allow-net --unstable-cron src/index.ts",
     "crawl:skill": "deno run --env-file --allow-net --allow-env src/lib/scrapper/courses/skill.ts",
     "crawl:labfree": "deno run --env-file --allow-net --allow-env src/lib/scrapper/courses/labfree.ts",
-    "build": "deno run -A https://deno.land/x/esbuild@v0.19.11/mod.js src/index.ts --bundle --outfile=dist/deploy.js --format=esm --platform=neutral --external:npm:hono --external:npm:jsdom"
+    "build": "deno run -A https://deno.land/x/esbuild@v0.19.11/mod.js src/index.ts --bundle --outfile=dist/deploy.js --format=esm --platform=neutral --external:npm:hono --external:npm:jsdom --external:npm:pocketbase"
   },
   "deno.suggest.imports.hosts": {
     "https://deno.land": true,
