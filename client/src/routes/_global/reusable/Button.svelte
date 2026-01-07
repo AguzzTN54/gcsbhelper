@@ -1,5 +1,5 @@
 <script lang="ts">
-	const { children, onclick: click = null, disabled = false } = $props();
+	const { children, onclick: click = null, disabled = false, class: className = '' } = $props();
 	const onclick = () => click?.();
 </script>
 
@@ -7,7 +7,8 @@
 	{onclick}
 	{disabled}
 	class:disabled
-	class="bg-amber-300 hover:bg-amber-400/80 px-10 py-2 text-lg mt-5 brutal-shadow-soft brutal-border !border-[3px] active:shadow-none rounded-xl"
+	class="brutal-shadow-soft brutal-border mt-5 rounded-xl !border-[3px] bg-amber-300 px-10 py-2 text-lg hover:bg-amber-400/80 active:shadow-none {className ||
+		''}"
 >
 	{@render children()}
 </button>
@@ -16,6 +17,6 @@
 	@import 'tailwindcss/theme' theme(reference);
 
 	.disabled {
-		@apply opacity-40 cursor-not-allowed shadow-none;
+		@apply cursor-not-allowed opacity-40 shadow-none;
 	}
 </style>

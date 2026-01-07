@@ -1,33 +1,45 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, type Snippet } from 'svelte';
 	import { self } from 'svelte/legacy';
 	import { fade, fly } from 'svelte/transition';
 
-	const { persist = false, children, hideclosebutton = false } = $props();
+	interface Props {
+		children: Snippet;
+		persist?: boolean;
+		hideclosebutton?: boolean;
+		onclose?: () => void;
+	}
+	const { persist = false, children, hideclosebutton = false, onclose }: Props = $props();
 	const modalHandle = getContext('modalHandle') as () => void;
 
 	const dismiss = () => {
 		if (persist) return;
-		modalHandle();
+		modalHandle?.();
+		onclose?.();
+	};
+
+	const modalOnClose = () => {
+		modalHandle?.();
+		onclose?.();
 	};
 </script>
 
 <section
-	class="fixed size-full z-99999 top-0 left-0 flex items-center justify-center bg-amber-50/80 backdrop-blur-xs"
+	class="fixed top-0 left-0 z-99999 flex size-full items-center justify-center bg-amber-50/80 backdrop-blur-xs"
 	onmousedown={self(dismiss)}
 	role="button"
 	tabindex="0"
 	transition:fade={{ duration: 100 }}
 >
 	<div
-		class="w-[600px] max-w-[85%] wrapper relative"
+		class="wrapper relative w-[600px] max-w-[85%]"
 		in:fly={{ y: Math.random() < 0.5 ? -200 : 200, duration: 200 }}
 		out:fly={{ y: Math.random() < 0.5 ? -200 : 200, duration: 200 }}
 	>
 		{#if !hideclosebutton}
 			<button
-				onclick={modalHandle}
-				class="absolute top-0 right-0 rounded-full flex items-center justify-center size-10 bg-gray-100 text-lg z-10 brutal-border translate-x-1/2 -translate-y-1/2 hover:bg-red-300 active:bg-red-400"
+				onclick={modalOnClose}
+				class="brutal-border absolute top-0 right-0 z-10 flex size-10 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gray-100 text-lg hover:bg-red-300 active:bg-red-400"
 				aria-label="close"
 			>
 				<i class="fasds fa-xmark"></i>
@@ -35,9 +47,9 @@
 		{/if}
 
 		<div
-			class="bg-amber-300 brutal-border-lg size-full -skew-y-2 -skew-x-3 rounded-tl-3xl overflow-hidden"
+			class="brutal-border-lg size-full -skew-x-3 -skew-y-2 overflow-hidden rounded-tl-3xl bg-amber-300"
 		>
-			<div class="w-full skew-y-2 skew-x-3 p-5 bg-gray-100">
+			<div class="w-full skew-x-3 skew-y-2 bg-gray-100 p-5">
 				{@render children()}
 			</div>
 		</div>
@@ -50,7 +62,7 @@
 	.wrapper {
 		&::before {
 			content: '';
-			@apply size-full bg-indigo-300 -skew-y-1 -skew-x-5 absolute top-0 left-0 scale-95 -z-1 -translate-x-5 rounded-tl-3xl translate-y-1;
+			@apply absolute top-0 left-0 -z-1 size-full -translate-x-5 translate-y-1 scale-95 -skew-x-5 -skew-y-1 rounded-tl-3xl bg-indigo-300;
 		}
 	}
 </style>

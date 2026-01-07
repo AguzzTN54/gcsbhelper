@@ -4,6 +4,7 @@ interface LocalAccountItem {
 	uuid: string;
 	name: string;
 	avatar: string;
+	program: string;
 	facilitator?: App.FacilitatorRegion;
 	active?: boolean;
 }
@@ -62,7 +63,7 @@ export const localAccounts = {
 	},
 
 	put(data: LocalAccountItem, program: App.GCPProgram = 'arcade') {
-		const { uuid, name, facilitator } = data || {};
+		const { uuid, name, facilitator, program: event } = data || {};
 		const { accounts, allAccounts } = localAccounts._removeActive(program);
 		const isIndexed = accounts.findIndex(({ uuid: id }) => uuid === id);
 
@@ -70,6 +71,7 @@ export const localAccounts = {
 			accounts[isIndexed].name = name;
 			accounts[isIndexed].facilitator = facilitator;
 			accounts[isIndexed].active = true;
+			accounts[isIndexed].program = event;
 		} else accounts.push({ ...data, active: true });
 		const toStore = allAccounts || {};
 		toStore[program] = accounts;

@@ -18,10 +18,11 @@
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ProfilePic from '../_/ProfilePic.svelte';
 	import NavMenu from './_/NavMenu.svelte';
+	import { arcadeSeason } from '$lib/data/config';
 
 	const { children, data } = $props();
 	let tmp = $state<{ facilitator: App.FacilitatorRegion; uuid: string }>();
-	const { avatar, facilitator, name, uuid } = $derived.by(() => {
+	const { avatar, facilitator, name, uuid, program } = $derived.by(() => {
 		if (tmp && $profileReady) return localAccounts.getActive() || data || {};
 		return data;
 	});
@@ -37,8 +38,11 @@
 			incompleteCalculation.set(false);
 			profileReady.set(false);
 			tmp = { facilitator, uuid: profileUUID };
-			const res = await loadProfileAndBadges({ profileUUID, facilitator, program: 'arcade' });
-			localAccounts.put({ ...(res.user || {}), facilitator });
+			const res = await loadProfileAndBadges({
+				profileUUID,
+				program: program || arcadeSeason.seasonid
+			});
+			localAccounts.put({ ...res?.user, program: program || arcadeSeason.seasonid });
 			arcadeRegion.set(facilitator);
 			profileReady.set(true);
 		} catch (e) {

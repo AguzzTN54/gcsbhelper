@@ -9,6 +9,8 @@ export const loadSteps = $state({
 	stats: false
 });
 
+export const CONFIG = writable({});
+
 export const completedLabs = writable<Set<string>>();
 export const incompleteCalculation = writable<boolean>(false);
 export const arcadeRegion = writable<App.FacilitatorRegion>('unset');

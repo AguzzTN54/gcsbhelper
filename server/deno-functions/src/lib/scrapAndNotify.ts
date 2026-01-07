@@ -6,7 +6,7 @@ import { parseArcadePage } from './scrapper/games/arcade.ts';
 import { sha256 } from './utils/hash.ts';
 import { addGameToPB } from './scrapper/courses/games.ts';
 
-const crawlRSVP = true;
+const crawlRSVP = false;
 
 export const scrapAndNotify = async (): Promise<void> => {
   try {
@@ -35,7 +35,7 @@ export const scrapAndNotify = async (): Promise<void> => {
       console.log('🌐 Fetching RSVP page..');
       const rsvpContent = await parseRSVPPage();
       if (rsvpContent) {
-        console.log('⚖️  Comparing From RSVP Page..');
+        console.log('⚖️  Comparing ' + rsvpContent.length + ' games From RSVP Page..');
         diff = findDiff(rsvpContent, arcade) || [];
         if (diff && diff.length < 1) {
           console.log('⭕ No New Game Retrieved from RSVP Page');

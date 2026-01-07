@@ -19,7 +19,7 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	activeProfile.set(user);
 
 	const storedBadges = await loadBadgeList({ courses, token });
-	const merged = badgeDataMerger(courses, storedBadges, option.facilitator);
+	const merged = badgeDataMerger(courses, storedBadges);
 	const basicData = loadProgress(merged);
 	initData.set(basicData);
 	loadSteps.courselist = true;

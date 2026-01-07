@@ -5,8 +5,7 @@ import { uuidToHex } from './uuid';
 
 export interface LoadProfileOptions {
 	profileUUID: string;
-	facilitator?: App.FacilitatorRegion;
-	program: 'arcade' | 'juaragcp';
+	program: string;
 }
 
 export const loadProfile = async (option: LoadProfileOptions) => {
@@ -15,17 +14,8 @@ export const loadProfile = async (option: LoadProfileOptions) => {
 	const token = await createToken();
 	const server = new URL(PUBLIC_API_SERVER + '/internal/identity/' + profileid);
 
-	// Arcade Params
-	if (program === 'arcade') {
-		server.searchParams.append('program', arcadeSeason.seasonid);
-		const { facilitator } = option;
-		if (facilitator) server.searchParams.append('facilitator', facilitator);
-
-		// Juara GCP Params
-	} else if (program === 'juaragcp') {
-		server.searchParams.append('program', juaraSeason.seasonid);
-		server.searchParams.append('tokenize', 'false');
-	}
+	server.searchParams.append('program', program);
+	if (program === 'juaragcp') server.searchParams.append('tokenize', 'false');
 
 	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
 	if (res.status !== 200) throw new Error('Fetch Error');
@@ -36,7 +26,10 @@ export const loadProfile = async (option: LoadProfileOptions) => {
 	return data;
 };
 
-export const isGCSBUrl = (url: string) => /cloudskillsboost.google\/public_profiles\//.test(url);
+export const isGCSBUrl = (url: string) => {
+	return /(cloudskillsboost.google|skills.google)\/public_profiles\//.test(url);
+};
+
 export const validateURL = (url: string) => {
 	const pattern = new RegExp(
 		'^([a-zA-Z]+:\\/\\/)?' + // protocol
@@ -48,4 +41,15 @@ export const validateURL = (url: string) => {
 		'i'
 	);
 	return pattern.test(url);
+};
+
+export const checkProfileEntities = async (uuid: string, program: string) => {
+	const profileid = uuidToHex(uuid);
+	const token = await createToken();
+	const server = new URL(`${PUBLIC_API_SERVER}/internal/identity/${profileid}/verifyseason`);
+	server.searchParams.append('program', program);
+	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
+	if (res.status !== 200) throw new Error('Fetch Error');
+	const data = await res.json();
+	return data;
 };

@@ -8,6 +8,12 @@ interface UserCourses {
 
 interface ParsedDOM {
   code: number;
-  user: { name: string; uuid: string; avatar: string };
+  user: {
+    name: string;
+    uuid: string;
+    avatar: string;
+    facilitator?: string;
+  };
   courses: UserCourses[];
 }
+type ProfileData = ParsedDOM | { code: number; message: string };

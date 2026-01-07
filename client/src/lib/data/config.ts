@@ -21,7 +21,7 @@ export const juaraTier: Record<'tier1' | 'tier2', JuaraTier> = {
 
 // ARCADE
 export const arcadeSeason: Periode & { seasonid: string } = {
-	seasonid: 'arcade2025_cohort2',
+	seasonid: 'arcade2026_cohort1',
 	start: '01 July 2025',
 	end: '31 December 2025'
 };

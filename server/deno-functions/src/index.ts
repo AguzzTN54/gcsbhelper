@@ -6,8 +6,10 @@ import type { ContentfulStatusCode } from 'npm:hono/utils/http-status';
 import { db } from './lib/db/denoKv.ts';
 import { verifyToken } from './lib//utils/hash.ts';
 import { scrapAndNotify } from './lib/scrapAndNotify.ts';
-import { profileScrapper } from './lib/scrapper/profile/profileParser.ts';
+import { loadProfile } from './lib/scrapper/profile/profileParser.ts';
 import { getAccountToken } from './lib/db/pocketbase.ts';
+import { hexToUuid } from './lib/utils/uuid.ts';
+import { checkProfileEntities } from './lib/scrapper/profile/_pbUpdater.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -63,6 +65,25 @@ app.use(
 //   return c.json({ token });
 // });
 
+app.get('/internal/identity/:id/verifyseason', async (c) => {
+  const arcadeToken = c.req.header('x-arcade-token');
+  const id = c.req.param('id') || '';
+  if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  try {
+    const program = (c.req.query('program') ?? '').trim();
+    const uuid = hexToUuid(id);
+    const data = await checkProfileEntities(uuid, program);
+    return c.json(data);
+  } catch (error) {
+    const e = error as Record<string, string | number>;
+    console.error(e);
+    return c.json({ error: e?.message || 'Something Went Wrong' }, 500);
+  }
+});
+
 app.get('/internal/identity/:id', async (c) => {
   const arcadeToken = c.req.header('x-arcade-token');
   const id = c.req.param('id') || '';
@@ -71,15 +92,12 @@ app.get('/internal/identity/:id', async (c) => {
   }
 
   const program = (c.req.query('program') ?? '').trim();
-  const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();
-  const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
+  // const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();
+  // const facilitator = ['india', 'indonesia'].includes(region) ? region : undefined;
   const save = (c.req.query('save') ?? 'true').trim().toLowerCase() !== 'false';
   const tokenize = (c.req.query('tokenize') ?? 'true').trim().toLowerCase() !== 'false';
 
-  const promise = await Promise.all([
-    profileScrapper(id, { program, save, facilitator }),
-    ...(tokenize ? [getAccountToken()] : []),
-  ]);
+  const promise = await Promise.all([loadProfile(id, { program, save }), ...(tokenize ? [getAccountToken()] : [])]);
   const data = { ...(promise[0] || {}), token: promise[1] || '' };
 
   if (data.code !== 200) {
