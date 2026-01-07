@@ -9,7 +9,7 @@ import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 import { loadProfile } from './lib/scrapper/profile/profileParser.ts';
 import { getAccountToken } from './lib/db/pocketbase.ts';
 import { hexToUuid } from './lib/utils/uuid.ts';
-import { checkProfileEntities } from './lib/scrapper/profile/_pbUpdater.ts';
+import { checkProfileEntities } from './lib/scrapper/profile/_pbTransactions.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();

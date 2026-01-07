@@ -15,5 +15,6 @@ interface ParsedDOM {
     facilitator?: string;
   };
   courses: UserCourses[];
+  metadata?: Record<string, string>;
 }
 type ProfileData = ParsedDOM | { code: number; message: string };

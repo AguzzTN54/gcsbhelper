@@ -1,7 +1,7 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
 import { hexToUuid } from '../../utils/uuid.ts';
-import { updateProfilePB, loadEventProfile, checkEventPeriode } from './_pbUpdater.ts';
+import { updateProfilePB, loadEventProfile, checkEventPeriode } from './_pbTransactions.ts';
 import { skillboostBase } from '../../utils/config.ts';
 
 const toUTC = (dateStr: string): string => {
