@@ -3,7 +3,7 @@ import type { MetaTagsProps } from 'svelte-meta-tags';
 export const load = ({ url }) => {
 	const image = url.origin + '/images/juaragcp.jpg';
 	const pageMetaTags: Partial<MetaTagsProps> = {
-		title: 'Juara GCP S12 Progress Tracker - 2025',
+		title: 'Juara GCP S12 Progress Tracker - 2026',
 		keywords: [
 			'Juara GCP',
 			'Google Event Indonesia',

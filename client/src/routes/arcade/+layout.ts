@@ -7,7 +7,7 @@ import { localAccounts } from '$lib/helpers/localstorage';
 export const load = async ({ url }) => {
 	const image = url.origin + '/images/arcade.jpg';
 	const pageMetaTags: Partial<MetaTagsProps> = {
-		title: 'Arcade Progress Tracker 2025 - Cohort 2',
+		title: 'Arcade Progress Tracker 2026 - Cohort 1',
 		keywords: [
 			'Arcade Calculator',
 			'Arcadecalc',
@@ -29,7 +29,7 @@ export const load = async ({ url }) => {
 		],
 		twitter: { image },
 		openGraph: {
-			title: 'Arcade Progress Tracker 2025 - Cohort 2',
+			title: 'Arcade Progress Tracker 2026 - Cohort 1',
 			images: [{ url: image, secureUrl: image }]
 		}
 	};

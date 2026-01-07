@@ -22,8 +22,8 @@ export const juaraTier: Record<'tier1' | 'tier2', JuaraTier> = {
 // ARCADE
 export const arcadeSeason: Periode & { seasonid: string } = {
 	seasonid: 'arcade2026_cohort1',
-	start: '01 July 2025',
-	end: '31 December 2025'
+	start: '01 January 2026',
+	end: '30 June 2026'
 };
 
 export const facilitatorPeriode: Record<App.FacilitatorRegion, Periode> = {

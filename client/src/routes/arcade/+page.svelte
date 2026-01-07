@@ -28,7 +28,7 @@
 		Tracker
 	</h1>
 	<div class="-mt-2 text-center text-2xl font-medium">
-		<span> Cohort 2 </span>
+		<span> Cohort 1 </span>
 	</div>
 
 	<Form />
