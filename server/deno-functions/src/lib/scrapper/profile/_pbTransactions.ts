@@ -295,7 +295,15 @@ export const checkEventPeriode = async (uuid: string, program: string) => {
 
 export const loadEventProfile = async (uuid: string, program: string): Promise<ParsedDOM> => {
   const id = await shortShaId(`${uuid}-${program}`);
-  const { expand, facilitator } = await pb.collection('event_profiles').getOne(id, { expand: 'profile' });
+  const { expand, facilitator } = await pb
+    .collection('event_profiles')
+    .getOne(id, { expand: 'profile,profile.events,profile.events.events' });
+
+  const events = expand?.profile?.expand?.events || [];
+  const { expand: evExpand = [], ...arcadedata } =
+    events?.find((v: { identifier: string }) => v.identifier === program) || {};
+  const facildata =
+    evExpand?.events?.find((v: { identifier: string }) => v.identifier.match(new RegExp(facilitator, 'i'))) || {};
 
   const earnedCourses = await pb
     .collection('course_enrollments')
@@ -315,6 +323,10 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
       facilitator,
       avatar: expand?.profile?.avatar || '',
       name: expand?.profile?.name || '',
+    },
+    metadata: {
+      arcade: arcadedata,
+      facilitator: facildata,
     },
   };
   return data;

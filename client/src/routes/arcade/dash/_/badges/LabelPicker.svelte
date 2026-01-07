@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { stopPropagation } from 'svelte/legacy';
 	import { onMount } from 'svelte';
-	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app.svelte';
+	import { activeProfile, ARCADECONFIG, arcadeRegion, initData } from '$lib/stores/app.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import { shortShaId } from '$lib/helpers/crypto';
-	import { arcadeSeason } from '$lib/data/config';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
@@ -47,7 +46,7 @@
 		const label = selected === 'unknown' ? null : selected;
 
 		const { uuid } = $activeProfile;
-		const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+		const profile = await shortShaId(`${uuid}-${$ARCADECONFIG?.arcade.identifier}`);
 		const id = await shortShaId(`${profile}${cid}`);
 
 		try {
@@ -72,16 +71,16 @@
 </script>
 
 <div
-	class="labelpicker absolute top-0 right-0 translate-y-1/3 translate-x-1/5 z-20"
+	class="labelpicker absolute top-0 right-0 z-20 translate-x-1/5 translate-y-1/3"
 	onmousedown={stopPropagation(() => {})}
 	tabindex="0"
 	role="listbox"
 >
 	{#if loading}
-		<Skeleton class="w-20 h-6.5 -skew-2" />
+		<Skeleton class="h-6.5 w-20 -skew-2" />
 	{:else}
 		<button
-			class="py-1 pl-2 pr-1 text-sm -skew-2 text-[var(--txt-color)] hover:brightness-90 capitalize
+			class="-skew-2 py-1 pr-1 pl-2 text-sm text-[var(--txt-color)] capitalize hover:brightness-90
 	{labelNcolor[selectedlabel ?? 'unknown'] || 'bg-gray-300'}"
 			onclick={() => (showPicker = !showPicker)}
 			style="--txt-color:{labelNcolor[selectedlabel ?? 'unknown'] ? '#fff' : '#000'}"
@@ -92,12 +91,12 @@
 
 	{#if showPicker}
 		<div
-			class="label-selection absolute top-[110%] right-0 bg-gray-300 -skew-y-2 text-sm min-w-full w-fit"
+			class="label-selection absolute top-[110%] right-0 w-fit min-w-full -skew-y-2 bg-gray-300 text-sm"
 		>
 			{#each labelsTxt as label (label)}
 				<button
 					onclick={() => selectLabel(courseid, label as App.CourseType | 'special' | 'unknown')}
-					class="block hover:bg-gray-400/50 px-3 py-1 w-full capitalize"
+					class="block w-full px-3 py-1 capitalize hover:bg-gray-400/50"
 				>
 					{label}
 				</button>

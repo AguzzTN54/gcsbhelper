@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { getContext, onMount, setContext } from 'svelte';
-	import { activeProfile, arcadeRegion, initData } from '$lib/stores/app.svelte';
+	import { activeProfile, ARCADECONFIG, arcadeRegion, initData } from '$lib/stores/app.svelte';
 	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { shortShaId } from '$lib/helpers/crypto';
@@ -27,7 +27,7 @@
 
 		// Update Facilitator on db
 		const facilitator = facil === 'unset' || !facil ? null : facil;
-		const id = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+		const id = await shortShaId(`${uuid}-${$ARCADECONFIG?.arcade.identifier}`);
 		await pb.collection('profiles').update(id, { id, facilitator });
 		localAccounts.put({ ...$activeProfile, facilitator: facil });
 		pushToast({ message: 'Facilitator Updated!', type: 'success' });

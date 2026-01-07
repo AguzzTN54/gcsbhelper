@@ -10,18 +10,23 @@
 		Tooltip,
 		Legend
 	} from 'chart.js';
-	import { arcadeRegion, arcadeStats, loadSteps, profileReady } from '$lib/stores/app.svelte';
-	import { facilMilestones } from '$lib/data/config';
+	import {
+		ARCADECONFIG,
+		arcadeRegion,
+		arcadeStats,
+		loadSteps,
+		profileReady
+	} from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
 	const ready = $derived($profileReady && loadSteps.enrollmentdata && loadSteps.courselist);
 	const { milestones, complete } = $derived($arcadeStats || {});
 	let showSelectMilestone = $state(false);
 	let activeMilestone = $derived.by(() => {
-		const region = $arcadeRegion;
-		if (!region || region === 'unset') return null;
+		const msdata = $ARCADECONFIG?.facilitator?.metadata?.data;
+		if (!msdata) return null;
 		const key = `m${milestones?.length || 1}`;
-		return facilMilestones[region]?.[key] || null;
+		return msdata?.[key] || null;
 	});
 
 	onMount(() => {
@@ -239,10 +244,10 @@
 	});
 </script>
 
-<div class="flex justify-between items-center">
-	<h2 class="text-lg my-3">Milestone</h2>
+<div class="flex items-center justify-between">
+	<h2 class="my-3 text-lg">Milestone</h2>
 	{#if !ready}
-		<Skeleton class="w-25 h-6" />
+		<Skeleton class="h-6 w-25" />
 	{:else}
 		<div class="relative">
 			<button
@@ -252,7 +257,7 @@
 					e.stopPropagation();
 					showSelectMilestone = !showSelectMilestone;
 				}}
-				class="text-xs brutal-border px-2 py-1 !border-[2px] capitalize relative z-20 bg-gray-100 hover:bg-amber-200 active:bg-amber-300 whitespace-nowrap"
+				class="brutal-border relative z-20 !border-[2px] bg-gray-100 px-2 py-1 text-xs whitespace-nowrap capitalize hover:bg-amber-200 active:bg-amber-300"
 			>
 				{#if milestones?.includes(activeMilestone?.displayname || '')}
 					<i class="fasdl fa-check"></i>
@@ -262,10 +267,10 @@
 			</button>
 
 			{#if showSelectMilestone}
-				{@const mlist = facilMilestones[$arcadeRegion as Exclude<App.FacilitatorRegion, 'unset'>]}
+				{@const mlist = $ARCADECONFIG?.facilitator?.metadata.data || {}}
 				<div
 					style="--item-length:{Object.keys(dataValues).length}"
-					class="absolute top-[calc(100%+2px)] right-0 lg:left-0 text-xs bg-gray-100 w-[calc(var(--item-length)*100%)] sm:w-[200%] lg:w-[calc(var(--item-length)*100%)] max-w-[87vw] z-10"
+					class="absolute top-[calc(100%+2px)] right-0 z-10 w-[calc(var(--item-length)*100%)] max-w-[87vw] bg-gray-100 text-xs sm:w-[200%] lg:left-0 lg:w-[calc(var(--item-length)*100%)]"
 				>
 					{#each Object.keys(mlist) as key (key)}
 						{@const m = mlist[key]}
@@ -277,16 +282,16 @@
 							}}
 							class:completed
 							class:bg-green-100={m.displayname === activeMilestone?.displayname}
-							class="px-2 py-2 border-2 w-full text-left hover:bg-indigo-200 capitalize active:bg-indigo-200 whitespace-nowrap relative"
+							class="relative w-full border-2 px-2 py-2 text-left whitespace-nowrap capitalize hover:bg-indigo-200 active:bg-indigo-200"
 						>
 							<div class="flex">
 								<i class="fasdl fa-check opacity-0" class:opacity-100={completed}></i>
-								<span class="uppercase font-semibold">{m.displayname} </span>
-								<span class="ml-auto text-lime-700 bg-lime-100"> +{m.bonus} </span>
+								<span class="font-semibold uppercase">{m.displayname} </span>
+								<span class="ml-auto bg-lime-100 text-lime-700"> +{m.bonus} </span>
 							</div>
 
 							<div
-								class="grid grid-cols-[var(--col)] sm:grid-cols-2 lg:grid-cols-[var(--col)] gap-2 mt-1"
+								class="mt-1 grid grid-cols-[var(--col)] gap-2 sm:grid-cols-2 lg:grid-cols-[var(--col)]"
 								style="--col:repeat(var(--item-length), minmax(0, 1fr))"
 							>
 								{#snippet milestoneSnippet(label: string, earned: number, needed: number)}
@@ -324,7 +329,7 @@
 	{/if}
 </div>
 <div class="flex justify-center">
-	<div class="size-40 xl:size-50 aspect-square flex items-center justify-center">
+	<div class="flex aspect-square size-40 items-center justify-center xl:size-50">
 		<div class="scale-120 xl:scale-110">
 			{#if milestones}
 				<canvas class="size-full" bind:this={canvas}></canvas>
@@ -338,6 +343,6 @@
 
 	.completed::after {
 		content: '';
-		@apply absolute top-0 h-full left-0 w-1 bg-green-500;
+		@apply absolute top-0 left-0 h-full w-1 bg-green-500;
 	}
 </style>

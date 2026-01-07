@@ -9,7 +9,8 @@ export const loadSteps = $state({
 	stats: false
 });
 
-export const CONFIG = writable({});
+type ConfigStore = App.InitData['metadata'] | undefined;
+export const ARCADECONFIG = writable<ConfigStore>();
 
 export const completedLabs = writable<Set<string>>();
 export const incompleteCalculation = writable<boolean>(false);

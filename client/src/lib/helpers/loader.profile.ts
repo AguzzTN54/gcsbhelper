@@ -1,5 +1,4 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
-import { arcadeSeason, juaraSeason } from '$lib/data/config';
 import { createToken } from './crypto';
 import { uuidToHex } from './uuid';
 

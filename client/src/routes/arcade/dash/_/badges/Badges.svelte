@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
-	import { arcadeProfile, arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
-	import { arcadeSeason } from '$lib/data/config';
+	import { ARCADECONFIG, arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
 	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
@@ -22,7 +21,8 @@
 		}
 		return data.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
 			const gameType = ['wmp', 'arcade'].includes(course.type || '');
-			const invalid = dayjs(course.enddate).isBefore(arcadeSeason.start) && course.type != 'skill';
+			const invalid =
+				dayjs(course.enddate).isBefore($ARCADECONFIG?.arcade?.start) && course.type != 'skill';
 			if (invalid) course.type = null;
 			const type = invalid ? 'unknown' : gameType ? 'game' : course.type || 'unknown';
 			if (!acc[type]) acc[type] = [];
@@ -126,15 +126,15 @@
 	<ModalLabs />
 </Portal>
 
-<div class="mt-10 lg:mt-5 text-center mb-3">
-	<h2 class="font-semibold text-2xl px-2 font-press">BADGES</h2>
+<div class="mt-10 mb-3 text-center lg:mt-5">
+	<h2 class="font-press px-2 text-2xl font-semibold">BADGES</h2>
 </div>
 <div
-	class="w-full sticky z-90 top-0 left-0 -translate-y-2 flex justify-between lg:flex-row flex-col-reverse px-2 py-2 items-start gap-3
-	after:bg-gray-100 after:scale-x-105 after:absolute after:top-0 after:left-0 after:size-full after:-z-1"
+	class="sticky top-0 left-0 z-90 flex w-full -translate-y-2 flex-col-reverse items-start justify-between gap-3 px-2 py-2 after:absolute
+	after:top-0 after:left-0 after:-z-1 after:size-full after:scale-x-105 after:bg-gray-100 lg:flex-row"
 >
-	<div class="w-full mt-2 h-18 flex lg:mt-0 relative" id="labelpicker">
-		<div class="w-full lg:pr-2 absolute top-0 left-0">
+	<div class="relative mt-2 flex h-18 w-full lg:mt-0" id="labelpicker">
+		<div class="absolute top-0 left-0 w-full lg:pr-2">
 			<ScrollArea>
 				<div class="labelwrapper whitespace-nowrap">
 					{#if $profileReady}
@@ -145,11 +145,11 @@
 								class:active={activeGroup === type}
 								class:bg-amber-200={activeGroup === type}
 								class:pointer-events-none={activeGroup === type}
-								class="brutal-border py-1.5 px-2 rounded-full mr-2 text-xs leading-0 !border-[3px] hover:bg-indigo-200 active:bg-indigo-300 group"
+								class="brutal-border group mr-2 rounded-full !border-[3px] px-2 py-1.5 text-xs leading-0 hover:bg-indigo-200 active:bg-indigo-300"
 							>
 								<span>{label}</span>
 								<span
-									class="inline-block rounded-full bg-indigo-100 py-2 px-0.5 group-[.active]:bg-amber-300"
+									class="inline-block rounded-full bg-indigo-100 px-0.5 py-2 group-[.active]:bg-amber-300"
 								>
 									{length}
 								</span>
@@ -157,14 +157,14 @@
 						{/each}
 					{:else}
 						{#each Array(4) as _}
-							<Skeleton class="h-9 w-28 inline-block rounded-full mr-3" />
+							<Skeleton class="mr-3 inline-block h-9 w-28 rounded-full" />
 						{/each}
 					{/if}
 				</div>
 			</ScrollArea>
 		</div>
 		<div
-			class="mt-auto w-full scale-90 origin-bottom-left flex justify-center lg:justify-start leading-[100%]"
+			class="mt-auto flex w-full origin-bottom-left scale-90 justify-center leading-[100%] lg:justify-start"
 		>
 			<Checkbox
 				checked={showEarned}
@@ -175,14 +175,14 @@
 		</div>
 	</div>
 
-	<div class="h-14 w-100 max-w-full brutal-border rounded-full overflow-hidden relative">
+	<div class="brutal-border relative h-14 w-100 max-w-full overflow-hidden rounded-full">
 		<input
-			class="size-full pr-5 pl-10 outline-0 rounded-full"
+			class="size-full rounded-full pr-5 pl-10 outline-0"
 			placeholder="Search Badge"
 			bind:value={query}
 		/>
 		<span
-			class="absolute top-0 left-0 z-1 text-indigo-100 text-lg h-full flex justify-center items-center aspect-square opacity-50"
+			class="absolute top-0 left-0 z-1 flex aspect-square h-full items-center justify-center text-lg text-indigo-100 opacity-50"
 		>
 			<i class="fasds fa-magnifying-glass"></i>
 		</span>
@@ -191,23 +191,23 @@
 
 {#if activeGroup === 'unknown'}
 	<div
-		class="bg-amber-200 w-full mb-10 text-sm px-5 py-2 text-amber-800 relative after:bg-indigo-300 after:absolute after:top-0 after:left-0 after:size-full after:-z-1 after:scale-x-[100.5%] after:-skew-y-[0.5deg] after:-skew-x-2"
+		class="relative mb-10 w-full bg-amber-200 px-5 py-2 text-sm text-amber-800 after:absolute after:top-0 after:left-0 after:-z-1 after:size-full after:scale-x-[100.5%] after:-skew-x-2 after:-skew-y-[0.5deg] after:bg-indigo-300"
 	>
 		All badges below are ones you've earned but are not yet included in our system's calculation. If
 		you believe any of them should be counted, you can adjust it yourself by changing the <span
-			class="bg-gray-100 text-xs py-0.5 px-1 text-black">Unknown</span
+			class="bg-gray-100 px-1 py-0.5 text-xs text-black">Unknown</span
 		> label to the relevant one.
 	</div>
 {/if}
 
-<div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 sm:px-2 pb-10">
+<div class="min-h-[calc(var(--screen-height)-11rem)] w-full px-5 pb-10 sm:px-2">
 	{#if $profileReady}
 		{@const courses = (dataToShow || []).filter((_, i) => i <= maxCourseToShow - 1)}
 		{#if courses.length < 1}
-			<div class="flex justify-center text-center w-full">No data to show!</div>
+			<div class="flex w-full justify-center text-center">No data to show!</div>
 		{:else}
 			<div
-				class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5 lg:gap-7 xl:gap-10 pb-5"
+				class="grid w-full grid-cols-1 gap-8 pb-5 md:gap-5 lg:grid-cols-2 lg:gap-7 xl:grid-cols-3 xl:gap-10"
 			>
 				{#each courses as data (data)}
 					<BadgeItem {data} />
@@ -216,7 +216,7 @@
 		{/if}
 	{:else}
 		<div
-			class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5 lg:gap-7 xl:gap-10 pb-5"
+			class="grid w-full grid-cols-1 gap-8 pb-5 md:gap-5 lg:grid-cols-2 lg:gap-7 xl:grid-cols-3 xl:gap-10"
 		>
 			{#each Array(12) as _, i (i)}
 				<BadgeItem loading />
@@ -224,17 +224,17 @@
 		</div>
 	{/if}
 
-	<div class="flex justify-center flex-col items-center mt-5">
+	<div class="mt-5 flex flex-col items-center justify-center">
 		{#if dataToShow.length > maxCourseToShow}
 			<button
 				onclick={() => (maxCourseToShow = maxCourseToShow + 12)}
-				class="brutal-border !border-[3.5px] py-2 px-4 text-sm rounded-full bg-amber-300 hover:bg-amber-400 active:bg-amber-500"
+				class="brutal-border rounded-full !border-[3.5px] bg-amber-300 px-4 py-2 text-sm hover:bg-amber-400 active:bg-amber-500"
 			>
 				Show More
 			</button>
 		{:else if $profileReady}
 			<span class="font-light text-amber-700"> That's All! </span>
-			<div class="w-10/12 h-0.75 bg-amber-700 eol"></div>
+			<div class="eol h-0.75 w-10/12 bg-amber-700"></div>
 		{/if}
 	</div>
 </div>
@@ -258,7 +258,7 @@
 		&::after,
 		&::before {
 			content: '';
-			@apply size-2.5 aspect-square absolute top-1/2 -translate-y-1/2 bg-amber-700;
+			@apply absolute top-1/2 aspect-square size-2.5 -translate-y-1/2 bg-amber-700;
 		}
 		&::before {
 			left: 0;

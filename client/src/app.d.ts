@@ -86,11 +86,49 @@ declare global {
 			};
 		}
 
+		interface ArcadeMetadata {
+			id: string;
+			start: string;
+			end: string;
+			title: string;
+			identifier: string;
+			metadata: {
+				data: {
+					label: string;
+					requirement: number;
+				}[];
+			};
+		}
+
+		interface FacilMilestone {
+			displayname: string;
+			game: number;
+			trivia: number;
+			skill: number;
+			labfree: number;
+			bonus: number;
+		}
+
+		interface FacilMetadata {
+			id: string;
+			identifier: string;
+			start: string;
+			end: string;
+			title: string;
+			metadata: {
+				data: Record<string, FacilMilestone>;
+			};
+		}
+
 		interface InitData {
 			code?: 200 | 400 | 403;
 			token?: string;
 			user: UserInfo;
 			courses: UserCourses[];
+			metadata?: {
+				arcade: ArcadeMetadata;
+				facilitator?: FacilMetadata;
+			};
 		}
 
 		type ToastType = 'info' | 'success' | 'error' | 'warning';

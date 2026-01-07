@@ -1,4 +1,4 @@
-import { arcadeRewards, facilMilestones } from '$lib/data/config';
+import { arcadeRewards } from '$lib/data/config';
 
 const checkTier = (total: number) => {
 	return Object.entries(arcadeRewards)
@@ -29,7 +29,7 @@ const resolveType = (c: App.CourseItem): App.CourseType | 'special' => {
 
 export const calculatePoints = (
 	courses: App.CourseItem[],
-	region: App.FacilitatorRegion
+	facilMetadata?: App.FacilMetadata
 ): App.ArcadeStats => {
 	// initial containers
 	const points: App.ArcadeStats['points'] = { game: 0, trivia: 0, skill: 0, wmp: 0 };
@@ -71,7 +71,7 @@ export const calculatePoints = (
 	const tier = checkTier(total);
 
 	// if no region/unset -> return base arcade result
-	if (!region || region === 'unset') {
+	if (!facilMetadata) {
 		return {
 			points,
 			total,
@@ -100,7 +100,7 @@ export const calculatePoints = (
 	// milestone bonuses
 	let bonus = 0;
 	const achieved: string[] = [];
-	const milestones = facilMilestones[region] || {};
+	const milestones = facilMetadata.metadata.data || {};
 
 	for (const key in milestones) {
 		const m = milestones[key];

@@ -6,6 +6,10 @@ interface UserCourses {
   badgeurl: string;
 }
 
+interface ArcadeMetadata {
+  arcade: Record<string, unknown>;
+  facilitator?: Record<string, unknown>;
+}
 interface ParsedDOM {
   code: number;
   user: {
@@ -15,6 +19,6 @@ interface ParsedDOM {
     facilitator?: string;
   };
   courses: UserCourses[];
-  metadata?: Record<string, string>;
+  metadata?: ArcadeMetadata;
 }
 type ProfileData = ParsedDOM | { code: number; message: string };

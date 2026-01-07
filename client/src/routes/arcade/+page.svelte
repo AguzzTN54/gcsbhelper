@@ -45,10 +45,10 @@
 		</div>
 	</div>
 
-	<article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
+	<!-- <article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
 		<span class="brutal-text after:!bg-green-300">Privacy First</span> — This site does not collect
 		any personally identifiable data unless you want it to. We will only create a
 		<span class="brutal-text after:!bg-indigo-200">unique ID</span> solely to help us analyze course
 		progress.
-	</article>
+	</article> -->
 </section>

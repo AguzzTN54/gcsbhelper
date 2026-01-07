@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { calculatePoints } from '$lib/helpers/calculator-arcade';
 	import {
+		ARCADECONFIG,
 		arcadeRegion,
 		arcadeStats,
 		initData,
@@ -22,7 +23,7 @@
 	const order = Object.keys(texts);
 	type PointData = { key: string; number: number };
 
-	const pointSummary = $derived(calculatePoints($initData, $arcadeRegion));
+	const pointSummary = $derived(calculatePoints($initData, $ARCADECONFIG?.facilitator));
 	$effect(() => arcadeStats.set(pointSummary));
 
 	const statContent = $derived.by<PointData[]>(() => {
@@ -40,26 +41,26 @@
 	});
 </script>
 
-<div class="flex flex-col lg:flex-row lg:gap-10 pb-5">
+<div class="flex flex-col pb-5 lg:flex-row lg:gap-10">
 	{#if $arcadeRegion && $arcadeRegion !== 'unset'}
-		<div class="w-full lg:w-1/3 md:pt-0 pt-5">
+		<div class="w-full pt-5 md:pt-0 lg:w-1/3">
 			<Milestone />
 		</div>
 	{/if}
 
 	<!-- Activity -->
 	<div
-		class="w-full md:pt-0 pt-15"
+		class="w-full pt-15 md:pt-0"
 		class:lg:w-[66.66%]={$arcadeRegion && $arcadeRegion !== 'unset'}
 	>
 		<div
-			class="flex justify-between items-center"
+			class="flex items-center justify-between"
 			class:justify-center={!$arcadeRegion || $arcadeRegion === 'unset'}
 		>
-			<h2 class="text-lg my-3">Activity Chart</h2>
+			<h2 class="my-3 text-lg">Activity Chart</h2>
 		</div>
 		<div class="flex justify-center">
-			<div class="w-full h-50">
+			<div class="h-50 w-full">
 				<Activities />
 			</div>
 			<!--  -->
@@ -68,22 +69,22 @@
 </div>
 
 <div
-	class="flex flex-col lg:flex-row p-2 my-5 md:my-0 items-center brutal-border !border-[3px] brutal-shadow rounded-br-3xl rounded-tl-3xl lg:scale-85"
+	class="brutal-border brutal-shadow my-5 flex flex-col items-center rounded-tl-3xl rounded-br-3xl !border-[3px] p-2 md:my-0 lg:scale-85 lg:flex-row"
 >
-	<div class="w-full lg:w-25 text-center lg:text-left">
-		<h2 class="font-bold pb-2 leading-[110%] text-2xl md:text-lg xl:text-2xl mt-2 lg:pl-2">
+	<div class="w-full text-center lg:w-25 lg:text-left">
+		<h2 class="mt-2 pb-2 text-2xl leading-[110%] font-bold md:text-lg lg:pl-2 xl:text-2xl">
 			POINT DETAILS
 		</h2>
 	</div>
-	<div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 w-full gap-1 ml-2">
+	<div class="ml-2 grid w-full grid-cols-3 gap-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
 		{#snippet column({ key, number }: { key: string; number: number })}
-			<div class="text-center py-1 hover:bg-orange-100">
+			<div class="py-1 text-center hover:bg-orange-100">
 				<h3 class="brutal-text text-md after:!bg-purple-200">{texts[key as keyof typeof texts]}</h3>
 				{#if $profileReady && loadSteps.enrollmentdata && loadSteps.courselist}
-					<span class="font-bold text-2xl block">{key === 'total' ? '' : '+'}{number}</span>
+					<span class="block text-2xl font-bold">{key === 'total' ? '' : '+'}{number}</span>
 				{:else}
 					<div class="flex justify-center pt-2">
-						<Skeleton class="w-12 h-6" />
+						<Skeleton class="h-6 w-12" />
 					</div>
 				{/if}
 			</div>

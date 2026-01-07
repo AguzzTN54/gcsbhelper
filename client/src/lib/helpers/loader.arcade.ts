@@ -1,5 +1,6 @@
 import {
 	activeProfile,
+	ARCADECONFIG,
 	completedLabs as completedLabStore,
 	incompleteCalculation,
 	initData,
@@ -7,25 +8,25 @@ import {
 } from '$lib/stores/app.svelte';
 import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 import pb from '$lib/helpers/pocketbase';
-import { arcadeSeason, facilitatorPeriode } from '$lib/data/config';
 import { shortShaId } from './crypto';
 import { loadProfile, type LoadProfileOptions } from './loader.profile';
 import { loadBadgeList, loadBadgeStats, type PBItem } from './loader.badge';
 
 export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<App.InitData> => {
 	Object.keys(loadSteps).forEach((k) => (loadSteps[k as keyof typeof loadSteps] = false));
-	const { courses, user, token } = await loadProfile(option);
+	const { courses, user, token, metadata } = await loadProfile(option);
+	ARCADECONFIG.set(metadata);
 	loadSteps.profile = true;
 	activeProfile.set(user);
 
 	const storedBadges = await loadBadgeList({ courses, token });
-	const merged = badgeDataMerger(courses, storedBadges);
+	const merged = badgeDataMerger(courses, storedBadges, metadata);
 	const basicData = loadProgress(merged);
 	initData.set(basicData);
 	loadSteps.courselist = true;
 	const containsMissingCourse = storedBadges.length < 1 && courses.length > 0;
 	incompleteCalculation.set(containsMissingCourse);
-	if (courses.length > 0) loadEnrollment(user.uuid);
+	if (courses.length > 0) loadEnrollment(user.uuid, metadata?.arcade.identifier || '');
 	if (basicData.length > 0) loadCourseStats(basicData);
 	return { user, courses };
 };
@@ -33,7 +34,7 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 const badgeDataMerger = (
 	profileBadges: App.UserCourses[],
 	pbBadges: PBItem[],
-	facilitator?: App.FacilitatorRegion
+	metadata?: App.InitData['metadata']
 ): App.CourseItem[] => {
 	const map = new Map<number, App.CourseItem>();
 	for (const { type, title, badgeurl, date, courseid } of profileBadges) {
@@ -60,7 +61,7 @@ const badgeDataMerger = (
 			map.set(key, {
 				...course,
 				earned: true,
-				validity: validateBadge(course.earndate, facilitator)
+				validity: validateBadge(course.earndate, metadata)
 			});
 		}
 		return Array.from(map.values());
@@ -78,7 +79,7 @@ const badgeDataMerger = (
 			...obj,
 			earndate,
 			earned: true,
-			validity: validateBadge(earndate, facilitator)
+			validity: validateBadge(earndate, metadata)
 		});
 	}
 
@@ -89,29 +90,29 @@ const badgeDataMerger = (
 type BadgeValidity = { arcade: boolean; facilitator: boolean };
 export const validateBadge = (
 	earndate?: string | Date | Dayjs,
-	facilitator?: App.FacilitatorRegion
+	metadata?: App.InitData['metadata']
 ): BadgeValidity => {
 	if (!earndate) return { arcade: false, facilitator: false };
-
-	const { end: aEnd, start: aStart } = arcadeSeason;
+	const { arcade, facilitator } = metadata || {};
+	const { end: aEnd, start: aStart } = arcade || {};
 	const arcadeValidity = !dayjs(earndate).isBefore(aStart) && !dayjs(earndate).isAfter(aEnd);
 
-	if (!facilitator || facilitator === 'unset') {
+	if (!facilitator) {
 		return {
 			arcade: arcadeValidity,
 			facilitator: false
 		};
 	}
 
-	const { end, start } = facilitatorPeriode[facilitator] || {};
+	const { end, start } = facilitator;
 	return {
 		arcade: arcadeValidity,
 		facilitator: !dayjs(earndate).isBefore(start) && !dayjs(earndate).isAfter(end)
 	};
 };
 
-const loadEnrollment = async (uuid: string) => {
-	const profile = await shortShaId(`${uuid}-${arcadeSeason.seasonid}`);
+const loadEnrollment = async (uuid: string, season: string) => {
+	const profile = await shortShaId(`${uuid}-${season}`);
 	const enrolled = await pb.collection('course_enrollments').getList(1, 500, {
 		filter: `profile="${profile}" && (difficulty != null || label != null)`,
 		fields: 'course,difficulty,label',
