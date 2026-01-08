@@ -1,4 +1,4 @@
-import { RecordModel } from 'npm:pocketbase';
+import { BatchService, RecordModel } from 'npm:pocketbase';
 import pb from '../../db/pocketbase.ts';
 import { shortShaId } from '../../utils/hash.ts';
 
@@ -92,19 +92,15 @@ interface PBBatchResponse {
   };
 }
 
-const insertNewCourses = async (
-  hexuuid: string,
-  newCourses: UserCourses[],
-  facilitator?: string,
-  program?: string,
-): Promise<PBBatchResponse[]> => {
+const insertNewCourses = async (opt: {
+  hexuuid: string;
+  newCourses: UserCourses[];
+  program: string;
+  pid: string;
+}): Promise<PBBatchResponse[]> => {
+  const { hexuuid, newCourses, program, pid } = opt;
   const batch = pb.createBatch();
-
-  batch.collection('event_profiles').upsert({
-    id: hexuuid,
-    facilitator: facilitator || null,
-    program: program || null,
-  });
+  batch.collection('event_profiles').upsert({ id: hexuuid, program: program || null, profile: pid });
   for (const { courseid, date, type } of newCourses) {
     const id = getCourseId(courseid, type);
     batch.collection('course_enrollments').upsert({
@@ -119,17 +115,14 @@ const insertNewCourses = async (
   return data as PBBatchResponse[];
 };
 
-const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[]) => {
+const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[], batch: BatchService) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
   const filter = encodeURIComponent(`((${courseFilter})&&profile='${hexuuid}')`);
   const items = (await pb.collection('course_enrollments').getFullList({ filter, skipTotal: true })) || [];
   if (items.length < 1) return;
-
-  const batch = pb.createBatch();
   for (const { id } of items) {
     batch.collection('course_enrollments').delete(id);
   }
-  await batch.send();
 };
 
 const updateProfileCourseList = async (
@@ -164,10 +157,15 @@ const updateProfileCourseList = async (
 //   }
 // };
 
-export const updateProfilePB = async (data: ParsedDOM, program?: string) => {
+export const updateProfilePB = async (data: ParsedDOM, program: string) => {
   if (!data) return;
   const { courses, user } = data || {};
-  const hexuuid = await shortShaId(`${user.uuid}-${program || ''}`);
+  const hexuuid = await shortShaId(`${user.uuid}-${program}`);
+  const pid = await shortShaId(user.uuid);
+  const progId = (await pb.collection('events').getFirstListItem(`identifier='${program}'`)).id;
+  const batch = pb.createBatch();
+  batch.collection('profiles').upsert({ id: pid, name: user.name, avatar: user.avatar, 'events+': progId });
+
   try {
     await validateCourse(courses);
     const { earned } = await checkStoredProfile(hexuuid);
@@ -192,13 +190,14 @@ export const updateProfilePB = async (data: ParsedDOM, program?: string) => {
       if (!exist) deletedCourses.push(course);
     }
 
-    if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses);
+    if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses, batch);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
       console.log(hexuuid, 'No update detected');
-      return;
+      return batch.send();
     }
 
-    const insertResult = await insertNewCourses(hexuuid, newEarnedCourses, program);
+    await batch.send();
+    const insertResult = await insertNewCourses({ hexuuid, newCourses: newEarnedCourses, program, pid });
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
     console.log('Profile Updated: ' + hexuuid);
   } catch (e) {

@@ -10,6 +10,7 @@
 	import { initTour } from '../_tour.svelte';
 	import BadgeItem from './BadgeItem.svelte';
 	import ModalLabs from '../../../_/ModalLabs.svelte';
+	import { arcadeSeason } from '$lib/data/config';
 
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
@@ -21,8 +22,9 @@
 		}
 		return data.reduce<Record<string, App.CourseItem[]>>((acc, course) => {
 			const gameType = ['wmp', 'arcade'].includes(course.type || '');
-			const invalid =
-				dayjs(course.enddate).isBefore($ARCADECONFIG?.arcade?.start) && course.type != 'skill';
+			const endDate = $ARCADECONFIG?.arcade?.start || arcadeSeason.end;
+			const invalid = dayjs(course.enddate).isBefore(endDate) && course.type != 'skill';
+
 			if (invalid) course.type = null;
 			const type = invalid ? 'unknown' : gameType ? 'game' : course.type || 'unknown';
 			if (!acc[type]) acc[type] = [];

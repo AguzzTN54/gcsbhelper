@@ -57,7 +57,7 @@ const getProfileID = (profileURL: string) => {
   return profileID;
 };
 
-type ScrapperOptions = { program?: string; save?: boolean };
+type ScrapperOptions = { program: string; save?: boolean };
 
 const profileScrapper = async (uuid: string, options?: ScrapperOptions): Promise<ProfileData> => {
   const { program, save } = options || {};
@@ -68,7 +68,7 @@ const profileScrapper = async (uuid: string, options?: ScrapperOptions): Promise
   const [body] = bd?.split('</body>') || [''];
   if (!body) throw new Error();
   const parsed = parserFromDom(`<body>${body}</body>`, url);
-  if (save) updateProfilePB(parsed, program);
+  if (save && program) updateProfilePB(parsed, program);
   return parsed;
 };
 
@@ -80,7 +80,9 @@ export const loadProfile = async (id: string, options?: ScrapperOptions): Promis
     const uuid = hexToUuid(id);
     // Check if the profile is already enrolled
     const isPrevious = await checkEventPeriode(uuid, program);
-    if (!isPrevious) return profileScrapper(uuid, options);
+    const end = isPrevious.event?.end;
+    if (!isPrevious.enrolled || (end && new Date(end) > new Date())) return profileScrapper(uuid, options);
+    console.log('use stored data for ' + id);
     const data = await loadEventProfile(uuid, program);
     return data;
   } catch (e) {

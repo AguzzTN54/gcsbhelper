@@ -45,10 +45,13 @@
 		</div>
 	</div> -->
 
-	<!-- <article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
-		<span class="brutal-text after:!bg-green-300">Privacy First</span> — This site does not collect
-		any personally identifiable data unless you want it to. We will only create a
-		<span class="brutal-text after:!bg-indigo-200">unique ID</span> solely to help us analyze course
-		progress.
-	</article> -->
+	<article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
+		<span class="brutal-text after:!bg-green-300">Privacy Notice</span> — This site will collects
+		your
+		<span class="brutal-text after:!bg-indigo-200">name</span> and
+		<span class="brutal-text after:!bg-indigo-200">course-related data</span>
+		to support learning progress and improve our services. The collected data may be included in
+		<span class="brutal-text after:!bg-amber-200">global analytics</span> and is used only for educational
+		and analytical purposes.
+	</article>
 </section>

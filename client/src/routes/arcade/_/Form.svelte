@@ -47,13 +47,13 @@
 		return () => window.removeEventListener('click', dropdownToggle);
 	});
 
-	const seasonPicker = async (action: 'check' | 'new', program?: string) => {
-		if (action === 'check' && program) {
-			const res = await loadProfileAndBadges({ profileUUID, program });
-			const userinfo = res?.user || {};
-			localAccounts.put({ ...userinfo, program });
-			goto('/arcade/dash');
-		}
+	const seasonPicker = async (action: 'check' | 'new', prog?: string) => {
+		showModalSeasonPicker = false;
+		const program = action === 'check' && prog ? prog : arcadeSeason.seasonid;
+		const res = await loadProfileAndBadges({ profileUUID, program });
+		const userinfo = res?.user || {};
+		localAccounts.put({ ...userinfo, program });
+		goto('/arcade/dash');
 	};
 
 	const fetchProfile = async () => {
@@ -68,7 +68,9 @@
 
 			enrolledEvents = enrolled.filter((v: any) => (v.identifier as string).startsWith('arcade'));
 			checking = false;
-			if (status === 'NOT_ENROLLED') {
+
+			// Check if has older enrollments
+			if (status === 'NOT_ENROLLED' || enrolled?.length > 2) {
 				if (enrolled.length > 0) {
 					showModalSeasonPicker = true;
 					return;
