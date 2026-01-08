@@ -9,6 +9,7 @@
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { modalHandle } from './ModalProfile.svelte';
 	import PulseLoading from './comp/PulseLoading.svelte';
+	import { juaraSeason } from '$lib/data/config';
 
 	let value = $state('');
 	let typed = $state(false);
@@ -28,14 +29,16 @@
 		}
 	});
 
+	const program = juaraSeason.seasonid;
+
 	const q = $derived.by(() => {
 		return createQuery({
 			enabled: false,
 			queryKey: profileUUID,
 			queryFn: async () => {
-				const res = await loadJuaraProfile({ profileUUID, program: 'juaragcp' });
+				const res = await loadJuaraProfile({ profileUUID, program });
 				const userinfo = res?.user || {};
-				localAccounts.put({ ...userinfo }, 'juaragcp');
+				localAccounts.put({ ...userinfo, program }, 'juaragcp');
 				return res;
 			}
 		});

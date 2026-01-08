@@ -162,9 +162,14 @@ export const updateProfilePB = async (data: ParsedDOM, program: string) => {
   const { courses, user } = data || {};
   const hexuuid = await shortShaId(`${user.uuid}-${program}`);
   const pid = await shortShaId(user.uuid);
-  const progId = (await pb.collection('events').getFirstListItem(`identifier='${program}'`)).id;
   const batch = pb.createBatch();
-  batch.collection('profiles').upsert({ id: pid, name: user.name, avatar: user.avatar, 'events+': progId });
+
+  try {
+    const progId = (await pb.collection('events').getFirstListItem(`identifier='${program}'`)).id;
+    batch.collection('profiles').upsert({ id: pid, name: user.name, avatar: user.avatar, 'events+': progId });
+  } catch {
+    //
+  }
 
   try {
     await validateCourse(courses);

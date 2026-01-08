@@ -5,7 +5,7 @@ type Periode = { start: string; end: string };
 
 // JuaraGCP
 export const juaraSeason: Periode & { seasonid: string } = {
-	seasonid: 'juaragcp_s11',
+	seasonid: 'juaragcp_s12',
 	start: '15 January 2026, 12:00 GMT+7',
 	end: '15 Feb 2026, 23:59 GMT+7'
 };
@@ -14,9 +14,11 @@ interface JuaraTier {
 	skill: number;
 	total: number;
 }
-export const juaraTier: Record<'tier1' | 'tier2', JuaraTier> = {
-	tier1: { skill: 5, total: 10 },
-	tier2: { skill: 8, total: 16 }
+export const juaraPointBase = { skill: 3, completion: 1 };
+export const juaraTier: Record<'tier1' | 'tier2' | 'tier3', JuaraTier> = {
+	tier1: { skill: 6, total: 10 },
+	tier2: { skill: 9, total: 18 },
+	tier3: { skill: 12, total: 26 }
 };
 
 // ARCADE
@@ -41,15 +43,15 @@ export const facilitatorPeriode: Record<App.FacilitatorRegion, Periode> = {
 	}
 };
 
-interface MilestoneItem {
-	displayname: string;
-	game: number;
-	skill: number;
-	trivia: number;
-	labfree?: number;
-	bonus: number;
-}
-type Milestones = Record<string, MilestoneItem>;
+// interface MilestoneItem {
+// 	displayname: string;
+// 	game: number;
+// 	skill: number;
+// 	trivia: number;
+// 	labfree?: number;
+// 	bonus: number;
+// }
+// type Milestones = Record<string, MilestoneItem>;
 
 // export const facilMilestones: Record<Exclude<App.FacilitatorRegion, 'unset'>, Milestones> = {
 // 	indonesia: {

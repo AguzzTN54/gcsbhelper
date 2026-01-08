@@ -5,6 +5,8 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import { useQuery } from '$lib/stores/query-store';
 	import { localAccounts } from '$lib/helpers/localstorage';
+	import { juaraSeason } from '$lib/data/config';
+	import dayjs from '$lib/helpers/dateTime';
 	import { activeProfile, juaraBadges, screenSize } from '$lib/stores/app.svelte';
 	import { createCountdown } from '$lib/stores/countdown.svelte';
 	import particleConfig from '$lib/data/particle.config';
@@ -65,7 +67,9 @@
 		timeline?.scrollIntoView({ behavior: 'smooth' });
 	};
 
-	const enddate = '19 October 2025';
+	const enddate = dayjs(new Date()).isBefore(juaraSeason.start)
+		? juaraSeason.start
+		: juaraSeason.end;
 	const timer = createCountdown(enddate);
 	const countdown = $derived.by(() => {
 		const { d, h, m, s } = $timer;
@@ -104,7 +108,7 @@
 					{countdown}
 				</span>
 				<a
-					href="/"
+					href="https://rsvp.withgoogle.com/events/juaragcp-s12"
 					target="_blank"
 					rel="noreferrer"
 					class="rounded-full bg-[var(--color-secondary)] px-6 py-2 text-lg !font-semibold text-[var(--color-primary)] uppercase transition-colors duration-300 hover:bg-amber-800"

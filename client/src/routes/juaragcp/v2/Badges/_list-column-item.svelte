@@ -71,7 +71,8 @@
 	</h3>
 	<div class="mt-4 px-4 text-center">
 		<a
-			href="https://www.cloudskillsboost.google/course_templates/{courseid}"
+			target="_blank"
+			href="https://www.skills.google/course_templates/{courseid}"
 			class="duo block w-full rounded-full bg-[var(--color-secondary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] transition-colors duration-300 hover:bg-amber-800"
 		>
 			{#if date}

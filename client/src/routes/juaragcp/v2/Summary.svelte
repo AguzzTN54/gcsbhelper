@@ -110,7 +110,7 @@
 	</div>
 
 	<p class="mt-2 w-full text-sm">
-		Pastikan mengisi <span class="font-semibold">Completion Form</span>
+		Jangan lupa untuk mengisi <span class="font-semibold">Completion Form</span>
 		<span class="bg-[var(--color-third)]/20"> setelah mencapai target Tier</span>!
 	</p>
 </div>

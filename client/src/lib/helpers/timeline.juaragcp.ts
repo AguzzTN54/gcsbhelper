@@ -23,22 +23,24 @@ export const events: JuaraEvent[] = [
 		description: 'Kumpulkan badge dan submit completion form setelah mencapai tier'
 	},
 	{
-		title: 'Kick Start Session',
-		startdate: '10 Feb 2025, 18:30 GMT+7',
-		enddate: '10 Feb 2025, 19:00 GMT+7',
-		description: 'Ikuti Quiz untuk memenuhi syarat perolehan swag'
+		title: 'Onboarding Session Cloud AI Study Jam: #JuaraGCP',
+		startdate: '15 Jan 2026, 20:00 GMT+7',
+		enddate: '15 Jan 2026, 20:30 GMT+7',
+		description:
+			'Ikuti sesi onboarding untuk mengetahui bagaimana caranya mengikuti #JuaraGCP dan bertanya tentang program ini'
 	},
 	{
-		title: 'Quiz Half 1',
-		startdate: '10 Mar 2025, 18:30 GMT+7',
-		enddate: '10 Mar 2025, 19:00 GMT+7',
-		description: 'Ikuti Quiz untuk memenuhi syarat perolehan swag'
+		title: 'Kick Off Session Cloud AI Study Jam: #JuaraGCP',
+		startdate: '1 Feb 2026, 13:00 GMT+7',
+		enddate: '1 Feb 2026, 16:00 GMT+7',
+		description:
+			'Ikuti sesi Kick-Off Session Cloud AI Study Jam: #JuaraGCP, sesi koding bersama untuk memulai perjalanan #JuaraGCP baik secara in-person dan online'
 	},
 	{
-		title: 'Quiz Half 2',
-		startdate: '11 Mar 2025, 18:30 GMT+7',
-		enddate: '11 Mar 2025, 19:00 GMT+7',
-		description: 'Ikuti Quiz untuk memenuhi syarat perolehan swag'
+		title: 'Final Completion Date',
+		startdate: '15 Feb 2026, 23:59 GMT+7',
+		enddate: '15 Feb 2026, 23:59 GMT+7',
+		description: 'Hari Terakhir mengisi Completion Form, Jangan sampai Lupa ya! :)'
 	}
 ];
 
