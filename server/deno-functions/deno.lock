@@ -1,6 +1,8 @@
 {
   "version": "5",
   "specifiers": {
+    "npm:@types/jsdom@*": "21.1.7",
+    "npm:@types/node@*": "22.15.11",
     "npm:hono@*": "4.8.5",
     "npm:jsdom@*": "26.1.0",
     "npm:pocketbase@*": "0.26.5"
@@ -43,6 +45,23 @@
     },
     "@csstools/css-tokenizer@3.0.4": {
       "integrity": "sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw=="
+    },
+    "@types/jsdom@21.1.7": {
+      "integrity": "sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==",
+      "dependencies": [
+        "@types/node",
+        "@types/tough-cookie",
+        "parse5"
+      ]
+    },
+    "@types/node@22.15.11": {
+      "integrity": "sha512-rlyK0vuU7VLEYQfXuC7QTFxDvkb6tKhDI7wR4r6ZzM0k8BJd44W0jxo6xmUjqSs4AlYmiYfLJU2f0pAG/FtCRw==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
+    "@types/tough-cookie@4.0.5": {
+      "integrity": "sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA=="
     },
     "agent-base@7.1.4": {
       "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ=="
@@ -188,6 +207,9 @@
         "punycode"
       ]
     },
+    "undici-types@6.21.0": {
+      "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
+    },
     "w3c-xmlserializer@5.0.0": {
       "integrity": "sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==",
       "dependencies": [
@@ -263,6 +285,8 @@
     "https://esm.sh/minimalistic-assert@1.0.1?target=denonext": "4e19506c5a46f3c68b4d7b431e1de059c6c57b663cabf226cdb7ef0906b7aebe",
     "https://esm.sh/ms@2.1.3/denonext/ms.mjs": "9039464da1f4ae1c2042742d335c82556c048bbe49449b5d0cd5198193afa147",
     "https://esm.sh/ms@2.1.3?target=denonext": "36f5aa7503ff0ff44ce9e3155a60362d8d3ae5db8db048be5764a3a515b6a263",
+    "https://esm.sh/pocketbase@0.26.5": "17c6aa80d9cddff4f89c018ea841cfed68267f126693ae754f5cf4636f8abf8d",
+    "https://esm.sh/pocketbase@0.26.5/denonext/pocketbase.mjs": "004b390910d131bc42f9db35e7e8adc84adfdc38cf8211a7c205ad8fea464b9f",
     "https://esm.sh/safe-buffer@5.2.1/denonext/safe-buffer.mjs": "51b088d69d0bbf6d7ce4179853887e105715df40e432a3bff0e9575cc2285276",
     "https://esm.sh/safe-buffer@5.2.1?target=denonext": "34028b9647c849fa96dfd3d9f217a3adca8b43b13409820ac3f43fb15eba3e20",
     "https://esm.sh/safer-buffer@2.1.2/denonext/safer-buffer.mjs": "63b601ca3ed03a32349ca04538ac898f2c520dbc6b554246d11c482c31e8a6b8",
