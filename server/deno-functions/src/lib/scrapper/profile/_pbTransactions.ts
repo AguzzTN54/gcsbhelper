@@ -324,7 +324,7 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
       uuid,
       facilitator,
       avatar: expand?.profile?.avatar || '',
-      name: expand?.profile?.name || '',
+      name: expand?.profile?.name || 'Unamed Account',
     },
     metadata: {
       arcade: arcadedata,

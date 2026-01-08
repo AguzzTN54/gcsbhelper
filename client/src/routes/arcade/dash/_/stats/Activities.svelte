@@ -19,7 +19,7 @@
 	const typeMap = $derived({
 		game: { label: 'Games', backgroundColor: '#59168b' },
 		skill: { label: 'Skill', backgroundColor: '#ffb900' },
-		...($arcadeFacil === 'india'
+		...($arcadeFacil.match(/india/)
 			? { labfree: { label: 'Lab-Free', backgroundColor: '#a3b3ff' } }
 			: {}),
 		unknown: { label: 'Unknown', backgroundColor: '#d1d5dc' }

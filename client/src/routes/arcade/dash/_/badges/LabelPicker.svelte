@@ -17,7 +17,7 @@
 		trivia: 'bg-pink-600',
 		special: 'bg-purple-700',
 		wmp: 'bg-emerald-700',
-		...($arcadeFacil === 'india' ? { labfree: 'bg-sky-500' } : {}),
+		...($arcadeFacil.match(/india/) ? { labfree: 'bg-sky-500' } : {}),
 		unknown: ''
 	});
 

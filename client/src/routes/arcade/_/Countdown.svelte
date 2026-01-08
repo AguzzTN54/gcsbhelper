@@ -1,17 +1,17 @@
 <script lang="ts">
 	import dayjs from '$lib/helpers/dateTime';
-	import { arcadeFacil } from '$lib/stores/app.svelte';
-	import { facilitatorPeriode, arcadeSeason } from '$lib/data/config';
+	import { ARCADECONFIG, arcadeFacil } from '$lib/stores/app.svelte';
+	import { arcadeSeason } from '$lib/data/config';
 	import { createCountdown } from '$lib/stores/countdown.svelte';
 
 	const { small = false } = $props();
 
 	const isFacil = $derived.by(() => {
 		const validRegions = ['india', 'indonesia'];
-		return validRegions.includes($arcadeFacil);
+		return validRegions.includes($arcadeFacil?.split('_')?.[1]);
 	});
 
-	const endIn = $derived(facilitatorPeriode[$arcadeFacil]?.end);
+	const endIn = $derived($ARCADECONFIG?.facilitator?.end);
 	const endDate = $derived.by(() => {
 		const arcend = arcadeSeason.end;
 		if (!isFacil || dayjs(endIn).isBefore(Date.now())) return arcend;

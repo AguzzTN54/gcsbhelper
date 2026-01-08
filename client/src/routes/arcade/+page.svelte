@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { arcadeFacil } from '$lib/stores/app.svelte';
+	// import { arcadeFacil } from '$lib/stores/app.svelte';
 	import Portal from '$reusable/Portal/Portal.svelte';
 	import ModalSelectRegion from './_/ModalSelectRegion.svelte';
 	import Form from './_/Form.svelte';
 
-	const regions: Record<string, string> = {
-		indonesia: 'Indonesia',
-		india: 'India - Global',
-		unset: 'Regular Participan'
-	};
+	// const regions: Record<string, string> = {
+	// 	indonesia: 'Indonesia',
+	// 	india: 'India - Global',
+	// 	unset: 'Regular Participan'
+	// };
 
 	let showModal = $state(false);
 	const handleFacilitatorSelector = (val?: boolean) => {
@@ -25,7 +25,7 @@
 <section class="flex h-full flex-col p-2 font-extrabold">
 	<h1 class="mt-5 p-3 text-center text-2xl sm:mt-10 sm:p-5 sm:text-3xl md:text-4xl">
 		<span class="brutal-text font-press text-2xl text-amber-300 after:!bg-sky-900"> Arcade </span> Progress
-		Tracker
+		Tracker 2026
 	</h1>
 	<div class="-mt-2 text-center text-2xl font-medium">
 		<span> Cohort 1 </span>
@@ -33,7 +33,7 @@
 
 	<Form />
 
-	<div class="mb-5 text-center text-sm">
+	<!-- <div class="mb-5 text-center text-sm">
 		<span>Arcade Facilitator</span>
 		<div class="flex justify-center">
 			<button
@@ -43,7 +43,7 @@
 				{regions[$arcadeFacil]} <i class="fasdl fa-caret-down text-amber-200"></i>
 			</button>
 		</div>
-	</div>
+	</div> -->
 
 	<!-- <article class="mb-5 px-[2%] text-center text-xs sm:text-sm md:text-base">
 		<span class="brutal-text after:!bg-green-300">Privacy First</span> — This site does not collect

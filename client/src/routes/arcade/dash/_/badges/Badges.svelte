@@ -14,7 +14,7 @@
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
 		let data = $initData || [];
-		if ($arcadeFacil !== 'india') {
+		if (!$arcadeFacil.match(/india/)) {
 			data = data
 				.filter((d) => d.type !== 'labfree' || (d.type === 'labfree' && !!d.earned))
 				.map((d) => (d.type !== 'labfree' ? d : { ...d, type: null }));
@@ -73,7 +73,7 @@
 	const list: App.CourseItem[] = $derived.by(() => {
 		let dt = getData($initData || []) || [];
 		// Remove Unearned labfree for specific facilicator
-		if ($arcadeFacil !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
+		if (!$arcadeFacil.match(/india/)) dt = dt.filter((d) => d.type !== 'labfree');
 		const game = dt
 			.filter((d) => d.type?.match(/game|trivia|wmp/))
 			.sort((a, b) => {
