@@ -2,7 +2,7 @@
 	import { calculatePoints } from '$lib/helpers/calculator-arcade';
 	import {
 		ARCADECONFIG,
-		arcadeRegion,
+		arcadeFacil,
 		arcadeStats,
 		initData,
 		loadSteps,
@@ -42,20 +42,17 @@
 </script>
 
 <div class="flex flex-col pb-5 lg:flex-row lg:gap-10">
-	{#if $arcadeRegion && $arcadeRegion !== 'unset'}
+	{#if $arcadeFacil && $arcadeFacil !== 'unset'}
 		<div class="w-full pt-5 md:pt-0 lg:w-1/3">
 			<Milestone />
 		</div>
 	{/if}
 
 	<!-- Activity -->
-	<div
-		class="w-full pt-15 md:pt-0"
-		class:lg:w-[66.66%]={$arcadeRegion && $arcadeRegion !== 'unset'}
-	>
+	<div class="w-full pt-15 md:pt-0" class:lg:w-[66.66%]={$arcadeFacil && $arcadeFacil !== 'unset'}>
 		<div
 			class="flex items-center justify-between"
-			class:justify-center={!$arcadeRegion || $arcadeRegion === 'unset'}
+			class:justify-center={!$arcadeFacil || $arcadeFacil === 'unset'}
 		>
 			<h2 class="my-3 text-lg">Activity Chart</h2>
 		</div>

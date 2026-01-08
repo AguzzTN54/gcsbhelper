@@ -10,7 +10,7 @@
 		Legend
 	} from 'chart.js';
 	import dayjs from '$lib/helpers/dateTime';
-	import { arcadeRegion, initData, loadSteps, profileReady } from '$lib/stores/app.svelte';
+	import { arcadeFacil, initData, loadSteps, profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 
 	let canvas = $state<HTMLCanvasElement>();
@@ -19,14 +19,14 @@
 	const typeMap = $derived({
 		game: { label: 'Games', backgroundColor: '#59168b' },
 		skill: { label: 'Skill', backgroundColor: '#ffb900' },
-		...($arcadeRegion === 'india'
+		...($arcadeFacil === 'india'
 			? { labfree: { label: 'Lab-Free', backgroundColor: '#a3b3ff' } }
 			: {}),
 		unknown: { label: 'Unknown', backgroundColor: '#d1d5dc' }
 	});
 
 	const aggregateCourses = (data: App.CourseItem[]) => {
-		const dayOffset = $arcadeRegion === 'unset' ? 14 : 7;
+		const dayOffset = $arcadeFacil === 'unset' ? 14 : 7;
 		const today = dayjs().startOf('day');
 		const days = Array.from({ length: dayOffset }, (_, i) =>
 			today.subtract(dayOffset - 1 - i, 'day').format('YYYY-MM-DD')
@@ -100,9 +100,9 @@
 </script>
 
 {#if $profileReady && loadSteps.enrollmentdata && loadSteps.courselist}
-	<canvas bind:this={canvas} class="size-full bg-indig"></canvas>
+	<canvas bind:this={canvas} class="bg-indig size-full"></canvas>
 {:else}
-	<div class="size-full items-end flex gap-[5%] px-5">
+	<div class="flex size-full items-end gap-[5%] px-5">
 		<Skeleton class="h-full w-full" />
 		<Skeleton class="h-5/12 w-full" />
 		<Skeleton class="h-10/12 w-full" />

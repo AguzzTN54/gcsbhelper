@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getContext } from 'svelte';
-	import { activeProfile, arcadeRegion } from '$lib/stores/app.svelte';
+	import { activeProfile, arcadeFacil } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import img from '$img/avatar.webp';
 	import Modal from '$reusable/Modal.svelte';
@@ -25,7 +25,7 @@
 
 	const deleteAccount = (uuid: string) => {
 		localAccounts.delete(uuid);
-		arcadeRegion.set('unset');
+		arcadeFacil.set('unset');
 		allAccounts = localAccounts.getAll();
 		if (active?.uuid !== uuid) return;
 		// redirect if deleting the current active account

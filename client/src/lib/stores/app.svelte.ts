@@ -14,7 +14,7 @@ export const ARCADECONFIG = writable<ConfigStore>();
 
 export const completedLabs = writable<Set<string>>();
 export const incompleteCalculation = writable<boolean>(false);
-export const arcadeRegion = writable<App.FacilitatorRegion>('unset');
+export const arcadeFacil = writable<string>('unset');
 export const activeProfile = writable<App.UserInfo>();
 export const initData = writable<App.CourseItem[]>([]);
 export const profileReady = writable<boolean>(false);

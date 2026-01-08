@@ -4,7 +4,7 @@
 	import { getContext, onMount, setContext } from 'svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import {
-		arcadeRegion,
+		arcadeFacil,
 		incompleteCalculation,
 		initData,
 		loadSteps,
@@ -21,8 +21,8 @@
 	import { arcadeSeason } from '$lib/data/config';
 
 	const { children, data } = $props();
-	let tmp = $state<{ facilitator: App.FacilitatorRegion; uuid: string }>();
-	const { avatar, facilitator, name, uuid, program } = $derived.by(() => {
+	let tmp = $state<{ uuid: string }>();
+	const { avatar, name, uuid, program } = $derived.by(() => {
 		if (tmp && $profileReady) return localAccounts.getActive() || data || {};
 		return data;
 	});
@@ -32,18 +32,19 @@
 	setContext('scrolled', (val: boolean) => (scrolled = val));
 
 	let isFetchError = $state(false);
-	const loadDashProfile = async (profileUUID: string, facilitator: App.FacilitatorRegion) => {
+	const loadDashProfile = async (profileUUID: string) => {
 		try {
 			isFetchError = false;
 			incompleteCalculation.set(false);
 			profileReady.set(false);
-			tmp = { facilitator, uuid: profileUUID };
+			tmp = { uuid: profileUUID };
 			const res = await loadProfileAndBadges({
 				profileUUID,
 				program: program || arcadeSeason.seasonid
 			});
-			localAccounts.put({ ...res?.user, program: program || arcadeSeason.seasonid });
-			arcadeRegion.set(facilitator);
+			const facilitator = res.metadata?.facilitator?.identifier || 'unset';
+			arcadeFacil.set(facilitator);
+			localAccounts.put({ ...res?.user, program: program || arcadeSeason.seasonid, facilitator });
 			profileReady.set(true);
 		} catch (e) {
 			console.error(e);
@@ -57,11 +58,11 @@
 	onMount(async () => {
 		if (!uuid) return goto('/arcade');
 		if ($initData && $initData.length > 0) {
-			tmp = { facilitator: $arcadeRegion, uuid };
+			tmp = { uuid };
 			profileReady.set(true);
 			return;
 		}
-		await loadDashProfile(uuid, facilitator || 'unset');
+		await loadDashProfile(uuid);
 	});
 </script>
 
@@ -82,7 +83,7 @@
 				<i class="fasdl fa-face-smile-upside-down text-amber-400"></i> Just Show My Badges
 			</button>
 			<button
-				onclick={() => loadDashProfile(tmp?.uuid || '', tmp?.facilitator || 'unset')}
+				onclick={() => loadDashProfile(tmp?.uuid || '')}
 				class="brutal-border bg-sky-200 px-2 py-1 hover:bg-sky-300 active:bg-sky-400"
 			>
 				<i class="fasdl fa-arrow-rotate-right text-sky-400"></i> Try Again
@@ -103,7 +104,7 @@
 				<i class="fasdl fa-house text-amber-400"></i> Take Me Home
 			</a>
 			<button
-				onclick={() => loadDashProfile(tmp?.uuid || '', tmp?.facilitator || 'unset')}
+				onclick={() => loadDashProfile(tmp?.uuid || '')}
 				class="brutal-border bg-sky-200 px-2 py-1 hover:bg-sky-300 active:bg-sky-400"
 			>
 				<i class="fasdl fa-arrow-rotate-right text-sky-400"></i> Try Again

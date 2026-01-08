@@ -179,13 +179,14 @@ const nexMonthGame = (games: EventItem[]): EventItem[] => {
 
 export const getTimelineContents = (
 	data: App.CourseItem[],
-	region: App.FacilitatorRegion
+	facilId: string
 ): { startrange: Dayjs; endrange: Dayjs; timeline: EventItem[][] } => {
 	const trv = getDateRange(data, 'trivia');
 	const games = getDateRange(data, 'game');
 	const wmp = getDateRange(data, 'wmp');
 	const special = getDateRange(data, 'special');
 	const cert = getDateRange(data, 'cert');
+	const region = (facilId?.split('_')?.[1] || 'unset') as keyof typeof manualEvents;
 	const specificFacil = manualEvents[region];
 	const expectedNexMonth = nexMonthGame(games);
 	const content: EventItem[] = [

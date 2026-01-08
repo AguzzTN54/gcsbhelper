@@ -71,7 +71,7 @@ export const calculatePoints = (
 	const tier = checkTier(total);
 
 	// if no region/unset -> return base arcade result
-	if (!facilMetadata) {
+	if (!facilMetadata?.metadata?.data) {
 		return {
 			points,
 			total,

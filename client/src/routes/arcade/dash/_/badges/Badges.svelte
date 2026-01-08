@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
 	import { untrack } from 'svelte';
-	import { ARCADECONFIG, arcadeRegion, initData, profileReady } from '$lib/stores/app.svelte';
+	import { ARCADECONFIG, arcadeFacil, initData, profileReady } from '$lib/stores/app.svelte';
 	import dayjs from '$lib/helpers/dateTime';
 	import Checkbox from '$reusable/Checkbox.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
@@ -14,7 +14,7 @@
 	let activeGroup = $state('all');
 	const grouped = $derived.by(() => {
 		let data = $initData || [];
-		if ($arcadeRegion !== 'india') {
+		if ($arcadeFacil !== 'india') {
 			data = data
 				.filter((d) => d.type !== 'labfree' || (d.type === 'labfree' && !!d.earned))
 				.map((d) => (d.type !== 'labfree' ? d : { ...d, type: null }));
@@ -73,7 +73,7 @@
 	const list: App.CourseItem[] = $derived.by(() => {
 		let dt = getData($initData || []) || [];
 		// Remove Unearned labfree for specific facilicator
-		if ($arcadeRegion !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
+		if ($arcadeFacil !== 'india') dt = dt.filter((d) => d.type !== 'labfree');
 		const game = dt
 			.filter((d) => d.type?.match(/game|trivia|wmp/))
 			.sort((a, b) => {

@@ -3,12 +3,12 @@
 	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
 	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
 	import { getTimelineContents } from '$lib/helpers/timeline.arcade';
-	import { arcadeRegion, initData } from '$lib/stores/app.svelte';
+	import { arcadeFacil, initData } from '$lib/stores/app.svelte';
 
 	let timelineW = $state(0);
 	let timelineH = $state(0);
 	const offset = 2;
-	const calendar = $derived(getTimelineContents($initData, $arcadeRegion));
+	const calendar = $derived(getTimelineContents($initData, $arcadeFacil));
 
 	interface DateList {
 		month: string;

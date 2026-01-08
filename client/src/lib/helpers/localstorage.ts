@@ -5,7 +5,7 @@ interface LocalAccountItem {
 	name: string;
 	avatar: string;
 	program: string;
-	facilitator?: App.FacilitatorRegion;
+	facilitator?: string;
 	active?: boolean;
 }
 interface LStorageData {

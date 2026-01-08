@@ -1,49 +1,93 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { getContext, onMount, setContext } from 'svelte';
-	import { activeProfile, ARCADECONFIG, arcadeRegion, initData } from '$lib/stores/app.svelte';
-	import { arcadeSeason, facilitatorRegions } from '$lib/data/config';
+	import { activeProfile, ARCADECONFIG, arcadeFacil, initData } from '$lib/stores/app.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { shortShaId } from '$lib/helpers/crypto';
 	import { validateBadge } from '$lib/helpers/loader.arcade';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import Modal from '$reusable/Modal.svelte';
+	import { createQuery } from '$lib/stores/query-store';
 
 	const { showModal } = $props();
 	let persist = $state(false);
 	const modalHandle = getContext('handleFacilitatorSelector') as (val: boolean) => void;
 
-	const switchFacilitator = async (facil: App.FacilitatorRegion, uuid: string) => {
-		initData.update((courses) => {
-			const updated = courses.map((c) => {
-				const validity = validateBadge(c.earndate, facil);
-				return { ...c, validity };
-			});
-			return updated;
+	const facils = $derived.by(() => {
+		return createQuery({
+			queryKey: ['facils', $ARCADECONFIG?.arcade?.identifier || 'unset'],
+			enabled: !!$ARCADECONFIG?.arcade.identifier,
+			queryFn: async () => {
+				const filter = pb.filter(`identifier={:idf}`, { idf: $ARCADECONFIG?.arcade.identifier });
+				const data = await pb.collection('events').getFirstListItem(filter, { expand: 'events' });
+				const events = (data.expand?.events || []) as App.FacilMetadata[];
+				return events;
+			}
 		});
+	});
 
-		if (!page.url.pathname.startsWith('/arcade/dash')) return;
+	const switchFacilitator = async (facil: string, uuid: string) => {
+		const program = $ARCADECONFIG?.arcade.identifier;
+		const activeFacil = $ARCADECONFIG?.facilitator?.identifier;
+		if (activeFacil === facil) return;
+		if (!program) {
+			pushToast({ message: 'Failed to update system!, Missing Program!', type: 'warning' });
+			return;
+		}
 
-		// Update Facilitator on db
-		const facilitator = facil === 'unset' || !facil ? null : facil;
-		const id = await shortShaId(`${uuid}-${$ARCADECONFIG?.arcade.identifier}`);
-		await pb.collection('profiles').update(id, { id, facilitator });
-		localAccounts.put({ ...$activeProfile, facilitator: facil });
-		pushToast({ message: 'Facilitator Updated!', type: 'success' });
-	};
-
-	const selectRegion = async (region: App.FacilitatorRegion) => {
-		modalHandle(false);
-		persist = false;
-
-		if (region === $arcadeRegion) return;
-		const currentActive = $activeProfile;
-		if (!currentActive?.uuid) return arcadeRegion.set(region);
-		arcadeRegion.set(region);
+		const facilId = facil === 'unset' || !facil ? null : facil;
+		const region = facilId?.split('_')?.[1] || 'unset';
 
 		try {
-			await switchFacilitator(region, currentActive.uuid);
+			const target = $facils.data?.find((f) => f?.identifier?.match(new RegExp(region, 'i')));
+			const { id: targetFacilId } = target || {};
+			const removedId = $facils.data?.filter((f) => f?.id !== targetFacilId).map((f) => f?.id);
+
+			const newConfig = {
+				arcade: $ARCADECONFIG.arcade,
+				facilitator: target
+			};
+			const metadata: App.InitData['metadata'] = newConfig;
+			ARCADECONFIG.set(newConfig);
+
+			initData.update((courses) => {
+				const updated = courses.map((c) => {
+					const validity = validateBadge(c.earndate, metadata);
+					return { ...c, validity };
+				});
+				return updated;
+			});
+
+			const pid = await shortShaId(uuid);
+			const eventProfileid = await shortShaId(`${uuid}-${program}`);
+			const batch = pb.createBatch();
+			batch.collection('profiles').update(pid, { 'events+': targetFacilId, 'events-': removedId });
+			batch
+				.collection('event_profiles')
+				.update(eventProfileid, { facilitator: region === 'unset' ? null : region });
+			await batch.send();
+
+			localAccounts.put({
+				...$activeProfile,
+				program,
+				facilitator: region
+			});
+			arcadeFacil.set(facilId || 'unset');
+			pushToast({ message: 'Facilitator Updated!', type: 'success' });
+		} catch (e) {
+			console.error(e);
+			pushToast({ message: 'Error Occured!', type: 'error' });
+		}
+	};
+
+	const selectRegion = async (identifier: string) => {
+		modalHandle(false);
+		persist = false;
+		const currentActive = $activeProfile;
+		if (!currentActive?.uuid) return;
+
+		try {
+			await switchFacilitator(identifier, currentActive.uuid);
 		} catch (e) {
 			console.error(e);
 			pushToast({ message: 'Error Occurred!', type: 'error' });
@@ -55,20 +99,20 @@
 		persist = false;
 	});
 
-	onMount(() => {
-		const { facilitator } = localAccounts.getActive() || {};
-		if (!facilitator) {
-			modalHandle(true);
-			persist = true;
-			return;
-		}
+	// onMount(() => {
+	// 	const { facilitator } = localAccounts.getActive() || {};
+	// 	if (!facilitator) {
+	// 		modalHandle(true);
+	// 		persist = true;
+	// 		return;
+	// 	}
 
-		const isValid = facilitatorRegions.includes(facilitator);
-		modalHandle(!isValid);
-		persist = !isValid;
-		if (!isValid) return;
-		arcadeRegion.set(facilitator);
-	});
+	// 	const isValid = facilitatorRegions.includes(facilitator);
+	// 	modalHandle(!isValid);
+	// 	persist = !isValid;
+	// 	if (!isValid) return;
+	// 	arcadeFacil.set(facilitator);
+	// });
 </script>
 
 {#if showModal}
@@ -81,18 +125,16 @@
 
 			<div class="text-center">
 				<div class="mt-5 mb-2 flex w-full justify-center gap-3">
-					<button
-						onclick={() => selectRegion('india')}
-						class="brutal-border bg-amber-200 px-2 py-1 hover:bg-amber-300 active:bg-amber-400"
-					>
-						India - Global
-					</button>
-					<button
-						onclick={() => selectRegion('indonesia')}
-						class="brutal-border bg-rose-200 px-2 py-1 hover:bg-rose-300 active:bg-rose-400"
-					>
-						Indonesia
-					</button>
+					{#each $facils.data as { identifier, title }}
+						<button
+							onclick={() => selectRegion(identifier || 'unset')}
+							class="brutal-border px-2 py-1 {identifier.match('indonesia')
+								? 'bg-rose-200  hover:bg-rose-300 active:bg-rose-400'
+								: 'bg-amber-200 hover:bg-amber-300 active:bg-amber-400'}"
+						>
+							{title?.split('-')?.[0].replace(/Facilitator/i, '') || 'unset'}
+						</button>
+					{/each}
 				</div>
 				<button class="text-sm underline" onclick={() => selectRegion('unset')}>
 					I'm not participated to any facilitator program.

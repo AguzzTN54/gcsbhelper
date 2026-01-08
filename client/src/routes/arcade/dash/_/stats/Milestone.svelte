@@ -12,7 +12,7 @@
 	} from 'chart.js';
 	import {
 		ARCADECONFIG,
-		arcadeRegion,
+		arcadeFacil,
 		arcadeStats,
 		loadSteps,
 		profileReady
@@ -44,8 +44,8 @@
 		Legend
 	);
 
+	const region = $derived($arcadeFacil.split('_')?.[1] || 'unset');
 	const milestoneStandard = $derived.by(() => {
-		const region = $arcadeRegion;
 		if (!ready) {
 			return {
 				Games: 10,
@@ -79,7 +79,7 @@
 			Games: Games * 1.25,
 			Trivia: Trivia * 1.25,
 			Skill: Skill * 1.25,
-			...($arcadeRegion === 'india' ? { 'Lab Free': (labfree || 0) * 1.25 } : {})
+			...(region === 'india' ? { 'Lab Free': (labfree || 0) * 1.25 } : {})
 		};
 	});
 
@@ -90,7 +90,7 @@
 			Games: game || 0,
 			Trivia: trivia || 0,
 			Skill: skill || 0,
-			...($arcadeRegion === 'india' ? { 'Lab Free': labfree || 0 } : {})
+			...(region === 'india' ? { 'Lab Free': labfree || 0 } : {})
 		};
 	});
 

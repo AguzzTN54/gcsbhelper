@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { stopPropagation } from 'svelte/legacy';
 	import { onMount } from 'svelte';
-	import { activeProfile, ARCADECONFIG, arcadeRegion, initData } from '$lib/stores/app.svelte';
+	import { activeProfile, ARCADECONFIG, arcadeFacil, initData } from '$lib/stores/app.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import { shortShaId } from '$lib/helpers/crypto';
 	import { pushToast } from '$reusable/Toast/Toasts.svelte';
@@ -17,7 +17,7 @@
 		trivia: 'bg-pink-600',
 		special: 'bg-purple-700',
 		wmp: 'bg-emerald-700',
-		...($arcadeRegion === 'india' ? { labfree: 'bg-sky-500' } : {}),
+		...($arcadeFacil === 'india' ? { labfree: 'bg-sky-500' } : {}),
 		unknown: ''
 	});
 

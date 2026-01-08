@@ -302,8 +302,10 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
   const events = expand?.profile?.expand?.events || [];
   const { expand: evExpand = [], ...arcadedata } =
     events?.find((v: { identifier: string }) => v.identifier === program) || {};
-  const facildata =
-    evExpand?.events?.find((v: { identifier: string }) => v.identifier.match(new RegExp(facilitator, 'i'))) || {};
+
+  const facildata = evExpand?.events?.find((v: { identifier: string }) => {
+    return v.identifier.match(new RegExp(facilitator || 'unset', 'i'));
+  });
 
   const earnedCourses = await pb
     .collection('course_enrollments')

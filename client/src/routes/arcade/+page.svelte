@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app.svelte';
+	import { arcadeFacil } from '$lib/stores/app.svelte';
 	import Portal from '$reusable/Portal/Portal.svelte';
 	import ModalSelectRegion from './_/ModalSelectRegion.svelte';
 	import Form from './_/Form.svelte';
@@ -40,7 +40,7 @@
 				onclick={() => handleFacilitatorSelector?.()}
 				class="brutal-border !border-[4px] py-1 pr-3 pl-5 text-xs hover:bg-indigo-200 active:bg-indigo-300"
 			>
-				{regions[$arcadeRegion]} <i class="fasdl fa-caret-down text-amber-200"></i>
+				{regions[$arcadeFacil]} <i class="fasdl fa-caret-down text-amber-200"></i>
 			</button>
 		</div>
 	</div>

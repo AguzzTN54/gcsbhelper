@@ -28,7 +28,7 @@ export const loadProfileAndBadges = async (option: LoadProfileOptions): Promise<
 	incompleteCalculation.set(containsMissingCourse);
 	if (courses.length > 0) loadEnrollment(user.uuid, metadata?.arcade.identifier || '');
 	if (basicData.length > 0) loadCourseStats(basicData);
-	return { user, courses };
+	return { user, courses, metadata };
 };
 
 const badgeDataMerger = (

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { getContext, onMount } from 'svelte';
-	import { arcadeRegion } from '$lib/stores/app.svelte';
+	import { arcadeFacil } from '$lib/stores/app.svelte';
 	import bg from '$img/paper.webp';
 	import splash from '$img/splash5.webp';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
@@ -29,7 +29,7 @@
 			class="brutal-border-lg brutal-shadow relative h-[calc(90%-2rem)] w-[95%] rounded-t-3xl rounded-tr-none !border-b-0 bg-gray-100 sm:h-[90%] md:w-9/12"
 		>
 			<!-- Countdown -->
-			{#if $arcadeRegion && $arcadeRegion !== 'unset'}
+			{#if $arcadeFacil && $arcadeFacil !== 'unset'}
 				<div
 					class="absolute top-0 left-0 z-1 flex w-full -translate-y-[calc(100%+2.5rem)] justify-center sm:w-fit sm:-translate-y-full sm:justify-start"
 				>
