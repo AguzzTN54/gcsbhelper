@@ -197,14 +197,14 @@ export const updateProfilePB = async (data: ParsedDOM, program: string) => {
 
     if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses, batch);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
-      console.log(hexuuid, 'No update detected');
+      console.log(user.uuid, 'No update detected');
       return batch.send();
     }
 
     await batch.send();
     const insertResult = await insertNewCourses({ hexuuid, newCourses: newEarnedCourses, program, pid });
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
-    console.log('Profile Updated: ' + hexuuid);
+    console.log(user.uuid, 'Profile Updated');
   } catch (e) {
     console.error(e);
   }
