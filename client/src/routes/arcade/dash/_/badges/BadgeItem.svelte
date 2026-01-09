@@ -12,6 +12,7 @@
 	// import RateInput from './RateInput.svelte';
 	import LabelPicker from './LabelPicker.svelte';
 	import { showLabs } from '../../../_/ModalLabs.svelte';
+	import { skillbase } from '$lib/data/config';
 
 	type Props = { data?: App.CourseItem; loading?: boolean };
 	const { data, loading }: Props = $props();
@@ -111,26 +112,26 @@
 
 <div
 	class:earned
-	class="brutal-border relative course-item bg-gray-100 rounded-tl-3xl rounded-br-3xl group"
+	class="brutal-border course-item group relative rounded-tl-3xl rounded-br-3xl bg-gray-100"
 	style="{skewDeg()};"
 >
 	{#if coursePoint > 0 && !isOutPeriode}
 		<div
-			class="absolute top-2 left-2 bg-lime-200/90 z-1 p-1 text-sm rounded text-lime-800 min-w-8 flex items-center justify-center"
+			class="absolute top-2 left-2 z-1 flex min-w-8 items-center justify-center rounded bg-lime-200/90 p-1 text-sm text-lime-800"
 		>
 			<span> +{coursePoint} </span>
 		</div>
 	{/if}
 	{#if earned}
 		<div
-			class="absolute size-full top-0 left-0 bg-gray-100/75 z-10 scale-110 group-[:hover]:opacity-0 pointer-events-none"
+			class="pointer-events-none absolute top-0 left-0 z-10 size-full scale-110 bg-gray-100/75 group-[:hover]:opacity-0"
 		></div>
 	{/if}
 
 	{#snippet topLabel(text: string, className: string)}
 		<span
 			class:!top-7={label && !type}
-			class="absolute top-0 right-0 py-1 z-10 px-2 text-xs -skew-2 translate-y-1/3 translate-x-1/5 {className}"
+			class="absolute top-0 right-0 z-10 translate-x-1/5 translate-y-1/3 -skew-2 px-2 py-1 text-xs {className}"
 		>
 			{text}
 		</span>
@@ -157,10 +158,10 @@
 	{/if}
 
 	<div
-		class="size-full rounded-tl-[20px] rounded-br-3xl overflow-hidden"
+		class="size-full overflow-hidden rounded-tl-[20px] rounded-br-3xl"
 		class:grayscale-100={isExpired && !earned}
 	>
-		<div class="w-full aspect-video bg-gray-400 rounded-b-xl border-b-4 overflow-hidden relative">
+		<div class="relative aspect-video w-full overflow-hidden rounded-b-xl border-b-4 bg-gray-400">
 			{#if loading}
 				<Skeleton class="size-full" />
 			{:else}
@@ -178,7 +179,7 @@
 
 			{#if earned && earndate}
 				<div
-					class="bg-green-200 text-green-700 w-full p-0.5 absolute bottom-0 left-0 text-xs text-center"
+					class="absolute bottom-0 left-0 w-full bg-green-200 p-0.5 text-center text-xs text-green-700"
 				>
 					Earned at <span class="font-semibold">
 						{dayjs(earndate).format('DD MMM YYYY')}
@@ -186,7 +187,7 @@
 				</div>
 			{:else if isgame && token}
 				<div
-					class="bg-blue-200/90 text-blue-900 w-full p-0.5 absolute bottom-0 left-0 text-sm text-center"
+					class="absolute bottom-0 left-0 w-full bg-blue-200/90 p-0.5 text-center text-sm text-blue-900"
 				>
 					Token:
 					<button
@@ -216,7 +217,7 @@
 						<span class="text-gray-600">{totallab}</span>
 					{/if}
 
-					<i class="fasdl fa-users text-indigo-400 inline-block ml-2"></i>
+					<i class="fasdl fa-users ml-2 inline-block text-indigo-400"></i>
 					{#if loading}
 						<Skeleton class="inline-block h-3.5 w-12 rounded-full" />
 					{:else if !loadSteps.stats}
@@ -230,7 +231,7 @@
 					{labeltxt[isgame ? 'game' : courseType]}
 				</span>
 				{#if fasttrack}
-					<span class="brutal-text after:!bg-sky-200 text-sky-800 !mx-1 text-[10px]">
+					<span class="brutal-text !mx-1 text-[10px] text-sky-800 after:!bg-sky-200">
 						<i class="fasdl fa-bolt"></i> Fast Track
 					</span>
 				{/if}
@@ -247,27 +248,27 @@
 			</div>
 
 			{#if loading}
-				<Skeleton class="w-full h-6 rounded-lg" />
-				<Skeleton class="w-7/12 mt-2 h-6 rounded-lg" />
+				<Skeleton class="h-6 w-full rounded-lg" />
+				<Skeleton class="mt-2 h-6 w-7/12 rounded-lg" />
 			{:else}
 				<div class="h-12">
-					<h3 class="text-xl leading-[120%] text-overflow" {title} style="--line-number:2">
+					<h3 class="text-overflow text-xl leading-[120%]" {title} style="--line-number:2">
 						{title}
 					</h3>
 				</div>
 			{/if}
 
-			<div class="flex justify-between items-end pt-1">
+			<div class="flex items-end justify-between pt-1">
 				{#if loading}
 					<div>
-						<Skeleton class="rounded-full size-5" />
+						<Skeleton class="size-5 rounded-full" />
 					</div>
-					<div class="flex pl-2 pr-3 rounded w-full">
-						<Skeleton class="w-11/12	 h-4" />
+					<div class="flex w-full rounded pr-3 pl-2">
+						<Skeleton class="h-4	 w-11/12" />
 					</div>
 				{:else}
 					<!-- {@const { rate, percent } = feedback || {}} -->
-					<div class="flex-col flex justify-end w-[calc(100%-3rem)]">
+					<div class="flex w-[calc(100%-3rem)] flex-col justify-end">
 						<!-- <div class="flex text-gray-600 gap-2">
 							<Donut size="1.2rem" values={donutVal} stroke={20} />
 
@@ -284,7 +285,7 @@
 						</div> -->
 
 						{#if type === 'skill' && typeof progress === 'number' && (labs?.length || 0) > 0}
-							<div class="flex justify-between text-xs font-medium text-gray-500 pb-0.5">
+							<div class="flex justify-between pb-0.5 text-xs font-medium text-gray-500">
 								<button
 									class="group"
 									aria-label="Lab info"
@@ -298,11 +299,11 @@
 								</button>
 								<span> {progress}/{labs?.length || 0} </span>
 							</div>
-							<div class="flex items-center text-gray-600 gap-0.5">
+							<div class="flex items-center gap-0.5 text-gray-600">
 								{#each labs || [] as _, i (i)}
 									<div
 										class:bg-slate-300={i >= progress}
-										class="w-full h-1 bg-amber-400 rounded-full"
+										class="h-1 w-full rounded-full bg-amber-400"
 									></div>
 								{/each}
 							</div>
@@ -311,14 +312,14 @@
 				{/if}
 
 				{#if loading}
-					<Skeleton class="size-10 rounded-full aspect-square" />
+					<Skeleton class="aspect-square size-10 rounded-full" />
 				{:else}
 					{@const path = isgame ? 'games' : 'course_templates'}
 					<a
 						onclick={courseid && courseid > 0 ? undefined : preventDefault(() => {})}
-						href="https://www.cloudskillsboost.google/{path}/{courseid}"
+						href="{skillbase}/{path}/{courseid}"
 						target="_blank"
-						class="aspect-square w-10 bg-amber-300 brutal-border !border-[3px] rounded-full flex items-center justify-center hover:bg-amber-400"
+						class="brutal-border flex aspect-square w-10 items-center justify-center rounded-full !border-[3px] bg-amber-300 hover:bg-amber-400"
 						aria-label="Enroll Now"
 						title="Enroll Now"
 					>
@@ -335,15 +336,15 @@
 
 	.course-item {
 		&::before {
-			@apply bg-amber-300 scale-105 skew-x-[var(--degY)] skew-y-[var(--degX)];
+			@apply scale-105 skew-x-[var(--degY)] skew-y-[var(--degX)] bg-amber-300;
 		}
 		&::after {
-			@apply bg-indigo-300 scale-104 skew-y-[var(--degY)] skew-x-[var(--degX)];
+			@apply scale-104 skew-x-[var(--degX)] skew-y-[var(--degY)] bg-indigo-300;
 		}
 		&::after,
 		&::before {
 			content: '';
-			@apply rounded-tl-3xl rounded-br-3xl size-full absolute top-0 left-0 -z-1;
+			@apply absolute top-0 left-0 -z-1 size-full rounded-tl-3xl rounded-br-3xl;
 		}
 
 		button::after {
@@ -351,13 +352,13 @@
 	}
 
 	.label_skill {
-		@apply after:!bg-amber-200 text-amber-800;
+		@apply text-amber-800 after:!bg-amber-200;
 	}
 	.label_game {
-		@apply after:!bg-indigo-200 text-indigo-800;
+		@apply text-indigo-800 after:!bg-indigo-200;
 	}
 	.label_labfree {
-		@apply after:!bg-purple-200 text-purple-800;
+		@apply text-purple-800 after:!bg-purple-200;
 	}
 	.label_unknown {
 		@apply hidden;

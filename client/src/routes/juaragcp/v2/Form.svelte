@@ -9,7 +9,7 @@
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { modalHandle } from './ModalProfile.svelte';
 	import PulseLoading from './comp/PulseLoading.svelte';
-	import { juaraSeason } from '$lib/data/config';
+	import { juaraSeason, skillbase } from '$lib/data/config';
 
 	let value = $state('');
 	let typed = $state(false);
@@ -47,7 +47,7 @@
 	$effect(() => {
 		if (!$activeProfile?.uuid) return window.__opr?.setUserID('');
 		window.__opr?.setUserID($activeProfile.name.slice(0, 4).padEnd(10, '*'));
-		value = `https://www.cloudskillsboost.google/public_profiles/${$activeProfile.uuid}`;
+		value = `${skillbase}/public_profiles/${$activeProfile.uuid}`;
 		untrack(() => $q.refetch());
 	});
 </script>

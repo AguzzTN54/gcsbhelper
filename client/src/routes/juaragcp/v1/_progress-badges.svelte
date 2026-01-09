@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { skillbase } from '$lib/data/config';
 	import { getContext } from 'svelte';
 
 	interface CourseInfo {
@@ -62,7 +63,7 @@
 			<button class="handler" onclick={() => toggleAccordion(group + i)}>
 				{#if isBonus && pathID}
 					<h4>
-						<a href="https://www.cloudskillsboost.google/paths/{pathID}" target="_blank">
+						<a href="{skillbase}/paths/{pathID}" target="_blank">
 							{title}
 							<small> <i class="gc-external-link"></i></small>
 						</a>
@@ -102,7 +103,7 @@
 									{#if courseID}
 										{@const endpoint = token ? 'games' : `paths/${pathID}/course_templates`}
 										{@const path = isSkill ? 'course_templates' : endpoint}
-										<a href="https://www.cloudskillsboost.google/{path}/{courseID}" target="_blank">
+										<a href="{skillbase}/{path}/{courseID}" target="_blank">
 											{courseName}
 											<i class="gc-external-link"></i>
 										</a>

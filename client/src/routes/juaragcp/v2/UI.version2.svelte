@@ -85,10 +85,10 @@
 
 	<div
 		id="particle"
-		class="pointer-events-none fixed top-0 left-0 -z-1 h-(--screen-height) w-full"
+		class="h-(--screen-height)w-full pointer-events-none fixed top-0 left-0 -z-1"
 	></div>
 	<section
-		class="sticky top-0 left-0 h-[calc(var(--screen-height)-1rem)] w-full text-(--color-secondary)"
+		class="sticky top-0 left-0 h-[calc(var(--screen-height)-2rem)] max-h-full w-full text-(--color-secondary)"
 	>
 		<header class="relative z-50 flex items-start p-2 font-bold sm:p-[2%]">
 			{#if typeof $activeProfile === 'object'}

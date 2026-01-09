@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import confetti from 'canvas-confetti';
+	import { skillbase } from '$lib/data/config';
 
 	interface Tier {
 		tier: number;
@@ -99,7 +100,7 @@
 			<b> Completion Form </b> dan nantikan info berikutnya dari #JuaraGCP!
 			<br />
 			Tapi Eits... jangan stop di sini!! masih banyak materi GCP yang bisa kamu pelajari di
-			<a href="https://www.cloudskillsboost.google/catalog" target="_blank">Cloud Skill Boost</a>!!
+			<a href="{skillbase}/catalog" target="_blank">Cloud Skill Boost</a>!!
 		</p>
 	</div>
 {/if}

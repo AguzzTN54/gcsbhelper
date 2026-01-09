@@ -109,13 +109,13 @@
 				</article>
 			{:else if potential.isvalid}
 				<article>
-					Terdapat <span class="font-bold">{potential.skill}</span> Skill Badges dan
-					<span class="font-bold">{potential.completion}</span>
-					Regular Badges yang dapat dikerjakan untuk mencapai
+					Tersedia <span class="font-bold">{potential.skill}</span>
+					Skill Badges dan <span class="font-bold">{potential.completion}</span>
+					Regular Badges yang dapat diperoleh. Maksimal tier yang bisa didapatkan adalah
 					<span class="font-bold capitalize"> {potential.tier} </span>
-					{#if potential.bonus > 0}
+					<!-- {#if potential.bonus > 0}
 						dan mendapatkan {potential.bonus} point bonus skill badge
-					{/if}
+					{/if} -->
 				</article>
 			{:else}
 				<article

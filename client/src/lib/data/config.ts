@@ -1,3 +1,4 @@
+export const skillbase = 'https://www.skills.google';
 export const facilitatorRegions = ['india', 'indonesia', 'unset'] as const;
 export const gcsbPrograms = ['arcade', 'juaragcp'] as const;
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { skillbase } from '$lib/data/config';
+
 	const marquee = (content: HTMLElement) => {
 		const setMarquee = () => {
 			const titleContainer = content.querySelector('.disclaimer') as HTMLElement;
@@ -14,20 +16,20 @@
 </script>
 
 <div
-	class="w-screen flex px-[2.5%] py-[.5%] sm:py-0 text-xs text-white bg-black/90 relative z-99"
+	class="relative z-99 flex w-screen bg-black/90 px-[2.5%] py-[.5%] text-xs text-white sm:py-0"
 	use:marquee
 >
 	<div class="disclaimer w-full overflow-hidden py-[.5%]">
-		<span class="block whitespace-nowrap w-fit">
+		<span class="block w-fit whitespace-nowrap">
 			This site is NOT affiliated to
-			<a href="https://cloudskillsboost.google" class="brutal-text"> Google Cloud Skill Boost </a>
+			<a href={skillbase} class="brutal-text"> Google Cloud Skill Boost </a>
 			or any Facilitators
 			<!-- or <a href="https://cloud.google.com/"> JuaraGCP </a>! -->
 			<!-- <b> We do not store or even proccess your data on our server! </b> -->
 		</span>
 	</div>
 
-	<span class="py-[.5%] whitespace-nowrap inline-block relative">
+	<span class="relative inline-block py-[.5%] whitespace-nowrap">
 		Made by
 		<a
 			href="http://github.com/AguzzTN54/gcsbhelper"

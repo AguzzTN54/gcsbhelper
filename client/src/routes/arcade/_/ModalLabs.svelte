@@ -21,6 +21,7 @@
 	import Modal from '$reusable/Modal.svelte';
 	import pb from '$lib/helpers/pocketbase';
 	import Loading from '$reusable/Loading.svelte';
+	import { skillbase } from '$lib/data/config';
 
 	setContext('modalHandle', toggleLabs);
 	type Titles = { id: string; title: string };
@@ -86,7 +87,7 @@
 			<div class="mt-3 flex justify-center">
 				<a
 					onclick={courseId && courseId > 0 ? undefined : preventDefault(() => {})}
-					href="https://www.cloudskillsboost.google/course_templates/{courseId}"
+					href="{skillbase}/course_templates/{courseId}"
 					target="_blank"
 					class="brutal-border mx-auto !border-4 bg-amber-200 px-2 py-1 hover:bg-amber-300 active:bg-amber-400"
 				>
