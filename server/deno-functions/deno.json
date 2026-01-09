@@ -5,6 +5,7 @@
   "tasks": {
     "dev": "deno run --unstable-kv --allow-env --env-file --allow-net --unstable-cron --watch src/index.ts",
     "start": "deno run --unstable-kv --allow-env --env-file --allow-net --unstable-cron src/index.ts",
+    "deploy": "deployctl deploy --project=skillserver --allow-env --prod",
     "crawl:skill": "deno run --env-file --allow-net --allow-env src/lib/scrapper/courses/skill.ts",
     "crawl:labfree": "deno run --env-file --allow-net --allow-env src/lib/scrapper/courses/labfree.ts",
     "build": "deno run -A https://deno.land/x/esbuild@v0.19.11/mod.js src/index.ts --bundle --outfile=dist/deploy.js --format=esm --platform=neutral --external:npm:hono --external:npm:jsdom --external:npm:pocketbase"
@@ -13,5 +14,12 @@
     "https://deno.land": true,
     "https://esm.sh": true,
     "https://crux.land": true
+  },
+  "deploy": {
+    "project": "eb4140ed-6fde-41d0-943e-206a3e336f3f",
+    "exclude": ["**/node_modules"],
+    "include": [],
+    "entrypoint": "src\\index.ts"
   }
 }
+
