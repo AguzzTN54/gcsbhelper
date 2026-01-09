@@ -13,7 +13,7 @@ const delay = (seconds: number) => {
   });
 };
 
-const gcsb = 'https://www.cloudskillsboost.google';
+const gcsb = 'https://www.skills.google';
 const fetchSkillbadges = async () => {
   try {
     const res = await fetch(
@@ -61,7 +61,7 @@ const fetchCourseDetail = async ({ path }: Course) => {
     const badge = window.document.querySelector('img[role="presentation"]');
     const badgeurl = badge?.getAttribute('src') || '';
 
-    const listContainer = window.document.querySelector('ql-course-outline');
+    const listContainer = window.document.querySelector('ql-contents-menu');
     const modulesAttr = listContainer?.getAttribute('modules');
     const list = modulesAttr ? JSON.parse(modulesAttr) : [];
     const labs = getLabs(list);
@@ -73,13 +73,20 @@ const fetchCourseDetail = async ({ path }: Course) => {
   }
 };
 
+import pocketbase from 'npm:pocketbase';
+const token = Deno.env.get('PB_TOKEN') || '';
+const localPb = new pocketbase('http://localhost:8090');
+localPb.authStore.save(token);
+
 const insertToPb = async (course: Course & MoreCourseDetail) => {
-  const { title, path, level, totallab, fasttrack, badgeurl, labs } = course || {};
+  const { title, path, level, totallab, fasttrack, labs } = course || {};
   try {
     const [, , idParam] = path.split('/');
     const [stringId] = idParam.split('?');
     const courseid = parseInt(stringId, 10);
     const id = await shortShaId('c' + stringId);
+
+    const { badgeurl } = (await localPb.collection('courses').getOne(id, { fields: 'badgeurl' })) || {};
 
     const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
     const labData = (await Promise.all(labrecords || [])).flat();
