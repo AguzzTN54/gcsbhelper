@@ -31,8 +31,8 @@ export const events: JuaraEvent[] = [
 	},
 	{
 		title: 'Kick Off Session Cloud AI Study Jam: #JuaraGCP',
-		startdate: '1 Feb 2026, 13:00 GMT+7',
-		enddate: '1 Feb 2026, 16:00 GMT+7',
+		startdate: '17 Jan 2026, 13:00 GMT+7',
+		enddate: '17 Jan 2026, 17:00 GMT+7',
 		description:
 			'Ikuti sesi Kick-Off Session Cloud AI Study Jam: #JuaraGCP, sesi koding bersama untuk memulai perjalanan #JuaraGCP baik secara in-person dan online'
 	},
