@@ -8,7 +8,8 @@
 		incompleteCalculation,
 		initData,
 		loadSteps,
-		profileReady
+		profileReady,
+		screenSize
 	} from '$lib/stores/app.svelte';
 	import { loadProfileAndBadges } from '$lib/helpers/loader.arcade';
 	import { localAccounts } from '$lib/helpers/localstorage';
@@ -145,9 +146,13 @@
 	</div>
 
 	<div class="relative z-2 h-[calc(100%-5rem)] w-full rounded-t-3xl p-2 pt-2 sm:h-full sm:pt-5">
-		<ScrollArea id="dash">
+		{#if $screenSize.width < 640}
+			<ScrollArea id="dash">
+				{@render children()}
+			</ScrollArea>
+		{:else}
 			{@render children()}
-		</ScrollArea>
+		{/if}
 	</div>
 </section>
 

@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { getContext, onDestroy, onMount, setContext, tick } from 'svelte';
-	import { getElement, getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
+	import { getContext, onMount, setContext, tick } from 'svelte';
+	import { getLenis } from '$reusable/ScrollArea.svelte';
 	import { localAccounts } from '$lib/helpers/localstorage';
 	import { profileReady } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import Portal from '$reusable/Portal';
 	import ModalProfile from '../../_/ModalProfile.svelte';
 	import ModalNotify from '../../_/ModalNotify.svelte';
+	import { skillbase } from '$lib/data/config';
 
 	const { action = false } = $props();
 
@@ -38,7 +39,7 @@
 		if (slug === 'profile') {
 			const active = localAccounts.getActive();
 			if (!active?.uuid) return;
-			const url = 'https://www.cloudskillsboost.google/public_profiles/' + active.uuid;
+			const url = skillbase + '/public_profiles/' + active.uuid;
 			window.open(url, '_blank')?.focus();
 			return;
 		}
@@ -59,8 +60,8 @@
 		if (action) return actionClick(slug);
 
 		// ToC panel
-		const { x, y } = getTargetPosition('rightpane', '#content-' + slug);
-		smoothScroll({ id: 'rightpane', targetPosition: { x, y: y + 40 } });
+		const lenis = getLenis('rightpane');
+		lenis.scrollTo('#content-' + slug);
 	};
 
 	const updateActive = () => {
@@ -82,16 +83,14 @@
 		active = current || 'stats';
 	};
 
-	onMount(async () => {
+	onMount(() => {
 		if (action) return;
-		await tick();
-		updateActive();
-		getElement('rightpane').addEventListener('scroll', updateActive);
-	});
-
-	onDestroy(() => {
-		if (action) return;
-		getElement('rightpane')?.removeEventListener('scroll', updateActive);
+		const lenis = getLenis('rightpane');
+		tick().then(() => {
+			updateActive();
+			lenis?.on('scroll', updateActive);
+		});
+		return () => lenis?.off('scroll', updateActive);
 	});
 </script>
 
@@ -123,12 +122,12 @@
 				class:!size-8={action}
 				class:!border-[.125rem]={action}
 				class:!border-[3px]={!action}
-				class="size-11 rounded-full brutal-border bg-gray-100 flex items-center justify-center hover:bg-indigo-200 active:bg-indigo-300 relative"
+				class="brutal-border relative flex size-11 items-center justify-center rounded-full bg-gray-100 hover:bg-indigo-200 active:bg-indigo-300"
 			>
-				<i class="fasdl fa-{icon} text-amber-400 text-xl" class:!text-sm={action}></i>
+				<i class="fasdl fa-{icon} text-xl text-amber-400" class:!text-sm={action}></i>
 				{#if active !== slug && !action}
 					<span
-						class="absolute whitespace-nowrap !border-[3px] bg-gray-100 brutal-border h-10/12 flex items-center justify-center rounded-full px-5 text-sm top-1/2 left-[calc(100%+.5rem)] -translate-y-1/2 opacity-0 transition-opacity pointer-events-none"
+						class="brutal-border pointer-events-none absolute top-1/2 left-[calc(100%+.5rem)] flex h-10/12 -translate-y-1/2 items-center justify-center rounded-full !border-[3px] bg-gray-100 px-5 text-sm whitespace-nowrap opacity-0 transition-opacity"
 					>
 						{text}
 					</span>
@@ -142,7 +141,7 @@
 	@import 'tailwindcss/theme' theme(reference);
 
 	button.active {
-		@apply bg-amber-200 opacity-100 pointer-events-none;
+		@apply pointer-events-none bg-amber-200 opacity-100;
 		i {
 			@apply !text-indigo-200;
 		}

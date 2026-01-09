@@ -80,11 +80,16 @@
 
 <MetaTags {title} />
 
-<ScrollArea id="juaragcp" class="relative bg-[var(--color-primary)]" {onScroll}>
+<ScrollArea id="juaragcp" class="relative bg-(--color-primary)" {onScroll}>
 	<ModalProfile />
 
-	<div id="particle" class="pointer-events-none fixed top-0 left-0 -z-1 size-full"></div>
-	<section class="sticky top-0 left-0 size-full text-[var(--color-secondary)]">
+	<div
+		id="particle"
+		class="pointer-events-none fixed top-0 left-0 -z-1 h-(--screen-height) w-full"
+	></div>
+	<section
+		class="sticky top-0 left-0 h-[calc(var(--screen-height)-1rem)] w-full text-(--color-secondary)"
+	>
 		<header class="relative z-50 flex items-start p-2 font-bold sm:p-[2%]">
 			{#if typeof $activeProfile === 'object'}
 				<h1 class="font-fancy text-stroke p-2 text-center sm:p-0" in:fade>

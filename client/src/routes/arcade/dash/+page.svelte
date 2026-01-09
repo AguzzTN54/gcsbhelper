@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { activeProfile, loadSteps, profileReady } from '$lib/stores/app.svelte';
+	import { activeProfile, loadSteps, profileReady, screenSize } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
 	import ScrollArea from '$reusable/ScrollArea.svelte';
 	import Countdown from '../_/Countdown.svelte';
@@ -97,13 +97,21 @@
 
 	<!-- Right -->
 
-	<div class="w-full sm:w-1/2 lg:w-3/5 xl:w-full">
-		<ScrollArea id="rightpane" class="px-4 sm:px-10 sm:py-2">
-			<div id="content-stats"></div>
-			<Stats />
-			<Reward />
-			<div id="content-badges"></div>
-			<Badges />
-		</ScrollArea>
+	{#snippet rightContent()}
+		<div id="content-stats"></div>
+		<Stats />
+		<Reward />
+		<div id="content-badges"></div>
+		<Badges />
+	{/snippet}
+
+	<div class="h-[calc(var(--screen-height)-4rem)] w-full sm:w-1/2 lg:w-3/5 xl:w-full">
+		{#if $screenSize.width < 640}
+			{@render rightContent()}
+		{:else}
+			<ScrollArea id="rightpane" class="px-4 sm:px-10 sm:py-2">
+				{@render rightContent()}
+			</ScrollArea>
+		{/if}
 	</div>
 </div>

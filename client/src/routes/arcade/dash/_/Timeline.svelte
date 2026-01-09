@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
-	import ScrollArea, { getTargetPosition, smoothScroll } from '$reusable/ScrollArea.svelte';
+	import ScrollArea, { getLenis, getTargetPosition } from '$reusable/ScrollArea.svelte';
 	import { getTimelineContents } from '$lib/helpers/timeline.arcade';
 	import { arcadeFacil, initData } from '$lib/stores/app.svelte';
 
@@ -53,10 +53,12 @@
 	};
 
 	const scroll = () => {
-		const { x: xpos, y } = getTargetPosition('timeline', '#nowindicator');
-		const x = xpos - (timelineW / 7) * 2.75;
-		const targetPosition = { x, y };
-		smoothScroll({ id: 'timeline', targetPosition });
+		const lenis = getLenis('timeline');
+		lenis.scrollTo('#nowindicator');
+		// const { x: xpos, y } = getTargetPosition('timeline', '#nowindicator');
+		// const x = xpos - (timelineW / 7) * 2.75;
+		// const targetPosition = { x, y };
+		// smoothScroll({ id: 'timeline', targetPosition });
 	};
 	onMount(() => {
 		const t = setTimeout(() => {
@@ -73,7 +75,7 @@
 >
 	<ScrollArea horizontal id="timeline">
 		<div
-			class="relative z-21 flex h-[98%] w-0.5 bg-red-500"
+			class="pointer-event-none absolute top-0 left-0 z-21 flex h-[98%] w-0.5 bg-red-500"
 			style="transform: translateX(
 				calc(var(--dtw)/2
 				+ var(--dtw)*{offset}

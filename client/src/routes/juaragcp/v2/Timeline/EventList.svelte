@@ -22,7 +22,7 @@
 	const tabData = $derived(activeTab === 'upcoming' ? upcoming : previous);
 </script>
 
-<ScrollArea>
+<div class="size-full">
 	{#if current.length > 0}
 		<h3 class="pb-4 font-semibold uppercase">Sedang Berlangsung</h3>
 		{#each current as { description, enddate, startdate, title }}
@@ -80,7 +80,7 @@
 			Tidak ada event!
 		</div>
 	{/if}
-</ScrollArea>
+</div>
 
 <style lang="postcss">
 	@import 'tailwindcss/theme' theme(reference);

@@ -1,7 +1,10 @@
 <script module>
 	const osInstance = $state<Record<string, OverlayScrollbars>>({});
 	export const setOptions = (id: string, opt: PartialOptions) => osInstance[id]?.options(opt);
-	export const getElement = (id: string) => osInstance[id]?.elements().viewport;
+	export const getScrollContainer = (id: string) => osInstance[id]?.elements().viewport;
+
+	const lenisInstance = $state<Record<string, Lenis>>({});
+	export const getLenis = (id: string) => lenisInstance[id];
 
 	export const getTargetPosition = (
 		id: string,
@@ -10,7 +13,7 @@
 		if (!id) return { x: 0, y: 0 };
 
 		const targetEl = document.querySelector(targetSelector) as HTMLElement;
-		const scrollEl = getElement(id);
+		const scrollEl = getScrollContainer(id);
 		if (!(targetEl && scrollEl)) return { x: 0, y: 0 };
 
 		const { top: areaTop, left: areaLeft } = scrollEl.getBoundingClientRect();
@@ -64,49 +67,11 @@
 			getPosition: () => ({ ...currentPosition })
 		};
 	}
-
-	type SmoothScrollParams = {
-		id: string;
-		targetPosition: { x: number; y: number };
-		duration?: number;
-		startPosition?: { x: number; y: number };
-	};
-
-	export const smoothScroll = ({
-		id,
-		targetPosition,
-		startPosition,
-		duration = 500
-	}: SmoothScrollParams) => {
-		const scrollArea = getElement(id);
-		const start = startPosition || { x: scrollArea.scrollLeft, y: scrollArea.scrollTop };
-		const distance = {
-			x: targetPosition.x - start.x,
-			y: targetPosition.y - start.y
-		};
-		let startTime: number | null = null;
-
-		const animation = (currentTime: number) => {
-			if (startTime === null) startTime = currentTime;
-			const timeElapsed = currentTime - startTime;
-			const progress = Math.min(timeElapsed / duration, 1);
-
-			const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
-			const newX = start.x + distance.x * ease;
-			const newY = start.y + distance.y * ease;
-			scrollArea.scrollTo({ left: newX, top: newY });
-			if (timeElapsed < duration) {
-				requestAnimationFrame(animation);
-			}
-		};
-
-		requestAnimationFrame(animation);
-	};
 </script>
 
 <script lang="ts">
-	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import Lenis from 'lenis';
 	import { OverlayScrollbars, type PartialOptions } from 'overlayscrollbars';
 
 	const {
@@ -116,12 +81,16 @@
 		class: className = '',
 		style = '',
 		horizontal = false,
-		id = ''
+		id = '',
+		onLenisLoaded = () => {},
+		wrapperClass = ''
 	} = $props();
 
 	let element = $state<HTMLElement>();
+	let inner = $state<HTMLElement>();
 	let scrolled = $state(false);
-	const osID = id || Object.keys(osInstance || {}).length.toString();
+	const propid = $props.id();
+	const osID = id || propid;
 
 	const onscroll = (_: never | OverlayScrollbars, e: Event): null => {
 		const { scrollTop } = e.target as HTMLElement;
@@ -130,188 +99,58 @@
 		return null;
 	};
 
-	let currentPos = $state(0);
-	let targetPos = $state(0);
-	let isAnimating = $state(false);
-	const ease = $state(0.12); // smoothness factor
-
-	const animateWheelScroll = (scrollArea: HTMLElement, horizontal: boolean) => {
-		if (!isAnimating) {
-			isAnimating = true;
-			const step = () => {
-				currentPos += (targetPos - currentPos) * ease;
-
-				if (horizontal) {
-					scrollArea.scrollLeft = currentPos;
-				} else {
-					scrollArea.scrollTop = currentPos;
-				}
-
-				// only stop when really close to target (or at edges)
-				if (Math.abs(targetPos - currentPos) > 0.5) {
-					requestAnimationFrame(step);
-				} else {
-					currentPos = targetPos; // snap final small gap
-					if (horizontal) scrollArea.scrollLeft = currentPos;
-					else scrollArea.scrollTop = currentPos;
-					isAnimating = false;
-				}
-			};
-			requestAnimationFrame(step);
-		}
-	};
-
-	const handleWheel = (e: WheelEvent) => {
-		e.preventDefault();
-		const parent = getElement(osID);
-		if (!parent) return;
-
-		// init if fresh
-		if (!isAnimating) {
-			currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
-			targetPos = currentPos;
-		}
-
-		let delta = 0;
-
-		if (horizontal) {
-			// allow both vertical wheel (deltaY) and real horizontal wheel (deltaX)
-			delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-		} else {
-			delta = e.deltaY;
-		}
-
-		// accumulate target
-		targetPos += delta;
-
-		// Clamp target within scroll bounds
-		const maxScroll = horizontal
-			? parent.scrollWidth - parent.clientWidth
-			: parent.scrollHeight - parent.clientHeight;
-
-		targetPos = Math.max(0, Math.min(targetPos, maxScroll));
-
-		animateWheelScroll(parent, horizontal);
-	};
-
-	let touchStart = $state(0);
-	let lastTime = 0;
-	let isTouching = false;
-	let velocitySamples: number[] = [];
-	const fingerStopThreshold = 0.2;
-
-	const handleTouchStart = (e: TouchEvent) => {
-		const parent = getElement(osID);
-		if (!parent) return;
-
-		currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
-		targetPos = currentPos;
-
-		touchStart = horizontal ? e.touches[0].clientX : e.touches[0].clientY;
-		lastTime = performance.now();
-		velocitySamples = [];
-		isTouching = true;
-	};
-
-	const handleTouchMove = (e: TouchEvent) => {
-		const parent = getElement(osID);
-		if (!parent) return;
-
-		e.preventDefault();
-
-		const now = performance.now();
-		const dt = now - lastTime || 16;
-		lastTime = now;
-
-		const pos = horizontal ? e.touches[0].clientX : e.touches[0].clientY;
-		const delta = touchStart - pos;
-		touchStart = pos;
-
-		const v = delta / dt;
-		velocitySamples.push(v);
-		if (velocitySamples.length > 5) velocitySamples.shift(); // keep last 5
-
-		// follow finger
-		targetPos += delta;
-
-		const maxScroll = horizontal
-			? parent.scrollWidth - parent.clientWidth
-			: parent.scrollHeight - parent.clientHeight;
-		targetPos = Math.max(0, Math.min(targetPos, maxScroll));
-
-		if (horizontal) parent.scrollLeft = targetPos;
-		else parent.scrollTop = targetPos;
-	};
-
-	const handleTouchEnd = () => {
-		isTouching = false;
-
-		const parent = getElement(osID);
-		if (!parent) return;
-
-		currentPos = horizontal ? parent.scrollLeft : parent.scrollTop;
-
-		// ✅ Check the last movement: if the finger stopped, do not apply inertia
-		const lastMovement = velocitySamples[velocitySamples.length - 1] || 0;
-		if (Math.abs(lastMovement) < fingerStopThreshold) return; // finger already stopped
-
-		// Average velocity from recent samples
-		const avgVelocity = velocitySamples.reduce((a, b) => a + b, 0) / velocitySamples.length || 0;
-		if (Math.abs(avgVelocity) < 0.05) return; // too small, ignore
-
-		let velocity = avgVelocity * 35; // scale factor
-		const decay = 0.95;
-
-		const step = () => {
-			if (isTouching) return;
-
-			velocity *= decay;
-			if (Math.abs(velocity) < 0.2) return;
-
-			const maxScroll = horizontal
-				? parent.scrollWidth - parent.clientWidth
-				: parent.scrollHeight - parent.clientHeight;
-
-			targetPos = Math.max(0, Math.min(targetPos + velocity, maxScroll));
-
-			animateWheelScroll(parent, horizontal);
-			requestAnimationFrame(step);
-		};
-
-		requestAnimationFrame(step);
-	};
+	// save & restore Scroll Postion
+	// const getKey = (url: URL) => `scroll-pos:${osID}:${url.pathname}`;
+	// let currentKey = $state<string>();
+	// let firstload = $state<boolean>(true);
 
 	onMount(() => {
 		if (!element) return;
 		osInstance[osID] = OverlayScrollbars(
 			element,
-			{
-				scrollbars: {
-					theme: 'os-theme-dark',
-					autoHide: page.route.id?.includes('/juaragcp') ? 'scroll' : undefined
-				}
-			},
+			{ scrollbars: { theme: 'os-theme-dark' } },
 			{ scroll: onscroll }
 		);
 
 		const viewport = osInstance[osID].elements().viewport;
-		viewport.addEventListener('wheel', handleWheel, { passive: false });
-		viewport.addEventListener('touchstart', handleTouchStart, { passive: false });
-		viewport.addEventListener('touchmove', handleTouchMove, { passive: false });
-		viewport.addEventListener('touchend', handleTouchEnd, { passive: false });
-		viewport.addEventListener('touchcancel', handleTouchEnd, { passive: false });
-	});
+		lenisInstance[osID] = new Lenis({
+			wrapper: viewport,
+			smoothWheel: true,
+			lerp: 0.1,
+			duration: 1.2,
+			easing: (e) => Math.min(1, 1.001 - Math.pow(2, -10 * e)),
+			syncTouch: false,
+			orientation: horizontal ? 'horizontal' : 'vertical',
+			gestureOrientation: 'vertical',
+			wheelMultiplier: 1,
+			touchMultiplier: 1,
+			infinite: false,
+			anchors: true,
+			autoResize: true,
+			overscroll: false,
+			autoRaf: false
+		});
 
-	$effect(() => () => {
-		if (!osInstance) return;
-		if (!horizontal) return;
-		const viewport = osInstance[osID].elements().viewport;
-		viewport.removeEventListener('wheel', handleWheel);
-		viewport.removeEventListener('touchstart', handleTouchStart);
-		viewport.removeEventListener('touchmove', handleTouchMove);
-		viewport.removeEventListener('touchend', handleTouchEnd);
-		viewport.removeEventListener('touchcancel', handleTouchEnd);
-		osInstance[osID].destroy();
+		const raf = (time: number) => {
+			lenisInstance[osID].raf(time);
+			requestAnimationFrame(raf);
+		};
+		requestAnimationFrame(raf);
+
+		if (inner) {
+			const ro = new ResizeObserver(() => {
+				requestAnimationFrame(() => {
+					lenisInstance[osID].resize();
+				});
+			});
+			ro.observe(inner);
+		}
+
+		onLenisLoaded?.();
+		return () => {
+			osInstance[osID]?.destroy();
+			lenisInstance[osID]?.destroy();
+		};
 	});
 </script>
 
@@ -323,7 +162,9 @@
 		></div>
 	{/if}
 
-	{@render children?.()}
+	<div bind:this={inner} class={wrapperClass}>
+		{@render children?.()}
+	</div>
 </div>
 
 <style lang="postcss">
