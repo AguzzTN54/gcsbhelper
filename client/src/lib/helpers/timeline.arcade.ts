@@ -133,16 +133,15 @@ const groupTimeline = (data: EventItem[]): EventItem[][] => {
 const getTimelineRange = (content: EventItem[]) => {
 	const startOfMonth = dayjs().startOf('month');
 
-	const minStart = content.reduce(
-		(min, item) => (dayjs(item.startdate).isBefore(min) ? dayjs(item.startdate) : min),
-		dayjs(content[0]?.startdate)
-	);
-	const limitedMinStart = minStart.isBefore(startOfMonth) ? startOfMonth : minStart;
+	const ongoing = content.filter(({ enddate }) => dayjs(enddate).isAfter(Date.now()));
+	const minStart = ongoing.reduce((min, item) => {
+		return dayjs(item.startdate).isBefore(min) ? dayjs(item.startdate) : min;
+	}, dayjs(ongoing?.[0]?.startdate));
 
-	const maxEnd = content.reduce(
-		(max, item) => (dayjs(item.enddate).isAfter(max) ? dayjs(item.enddate) : max),
-		dayjs(content[0]?.enddate)
-	);
+	const limitedMinStart = minStart.isBefore(startOfMonth) ? startOfMonth : minStart;
+	const maxEnd = ongoing.reduce((max, item) => {
+		return dayjs(item.enddate).isAfter(max) ? dayjs(item.enddate) : max;
+	}, dayjs(ongoing?.[0]?.enddate));
 
 	return {
 		startrange: limitedMinStart,

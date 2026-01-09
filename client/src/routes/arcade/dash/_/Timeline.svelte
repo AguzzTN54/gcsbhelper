@@ -1,14 +1,33 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import dayjs, { type Dayjs } from '$lib/helpers/dateTime';
-	import ScrollArea, { getLenis, getTargetPosition } from '$reusable/ScrollArea.svelte';
+	import { onMount, tick } from 'svelte';
+	import dayjs, { delay, type Dayjs } from '$lib/helpers/dateTime';
+	import ScrollArea, { getLenis } from '$reusable/ScrollArea.svelte';
 	import { getTimelineContents } from '$lib/helpers/timeline.arcade';
 	import { arcadeFacil, initData } from '$lib/stores/app.svelte';
+	import { sha256 } from '$lib/helpers/crypto';
 
 	let timelineW = $state(0);
 	let timelineH = $state(0);
 	const offset = 2;
 	const calendar = $derived(getTimelineContents($initData, $arcadeFacil));
+
+	const scroll = () => {
+		const lenis = getLenis('timeline');
+		lenis.resize();
+		lenis?.scrollTo('#nowindicator', { offset: -100 });
+	};
+
+	let timelineHash = $state('');
+	$effect(() => {
+		if (calendar.timeline.length > 0) {
+			sha256(calendar?.timeline?.toString()).then(async (hash) => {
+				if (hash === timelineHash) return;
+				timelineHash = hash;
+				await delay(500);
+				scroll();
+			});
+		}
+	});
 
 	interface DateList {
 		month: string;
@@ -51,21 +70,6 @@
 		const fractionToday = secondsToday / secondsInDay;
 		return daysDiff + fractionToday;
 	};
-
-	const scroll = () => {
-		const lenis = getLenis('timeline');
-		lenis.scrollTo('#nowindicator');
-		// const { x: xpos, y } = getTargetPosition('timeline', '#nowindicator');
-		// const x = xpos - (timelineW / 7) * 2.75;
-		// const targetPosition = { x, y };
-		// smoothScroll({ id: 'timeline', targetPosition });
-	};
-	onMount(() => {
-		const t = setTimeout(() => {
-			scroll();
-			clearTimeout(t);
-		}, 500);
-	});
 </script>
 
 <div

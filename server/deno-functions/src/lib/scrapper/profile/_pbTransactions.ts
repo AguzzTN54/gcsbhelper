@@ -34,7 +34,9 @@ const validateCourse = async (courses: UserCourses[]) => {
       chunks.map(async (chunk) => {
         const filter = buildFilter(chunk);
         if (!filter) return [];
-        const res = await pb.collection('courses').getFullList({ filter, skipTotal: true, perPage: 1000 });
+        const res = await pb
+          .collection('courses')
+          .getFullList({ filter, skipTotal: true, perPage: 1000, requestKey: 'courses' });
         return res || [];
       }),
     );

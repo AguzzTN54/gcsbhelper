@@ -57,7 +57,7 @@
 					style="mask-image: linear-gradient(to bottom, transparent 5%, black 20%);"
 				/>
 			</div>
-			<ScrollArea>
+			<ScrollArea wrapperClass="h-full">
 				{@render children()}
 			</ScrollArea>
 		</div>

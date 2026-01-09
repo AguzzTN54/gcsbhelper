@@ -79,9 +79,14 @@ export const loadProfile = async (id: string, options?: ScrapperOptions): Promis
     if (!id) throw new Error('No ID Attached');
     const uuid = hexToUuid(id);
     // Check if the profile is already enrolled
-    const isPrevious = await checkEventPeriode(uuid, program);
-    const end = isPrevious.event?.end;
-    if (!isPrevious.enrolled || (end && new Date(end) > new Date())) return profileScrapper(uuid, options);
+    const previousEvent = await checkEventPeriode(uuid, program);
+    const end = previousEvent.event?.end;
+    if (!previousEvent.enrolled || (end && new Date(end) > new Date())) {
+      const data = await profileScrapper(uuid, options);
+      if (!previousEvent.event) return data;
+      return { ...data, metadata: { arcade: previousEvent.event } };
+    }
+
     console.log('use stored data for ' + id);
     const data = await loadEventProfile(uuid, program);
     return data;
