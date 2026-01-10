@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Swiper } from 'swiper';
+	import { fly } from 'svelte/transition';
 	import { generateCalendarsByMonth } from '$lib/helpers/timeline.juaragcp';
 	import Ground from '../illustration/Ground.svelte';
 	import Calendar from './Calendar.svelte';
@@ -10,27 +10,9 @@
 	const dateRange = Object.entries(calendar);
 	const calendarrange = dateRange.map(([month, date]) => [dayjs(month).format('MMMM'), date]);
 
-	let activeMonth = $state(currentMonth);
 	let clientWidth = $state(0);
-	let swiperEl = $state<HTMLElement>();
-	let swiper = $state<Swiper>();
-
-	$effect(() => {
-		if (!swiperEl) return;
-		swiper = new Swiper(swiperEl, {
-			speed: 400,
-			initialSlide: currentMonth,
-			centeredSlidesBounds: true,
-			allowTouchMove: false,
-			slidesPerView: 'auto',
-			on: {
-				realIndexChange(swiper) {
-					activeMonth = swiper.realIndex;
-				}
-			}
-		});
-		return () => swiper?.destroy();
-	});
+	let activeMonth = $state(currentMonth);
+	let direction = $state<'left' | 'right'>('right');
 </script>
 
 <div
@@ -52,7 +34,12 @@
 				<h2 class="pb-4 capitalize sm:text-xl lg:text-2xl">{calendarrange[activeMonth][0]}</h2>
 				<nav class="ml-auto">
 					<button
-						onclick={() => swiper?.slidePrev()}
+						onclick={() => {
+							if (activeMonth > 0) {
+								direction = 'left';
+								activeMonth -= 1;
+							}
+						}}
 						aria-label="Previous Month"
 						class="duo mr-2 text-xl hover:text-amber-300"
 						class:opacity-50={activeMonth === 0}
@@ -61,7 +48,12 @@
 						<i class="fasdl fa-arrow-left-long"></i>
 					</button>
 					<button
-						onclick={() => swiper?.slideNext()}
+						onclick={() => {
+							if (activeMonth < calendarrange.length - 1) {
+								direction = 'right';
+								activeMonth += 1;
+							}
+						}}
 						aria-label="Next Month"
 						class="duo text-xl hover:text-amber-300"
 						class:opacity-50={activeMonth === calendarrange.length - 1}
@@ -72,18 +64,32 @@
 				</nav>
 			</div>
 
-			<div class="swiper w-full" bind:this={swiperEl} bind:clientWidth style="--w:{clientWidth}px">
-				<div class="swiper-wrapper w-full">
-					{#each dateRange as [_, date] (date)}
-						<div class="swiper-slide top-0 left-0 size-full">
-							<Calendar {date} />
-						</div>
-					{/each}
-				</div>
+			<!-- Animated calendar with fly transitions -->
+			<div
+				class="relative h-full w-full overflow-hidden"
+				bind:clientWidth
+				style="--w:{clientWidth}px"
+			>
+				{#key activeMonth}
+					<div
+						in:fly={{
+							x: direction === 'right' ? 300 : -300,
+							duration: 400,
+							opacity: 0
+						}}
+						out:fly={{
+							x: direction === 'right' ? -300 : 300,
+							duration: 400,
+							opacity: 0
+						}}
+						style="position: absolute; width: 100%; top: 0; left: 0;"
+					>
+						<Calendar date={dateRange[activeMonth][1]} />
+					</div>
+				{/key}
 			</div>
 		</div>
 
-		<!--  -->
 		<div class="mt-10 flex w-full py-2 md:mt-0 md:w-4/12">
 			<EventList />
 		</div>
