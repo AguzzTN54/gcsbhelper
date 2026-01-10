@@ -15,7 +15,7 @@ interface JuaraTier {
 	skill: number;
 	total: number;
 }
-export const juaraPointBase = { skill: 3, completion: 1 };
+export const JUARA_POINT_TABLE = { skill: 3, completion: 1 };
 export const juaraTier: Record<'tier1' | 'tier2' | 'tier3', JuaraTier> = {
 	tier1: { skill: 6, total: 10 },
 	tier2: { skill: 9, total: 18 },

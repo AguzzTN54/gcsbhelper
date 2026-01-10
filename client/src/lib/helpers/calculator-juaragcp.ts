@@ -1,4 +1,4 @@
-import { juaraTier } from '$lib/data/config';
+import { JUARA_POINT_TABLE, juaraTier } from '$lib/data/config';
 
 const getValidBadges = (badges: App.JuaraBadge[], type: App.JuaraBadge['type']) => {
 	return badges.filter((b) => b.type === type && b.date && b.validity);
@@ -10,10 +10,13 @@ const checkValidAccount = (badges: App.JuaraBadge[]) => {
 	return isvalid;
 };
 
-interface JuaraTier {
+interface Points {
 	skill: number;
 	completion: number;
 	total: number;
+}
+interface JuaraTier extends Points {
+	points: Points;
 	tier: string;
 	isvalid: boolean;
 }
@@ -38,9 +41,18 @@ export const whatIsMyTier = (badges: App.JuaraBadge[]): JuaraTier => {
 		}
 	}
 
+	const skillpoint = (skillCount || 0) * JUARA_POINT_TABLE.skill;
+	const completionpoint = (completionCount || 0) * JUARA_POINT_TABLE.completion;
+	const points = {
+		skill: skillpoint,
+		completion: completionpoint,
+		total: skillpoint + completionpoint
+	};
+
 	return {
 		total,
 		isvalid,
+		points,
 		skill: skillCount,
 		completion: completionCount,
 		tier: isvalid ? tier : '##NotEligible!'

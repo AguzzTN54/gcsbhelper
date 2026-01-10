@@ -86,7 +86,7 @@
 			class:active={activeType === 'completion'}
 			class="duo ml-1 w-full rounded-tl-3xl border-b-4 border-[var(--color-secondary)] bg-[var(--color-secondary)] py-3 text-sm font-semibold text-[var(--color-primary)] uppercase transition-colors duration-300 sm:w-fit sm:rounded-tr-3xl sm:px-10 sm:text-base"
 		>
-			Regular Badges <i class="fasds fa-puzzle"></i>
+			Completion Badges <i class="fasds fa-puzzle"></i>
 		</button>
 	</div>
 
@@ -109,9 +109,9 @@
 				</article>
 			{:else if potential.isvalid}
 				<article>
-					Tersedia <span class="font-bold">{potential.skill}</span>
+					Terdapat <span class="font-bold">{potential.skill}</span>
 					Skill Badges dan <span class="font-bold">{potential.completion}</span>
-					Regular Badges yang dapat diperoleh. Maksimal tier yang bisa didapatkan adalah
+					Completion Badges yang bisa dikerjakan. Maksimal tier yang bisa didapatkan adalah
 					<span class="font-bold capitalize"> {potential.tier} </span>
 					<!-- {#if potential.bonus > 0}
 						dan mendapatkan {potential.bonus} point bonus skill badge
@@ -121,8 +121,8 @@
 				<article
 					class="inline-block rounded-xl border-2 border-dashed border-rose-900 px-5 py-2 text-rose-900"
 				>
-					Terdapat badge yang tidak valid, silahkan reset badge pada profile CloudSkillBoost atau
-					mendaftarkan akun baru terlebih dahulu!
+					Terdapat badge yang tidak valid, silahkan reset badge pada profile Google Cloud Skills
+					atau mendaftarkan akun baru terlebih dahulu!
 				</article>
 			{/if}
 		</div>

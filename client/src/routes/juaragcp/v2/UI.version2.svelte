@@ -85,7 +85,7 @@
 
 	<div
 		id="particle"
-		class="h-(--screen-height)w-full pointer-events-none fixed top-0 left-0 -z-1"
+		class="pointer-events-none fixed top-0 left-0 -z-1 h-(--screen-height) w-full"
 	></div>
 	<section
 		class="sticky top-0 left-0 h-[calc(var(--screen-height)-2rem)] max-h-full w-full text-(--color-secondary)"
@@ -200,7 +200,7 @@
 		<Leaf1 />
 		<Leaf2 />
 		<Leaf2 flip />
-		<div class="absolute right-1/2 bottom-0 w-[35%] min-w-[300px] translate-y-[15%]">
+		<div class="absolute right-1/2 bottom-0 w-[35%] min-w-[300px] translate-y-[25%] scale-85">
 			<Leaves />
 		</div>
 	</div>

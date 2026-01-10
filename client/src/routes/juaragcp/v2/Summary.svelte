@@ -5,14 +5,18 @@
 	import { useQuery } from '$lib/stores/query-store';
 	import { modalHandle } from './ModalProfile.svelte';
 	import { analyzeBadges, whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
+	import Tooltip from '$reusable/Tooltip';
 
+	let displayPoint = $state(false);
 	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
 	const potential = $derived(analyzeBadges($juaraBadges || []));
 	const earned = $derived.by(() => {
-		const { completion, skill, total } = tierdata;
+		const p = displayPoint;
+		const data = p ? tierdata.points : tierdata;
+		const { completion, skill, total } = data;
 		return [
-			{ title: 'Skill Badges', points: skill },
-			{ title: 'Regular Badges', points: completion },
+			{ title: `Skill ${p ? 'Points' : 'Badges'}`, points: skill },
+			{ title: `Regular ${p ? 'Points' : 'Badges'}`, points: completion },
 			{ title: 'Total', points: total }
 		];
 	});
@@ -76,6 +80,7 @@
 		{name}
 		<div class="fasds fa-caret-down text-[var(--color-third)]"></div>
 	</button>
+
 	{#if !isvalid || potential.tier === 'notier'}
 		<h1 class="text-stroke py-4 text-[2rem] font-black sm:text-[3rem]">##NotEligible!</h1>
 	{:else}
@@ -84,32 +89,83 @@
 		</h1>
 	{/if}
 
-	<div
-		class="relative grid w-full grid-cols-2 gap-y-2 rounded-2xl border-4 bg-[var(--color-primary)] py-2 sm:grid-cols-3"
-	>
-		<button
-			onclick={() => $q.refetch()}
-			class="absolute top-0 right-0 flex translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[var(--color-secondary)] bg-[var(--color-primary)] p-2 text-sm hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
+	<div class="relative mt-5 w-full rounded-2xl border-4 bg-[var(--color-primary)] md:mt-0">
+		<div
+			class="absolute top-0 right-0 flex translate-x-2.5 -translate-y-2/3 overflow-hidden rounded-full border-2 border-[var(--color-secondary)]"
 			style="--fa-primary-color:var(--color-pimary)"
-			aria-label="Refetch"
 		>
-			<i class="fasds fa-arrow-rotate-right"></i>
-		</button>
-		{#each earned as { points, title }, i}
-			<div
-				class="flex w-full flex-col items-center p-1 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
-				class:sm:border-r-2={i < 2}
-				class:border-r-2={i === 0}
-				class:col-span-2={i === 2}
-				class:border-t-2={i === 2}
-			>
-				<div class="w-max text-sm font-semibold sm:text-base">{title}</div>
-				<div class="text-3xl font-black">{points}</div>
-			</div>
-		{/each}
+			<Tooltip>
+				{#snippet popup()}
+					{#if displayPoint}
+						<span> Perolehan Badges </span>
+					{:else}
+						<span> Perolehan Point </span>
+					{/if}
+				{/snippet}
+
+				<button
+					onclick={() => (displayPoint = !displayPoint)}
+					class="flex size-full items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
+					aria-label="Points"
+				>
+					{#if displayPoint}
+						<i class="fasds fa-badge-check" style="--fa-primary-color:var(--color-third)"></i>
+					{:else}
+						<i class="fasds fa-binary-circle-check"></i>
+					{/if}
+				</button>
+			</Tooltip>
+
+			<Tooltip>
+				{#snippet popup()}
+					<span> Ranking Kamu </span>
+				{/snippet}
+				<button
+					class="flex items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
+					aria-label="Leaderboards"
+				>
+					<i class="fasds fa-ranking-star"></i>
+				</button>
+			</Tooltip>
+
+			<Tooltip>
+				{#snippet popup()}
+					<span> Refresh </span>
+				{/snippet}
+				<button
+					onclick={() => $q.refetch()}
+					class="flex items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
+					aria-label="Refetch"
+				>
+					<i class="fasds fa-arrow-rotate-right"></i>
+				</button>
+			</Tooltip>
+		</div>
+
+		<div class="grid w-full grid-cols-2 gap-y-2 py-2 sm:grid-cols-3">
+			{#each earned as { points, title }, i}
+				<div
+					class="flex w-full flex-col items-center p-1 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
+					class:sm:border-r-2={i < 2}
+					class:border-r-2={i === 0}
+					class:col-span-2={i === 2}
+					class:border-t-2={i === 2}
+				>
+					<div class="w-max text-sm font-semibold sm:text-base">{title}</div>
+					<div class="text-3xl font-black">{points}</div>
+				</div>
+			{/each}
+		</div>
+
+		<!-- <div
+			class="col-span-3! flex w-full flex-col items-center border-t-2 p-1 text-center sm:col-span-1 sm:w-full sm:p-2 sm:px-5"
+		>
+			<div class="w-max text-sm font-semibold sm:text-base">Rank</div>
+			<div class="text-3xl font-black">12</div>
+		</div> -->
 	</div>
 
-	<p class="mt-2 w-full text-sm">
+	<p class="mt-2 w-full bg-(--color-primary) text-sm">
 		Jangan lupa untuk mengisi <span class="font-semibold">Completion Form</span>
 		<span class="bg-[var(--color-third)]/20"> setelah mencapai target Tier</span>!
 	</p>
