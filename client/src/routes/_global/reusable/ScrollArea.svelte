@@ -162,7 +162,7 @@
 		></div>
 	{/if}
 
-	<div bind:this={inner} class={wrapperClass}>
+	<div bind:this={inner} class="{wrapperClass} w-full">
 		{@render children?.()}
 	</div>
 </div>

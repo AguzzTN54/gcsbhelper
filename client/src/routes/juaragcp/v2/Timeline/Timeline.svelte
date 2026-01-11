@@ -66,12 +66,13 @@
 
 			<!-- Animated calendar with fly transitions -->
 			<div
-				class="relative h-full w-full overflow-hidden"
+				class="relative aspect-[6/4.1] h-full w-full overflow-hidden"
 				bind:clientWidth
 				style="--w:{clientWidth}px"
 			>
 				{#key activeMonth}
 					<div
+						class="absolute top-0 left-0 size-full"
 						in:fly={{
 							x: direction === 'right' ? 300 : -300,
 							duration: 400,
@@ -82,7 +83,6 @@
 							duration: 400,
 							opacity: 0
 						}}
-						style="position: absolute; width: 100%; top: 0; left: 0;"
 					>
 						<Calendar date={dateRange[activeMonth][1]} />
 					</div>

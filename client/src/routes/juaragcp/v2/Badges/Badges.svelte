@@ -104,7 +104,7 @@
 				>
 					Hanya tersisa <span class="font-bold">{potential.skill}</span> Skill Badges dan
 					<span class="font-bold">{potential.completion}</span>
-					Regular Badges yang dapat dikerjakan,
+					Completion Badges yang dapat dikerjakan,
 					<span class="font-semibold">tidak cukup untuk mencapai Tier 1</span>!
 				</article>
 			{:else if potential.isvalid}
