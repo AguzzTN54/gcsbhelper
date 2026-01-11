@@ -88,7 +88,7 @@
 		{#if isVisible}
 			<div
 				bind:this={tooltipEl}
-				class="pointer-events-none fixed z-50 origin-center whitespace-nowrap"
+				class="pointer-events-none fixed z-50 origin-center"
 				style="left: {position.x}px; top: {position.y}px;"
 				transition:fly={{
 					x: side === 'left' ? -4 : side === 'right' ? 4 : 0,

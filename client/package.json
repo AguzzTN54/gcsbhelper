@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@openreplay/tracker": "^16.4.9",
 		"@sentry/sveltekit": "^10.19.0",
+		"baffle": "^0.3.6",
 		"canvas-confetti": "^1.9.3",
 		"chart.js": "^4.5.0",
 		"dayjs": "^1.11.12",

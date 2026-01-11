@@ -52,3 +52,14 @@ export const checkProfileEntities = async (uuid: string, program: string) => {
 	const data = await res.json();
 	return data;
 };
+
+export const getRank = async (uuid: string, program: string) => {
+	const profileid = uuidToHex(uuid);
+	const token = await createToken();
+	const server = new URL(`${PUBLIC_API_SERVER}/internal/identity/${profileid}/rank`);
+	server.searchParams.append('program', program);
+	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
+	if (res.status !== 200) throw new Error('Fetch Error');
+	const data = await res.json();
+	return data;
+};

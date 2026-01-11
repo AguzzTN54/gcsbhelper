@@ -11,6 +11,7 @@ export const loadSteps = $state({
 
 type ConfigStore = App.InitData['metadata'] | undefined;
 export const ARCADECONFIG = writable<ConfigStore>();
+export const JUARACONFIG = writable<{ sum: 'point' | 'rank' | 'badge' }>({ sum: 'badge' });
 
 export const completedLabs = writable<Set<string>>();
 export const incompleteCalculation = writable<boolean>(false);

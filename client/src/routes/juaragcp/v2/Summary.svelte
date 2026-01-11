@@ -1,28 +1,89 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import { setContext } from 'svelte';
 	import confetti from 'canvas-confetti';
-	import { activeProfile, juaraBadges } from '$lib/stores/app.svelte';
+	// @ts-ignore
+	import baffle from 'baffle';
+	import { activeProfile, juaraBadges, JUARACONFIG } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	import { modalHandle } from './ModalProfile.svelte';
 	import { analyzeBadges, whatIsMyTier } from '$lib/helpers/calculator-juaragcp';
 	import Tooltip from '$reusable/Tooltip';
+	import Portal from '$reusable/Portal';
+	import Modal from './comp/Modal.svelte';
+	import lstorage from '$lib/helpers/localstorage';
+	import { getRank } from '$lib/helpers/loader.profile';
+	import { juaraSeason } from '$lib/data/config';
+	import { delay } from '$lib/helpers/dateTime';
 
-	let displayPoint = $state(false);
+	let bfTarget = $state<HTMLElement | null>(null);
+	let bf = $state<baffle | null>(null);
+
+	$effect(() => {
+		if (!bfTarget) return;
+		const b = baffle(bfTarget, {
+			characters: '░█/<▒▓▒▒░▒██▒▒▓/█▒ ▓▒░▓█ █░▒>░ ▓░▒░▓█0123456789',
+			speed: 75
+		});
+		bf = b;
+		b?.start();
+
+		return () => {
+			bf?.stop();
+			bf = null;
+		};
+	});
+
 	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
 	const potential = $derived(analyzeBadges($juaraBadges || []));
 	const earned = $derived.by(() => {
-		const p = displayPoint;
+		const p = $JUARACONFIG.sum === 'point';
 		const data = p ? tierdata.points : tierdata;
 		const { completion, skill, total } = data;
 		return [
 			{ title: `Skill ${p ? 'Points' : 'Badges'}`, points: skill },
-			{ title: `Regular ${p ? 'Points' : 'Badges'}`, points: completion },
+			{ title: `Completion ${p ? 'Points' : 'Badges'}`, points: completion },
 			{ title: 'Total', points: total }
 		];
 	});
 
 	const { uuid, name } = $derived($activeProfile);
 	const q = $derived(useQuery(uuid));
+
+	let showModalRank = $state(false);
+	setContext('modalHandle', () => (showModalRank = !showModalRank));
+
+	let skipDisclaimer = $state<boolean>(!!lstorage.get('jRankDisclaimer'));
+	$effect(() => {
+		lstorage.set('jRankDisclaimer', skipDisclaimer);
+	});
+	const showRank = () => {
+		JUARACONFIG.update(({ sum, ...s }) => ({ sum: 'rank', ...s }));
+		showModalRank = false;
+	};
+
+	const toggleModalRank = () => {
+		if ($JUARACONFIG.sum === 'rank') return;
+		if (skipDisclaimer) return showRank();
+		showModalRank = !showModalRank;
+	};
+
+	const checkRank = async () => {
+		if (!isvalid || potential.tier === 'notier') {
+			bf?.text(() => 'N/A').reveal(1500);
+			return;
+		}
+
+		try {
+			const { position, percentSlices } = await getRank(uuid, juaraSeason.seasonid);
+			await delay(1500);
+			bf?.text(() => String(position)).reveal(1000);
+			return percentSlices;
+		} catch (e) {
+			console.error(e);
+			bf?.text(() => 'Error').reveal(1500);
+		}
+	};
 
 	// Confetti
 	const randomInRange = (min: number, max: number) => {
@@ -57,17 +118,50 @@
 	};
 
 	$effect(() => {
-		if (!tier.match(/tier1|tier2/)) return;
+		if (!tier.match(/tier1|tier2|tier3/)) return;
 		const duration = 3 * 1000;
 		const animationEnd = Date.now() + duration;
 		const interval = setInterval(() => {
 			const timeLeft = animationEnd - Date.now();
 			if (timeLeft <= 0) return clearInterval(interval);
-			if (earned[2].points <= 16) return normalTierConfetti();
+			if (tier !== 'tier3') return normalTierConfetti();
 			specialConfetti(duration, timeLeft);
 		}, 200);
 	});
 </script>
+
+<Portal target="#main">
+	{#if showModalRank}
+		<Modal>
+			<div
+				class="bg-(--color-secondary) pt-2 pb-4 text-center font-bold text-(--color-primary) uppercase"
+			>
+				Disclaimer
+			</div>
+			<div class="px-5 pt-4 pb-5">
+				<p>
+					Peringkat kamu di platform ini
+					<span class="font-bold"> tidak mencerminkan peringkat resmi </span>
+					dari tim JuaraGCP. Sehingga platform ini tidak dapat digunakan sebagai dasar untuk mengajukan
+					banding, mengingat adanya perbedaan variabel pengolahan data yang tidak terlacak.
+				</p>
+				<div class="mt-4 text-center text-sm">
+					<input type="checkbox" bind:checked={skipDisclaimer} id="skipdisclaimer" />
+					<label for="skipdisclaimer"> Don't show again </label>
+				</div>
+				<div class="flex items-center justify-center pt-4">
+					<button
+						class="rounded-full bg-amber-300 px-5 py-2 text-sm transition-colors duration-300 hover:bg-amber-400"
+						onclick={showRank}
+					>
+						<i class="fasds fa-ranking-star"></i>
+						<span>Lihat Ranking</span>
+					</button>
+				</div>
+			</div>
+		</Modal>
+	{/if}
+</Portal>
 
 <div
 	class="-mt-10 flex w-[600px] max-w-10/12 flex-col items-center justify-center text-center"
@@ -96,7 +190,7 @@
 		>
 			<Tooltip>
 				{#snippet popup()}
-					{#if displayPoint}
+					{#if $JUARACONFIG.sum === 'point'}
 						<span> Perolehan Badges </span>
 					{:else}
 						<span> Perolehan Point </span>
@@ -104,11 +198,15 @@
 				{/snippet}
 
 				<button
-					onclick={() => (displayPoint = !displayPoint)}
+					onclick={() =>
+						JUARACONFIG.update(({ sum, ...s }) => ({
+							sum: sum !== 'point' ? 'point' : 'badge',
+							...s
+						}))}
 					class="flex size-full items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
 					aria-label="Points"
 				>
-					{#if displayPoint}
+					{#if $JUARACONFIG.sum === 'point'}
 						<i class="fasds fa-badge-check" style="--fa-primary-color:var(--color-third)"></i>
 					{:else}
 						<i class="fasds fa-binary-circle-check"></i>
@@ -121,8 +219,11 @@
 					<span> Ranking Kamu </span>
 				{/snippet}
 				<button
-					class="flex items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
-					aria-label="Leaderboards"
+					onclick={toggleModalRank}
+					class:bg-[var(--color-secondary)]={$JUARACONFIG.sum === 'rank'}
+					class:text-white={$JUARACONFIG.sum === 'rank'}
+					class="flex items-center justify-center bg-[var(--color-primary)] p-2 text-sm transition-colors duration-300 hover:bg-(--color-secondary) hover:text-(--color-primary)"
+					aria-label="Peringkat"
 				>
 					<i class="fasds fa-ranking-star"></i>
 				</button>
@@ -142,27 +243,67 @@
 			</Tooltip>
 		</div>
 
-		<div class="grid w-full grid-cols-2 gap-y-2 py-2 sm:grid-cols-3">
-			{#each earned as { points, title }, i}
-				<div
-					class="flex w-full flex-col items-center p-1 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
-					class:sm:border-r-2={i < 2}
-					class:border-r-2={i === 0}
-					class:col-span-2={i === 2}
-					class:border-t-2={i === 2}
-				>
-					<div class="w-max text-sm font-semibold sm:text-base">{title}</div>
-					<div class="text-3xl font-black">{points}</div>
+		{#if $JUARACONFIG.sum !== 'rank'}
+			<div class="grid w-full grid-cols-2 gap-y-2 py-2 sm:grid-cols-3">
+				{#each earned as { points, title }, i}
+					<div
+						class="flex w-full flex-col items-center p-1 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
+						class:sm:border-r-2={i < 2}
+						class:border-r-2={i === 0}
+						class:col-span-2={i === 2}
+						class:border-t-2={i === 2}
+					>
+						<div class="w-max text-sm font-semibold sm:text-base">{title}</div>
+						<div class="text-3xl font-black">{points}</div>
+					</div>
+				{/each}
+			</div>
+		{:else}
+			<div
+				class="flex min-h-[92px] w-full flex-col items-center px-1 py-4 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
+			>
+				<div class="w-max text-xs font-semibold sm:text-sm">Posisi kamu pada platform ini</div>
+				<div class="relative mt-5 mb-1 text-4xl font-black">
+					<span
+						class="absolute bottom-full left-1/2 -mb-2.5 block -translate-x-1/2 text-lg text-transparent"
+						style="--fa-primary-color:var(--color-secondary)"
+					>
+						<i class="fasdl fa-crown"> </i>
+					</span>
+					<span bind:this={bfTarget}> 000 </span>
 				</div>
-			{/each}
-		</div>
 
-		<!-- <div
-			class="col-span-3! flex w-full flex-col items-center border-t-2 p-1 text-center sm:col-span-1 sm:w-full sm:p-2 sm:px-5"
-		>
-			<div class="w-max text-sm font-semibold sm:text-base">Rank</div>
-			<div class="text-3xl font-black">12</div>
-		</div> -->
+				<Tooltip>
+					{#snippet popup()}
+						<div class="w-80 max-w-full p-1">
+							<p>
+								Kalkulasi hanya berdasarkan data dari pengguna platform ini, Jumlah point yang sama
+								akan memiliki ranking yang sama tanpa mempertimbangkan kecepatan penyelesaian.
+								Sehingga <b> pasti tidak akurat </b>
+								dengan data yang diolah oleh Tim Resmi JuaraGCP.
+							</p>
+						</div>
+					{/snippet}
+
+					{#await checkRank() then percent}
+						{#if typeof percent === 'number'}
+							<div class="text-xs">
+								<p class="inline-block">
+									<span class="bg-[var(--color-third)]/20 font-semibold"> {percent}% </span> partisipan
+									berada pada posisi yang sama
+								</p>
+								<span
+									class="text-xs text-transparent"
+									style="--fa-primary-color:var(--color-secondary)"
+								>
+									<i class="fasdl fa-circle-info"></i>
+								</span>
+							</div>
+						{/if}
+					{/await}
+				</Tooltip>
+			</div>
+		{/if}
 	</div>
 
 	<p class="mt-2 w-full bg-(--color-primary) text-sm">
