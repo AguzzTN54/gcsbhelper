@@ -11,6 +11,8 @@
 	import Modal from './comp/Modal.svelte';
 	import lstorage from '$lib/helpers/localstorage';
 	import Rank from './Rank.svelte';
+	import { submitRank } from '$lib/helpers/loader.profile';
+	import { juaraSeason } from '$lib/data/config';
 
 	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
 
@@ -28,6 +30,10 @@
 
 	const { uuid, name } = $derived($activeProfile);
 	const q = $derived(useQuery(uuid));
+	$effect(() => {
+		if ((tierdata?.points?.total || 0) < 1) return;
+		submitRank(uuid, juaraSeason.seasonid, tierdata.points.total);
+	});
 
 	let showModalRank = $state(false);
 	setContext('modalHandle', () => (showModalRank = !showModalRank));

@@ -43,10 +43,11 @@ export const whatIsMyTier = (badges: App.JuaraBadge[]): JuaraTier => {
 
 	const skillpoint = (skillCount || 0) * JUARA_POINT_TABLE.skill;
 	const completionpoint = (completionCount || 0) * JUARA_POINT_TABLE.completion;
+	const totalpoint = skillpoint + completionpoint;
 	const points = {
 		skill: skillpoint,
 		completion: completionpoint,
-		total: skillpoint + completionpoint
+		total: totalpoint
 	};
 
 	return {

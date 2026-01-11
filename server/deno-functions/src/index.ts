@@ -9,7 +9,7 @@ import { scrapAndNotify } from './lib/scrapAndNotify.ts';
 import { loadProfile } from './lib/scrapper/profile/profileParser.ts';
 import { getAccountToken } from './lib/db/pocketbase.ts';
 import { hexToUuid } from './lib/utils/uuid.ts';
-import { checkProfileEntities, checkRanking } from './lib/scrapper/profile/_pbTransactions.ts';
+import { checkProfileEntities, checkRanking, updatePoints } from './lib/scrapper/profile/_pbTransactions.ts';
 
 const CLIENT_ORIGIN = Deno.env.get('CLIENT_HOST')?.split(',');
 const app = new Hono();
@@ -77,6 +77,26 @@ app.get('/internal/identity/:id/verifyseason', async (c) => {
     const uuid = hexToUuid(id);
     const data = await checkProfileEntities(uuid, program);
     return c.json(data);
+  } catch (error) {
+    const e = error as Record<string, string | number>;
+    console.error(e);
+    return c.json({ error: e?.message || 'Something Went Wrong' }, 500);
+  }
+});
+
+app.post('/internal/identity/:id/rank', async (c) => {
+  const arcadeToken = c.req.header('x-arcade-token');
+  const id = c.req.param('id') || '';
+  if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  try {
+    const program = (c.req.query('program') ?? '').trim();
+    const uuid = hexToUuid(id);
+    const input = await c.req.json();
+    await updatePoints(uuid, program, input?.points || 0);
+    return c.json({});
   } catch (error) {
     const e = error as Record<string, string | number>;
     console.error(e);

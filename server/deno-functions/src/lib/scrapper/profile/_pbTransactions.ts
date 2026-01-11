@@ -364,10 +364,15 @@ export const checkRanking = async (uuid: string, program: string) => {
 
   // percentage users have *same points*
   const samePointsCount = pbData.filter((item) => item.points === userPoints).length;
-  const percentSlices = Math.round((samePointsCount / total) * 100);
+  const percentSlices = parseFloat(((samePointsCount / total) * 100).toFixed(1));
 
   return {
     position: rank,
     percentSlices,
   };
+};
+
+export const updatePoints = async (uuid: string, program: string, points: number) => {
+  const pid = await shortShaId(`${uuid}-${program}`);
+  await pb.collection('event_profiles').update(pid, { points });
 };
