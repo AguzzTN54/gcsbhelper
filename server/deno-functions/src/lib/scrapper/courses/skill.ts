@@ -109,7 +109,7 @@ const insertToPb = async (course: Course & MoreCourseDetail) => {
       type: 'skill',
       point: 0.5,
     });
-    await batch.send();
+    await batch.send({ requestKey: id });
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }

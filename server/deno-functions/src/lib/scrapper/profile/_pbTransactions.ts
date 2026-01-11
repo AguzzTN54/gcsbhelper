@@ -203,7 +203,7 @@ export const updateProfilePB = async (data: ParsedDOM, program: string) => {
       return batch.send();
     }
 
-    await batch.send();
+    await batch.send({ requestKey: hexuuid });
     const insertResult = await insertNewCourses({ hexuuid, newCourses: newEarnedCourses, program, pid });
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
     console.log(user.uuid, 'Profile Updated');
@@ -267,7 +267,7 @@ export const checkProfileEntities = async (
           .collection('profiles')
           .upsert({ id: pid, identifier: oldId, title: 'Arcade 2025 2nd Half', 'events+': eventToUpsert });
         batch.collection('event_profiles').upsert({ id: oldId, profile: pid });
-        await batch.send();
+        await batch.send({ requestKey: pid });
         recoredEvents.push({ identifier: oldProgram, title: 'Arcade 2025 2nd Half' });
       }
     } catch {
@@ -303,7 +303,7 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
   const id = await shortShaId(`${uuid}-${program}`);
   const { expand, facilitator } = await pb
     .collection('event_profiles')
-    .getOne(id, { expand: 'profile,profile.events,profile.events.events' });
+    .getOne(id, { expand: 'profile,profile.events,profile.events.events', requestKey: id });
 
   const events = expand?.profile?.expand?.events || [];
   const { expand: evExpand = [], ...arcadedata } =
@@ -315,7 +315,7 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
 
   const earnedCourses = await pb
     .collection('course_enrollments')
-    .getFullList({ filter: `profile='${id}'`, perPage: 1000, expand: 'course' });
+    .getFullList({ filter: `profile='${id}'`, perPage: 1000, expand: 'course', requestKey: id });
 
   const courses = (earnedCourses || []).map(({ expand, earned: date }) => {
     const { badgeid, courseid, title, badgeurl } = expand?.course || {};

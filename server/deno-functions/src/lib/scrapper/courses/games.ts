@@ -105,7 +105,7 @@ const insertToPb = async (course: Course) => {
       point: point || 0,
       labs: labIds,
     });
-    await batch.send();
+    await batch.send({ requestKey: id });
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }
@@ -129,4 +129,3 @@ export const addGameToPB = async (data: ArcadeContent[]) => {
   }
   console.log('✔️ New Games Updated to PB');
 };
-
