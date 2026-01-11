@@ -2,8 +2,6 @@
 	import { fade } from 'svelte/transition';
 	import { setContext } from 'svelte';
 	import confetti from 'canvas-confetti';
-	// @ts-ignore
-	import baffle from 'baffle';
 	import { activeProfile, juaraBadges, JUARACONFIG } from '$lib/stores/app.svelte';
 	import { useQuery } from '$lib/stores/query-store';
 	import { modalHandle } from './ModalProfile.svelte';
@@ -12,29 +10,10 @@
 	import Portal from '$reusable/Portal';
 	import Modal from './comp/Modal.svelte';
 	import lstorage from '$lib/helpers/localstorage';
-	import { getRank } from '$lib/helpers/loader.profile';
-	import { juaraSeason } from '$lib/data/config';
-	import { delay } from '$lib/helpers/dateTime';
-
-	let bfTarget = $state<HTMLElement | null>(null);
-	let bf = $state<baffle | null>(null);
-
-	$effect(() => {
-		if (!bfTarget) return;
-		const b = baffle(bfTarget, {
-			characters: '░█/<▒▓▒▒░▒██▒▒▓/█▒ ▓▒░▓█ █░▒>░ ▓░▒░▓█0123456789',
-			speed: 75
-		});
-		bf = b;
-		b?.start();
-
-		return () => {
-			bf?.stop();
-			bf = null;
-		};
-	});
+	import Rank from './Rank.svelte';
 
 	const { tier, isvalid, ...tierdata } = $derived(whatIsMyTier($juaraBadges || []));
+
 	const potential = $derived(analyzeBadges($juaraBadges || []));
 	const earned = $derived.by(() => {
 		const p = $JUARACONFIG.sum === 'point';
@@ -57,6 +36,7 @@
 	$effect(() => {
 		lstorage.set('jRankDisclaimer', skipDisclaimer);
 	});
+
 	const showRank = () => {
 		JUARACONFIG.update(({ sum, ...s }) => ({ sum: 'rank', ...s }));
 		showModalRank = false;
@@ -66,23 +46,6 @@
 		if ($JUARACONFIG.sum === 'rank') return;
 		if (skipDisclaimer) return showRank();
 		showModalRank = !showModalRank;
-	};
-
-	const checkRank = async () => {
-		if (!isvalid || potential.tier === 'notier') {
-			bf?.text(() => 'N/A').reveal(1500);
-			return;
-		}
-
-		try {
-			const { position, percentSlices } = await getRank(uuid, juaraSeason.seasonid);
-			await delay(1500);
-			bf?.text(() => String(position)).reveal(1000);
-			return percentSlices;
-		} catch (e) {
-			console.error(e);
-			bf?.text(() => 'Error').reveal(1500);
-		}
 	};
 
 	// Confetti
@@ -259,50 +222,7 @@
 				{/each}
 			</div>
 		{:else}
-			<div
-				class="flex min-h-[92px] w-full flex-col items-center px-1 py-4 sm:col-span-1 sm:w-full sm:border-t-0 sm:p-2 sm:px-5"
-			>
-				<div class="w-max text-xs font-semibold sm:text-sm">Posisi kamu pada platform ini</div>
-				<div class="relative mt-5 mb-1 text-4xl font-black">
-					<span
-						class="absolute bottom-full left-1/2 -mb-2.5 block -translate-x-1/2 text-lg text-transparent"
-						style="--fa-primary-color:var(--color-secondary)"
-					>
-						<i class="fasdl fa-crown"> </i>
-					</span>
-					<span bind:this={bfTarget}> 000 </span>
-				</div>
-
-				<Tooltip>
-					{#snippet popup()}
-						<div class="w-80 max-w-full p-1">
-							<p>
-								Kalkulasi hanya berdasarkan data dari pengguna platform ini, Jumlah point yang sama
-								akan memiliki ranking yang sama tanpa mempertimbangkan kecepatan penyelesaian.
-								Sehingga <b> pasti tidak akurat </b>
-								dengan data yang diolah oleh Tim Resmi JuaraGCP.
-							</p>
-						</div>
-					{/snippet}
-
-					{#await checkRank() then percent}
-						{#if typeof percent === 'number'}
-							<div class="text-xs">
-								<p class="inline-block">
-									<span class="bg-[var(--color-third)]/20 font-semibold"> {percent}% </span> partisipan
-									berada pada posisi yang sama
-								</p>
-								<span
-									class="text-xs text-transparent"
-									style="--fa-primary-color:var(--color-secondary)"
-								>
-									<i class="fasdl fa-circle-info"></i>
-								</span>
-							</div>
-						{/if}
-					{/await}
-				</Tooltip>
-			</div>
+			<Rank {uuid} isEligible={!(!isvalid || potential.tier === 'notier')} />
 		{/if}
 	</div>
 
