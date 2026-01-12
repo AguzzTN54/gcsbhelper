@@ -30,9 +30,19 @@
 
 	const { uuid, name } = $derived($activeProfile);
 	const q = $derived(useQuery(uuid));
+
+	let tmpPoints = $state<number | undefined>();
+	let pointReady = $state(false);
+
 	$effect(() => {
-		if ((tierdata?.points?.total || 0) < 1) return;
-		submitRank(uuid, juaraSeason.seasonid, tierdata.points.total);
+		if (tmpPoints === tierdata?.points?.total || !isvalid || potential.tier === 'notier') {
+			pointReady = true;
+			return () => (pointReady = false);
+		}
+
+		tmpPoints = tierdata?.points?.total;
+		submitRank(uuid, juaraSeason.seasonid, tmpPoints).then(() => (pointReady = true));
+		return () => (pointReady = false);
 	});
 
 	let showModalRank = $state(false);
@@ -228,7 +238,15 @@
 				{/each}
 			</div>
 		{:else}
-			<Rank {uuid} isEligible={!(!isvalid || potential.tier === 'notier')} />
+			{#key uuid}
+				<Rank
+					{uuid}
+					isEligible={!(!isvalid || potential.tier === 'notier')}
+					points={pointReady && !(!isvalid || potential.tier === 'notier')
+						? tierdata?.points?.total
+						: undefined}
+				/>
+			{/key}
 		{/if}
 	</div>
 

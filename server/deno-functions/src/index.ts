@@ -96,12 +96,11 @@ app.post('/internal/identity/:id/rank', async (c) => {
     const uuid = hexToUuid(id);
     const input = await c.req.json();
     await updatePoints(uuid, program, input?.points || 0);
-    return c.json({});
   } catch (error) {
     const e = error as Record<string, string | number>;
     console.error(e);
-    return c.json({ error: e?.message || 'Something Went Wrong' }, 500);
   }
+  return c.json({});
 });
 
 app.get('/internal/identity/:id/rank', async (c) => {

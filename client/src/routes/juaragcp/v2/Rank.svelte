@@ -5,45 +5,53 @@
 	import { delay } from '$lib/helpers/dateTime';
 	import { getRank } from '$lib/helpers/loader.profile';
 	import Tooltip from '$reusable/Tooltip';
+	import { onMount } from 'svelte';
 
 	let bfTarget = $state<HTMLElement | null>(null);
 
 	interface Props {
 		uuid: string;
+		points?: number;
 		isEligible?: boolean;
 	}
-	const { uuid, isEligible }: Props = $props();
+	const { uuid, points, isEligible }: Props = $props();
 
-	let percent = $state<number | null>(null);
-	$effect(() => {
-		const b = baffle(bfTarget, {
+	let percent = $state<number | null>();
+
+	let b = $state<any>();
+	onMount(() => {
+		b = baffle(bfTarget, {
 			characters: '░█/<▒▓▒▒░▒██▒▒▓/█▒ ▓▒░▓█ █░▒>░ ▓░▒░▓█0123456789',
 			speed: 75
 		});
 		b.start();
+	});
 
-		if (!isEligible) {
-			b.text(() => 'N/A').reveal(1500);
-			return;
-		}
+	$inspect({ points });
+
+	let tmpPoint = $state<number | undefined>(undefined);
+	const syncRank = async () => {
+		if (!isEligible) return b.text(() => 'N/A').reveal(1500);
+		if (typeof points !== 'number') return;
+		if (tmpPoint === points) return;
+		tmpPoint = points;
+
+		const data = await getRank(uuid, juaraSeason.seasonid);
+		const { position, percentSlices } = data;
+		await delay(1000);
+		b.text(() => String(position)).reveal(1000);
+		percent = percentSlices;
+	};
+
+	$effect(() => {
+		b?.start();
 
 		try {
-			getRank(uuid, juaraSeason.seasonid).then((data) => {
-				const { position, percentSlices } = data;
-				delay(1500).then(() => {
-					b.text(() => String(position)).reveal(1000);
-					percent = percentSlices;
-				});
-			});
+			syncRank();
 		} catch (e) {
 			console.error(e);
 			b.text(() => 'Error').reveal(1500);
 		}
-
-		return () => {
-			b.text(() => 'N/A');
-			percent = null;
-		};
 	});
 </script>
 
