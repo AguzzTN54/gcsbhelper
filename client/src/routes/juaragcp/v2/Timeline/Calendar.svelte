@@ -3,14 +3,14 @@
 	const { date: daterange }: { date: App.JuaraCalendar[] } = $props();
 </script>
 
-<div class="rounded-3xl bg-amber-900">
+<div class="rounded-xl bg-amber-900 md:rounded-3xl">
 	<div class="grid grid-cols-7">
 		{#each ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'] as day}
 			<div class="p-2 text-center text-[calc(var(--w)*0.025)]">{day}</div>
 		{/each}
 	</div>
 	<div
-		class="grid grid-cols-7 gap-y-2 overflow-hidden rounded-3xl bg-[var(--color-primary)] md:gap-y-3 md:py-2"
+		class="grid grid-cols-7 gap-y-2 overflow-hidden rounded-xl bg-[var(--color-primary)] md:gap-y-3 md:rounded-3xl md:py-2"
 	>
 		{#each daterange as { date, end, inPeriode, inCurrentMonth, hasEvent, start, today }, i}
 			<div

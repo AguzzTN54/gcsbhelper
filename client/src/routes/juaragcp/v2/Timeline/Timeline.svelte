@@ -66,7 +66,7 @@
 
 			<!-- Animated calendar with fly transitions -->
 			<div
-				class="relative aspect-[6/4.1] h-full w-full overflow-hidden"
+				class="relative aspect-square h-full w-full overflow-hidden md:aspect-[6/4.1]"
 				bind:clientWidth
 				style="--w:{clientWidth}px"
 			>

@@ -250,7 +250,7 @@
 		{/if}
 	</div>
 
-	<p class="mt-2 w-full bg-(--color-primary) text-sm">
+	<p class="mt-2 w-full text-sm">
 		Jangan lupa untuk mengisi <span class="font-semibold">Completion Form</span>
 		<span class="bg-[var(--color-third)]/20"> setelah mencapai target Tier</span>!
 	</p>

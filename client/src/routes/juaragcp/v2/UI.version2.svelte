@@ -151,7 +151,8 @@
 			{:else}
 				<Form />
 				<a
-					href="/#"
+					target="_blank"
+					href="https://rsvp.withgoogle.com/events/juaragcp-s12"
 					class="text-stroke relative mt-4 inline-block text-xs font-semibold uppercase after:absolute after:top-1/2 after:left-1/2 after:-z-10 after:h-0.5 after:w-full after:-translate-x-1/2 after:-translate-y-1/2 after:scale-x-150 after:bg-[var(--color-secondary)] sm:hidden"
 				>
 					Daftar Sekarang!
