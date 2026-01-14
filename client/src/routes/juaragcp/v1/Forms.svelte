@@ -1,24 +1,20 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import { preventDefault } from 'svelte/legacy';
-	import type { EventHandler } from 'svelte/elements';
+	import { untrack } from 'svelte';
 	import { fade } from 'svelte/transition';
-
 	import { isValidUUID } from '$lib/helpers/uuid';
 	import { localAccounts } from '$lib/helpers/localstorage';
-	import { isGCSBUrl, loadProfile, validateURL } from '$lib/helpers/loader.profile';
+	import { isGCSBUrl, validateURL } from '$lib/helpers/loader.profile';
 	import Loading from '$comp/LoaderAnimation.svelte';
 	import Button from '$comp/Button.svelte';
-	import { juaraProfile } from '$lib/stores/app.svelte';
+	import { activeProfile } from '$lib/stores/app.svelte';
+	import { juaraSeason, skillbase } from '$lib/data/config';
+	import { createQuery } from '$lib/stores/query-store';
+	import { loadJuaraProfile } from '$lib/helpers/loader.juaragcp';
+	import { modalHandle } from '../v2/ModalProfile.svelte';
 
+	let value = $state('');
 	let typed = $state(false);
-	let loading = $state(false);
-	let isError = $state(false);
-	let errorMSG = $state('');
 
-	const modalHandle = getContext('modalHandle') as EventHandler;
-
-	let value = $state<string>('');
 	const profileUUID = $derived.by<string>(() => {
 		const profileLink = value.trim();
 		const isgcsb = isGCSBUrl(profileLink);
@@ -34,84 +30,72 @@
 		}
 	});
 
-	const fetchProfile = async () => {
-		try {
-			loading = true;
-			isError = false;
-			const data = await loadProfile({ profileUUID, program: 'juaragcp' });
-			const { avatar, name, uuid } = data?.user || {};
-			localAccounts.put({ avatar, name, uuid, active: true }, 'juaragcp');
-			juaraProfile.set({ profileID: uuid, name });
-		} catch (e) {
-			console.error(e);
-			loading = false;
-			isError = true;
-		}
-	};
+	const program = juaraSeason.seasonid;
+	const q = $derived.by(() => {
+		return createQuery({
+			enabled: false,
+			queryKey: profileUUID,
+			queryFn: async () => {
+				const res = await loadJuaraProfile({ profileUUID, program });
+				const userinfo = res?.user || {};
+				localAccounts.put({ ...userinfo, program }, 'juaragcp');
+				return res;
+			}
+		});
+	});
+
+	$effect(() => {
+		if (!$activeProfile?.uuid) return window.__opr?.setUserID('');
+		window.__opr?.setUserID($activeProfile.name.slice(0, 4).padEnd(10, '*'));
+		value = `${skillbase}/public_profiles/${$activeProfile.uuid}`;
+		untrack(() => $q.refetch());
+	});
 </script>
 
-<div class="absolute flex size-full items-center justify-center" in:fade={{ delay: 500 }}>
-	{#if loading}
-		<div class="loading" transition:fade>
-			<div class="icon">
-				<Loading />
-			</div>
-			<span class="loading-text">Waiting for Profile</span>
+{#if $q.isLoading}
+	<div class="flex h-[170px] w-full flex-col items-center justify-center" in:fade>
+		<div class="icon">
+			<Loading />
 		</div>
-	{:else}
-		<form
-			class="absolute -translate-y-[10%]"
-			onsubmit={preventDefault(fetchProfile)}
-			transition:fade
-		>
-			<div class="group">
-				<div class="input relative mx-auto h-16 w-[700px] max-w-[85%]">
-					<input
-						bind:value
-						oninput={() => {
-							typed = true;
-							isError = false;
-						}}
-						class:!border-red-600={isError || (!profileUUID && typed)}
-						class:!text-red-600={isError || (!profileUUID && typed)}
-						class:isError
-						type="text"
-						class="gcsb-profile block size-full rounded-full p-[2%_5%] text-lg text-gray-700 shadow-[var(--inner-shadow)] outline-0 placeholder:text-slate-400/70 focus:shadow-[0]"
-						style="transition: box-shadow 0.25s;"
-						placeholder="Your GCSB Profile URL"
-						onblur={() => (isError = false)}
-					/>
-					<div
-						style="transition: box-shadow 0.25s;"
-						class="shdow pointer-events-none absolute top-0 left-0 z-10 block size-full rounded-full"
-					></div>
-				</div>
-				{#if isError}
-					<div class="flex items-center justify-center pt-1">
-						<span class="inline-block text-red-500">
-							{errorMSG || 'Failed to Load Profile, Please Try Again!'}
-						</span>
-					</div>
-				{/if}
+		<span class="loading-text">Waiting for Profile</span>
+	</div>
+{:else}
+	<div class="my-5 text-center sm:mt-10">
+		{#if $q.error && profileUUID}
+			<span class="text-red-600"> Failed to resolve profile url! </span>
+		{/if}
+		<div class="input relative mx-auto h-16 w-full rounded-full sm:min-w-[500px] md:w-2/5">
+			<input
+				bind:value
+				oninput={() => (typed = true)}
+				class:isError={($q.error && profileUUID) || (!profileUUID && typed)}
+				class:focus:border-red-500={($q.error && profileUUID) || (!profileUUID && typed)}
+				type="text"
+				class="gcsb-profile group block size-full rounded-full border-2 border-transparent bg-white py-[2%] pr-18 pl-5 text-lg text-gray-700 shadow-[var(--inner-shadow)] outline-0 transition-[box-shadow,border-color] duration-200 placeholder:text-slate-400/70 focus:shadow-[0]"
+				placeholder="Your GCSB Profile URL"
+			/>
+			{#if localAccounts.getAll('juaragcp').length > 0}
+				<button class="accounts primary_hover_after" aria-label="Accounts" onclick={modalHandle}>
+					<i class="gc-user"></i>
+				</button>
+			{:else}
+				<span aria-label="Accounts">
+					<i class="fasds fa-link"></i>
+				</span>
+			{/if}
+			<div
+				style="transition: box-shadow 0.25s;"
+				class="shdow pointer-events-none absolute top-0 left-0 z-10 block size-full rounded-full"
+			></div>
+		</div>
 
-				<div class="mt-8 text-lg">
-					<Button>Check Profile</Button>
-				</div>
-			</div>
-		</form>
-	{/if}
-
-	{#if localAccounts.getAll('juaragcp').length > 0 && !loading}
-		<button
-			class="accounts primary_hover_after"
-			aria-label="Accounts"
-			onclick={modalHandle}
-			out:fade
-		>
-			<i class="gc-user"></i>
-		</button>
-	{/if}
-</div>
+		<div class="mt-8 text-lg">
+			<Button onclick={() => $q.refetch()} disabled={!profileUUID} class="font-semibold uppercase">
+				Check My Profile
+			</Button>
+		</div>
+	</div>
+{/if}
 
 <style lang="postcss">
 	@import 'tailwindcss/theme' theme(reference);
@@ -129,12 +113,6 @@
 
 	.gcsb-profile.isError:focus {
 		box-shadow: 0 0 1rem rgba(255, 0, 0, 0.25);
-	}
-
-	.loading {
-		position: absolute;
-		z-index: +1;
-		width: 100%;
 	}
 
 	.loading-text {
@@ -162,28 +140,24 @@
 		}
 	}
 
-	button {
-		&.accounts {
-			position: fixed;
-			right: 5%;
-			bottom: 7.5%;
-			width: calc(0.07 * var(--screen-height));
-			border-radius: 100%;
-			aspect-ratio: 1/1;
-			outline: 0;
-			background-color: transparent;
+	.input {
+		button,
+		span {
+			@apply absolute top-1/2 right-2 flex aspect-square h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white;
 			font-size: x-large;
-			border: 0;
 			box-shadow: var(--outer-shadow);
-			transition:
-				background 0.25s,
-				color 0.25s,
-				border 0.25s,
-				transform 0.1s;
 
-			&:hover {
-				background-color: var(--color-theme-1);
-				color: #fff;
+			&.accounts {
+				transition:
+					background 0.25s,
+					color 0.25s,
+					border 0.25s,
+					transform 0.1s;
+
+				&:hover {
+					background-color: var(--color-theme-1);
+					color: #fff;
+				}
 			}
 		}
 	}

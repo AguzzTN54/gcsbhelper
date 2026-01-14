@@ -1,8 +1,22 @@
-<script>
-	const { children, cancel=false, disabled=false, onclick = () => null } = $props();
+<script lang="ts">
+	interface Props {
+		children: any;
+		cancel?: boolean;
+		disabled?: boolean;
+		onclick?: () => void;
+		class?: string;
+	}
+	const { children, cancel = false, disabled = false, onclick, class: className }: Props = $props();
 </script>
 
-<button class="check" class:primary_hover_after={!disabled} class:cancel {disabled} type="submit" {onclick}>
+<button
+	class="check rounded-full text-sm text-white {className || ''}"
+	class:primary_hover_after={!disabled}
+	class:cancel
+	{disabled}
+	type="submit"
+	{onclick}
+>
 	{@render children()}
 </button>
 
@@ -11,12 +25,7 @@
 		background-image: var(--color-gradient);
 		background-size: 200%;
 		background-position: 100%;
-		font-size: inherit;
-		border: 0;
-		outline: 0;
 		padding: 0.75rem 2rem;
-		color: #fff;
-		border-radius: 99rem;
 		transition:
 			transform 0.1s,
 			background 0.3s,
@@ -28,7 +37,7 @@
 			box-shadow: var(--outer-shadow);
 		}
 
-		&:disabled{
+		&:disabled {
 			background-color: #ccc;
 			color: #000;
 			background-image: none;
