@@ -73,10 +73,9 @@
 		{#snippet popup()}
 			<div class="w-80 max-w-full p-1">
 				<p>
-					Kalkulasi hanya berdasarkan data dari pengguna platform ini, Jumlah point yang sama akan
-					memiliki ranking yang sama tanpa mempertimbangkan kecepatan penyelesaian. Sehingga <b>
-						pasti tidak akurat
-					</b>
+					Kalkulasi hanya berdasarkan data dari pengguna platform ini, Pengguna yang memiliki jumlah
+					point yang sama dianggap memiliki ranking yang sama. Sehingga data ini
+					<b>pasti tidak akurat</b>
 					dengan data yang diolah oleh Tim Resmi JuaraGCP.
 				</p>
 			</div>

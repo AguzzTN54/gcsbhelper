@@ -20,6 +20,7 @@ export const skillbadges: App.JuaraBadge[] = [
 	{ courseid: 656, title: 'Perform Predictive Data Analysis in BigQuery' },
 	{ courseid: 631, title: 'Prepare Data for ML APIs on Google Cloud' },
 	{ courseid: 976, title: 'Prompt Design in Vertex AI' },
+	{ courseid: 754, title: 'The Basics of Google Cloud Compute' },
 	{ courseid: 755, title: 'Use APIs to Work with Cloud Storage' },
 	{ courseid: 630, title: 'Use Machine Learning APIs on Google Cloud' }
 ].map((b) => ({ ...b, type: 'skill' }));
