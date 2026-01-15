@@ -342,33 +342,25 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
 
 export const checkRanking = async (uuid: string, program: string) => {
   const id = await shortShaId(uuid);
-  const pbData = await pb
-    .collection('event_profiles')
-    .getFullList({ filter: `program='${program}'`, perPage: 1000, sort: '-points', requestKey: 'ranking' + uuid });
+
+  const pbData = await pb.collection('event_profiles').getFullList({
+    filter: `program='${program}'`,
+    sort: '-points',
+    perPage: 3000,
+    requestKey: 'ranking' + uuid,
+  });
 
   const total = pbData.length;
 
-  // Find the user
   const user = pbData.find((item) => item.profile === id);
-  if (!user) {
-    return { position: 'N/A', percentSlices: 0 };
-  }
+  if (!user) return { position: 'N/A', percentSlices: 0 };
 
-  // Compute dense rank (same points → same rank)
-  const userPoints = user.points;
-  let rank = 1;
-  for (const item of pbData) {
-    if (item.points > userPoints) rank++;
-    else break;
-  }
-
-  // percentage users have *same points*
-  const samePointsCount = pbData.filter((item) => item.points === userPoints).length;
-  const percentSlices = parseFloat(((samePointsCount / total) * 100).toFixed(1));
+  const higherDistinctPoints = new Set(pbData.filter((item) => item.points > user.points).map((item) => item.points));
+  const samePointsCount = pbData.filter((item) => item.points === user.points).length;
 
   return {
-    position: rank,
-    percentSlices,
+    position: higherDistinctPoints.size + 1,
+    percentSlices: Number(((samePointsCount / total) * 100).toFixed(1)),
   };
 };
 
