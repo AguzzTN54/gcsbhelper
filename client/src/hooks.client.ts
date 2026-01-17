@@ -55,7 +55,14 @@ if (!dev) {
 		ingestPoint: 'https://opr.mantan.dev/ingest',
 		revID: 'gcsb-helper@' + PUBLIC_GITHUB_SHA,
 		respectDoNotTrack: true,
-		__DISABLE_SECURE_MODE: dev || window.location.hostname === 'localhost'
+		__DISABLE_SECURE_MODE: dev || window.location.hostname === 'localhost',
+		network: {
+			capturePayload: true,
+			failuresOnly: true,
+			sessionTokenHeader: false,
+			ignoreHeaders: false,
+			captureInIframes: true
+		}
 	});
 	window.__opr?.coldStart();
 }
