@@ -1,7 +1,7 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM } from 'npm:jsdom';
 import type { Course, DecodedCourseData } from './types.d.ts';
-import { shortShaId } from '../../utils/hash.ts';
+import { randomKey, shortShaId } from '../../utils/hash.ts';
 import pb from '../../db/pocketbase.ts';
 
 const delay = (seconds: number) => {
@@ -86,7 +86,8 @@ const insertToPb = async (course: Course & MoreCourseDetail) => {
     const courseid = parseInt(stringId, 10);
     const id = await shortShaId('c' + stringId);
 
-    const { badgeurl } = (await localPb.collection('courses').getOne(id, { fields: 'badgeurl' })) || {};
+    const courses = await localPb.collection('courses').getOne(id, { fields: 'badgeurl', requestKey: randomKey() });
+    const { badgeurl } = courses || {};
 
     const labrecords = labs?.map(async (title) => ({ id: await shortShaId(title), title }));
     const labData = (await Promise.all(labrecords || [])).flat();
@@ -109,7 +110,7 @@ const insertToPb = async (course: Course & MoreCourseDetail) => {
       type: 'skill',
       point: 0.5,
     });
-    await batch.send({ requestKey: id });
+    await batch.send({ requestKey: randomKey() });
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }

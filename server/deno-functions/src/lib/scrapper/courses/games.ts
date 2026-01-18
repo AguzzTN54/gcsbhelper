@@ -1,7 +1,7 @@
 // @deno-types="npm:@types/jsdom"
 import { JSDOM, DOMWindow } from 'npm:jsdom';
 import { type ArcadeContent } from '../../db/denoKv.ts';
-import { shortShaId } from '../../utils/hash.ts';
+import { randomKey, shortShaId } from '../../utils/hash.ts';
 import pb from '../../db/pocketbase.ts';
 import { DecodedCourseData } from './types.d.ts';
 
@@ -105,7 +105,7 @@ const insertToPb = async (course: Course) => {
       point: point || 0,
       labs: labIds,
     });
-    await batch.send({ requestKey: id });
+    await batch.send({ requestKey: randomKey() });
   } catch (e) {
     console.error(`❌ Failed to insert ${title}`, { cause: e });
   }

@@ -1,5 +1,7 @@
 const SECRET_KEY = Deno.env.get('SUPER_SECRET') ?? 'super-secret';
 
+export const randomKey = () => Math.random().toString(36).slice(2);
+
 const toUint8 = (str: string): Uint8Array => {
   return new TextEncoder().encode(str);
 };

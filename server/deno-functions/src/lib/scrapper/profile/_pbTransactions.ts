@@ -1,6 +1,6 @@
 import { BatchService, RecordModel } from 'npm:pocketbase';
 import pb from '../../db/pocketbase.ts';
-import { shortShaId } from '../../utils/hash.ts';
+import { randomKey, shortShaId } from '../../utils/hash.ts';
 
 const getCourseId = (courseid: number, type: 'game' | 'skill'): string => {
   const identifier = type === 'game' ? 'g' : 'c';
@@ -67,7 +67,7 @@ const insertMissingCourses = async (newCourses: UserCourses[]) => {
       ...(type === 'game' ? { badgeid: courseid } : { courseid }),
     });
   }
-  await batch.send();
+  await batch.send({ requestKey: randomKey() });
 };
 
 const checkStoredProfile = async (hexuuid: string): Promise<{ earned: string[]; facilitator?: string }> => {
@@ -113,14 +113,15 @@ const insertNewCourses = async (opt: {
     });
   }
 
-  const data = await batch.send();
+  const data = await batch.send({ requestKey: randomKey() });
   return data as PBBatchResponse[];
 };
 
 const deleteUnEarnedCourse = async (hexuuid: string, courseids: string[], batch: BatchService) => {
   const courseFilter = courseids.map((id) => `course='${id}'`).join('||');
   const filter = encodeURIComponent(`((${courseFilter})&&profile='${hexuuid}')`);
-  const items = (await pb.collection('course_enrollments').getFullList({ filter, skipTotal: true })) || [];
+  const items =
+    (await pb.collection('course_enrollments').getFullList({ filter, skipTotal: true, requestKey: randomKey() })) || [];
   if (items.length < 1) return;
   for (const { id } of items) {
     batch.collection('course_enrollments').delete(id);
@@ -167,8 +168,9 @@ export const updateProfilePB = async (data: ParsedDOM, program: string) => {
   const batch = pb.createBatch();
 
   try {
-    const progId = (await pb.collection('events').getFirstListItem(`identifier='${program}'`)).id;
-    batch.collection('profiles').upsert({ id: pid, name: user.name, avatar: user.avatar, 'events+': progId });
+    const { avatar, name } = user;
+    const prog = await pb.collection('events').getFirstListItem(`identifier='${program}'`, { requestKey: randomKey() });
+    batch.collection('profiles').upsert({ id: pid, name, avatar, 'events+': prog.id });
   } catch {
     //
   }
@@ -200,10 +202,10 @@ export const updateProfilePB = async (data: ParsedDOM, program: string) => {
     if (deletedCourses.length > 0) deleteUnEarnedCourse(hexuuid, deletedCourses, batch);
     if (newEarnedCourses.length < 1 && deletedCourses.length < 1) {
       console.log(user.uuid, 'No update detected');
-      return batch.send();
+      return batch.send({ requestKey: randomKey() });
     }
 
-    await batch.send({ requestKey: hexuuid });
+    await batch.send({ requestKey: randomKey() });
     const insertResult = await insertNewCourses({ hexuuid, newCourses: newEarnedCourses, program, pid });
     await updateProfileCourseList(hexuuid, earned, insertResult, deletedCourses);
     console.log(user.uuid, 'Profile Updated');
@@ -226,7 +228,7 @@ export const checkProfileEntities = async (
   if (!program) throw new Error('No Program Attached');
 
   try {
-    await pb.collection('events').getFirstListItem(`identifier='${program}'`);
+    await pb.collection('events').getFirstListItem(`identifier='${program}'`, { requestKey: randomKey() });
   } catch (err) {
     const e = err as Record<string, string | number>;
     if (e.status === 404) throw new Error("There's no such Event in our system");
@@ -267,7 +269,7 @@ export const checkProfileEntities = async (
           .collection('profiles')
           .upsert({ id: pid, identifier: oldId, title: 'Arcade 2025 2nd Half', 'events+': eventToUpsert });
         batch.collection('event_profiles').upsert({ id: oldId, profile: pid });
-        await batch.send({ requestKey: pid });
+        await batch.send({ requestKey: randomKey() });
         recoredEvents.push({ identifier: oldProgram, title: 'Arcade 2025 2nd Half' });
       }
     } catch {
@@ -289,7 +291,9 @@ export const checkEventPeriode = async (uuid: string, program: string) => {
   try {
     const profileFilter = pb.filter('profiles_via_events.id?~{:pid}', { pid });
     const eventFilter = pb.filter('identifier={:program}', { program });
-    event = await pb.collection('events').getFirstListItem([profileFilter, eventFilter].join('&&'));
+    event = await pb
+      .collection('events')
+      .getFirstListItem([profileFilter, eventFilter].join('&&'), { requestKey: randomKey() });
   } catch {
     //
   }
@@ -303,7 +307,7 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
   const id = await shortShaId(`${uuid}-${program}`);
   const { expand, facilitator } = await pb
     .collection('event_profiles')
-    .getOne(id, { expand: 'profile,profile.events,profile.events.events', requestKey: id });
+    .getOne(id, { expand: 'profile,profile.events,profile.events.events', requestKey: randomKey() });
 
   const events = expand?.profile?.expand?.events || [];
   const { expand: evExpand = [], ...arcadedata } =
@@ -315,7 +319,7 @@ export const loadEventProfile = async (uuid: string, program: string): Promise<P
 
   const earnedCourses = await pb
     .collection('course_enrollments')
-    .getFullList({ filter: `profile='${id}'`, perPage: 1000, expand: 'course', requestKey: id });
+    .getFullList({ filter: `profile='${id}'`, perPage: 1000, expand: 'course', requestKey: randomKey() });
 
   const courses = (earnedCourses || []).map(({ expand, earned: date }) => {
     const { badgeid, courseid, title, badgeurl } = expand?.course || {};
