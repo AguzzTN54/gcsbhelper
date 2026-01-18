@@ -66,7 +66,7 @@ const profileScrapper = async (uuid: string, options?: ScrapperOptions): Promise
   const txt = await profile.text();
   const [, bd] = txt.split('<body');
   const [body] = bd?.split('</body>') || [''];
-  if (!body) throw new Error();
+  if (!body) throw new Error('Profile is not Public or does not exist');
   const parsed = parserFromDom(`<body>${body}</body>`, url);
   if (save && program) updateProfilePB(parsed, program);
   return parsed;
@@ -91,7 +91,14 @@ export const loadProfile = async (id: string, options?: ScrapperOptions): Promis
     const data = await loadEventProfile(uuid, program);
     return data;
   } catch (e) {
-    console.log('Invalid ID', { cause: e });
-    return { message: 'Failed to resolve profile page', code: 500 };
+    const result = { message: (e as { message: string })?.message || 'Failed to resolve profile page', code: 500 };
+    try {
+      const uuid = hexToUuid(id);
+      console.log('Invalid UUID', { uuid, cause: e });
+      return { ...result, id: uuid };
+    } catch (e) {
+      console.log('Invalid ID', { id, cause: e });
+      return { ...result, id };
+    }
   }
 };

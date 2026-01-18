@@ -21,4 +21,4 @@ interface ParsedDOM {
   courses: UserCourses[];
   metadata?: ArcadeMetadata;
 }
-type ProfileData = ParsedDOM | { code: number; message: string };
+type ProfileData = ParsedDOM | { code: number; message: string; id: string };

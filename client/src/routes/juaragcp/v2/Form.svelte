@@ -59,7 +59,8 @@
 {:else}
 	<div class="my-5 text-center sm:mt-10">
 		{#if $q.error && profileUUID}
-			<span class="text-red-600"> Failed to resolve profile url! </span>
+			{@const message = ($q.error as any)?.message}
+			<span class="text-red-600"> {message || 'Failed to resolve profile url!'} </span>
 		{/if}
 		<div class="relative mx-auto w-full rounded-full sm:min-w-[500px] md:w-2/5">
 			<input

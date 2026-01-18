@@ -17,7 +17,14 @@ export const loadProfile = async (option: LoadProfileOptions) => {
 	if (program === 'juaragcp') server.searchParams.append('tokenize', 'false');
 
 	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
-	if (res.status !== 200) throw new Error('Fetch Error');
+	if (res.status !== 200) {
+		try {
+			const data = await res.json();
+			throw new Error(data?.message);
+		} catch (e) {
+			throw new Error((e as Error)?.message || 'Fetch Error');
+		}
+	}
 
 	const data: App.InitData = await res.json();
 	const { uuid } = data.user;
