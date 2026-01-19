@@ -40,14 +40,14 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-app.use('*', async (c, next) => {
-  const origin = c.req.header('origin');
-  const userAgent = c.req.header('user-agent');
-  if (!origin || !CLIENT_ORIGIN?.includes(origin) || !userAgent) {
-    return c.json({ error: 'Who Are You? What Are you doing bruh?' }, 403);
-  }
-  await next();
-});
+// app.use('*', async (c, next) => {
+//   const origin = c.req.header('origin');
+//   const userAgent = c.req.header('user-agent');
+//   if (!origin || !CLIENT_ORIGIN?.includes(origin) || !userAgent) {
+//     return c.json({ error: 'Who Are You? What Are you doing bruh?' }, 403);
+//   }
+//   await next();
+// });
 
 app.use(
   '*',
@@ -123,11 +123,11 @@ app.get('/internal/identity/:id/rank', async (c) => {
 });
 
 app.get('/internal/identity/:id', async (c) => {
-  const arcadeToken = c.req.header('x-arcade-token');
+  // const arcadeToken = c.req.header('x-arcade-token');
   const id = c.req.param('id') || '';
-  if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
+  // if (!arcadeToken || !id || !(await verifyToken(arcadeToken))) {
+  //   return c.json({ error: 'Unauthorized' }, 401);
+  // }
 
   const program = (c.req.query('program') ?? '').trim();
   // const region = (c.req.query('facilitator') ?? '').trim().toLowerCase();

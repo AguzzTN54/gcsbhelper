@@ -2,10 +2,11 @@
 	import dayjs from '$lib/helpers/dateTime';
 	import { loadSteps } from '$lib/stores/app.svelte';
 	import Skeleton from '$reusable/Skeleton.svelte';
+	import Tooltip from '$reusable/Tooltip';
 	import BadgeImage from './_badge-image.svelte';
 
 	const { data }: { data: App.JuaraBadge } = $props();
-	const { title, courseid, validity, date, badgeurl, required, totallab, enrollment_count } =
+	const { title, courseid, validity, date, badgeurl, required, totallab, enrollment_count, type } =
 		data || {};
 </script>
 
@@ -45,8 +46,18 @@
 
 	<div class="duo px-4 py-1">
 		<div class="inline text-xs">
-			<i class="fasds fa-flask opacity-50"></i>
-			<span>{totallab}</span>
+			{#if type === 'skill'}
+				<i class="fasds fa-flask opacity-50"></i>
+				<span>{totallab}</span>
+			{:else}
+				<Tooltip class="inline-block">
+					{#snippet popup()}
+						<span>Total Labs & Quizzes </span>
+					{/snippet}
+					<i class="fasds fa-puzzle opacity-50"></i>
+					<span>{totallab}</span>
+				</Tooltip>
+			{/if}
 
 			<i class="fasds fa-users ml-2 inline-block opacity-50"></i>
 			{#if !loadSteps.stats}
@@ -63,10 +74,7 @@
 			</span>
 		{/if}
 	</div>
-	<h3
-		class="text-overflow h-[48px] px-4 text-xl leading-[120%] font-semibold"
-		style="--line-number:2"
-	>
+	<h3 class="line-clamp-2 h-[48px] px-4 text-xl leading-[120%] font-semibold">
 		{title}
 	</h3>
 	<div class="mt-4 px-4 text-center">

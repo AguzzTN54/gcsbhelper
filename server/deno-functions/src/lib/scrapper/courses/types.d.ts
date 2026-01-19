@@ -41,7 +41,7 @@ interface CourseDataStep {
   id: number;
   prompt?: string | null;
   isOptional: boolean;
-  activities: CourseDataActivity[];
+  activities: CourseDataActivity[] | Activity[];
 }
 
 interface DecodedCourseData {
