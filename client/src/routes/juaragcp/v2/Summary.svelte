@@ -251,7 +251,7 @@
 	</div>
 
 	<p class="mt-2 w-full text-sm">
-		Jangan lupa untuk mengisi <span class="font-semibold">Completion Form</span>
+		Jangan lupa untuk mengisi <a href={completionFormUrl} target="_blank" rel="noopener noreferrer" class="font-semibold">Completion Form</a>
 		<span class="bg-[var(--color-third)]/20"> setelah mencapai target Tier</span>!
 	</p>
 </div>
