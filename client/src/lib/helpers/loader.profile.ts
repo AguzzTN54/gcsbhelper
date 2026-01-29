@@ -1,11 +1,25 @@
 import { PUBLIC_API_SERVER } from '$env/static/public';
 import { createToken } from './crypto';
+import { remoteProfile } from './loader.profile.remote';
 import { uuidToHex } from './uuid';
 
 export interface LoadProfileOptions {
 	profileUUID: string;
 	program: string;
 }
+
+const loadProfileFallback = async (opt: { profileid: string; program: string }) => {
+	const { profileid, program } = opt || {};
+	try {
+		const fallback: App.InitData = await remoteProfile({ profileid, program });
+		if (!fallback) throw new Error('Data is not Resolved');
+		const { uuid } = fallback?.user || {};
+		if (!uuid) throw new Error('Missing ID');
+		return fallback;
+	} catch (e) {
+		throw new Error((e as Error)?.message || 'Fetch Error');
+	}
+};
 
 export const loadProfile = async (option: LoadProfileOptions) => {
 	const { profileUUID, program } = option || {};
@@ -16,20 +30,26 @@ export const loadProfile = async (option: LoadProfileOptions) => {
 	server.searchParams.append('program', program);
 	if (program === 'juaragcp') server.searchParams.append('tokenize', 'false');
 
-	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
-	if (res.status !== 200) {
-		try {
-			const data = await res.json();
-			throw new Error(data?.message);
-		} catch (e) {
-			throw new Error((e as Error)?.message || 'Fetch Error');
-		}
-	}
+	try {
+		let res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
+		const data: App.InitData = await res.json();
 
-	const data: App.InitData = await res.json();
-	const { uuid } = data.user;
-	if (!uuid) throw new Error('Missing ID');
-	return data;
+		// Error handling
+		if (!res.ok) {
+			try {
+				return loadProfileFallback({ profileid, program });
+			} catch {
+				throw new Error((data as { message?: string })?.message);
+			}
+		}
+
+		// Success
+		const { uuid } = data?.user || {};
+		if (!uuid) throw new Error('Missing ID');
+		return data;
+	} catch {
+		return loadProfileFallback({ profileid, program });
+	}
 };
 
 export const isGCSBUrl = (url: string) => {
@@ -67,7 +87,7 @@ export const getRank = async (uuid: string, program: string) => {
 	server.searchParams.append('program', program);
 	const res = await fetch(server.href, { headers: { 'x-arcade-token': token } });
 	if (res.status !== 200) throw new Error('Fetch Error');
-	const data = await res.json();
+	const data = (await res.json()) as { position: number; percentSlices: number };
 	return data;
 };
 
