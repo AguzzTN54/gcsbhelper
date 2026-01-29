@@ -37,6 +37,66 @@ export const events: JuaraEvent[] = [
 			'Ikuti sesi Kick-Off Session Cloud AI Study Jam: #JuaraGCP, sesi koding bersama untuk memulai perjalanan #JuaraGCP baik secara in-person dan online'
 	},
 	{
+		title: '#JuaraGCP Challenge Labs Series #3',
+		startdate: '31 Jan 2026, 19:00 GMT+7',
+		enddate: '31 Jan 2026, 20:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Challenge Labs Series #4',
+		startdate: '1 Feb 2026, 19:00 GMT+7',
+		enddate: '1 Feb 2026, 20:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Challenge Labs Series #5',
+		startdate: '7 Feb 2026, 19:00 GMT+7',
+		enddate: '7 Feb 2026, 20:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Challenge Labs Series #6',
+		startdate: '15 Feb 2026, 19:00 GMT+7',
+		enddate: '15 Feb 2026, 20:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Bandung',
+		startdate: '31 Jan 2026, 09:00 GMT+7',
+		enddate: '31 Jan 2026, 16:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Surabaya I',
+		startdate: '31 Jan 2026, 10:00 GMT+7',
+		enddate: '31 Jan 2026, 15:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Bogor',
+		startdate: '07 Feb 2026, 08:00 GMT+7',
+		enddate: '07 Feb 2026, 15:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Medan',
+		startdate: '07 Feb 2026, 08:00 GMT+7',
+		enddate: '08 Feb 2026, 13:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Jogjakarta',
+		startdate: '08 Feb 2026, 09:00 GMT+7',
+		enddate: '08 Feb 2026, 13:00 GMT+7',
+		description: ''
+	},
+	{
+		title: '#JuaraGCP Surabaya II',
+		startdate: '14 Feb 2026, 09:00 GMT+7',
+		enddate: '14 Feb 2026, 12:00 GMT+7',
+		description: ''
+	},
+	{
 		title: 'Final Completion Date',
 		startdate: '15 Feb 2026, 23:59 GMT+7',
 		enddate: '15 Feb 2026, 23:59 GMT+7',

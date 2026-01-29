@@ -59,27 +59,31 @@
 		</button>
 	</div>
 
-	{#if tabData.length > 0}
-		{#each tabData as { description, startdate, title }, i (title)}
-			<div
-				in:fade|global={{ delay: Math.sqrt(i) * 50 }}
-				class="mb-3 flex w-full items-center rounded-xl bg-amber-300 py-2 pr-5 pl-3 text-[var(--color-secondary)]"
-			>
-				<div class="flex flex-col items-center whitespace-nowrap">
-					<span class="text-3xl font-bold">{startdate.format('D')}</span>
-					<span class="text-xs">{startdate.format('MMM YYYY')}</span>
+	<div class="h-[280px] overflow-auto">
+		<ScrollArea>
+			{#if tabData.length > 0}
+				{#each tabData as { description, startdate, title }, i (title)}
+					<div
+						in:fade|global={{ delay: Math.sqrt(i) * 50 }}
+						class="mb-3 flex w-full items-center rounded-xl bg-amber-300 py-2 pr-5 pl-3 text-[var(--color-secondary)]"
+					>
+						<div class="flex flex-col items-center whitespace-nowrap">
+							<span class="text-3xl font-bold">{startdate.format('D')}</span>
+							<span class="text-xs">{startdate.format('MMM YYYY')}</span>
+						</div>
+						<div class="pl-4">
+							<h4 class="text-lg leading-[120%] font-bold">{title}</h4>
+							<p class="mt-1 mb-2 text-sm leading-[120%]">{description}</p>
+						</div>
+					</div>
+				{/each}
+			{:else}
+				<div class="flex w-full items-center justify-center py-10 text-sm font-semibold">
+					Tidak ada event!
 				</div>
-				<div class="pl-4">
-					<h4 class="text-lg leading-[120%] font-bold">{title}</h4>
-					<p class="mt-1 mb-2 text-sm leading-[120%]">{description}</p>
-				</div>
-			</div>
-		{/each}
-	{:else}
-		<div class="flex w-full items-center justify-center py-10 text-sm font-semibold">
-			Tidak ada event!
-		</div>
-	{/if}
+			{/if}
+		</ScrollArea>
+	</div>
 </div>
 
 <style lang="postcss">
