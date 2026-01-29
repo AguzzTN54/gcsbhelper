@@ -37,7 +37,7 @@
 		"typescript-eslint": "^8.16.0",
 		"vite": "7.1.11",
 		"vite-plugin-devtools-json": "^0.4.1",
-		"wrangler": "^4.26.0"
+		"wrangler": "^4.59.1"
 	},
 	"type": "module",
 	"dependencies": {
