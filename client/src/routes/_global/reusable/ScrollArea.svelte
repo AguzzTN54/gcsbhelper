@@ -90,7 +90,7 @@
 	let inner = $state<HTMLElement>();
 	let scrolled = $state(false);
 	const propid = $props.id();
-	const osID = id || propid;
+	const osID = $derived(id || propid);
 
 	const onscroll = (_: never | OverlayScrollbars, e: Event): null => {
 		const { scrollTop } = e.target as HTMLElement;

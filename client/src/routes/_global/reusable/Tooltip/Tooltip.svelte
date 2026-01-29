@@ -19,7 +19,7 @@
 	let side = $state<'top' | 'bottom' | 'left' | 'right'>('top');
 	let position = $state({ x: 0, y: 0 });
 
-	const OFFSET = offset;
+	const OFFSET = $derived(offset);
 
 	const updatePosition = () => {
 		if (!triggerEl || !tooltipEl || !isVisible) return;

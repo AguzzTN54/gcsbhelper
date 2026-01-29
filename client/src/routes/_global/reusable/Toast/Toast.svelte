@@ -9,7 +9,7 @@
 		children,
 		onclose
 	} = $props();
-	const duration = timeout ? `${timeout / 1000}s` : '0s';
+	const duration = $derived(timeout ? `${timeout / 1000}s` : '0s');
 	const typeClasses: Record<string, string> = {
 		info: 'bg-sky-300 border-sky-900 text-sky-900',
 		success: 'bg-green-300 border-green-900 text-green-900',
@@ -25,8 +25,8 @@
 	style="--duration: {duration}"
 	class:autoclose={autoclose && timeout > 0}
 	class="
-    {typeClasses[type]} relative flex items-center gap-2 px-4 py-2
-    rounded-md border-4 pointer-events-auto font-bold tracking-wide
+    {typeClasses[type]} pointer-events-auto relative flex items-center gap-2 rounded-md
+    border-4 px-4 py-2 font-bold tracking-wide
   "
 >
 	<div class="text-sm">
@@ -34,13 +34,13 @@
 	</div>
 
 	{#if dismissible}
-		<button class="ml-auto p-1 text-inherit hover:scale-110 transition" onclick={() => onclose?.()}>
+		<button class="ml-auto p-1 text-inherit transition hover:scale-110" onclick={() => onclose?.()}>
 			✕
 		</button>
 	{/if}
 
 	{#if autoclose && timeout > 0}
-		<div class="absolute bottom-0 left-0 h-0.75 w-full bg-black indicator"></div>
+		<div class="indicator absolute bottom-0 left-0 h-0.75 w-full bg-black"></div>
 	{/if}
 </div>
 

@@ -62,12 +62,15 @@ jobs:
 
       # Cloudflare Step
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: gcsbhelper
-          directory: ./client/build
-          branch: master
-          wranglerVersion: '3'
+          command: pages deploy ./client/.svelte-kit/cloudflare --project-name=gcsbhelper --branch=master
+          packageManager: pnpm
+
+      - name: print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL

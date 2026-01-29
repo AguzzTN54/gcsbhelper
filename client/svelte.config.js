@@ -1,5 +1,5 @@
 import path from 'path';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -10,7 +10,7 @@ const config = {
 	},
 	kit: {
 		prerender: {
-			origin: 'https://gcsbhelper.pages.dev'
+			origin: 'https://skills.mantan.dev'
 		},
 		adapter: adapter(),
 		alias: {

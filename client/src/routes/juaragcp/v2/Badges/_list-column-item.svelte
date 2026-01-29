@@ -7,7 +7,7 @@
 
 	const { data }: { data: App.JuaraBadge } = $props();
 	const { title, courseid, validity, date, badgeurl, required, totallab, enrollment_count, type } =
-		data || {};
+		$derived(data || {});
 </script>
 
 <div
