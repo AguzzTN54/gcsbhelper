@@ -21,7 +21,8 @@
 				class:range={inPeriode}
 			>
 				<button
-					class="relative flex aspect-square h-full items-center justify-center rounded-full p-2 text-[var(--color-secondary)] transition-colors duration-300"
+					class="relative flex aspect-square h-full items-center justify-center rounded-full p-2 text-[var(--color-secondary)] transition-colors duration-300
+					{dayjs().isAfter(date) && hasEvent && !start && !end ? 'bg-amber-700/50' : ''}"
 					class:!bg-[var(--color-secondary)]={start || end}
 					class:!text-[var(--color-primary)]={start || end || hasEvent}
 					class:bg-amber-700={hasEvent}

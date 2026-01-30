@@ -5,11 +5,14 @@
 	import dayjs from 'dayjs';
 	import { fade } from 'svelte/transition';
 
-	const eventList = events.map(({ enddate, startdate, ...rest }) => ({
-		...rest,
-		startdate: dayjs(startdate),
-		enddate: dayjs(enddate)
-	}));
+	const eventList = events
+		.map(({ enddate, startdate, ...rest }) => ({
+			...rest,
+			startdate: dayjs(startdate),
+			enddate: dayjs(enddate)
+		}))
+		.sort((a, b) => a.startdate.valueOf() - b.startdate.valueOf());
+
 	const upcoming = eventList.filter((e) => dayjs(e.startdate).isAfter(new Date()));
 	const previous = eventList.filter((e) => dayjs(e.enddate).isBefore(new Date()));
 	const current = eventList.filter(({ startdate, enddate }) => {
